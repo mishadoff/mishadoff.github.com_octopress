@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-06T20:53:43+02:00</updated>
+  <updated>2012-11-06T20:55:35+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,20 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[What is greater: e^pi or pi^e?]]></title>
-    <link href="http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/"/>
-    <updated>2012-11-06T16:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e</id>
-    <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don&#8217;t have it?</p>
-
-<!-- more -->
-
-
-<p>I don&#8217;t remember the origin of this joke</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 2: 0xCAFEBABE]]></title>
@@ -73,101 +59,6 @@ and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.<
 <p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
 If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
 By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 004]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-004/"/>
-    <updated>2012-10-31T19:30:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-004</id>
-    <content type="html"><![CDATA[<blockquote><p>A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 x 99.</p>
-
-<p>Find the largest palindrome made from the product of two 3-digit numbers.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=4">http://projecteuler.net/problem=4</a></p>
-
-<!-- more -->
-
-
-<p><a href="http://en.wikipedia.org/wiki/Palindrome">Palindrome</a> is very interesting thing.
-It&#8217;s a sequence (of letters, numbers, words) that reads the same backwards. Examples: <em>MADAM</em>, <em>DID</em>, <em>2002</em>.
-There are even some fun to compose palindrome sentences, like <code>He Goddam Mad Dog, eh?</code></p>
-
-<p>Function to check if sequence is palindromic is very simple.
-Compare first element with the last, second with the penultimate and so on.
-It needs just <code>n/2</code> comparisons, so complexity of that algorithm is <code>O(n)</code>. Here is recursive solution:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">palindrome-recursive?</span> <span class="p">[</span><span class="nv">s</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">empty?</span> <span class="nv">s</span><span class="p">)</span> <span class="nv">true</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">first </span><span class="nv">s</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">last </span><span class="nv">s</span><span class="p">)]</span>
-</span><span class='line'>      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">rest </span><span class="p">(</span><span class="nb">butlast </span><span class="nv">s</span><span class="p">)))</span> <span class="nv">false</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note two functions: function <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> - gets last element of collection,
-<a href="http://clojuredocs.org/clojure_core/clojure.core/butlast">butlast</a> - drops last element of collection.
-Both they work in linear time, so you might assume overall complexity is <code>O(n^2)</code>.
-Using vectors we can get index access, and perform test much faster, but this detail is not important for now.</p>
-
-<p>Using more cleaner way (obviously not the best) to implement this, which in particular I prefer, is the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">palindrome?</span> <span class="p">[</span><span class="nv">s</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">= </span><span class="nv">s</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">s</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Function <a href="http://clojuredocs.org/clojure_core/clojure.core/reverse">reverse</a>, returns given sequence in reverse order in linear time.
-Overall complexity is also <code>O(n)</code>.</p>
-
-<p>To test whether number is palindrome or not, we just cast it to string, then cast string to sequence of chars, and using above function:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">palindrome-number?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">palindrome?</span> <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">str </span><span class="nv">n</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Final solution is following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce max </span><span class="p">(</span><span class="nb">filter </span><span class="nv">palindrome-number?</span>
-</span><span class='line'>                      <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">100</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">j</span> <span class="p">(</span><span class="nb">range </span><span class="nv">i</span> <span class="mi">1000</span><span class="p">)]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">j</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We just generate all combinations of 3-digit numbers multiplication, filter palindromes, and find maximum. Done.</p>
-
-<p>This technique (<em>wow, is this technique?</em>) called <a href="http://en.wikipedia.org/wiki/Brute-force_search">brute-force</a>.
-It&#8217;s very consumable, because test each possible combination.
-But it&#8217;s common algorithm to such sort of problems.
-There are lot of clever brute force optimization to reduce set of possible values, but it is still brute force.
-As you see, in the code above, we also used small optimization.
-We iterate first multiplicand <code>i</code> from <code>100</code> to <code>1000</code> to cover all 3-digits numbers, and <code>j</code> iterated not from <code>100</code> but from <code>i</code>.
-This is because multiplication <code>375 * 468</code> gives the same result as <code>468 * 375</code>. Just because <a href="http://en.wikipedia.org/wiki/Commutative_property">commutative property</a>.
-Roughly, this reduces number of iterations by factor of 2.
-Obviously, there are other optimizations, but they are not so value and reduces readability
-(<em>If first number ends with 5 and second is even, then result ends with 0, and we skip this because in palindromic value 0 should be at the beginning</em>).</p>
-
-<p><strong>Congratulations!</strong> 4 problems solved. And we know &#8220;so much&#8221; about clojure.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem004.clj">GitHub</a>.</p>
-
-<p><strong>P.S.</strong> We create two separate functions for palindromes: one test sequence for palindrome,
-second test number for palindrome and reuse first implementation. Some can say it&#8217;s not good,
-because we write functionality that we not needed (function <code>palindrome?</code>).
-Particularly, I agree. We could hide <code>palindrome?</code> implementation inside <code>palindrome-number?</code> or make it private.
-But we haven&#8217;t did this and have function <code>palindrome?</code> that we can reuse in other problems. Also it shows important concept,
-how we can reuse existing implementations to get new functionality. And again: maybe there is (<em>I&#8217;m sure there is</em>) another solution
-which is more clever than bruteforce. But this solution works only <code>0.2</code> sec. on my machine, so this is ok.</p>
 ]]></content>
   </entry>
   
