@@ -11,4 +11,4 @@ You can answer almost immediately using calculator, but what if you don't have i
 
 <!-- more -->
 
-I don't remember the origin of this joke
+I don't remember the origin of this joke.
