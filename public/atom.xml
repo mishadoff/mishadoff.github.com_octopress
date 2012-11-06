@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-06T16:23:13+02:00</updated>
+  <updated>2012-11-06T17:01:03+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -24,6 +24,110 @@
 
 
 <p>I don&#8217;t remember the origin of this joke</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler/"/>
+    <updated>2012-10-11T16:51:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler</id>
+    <content type="html"><![CDATA[<p>Finally decided to post here my solutions to <a href="http://projecteuler.net/">Project Euler</a> implemented in <a href="http://clojure.org/">Clojure</a>.</p>
+
+<!-- more -->
+
+
+<p>As all in my life, frequency of posts with solutions will be mood-dependent.</p>
+
+<p>The main reason for this series to provide a little introduction to clojure programming language during the solving interesting problems.</p>
+
+<p>I&#8217;ll also try do my best to explain some general terms, why this approach better or worse than others,
+suggest alternative solutions or thoughts on problem and provide code.
+You allowed to copy that code, calculate the result and past answer directly in Project Euler site, but I don&#8217;t see any sense to do this.
+Problem solving process gives more fun, than result. Approximately <a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">2.718282</a> times more.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 1: java.net.URL]]></title>
+    <link href="http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url/"/>
+    <updated>2012-10-11T16:30:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url</id>
+    <content type="html"><![CDATA[<p>Recently, I found on reddit very interesting Java code snippet (slightly modified):</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">HashSet</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">();</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">60000</span><span class="o">);</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What do you think the output for lines 3 and 5 will be?</p>
+
+<!-- more -->
+
+
+<p>Definitely not <code>true, true</code> if the question was asked. Think for two minutes.</p>
+
+<p>Ok. In most cases it will be <code>true, false</code> because you have internet connection (<em>How else you can read this?</em>).
+Turn off your network cable or wi-fi, and you&#8217;ll get <code>true, true</code>.</p>
+
+<p>The reason is in implementation of <code>hashCode()</code> and <code>equals()</code> methods for <code>URL</code> class.</p>
+
+<p>Let&#8217;s see how hashCode calculated:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">hashCode</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can see hashCode is an instance variable that calculates once. Makes sense, <code>URL</code> is <a href="http://en.wikipedia.org/wiki/Immutable_object">immutable</a>.
+What is handler? It&#8217;s an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
+Just look at <code>URL.hashCode()</code> javadoc:</p>
+
+<blockquote><p>The hash code is based upon all the URL components relevant for URL comparison. As such, this operation is a blocking operation.</p></blockquote>
+
+<p>Stop! <strong>BLOCKING OPERATION?!</strong></p>
+
+<p><em>- Sorry, I couldn&#8217;t check email yesterday due to hashCode calculation.</em></p>
+
+<p>or even better</p>
+
+<p><em>- No, mom, I can&#8217;t watch porn, It&#8217;s hashCode, you know.</em></p>
+
+<p>Ok, let it be blocking. Another exciting part, that handler <strong>resolves host IP address</strong> for hashCode calculation.
+Tries to resolve, to be honest. If it can not do this, it calculates hashCode based on host, which is <em>google.com</em> for our example.
+Shit happens when IP is dynamic, or host have request balancer that also changes host IP.
+In that case we got different hashCodes for one host name, and will have two (or even more) instances in HashSet. Not good at all.
+By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it&#8217;s another topic.</p>
+
+<h3>How to avoid this?</h3>
+
+<ul>
+<li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It&#8217;s not the best choice though, but have deterministic hashCode implementation.</li>
+<li>Do not use <code>java.net.URL</code> in collections. Good option to maintain collection of String objects (that represent host name) and get URL when needed.</li>
+<li>Disable your network adapter during hashCode calculation. (<em>It&#8217;s a joke, but it helps</em>)</li>
+<li>Use your own subclass of URLStreamHandler with proper implementation of hashCode.</li>
+</ul>
+
+
+<p>Finally, I&#8217;m pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2012-11-06T17:01:03+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler/"/>
+    <updated>2012-10-11T16:51:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler</id>
+    <content type="html"><![CDATA[<p>Finally decided to post here my solutions to <a href="http://projecteuler.net/">Project Euler</a> implemented in <a href="http://clojure.org/">Clojure</a>.</p>
+
+<!-- more -->
+
+
+<p>As all in my life, frequency of posts with solutions will be mood-dependent.</p>
+
+<p>The main reason for this series to provide a little introduction to clojure programming language during the solving interesting problems.</p>
+
+<p>I'll also try do my best to explain some general terms, why this approach better or worse than others,
+suggest alternative solutions or thoughts on problem and provide code.
+You allowed to copy that code, calculate the result and past answer directly in Project Euler site, but I don't see any sense to do this.
+Problem solving process gives more fun, than result. Approximately <a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">2.718282</a> times more.</p>
+]]></content>
+  </entry>
+  
+</feed>
