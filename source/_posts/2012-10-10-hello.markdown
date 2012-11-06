@@ -4,7 +4,6 @@ title: "Hello, world!"
 date: 2012-10-10 16:10
 comments: true
 categories: [thoughts]
-published: true
 ---
 
 This is my first post.

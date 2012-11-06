@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: emacs | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/emacs/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2012-11-06T19:59:39+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure + Emacs + Leiningen + nREPL]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/"/>
+    <updated>2012-10-13T18:19:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl</id>
+    <content type="html"><![CDATA[<p>This article provides step-by-step instruction how to configure Clojure environment.</p>
+
+<!-- more -->
+
+
+<h3>Little history</h3>
+
+<p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
+But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it's my fault, this time I've created configuration on GitHub</em>).
+So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
+<em>"This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead"</em>.
+Ok, let's see what nrepl is.</p>
+
+<h3>Why emacs?</h3>
+
+<p>I don't know. I like lisp, and emacs created in (e)lisp.
+Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
+Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can't find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
+
+<p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
+
+<p>By the way, there are lot of IDEs that can be configured much simpler way than described in this article:</p>
+
+<ul>
+<li><a href="http://clojure.bighugh.com/">Clojure Box</a> - emacs install, preconfigured for clojure. Only for Windows</li>
+<li><a href="http://code.google.com/p/counterclockwise/">Counter Clockwise</a> - eclipse plugin</li>
+<li><a href="http://www.enclojure.org/">Enclojure</a> - netbeans plugin</li>
+<li><a href="http://plugins.intellij.net/plugin/?id=4050">La Clojure</a> - IDEA plugin</li>
+<li><a href="http://www.vim.org/scripts/script.php?script_id=2501">VimClojure</a> - vim plugin</li>
+<li><a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> - new generation of IDEs?</li>
+</ul>
+
+
+<p>So, before reading, ask yourself, Do I really need emacs?</p>
+
+<h3>Emacs</h3>
+
+<p>First of all you need to install emacs, to get your future clojure coding environment. I'm using ubuntu, so I just type:</p>
+
+<p><code>sudo apt-get install emacs</code></p>
+
+<p>and it install emacs 23. If you using another OS, or do not trust package manager,
+check <a href="http://www.gnu.org/software/emacs/">GNU Emacs official website</a> for installation instructions.</p>
+
+<p>Also, you need to install emacs package-manager.</p>
+
+<ol>
+<li>Copy file <a href="http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el">package.el</a>
+to your <code>~/emacs.d/</code> folder.</li>
+<li>In your <code>~/.emacs</code> file add folowing lines:</li>
+</ol>
+
+
+<p>```
+(add-to-list 'load-path "~/.emacs.d/")
+(load "package")
+(require 'package)
+(add-to-list 'package-archives</p>
+
+<pre><code>'("marmalade" .
+  "http://marmalade-repo.org/packages/"))
+</code></pre>
+
+<p>(package-initialize)
+```</p>
+
+<p>These lines will be loaded after emacs restarted and install package manager.
+To check if it works, type <code>M-x package-list-packages</code> and this show you list of emacs plugins, hope you will find something useful there.</p>
+
+<h3>Leiningen</h3>
+
+<p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
+Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
+
+<p>To install lein 2 (it's shorter name for Leiningen) do the following:</p>
+
+<ol>
+<li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
+<li>Place it on your <code>$PATH</code></li>
+<li>Make it executable</li>
+</ol>
+
+
+<p>On ubuntu this can be performed with the following commands:</p>
+
+<pre><code>cd ~/
+mkdir bin
+</code></pre>
+
+<p>Add line export <code>PATH=~/bin:$PATH</code> to your <code>~/.bashrc</code> file</p>
+
+<pre><code>cd ~/bin
+wget https://raw.github.com/technomancy/leiningen/preview/bin/lein
+chmod +x lein
+</code></pre>
+
+<p>Execute lein, for first time it will download default lein package. To verify installation run <code>lein version</code>.
+On my machine for the post date it prints: <code>Leiningen 2.0.0-preview10 on Java 1.6.0_24 OpenJDK 64-Bit Server VM</code></p>
+
+<h3>nREPL</h3>
+
+<p>We have already installed emacs package manager, so we can get nrepl from there.
+It also needs emacs major mode <code>clojure-mode</code>, so type the following commands in emacs to install needed packages:</p>
+
+<pre><code>M-x package-install clojure-mode
+M-x package-install nrepl
+</code></pre>
+
+<p>Try <code>M-x nrepl-jack-in</code> to execute REPL, where you can play with clojure commands.</p>
+
+<h3>Bind all together</h3>
+
+<p>We have fully configured environment for clojure and how to use it?</p>
+
+<p>Create new clojure project using lein:</p>
+
+<p><code>lein new helloworld</code></p>
+
+<p>Start nREPL server in emacs:</p>
+
+<p><code>M-x nrepl-jack-in</code></p>
+
+<p>Open core project file in emacs:</p>
+
+<p><code>C-f helloworld/src/helloworld/core.clj</code></p>
+
+<p>Write simple function:</p>
+
+<p><code>clojure
+(ns helloworld.core)
+(defn hello []
+  (println "Hell, O'World!"))
+</code></p>
+
+<p>Compile it:</p>
+
+<p><code>C-c C-k</code></p>
+
+<p>Switch to nREPL buffer, change namespace and run hello function:</p>
+
+<p><code>clojure
+(ns helloworld.core)
+(hello)
+</code></p>
+
+<p>Probably, you'll get output:</p>
+
+<pre><code>Hell, O'World!
+nil
+</code></pre>
+
+<p><strong>Congratulations!</strong> You just created working clojure project.</p>
+
+<p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
+There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
+I'll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
+is currently available.</p>
+]]></content>
+  </entry>
+  
+</feed>

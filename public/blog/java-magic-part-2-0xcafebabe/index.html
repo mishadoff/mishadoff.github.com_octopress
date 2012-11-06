@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, world! - mishadoff thoughts</title>
+  <title>Java Magic. Part 2: 0xCAFEBABE - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="This is my first post.
-It is always hard to begin something, but I&#8217;ll try. Why? I had blog earlier on LiveJournal, it was basically in &hellip;">
+  <meta name="description" content="Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s CAFEBABE. To make sure, create simple java file, call it Hello.java &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ It is always hard to begin something, but I&#8217;ll try. Why? I had blog earlie
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/hello/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -66,7 +65,7 @@ It is always hard to begin something, but I&#8217;ll try. Why? I had blog earlie
   
   <header>
     
-      <h1 class="entry-title">Hello, World!</h1>
+      <h1 class="entry-title">Java Magic. Part 2: 0xCAFEBABE</h1>
     
     
       <p class="meta">
@@ -82,58 +81,54 @@ It is always hard to begin something, but I&#8217;ll try. Why? I had blog earlie
   
 
 
-<time datetime="2012-10-10T16:10:00+03:00" pubdate data-updated="true">Oct 10<span>th</span>, 2012</time>
+<time datetime="2012-10-31T19:42:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>This is my first post.
-It is always hard to begin something, but I&#8217;ll try.</p>
+<div class="entry-content"><p>Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s <code>CAFEBABE</code>.</p>
 
 <!-- more -->
 
 
-<h3>Why?</h3>
+<p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
 
-<p>I had blog earlier on <a href="http://mishadoff.livejournal.com">LiveJournal</a>, it was basically in Ukrainian, my native language.
-But more time I was working on something, less time I had to write something.
-Honestly, it even was not programming specific blog, just random thoughts, xposts, pictures, etc.
-You know this shit. Also, it was very hard to maintain some posts, especially about programming, and I gave up.
-Excellent proof is my failed attempt to share and explain Clojure solutions on <a href="http://projecteuler.net">Project Euler</a>.
-Everything can be a reason: lack of readers, lack of feedback, not interesting topic, very specific topic,
-bad writing style, terrible livejournal layout and so on. Probably, these are all my excuses or maybe I just lazy.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Now I&#8217;ve got something in my mind and have passion to share it.
-No matter if somebody like it or not.
-I really believe that if you share something for this world,
-sooner or later somebody point you on your mistakes. And it&#8217;s a win.
-You got knowledge that didn&#8217;t know earlier and can share it to someone else. Simple loop.</p>
 
-<h3>What?</h3>
+<p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
 
-<p>I plan to be specific in this blog, so a big part will be about programming, especially Java and Clojure.
-I also love puzzles and stupid self-made pictures (O_o) and they have reserved place in my blog.
-Time to time can appear posts with reference to some clever people, if they have clever thoughts, of course.
-Event reports, some critic, books, movies, music, games, humour.
-Only God knows what else can appear in my mind and therefore in this blog, but I&#8217;ll try to be specific as much as possible.
-Really.</p>
+<p><img src="/images/cafebabe.png" title="cafebabe" alt="" /></p>
 
-<h3>English?</h3>
+<p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
 
-<p>As you already understand I&#8217;m not native English speaker or writer or whatever. How many mistakes did you count?</p>
+<blockquote><p>We used to go to lunch at a place called St Michael&#8217;s Alley.
+According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
+It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
+When Jerry died, they even put up a little Buddhist-esque shrine.
+When we used to go there, we referred to the place as Cafe Dead.
+Somewhere along the line it was noticed that this was a HEX number.
+I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
+I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after &#8220;CAFE&#8221; (it seemed to be a good theme)
+I hit on BABE and decided to use it. At that time, it didn&#8217;t seem terribly important or destined to go anywhere but the trash-can of history.
+So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
+and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p></blockquote>
 
-<p>I need some effort even for writing simple sentence in English (<em>Kiev is the capital of Ukraine - not this one</em>).
-And no matter how long I check my grammar or spelling I will have some mistakes. Big deal.
-Improve English is one of my goals, so it&#8217;s ok. <em>adding english in todo list</em></p>
-
-<p>I also don&#8217;t exclude option, that some posts will be in Ukrainian or even in Russian.</p>
-
-<h3>What else?</h3>
-
-<p>I spent half an hour writing this first post and believe that in near future I have more structured thoughts than this bag of words above.
-Good luck and welcome to my blog!</p>
+<p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
+If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
+By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
 </div>
 
 
@@ -156,12 +151,12 @@ Good luck and welcome to my blog!</p>
   
 
 
-<time datetime="2012-10-10T16:10:00+03:00" pubdate data-updated="true">Oct 10<span>th</span>, 2012</time>
+<time datetime="2012-10-31T19:42:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/thoughts/'>thoughts</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
   
 </span>
 
@@ -170,7 +165,7 @@ Good luck and welcome to my blog!</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/hello/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/hello/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/" >Tweet</a>
   
   
   
@@ -179,8 +174,8 @@ Good luck and welcome to my blog!</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-004/" title="Previous Post: Clojure Euler: Problem 004">&laquo; Clojure Euler: Problem 004</a>
       
-        <a class="basic-alignment right" href="/blog/java-magic-part-1-java-dot-net-dot-url/" title="Next Post: Java Magic. Part 1: java.net.URL">Java Magic. Part 1: java.net.URL &raquo;</a>
       
     </p>
   </footer>
@@ -263,8 +258,8 @@ Good luck and welcome to my blog!</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/hello/';
-        var disqus_url = 'http://mishadoff.github.com/blog/hello/';
+        var disqus_identifier = 'http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/';
+        var disqus_url = 'http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/';
         var disqus_script = 'embed.js';
       
     (function () {

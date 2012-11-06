@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-06T17:07:35+02:00</updated>
+  <updated>2012-11-06T19:59:39+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 2: 0xCAFEBABE]]></title>
+    <link href="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/"/>
+    <updated>2012-10-31T19:42:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe</id>
+    <content type="html"><![CDATA[<p>Did you know that all java classes start with the same 4 bytes. In hex it's <code>CAFEBABE</code>.</p>
+
+<!-- more -->
+
+
+<p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
+
+<p>``` java
+public class Hello {</p>
+
+<pre><code>public static void main(String[] args) {
+    System.out.println("Hell, O'World!");
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
+
+<p><img src="/images/cafebabe.png" title="cafebabe" alt="" /></p>
+
+<p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
+
+<blockquote><p>We used to go to lunch at a place called St Michael's Alley.
+According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
+It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
+When Jerry died, they even put up a little Buddhist-esque shrine.
+When we used to go there, we referred to the place as Cafe Dead.
+Somewhere along the line it was noticed that this was a HEX number.
+I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
+I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after "CAFE" (it seemed to be a good theme)
+I hit on BABE and decided to use it. At that time, it didn't seem terribly important or destined to go anywhere but the trash-can of history.
+So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
+and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p></blockquote>
+
+<p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
+If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
+By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 1: java.net.URL]]></title>

@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://mishadoff.github.com/blog/hello/</loc>
-        <lastmod>2012-11-06T16:59:48+02:00</lastmod>
+        <lastmod>2012-11-06T19:54:47+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url/</loc>
@@ -13,11 +13,39 @@
         <lastmod>2012-11-06T17:00:06+02:00</lastmod>
     </url>
     <url>
+        <loc>http://mishadoff.github.com/blog/lisp-live-coding/</loc>
+        <lastmod>2012-11-06T17:37:55+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-001/</loc>
+        <lastmod>2012-11-06T19:54:58+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/</loc>
+        <lastmod>2012-11-06T19:54:43+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-002/</loc>
+        <lastmod>2012-11-06T19:05:35+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-003/</loc>
+        <lastmod>2012-11-06T19:23:20+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-004/</loc>
+        <lastmod>2012-11-06T19:54:34+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/</loc>
+        <lastmod>2012-11-06T19:58:22+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://mishadoff.github.com/blog/archives/</loc>
-        <lastmod>2012-11-06T17:00:06+02:00</lastmod>
+        <lastmod>2012-11-06T19:58:22+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/</loc>
-        <lastmod>2012-11-06T17:00:06+02:00</lastmod>
+        <lastmod>2012-11-06T19:58:22+02:00</lastmod>
     </url>
 </urlset>
