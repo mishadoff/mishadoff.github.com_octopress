@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: thoughts | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/thoughts/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
   <updated>2012-11-06T16:23:13+02:00</updated>
   <id>http://mishadoff.github.com/</id>
@@ -14,26 +14,12 @@
 
   
   <entry>
-    <title type="html"><![CDATA[What is greater: e^pi or pi^e?]]></title>
-    <link href="http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/"/>
-    <updated>2012-11-06T16:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e</id>
-    <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don&#8217;t have it?</p>
-
-<!-- more -->
-
-
-<p>I don&#8217;t remember the origin of this joke</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Hello, world!]]></title>
     <link href="http://mishadoff.github.com/blog/hello/"/>
     <updated>2012-10-10T16:10:00+03:00</updated>
     <id>http://mishadoff.github.com/blog/hello</id>
     <content type="html"><![CDATA[<p>This is my first post.
-It is always hard to begin something, but I&#8217;ll try.</p>
+It is always hard to begin something, but I'll try.</p>
 
 <!-- more -->
 
@@ -48,11 +34,11 @@ Excellent proof is my failed attempt to share and explain Clojure solutions on <
 Everything can be a reason: lack of readers, lack of feedback, not interesting topic, very specific topic,
 bad writing style, terrible livejournal layout and so on. Probably, these are all my excuses or maybe I just lazy.</p>
 
-<p>Now I&#8217;ve got something in my mind and have passion to share it.
+<p>Now I've got something in my mind and have passion to share it.
 No matter if somebody like it or not.
 I really believe that if you share something for this world,
-sooner or later somebody point you on your mistakes. And it&#8217;s a win.
-You got knowledge that didn&#8217;t know earlier and can share it to someone else. Simple loop.</p>
+sooner or later somebody point you on your mistakes. And it's a win.
+You got knowledge that didn't know earlier and can share it to someone else. Simple loop.</p>
 
 <h3>What?</h3>
 
@@ -60,18 +46,18 @@ You got knowledge that didn&#8217;t know earlier and can share it to someone els
 I also love puzzles and stupid self-made pictures (O_o) and they have reserved place in my blog.
 Time to time can appear posts with reference to some clever people, if they have clever thoughts, of course.
 Event reports, some critic, books, movies, music, games, humour.
-Only God knows what else can appear in my mind and therefore in this blog, but I&#8217;ll try to be specific as much as possible.
+Only God knows what else can appear in my mind and therefore in this blog, but I'll try to be specific as much as possible.
 Really.</p>
 
 <h3>English?</h3>
 
-<p>As you already understand I&#8217;m not native English speaker or writer or whatever. How many mistakes did you count?</p>
+<p>As you already understand I'm not native English speaker or writer or whatever. How many mistakes did you count?</p>
 
 <p>I need some effort even for writing simple sentence in English (<em>Kiev is the capital of Ukraine - not this one</em>).
 And no matter how long I check my grammar or spelling I will have some mistakes. Big deal.
-Improve English is one of my goals, so it&#8217;s ok. <em>adding english in todo list</em></p>
+Improve English is one of my goals, so it's ok. <em>adding english in todo list</em></p>
 
-<p>I also don&#8217;t exclude option, that some posts will be in Ukrainian or even in Russian.</p>
+<p>I also don't exclude option, that some posts will be in Ukrainian or even in Russian.</p>
 
 <h3>What else?</h3>
 
