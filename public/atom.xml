@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-07T01:15:24+02:00</updated>
+  <updated>2012-11-08T01:49:19+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,321 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What is greater: e^π or π^e?]]></title>
+    <link href="http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/"/>
+    <updated>2012-11-06T16:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e</id>
+    <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don&#8217;t have it?</p>
+
+<!-- more -->
+
+
+<p>I don&#8217;t remember the exact origin of this meme, but this situation was almost every time when we played with numbers.</p>
+
+<blockquote><p>&#8211; Propose a number.</p>
+
+<p>&#8211; e<sup>π.</sup></p>
+
+<p>&#8211; Integer, shithead!</p></blockquote>
+
+<p>This even might appear in usual conversations:</p>
+
+<blockquote><p>&#8211; What is her size?</p>
+
+<p>&#8211; e<sup>π</sup></p>
+
+<p>&#8211; So small. I prefer π<sup>e.</sup></p></blockquote>
+
+<p>And a following arguing about <strong>what is greater?</strong> Until we simply compare results using calculator.</p>
+
+<p>Let&#8217;s see how this problem can be solved without using a calc.</p>
+
+<p><strong>Warning:</strong> Goal of this article not only to show correct solution to the problem, but provide other solutions (<em>even incorrect!</em>) that can convince somebody.</p>
+
+<h2>Origins</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Pi">π</a> is the mathematical constant. It&#8217;s just a number that represents ratio between circle circumference and diameter <code>C/d</code>.
+Approximately, equal to <code>3.1415</code>. <a href="http://webdocs.cs.ualberta.ca/~smillie/Pi10000.html">Get more decimal places for FREE!</a></p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pi_eq_C_over_d.svg/600px-Pi_eq_C_over_d.svg.png" width="300" height="300"></p>
+
+<p><a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">e</a> is the harder one. If you sum infinite sequence below, you&#8217;ll get <code>e</code>.
+Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmltest/gifcity/e.2mil">FREE decimal places without registration!</a></p>
+
+<p><img src="http://upload.wikimedia.org/math/8/0/5/8050a584d4b528e6293bf02c34f6e399.png" alt="" /></p>
+
+<p>I&#8217;m pretty sure that&#8217;s more than enough you need to know to solve the problem.</p>
+
+<h2>Google It</h2>
+
+<p><a href="https://www.google.com/#hl=uk&amp;gs_nf=3&amp;tok=WfGdb7x83ofvKLc_85HnIw&amp;cp=5&amp;gs_id=227&amp;xhr=t&amp;q=e^pi+-+pi^e&amp;pf=p&amp;output=search&amp;sclient=psy-ab&amp;oq=e^pi+&amp;gs_l=&amp;pbx=1&amp;bav=on.2,or.r_gc.r_pw.r_qf.&amp;fp=51e735cc3a152124&amp;bpcl=37643589&amp;biw=1280&amp;bih=634">Get answer from google</a></p>
+
+<h2>Rough estimate</h2>
+
+<p><img src="http://i.imgur.com/Jv0W1.jpg" alt="" /></p>
+
+<p>We can use exponent function on integers, so let&#8217;s just round the numbers.
+<code>3.1415</code> becomes <code>3</code>, <code>2.7183</code> becomes&#8230; <code>3</code> also.</p>
+
+<pre><code>3^3 vs 3^3
+27 = 27
+</code></pre>
+
+<p>They are equal. Wrong answer.</p>
+
+<p>Let&#8217;s use <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">floor and ceiling</a> functions.</p>
+
+<p>Floor: <code>floor(e) = 2</code>, <code>floor(π) = 3</code></p>
+
+<pre><code>2^3 vs 3^2
+8 &lt; 9
+</code></pre>
+
+<p>Ceiling: <code>ceil(e) = 3</code>, <code>ceil(π) = 4</code></p>
+
+<pre><code>3^4 vs 4^3
+81 &gt; 64
+</code></pre>
+
+<p>Two different results depend on round function that we use. Can&#8217;t be sure.
+Need another method for verification.</p>
+
+<h2>Calculus</h2>
+
+<p><img src="http://i.imgur.com/Low4R.jpg" alt="" /></p>
+
+<p>This needs basic understanding of <a href="http://en.wikipedia.org/wiki/Logarithm">logarithm</a> and <a href="http://en.wikipedia.org/wiki/Derivative">derivative</a></p>
+
+<pre><code>e^π vs π^e
+</code></pre>
+
+<p>Use logarithm property <code>a &lt; b =&gt; log(a) &lt; log(b)</code>, and take <code>log</code> with base <code>e</code> (<code>ln</code>).
+Honestly, it&#8217;s not logarithm property, but <a href="http://en.wikipedia.org/wiki/Monotonic_function">monotonic function</a> property. Who cares?</p>
+
+<pre><code>ln(e^π) vs ln(π^e)
+</code></pre>
+
+<p>Use logarithm property <code>log_a(a^b) = b</code></p>
+
+<pre><code>π vs ln(π^e)
+</code></pre>
+
+<p>Use logarithm property <code>log_a(b^c) = c * log_a(b)</code></p>
+
+<pre><code>π vs e * ln(π)
+</code></pre>
+
+<p>Now, people who know value of <code>ln(π)</code> can answer the question. We don&#8217;t know. Move <code>ln(π)</code> to the left side</p>
+
+<pre><code>π/ln(π) vs e
+</code></pre>
+
+<p>Take a look at expression <code>π/ln(π)</code>. Change <code>π</code> to <code>x</code>. Got <code>x/ln(x)</code>. What is it? It&#8217;s a function!</p>
+
+<p>Let&#8217;s find extrema of this function <code>f(x)</code>. Take first derivative.</p>
+
+<pre><code>f'(x) = (ln(x) - 1)/(ln^2(x))
+</code></pre>
+
+<p>We get extrema at the points where derivative equals to zero</p>
+
+<pre><code>(ln(x) - 1)/(ln^2(x)) = 0
+</code></pre>
+
+<p>Ratio number equals to zero if its numerator equals to zero.</p>
+
+<pre><code>ln(x) - 1 = 0
+</code></pre>
+
+<p>Move <code>1</code> to the right</p>
+
+<pre><code>ln(x) = 1
+</code></pre>
+
+<p>Logarithm equals to <code>1</code> if base equals to argument. Therefore</p>
+
+<pre><code>x = e
+</code></pre>
+
+<p>And if you know <code>1/ln(x)</code> behavior, you get that extremum is a minimum of function <code>f(x)</code>.
+Substitute <code>x</code> with <code>e</code></p>
+
+<pre><code>e/ln(e) = e
+</code></pre>
+
+<p>Function minimum is <code>e</code> where <code>x = e</code>. If <code>x = π</code>, due to minimum, function value will be <strong>greater than</strong> <code>e</code>.
+Remember that we do this to get estimate of <code>π/ln(π)</code> which was on the left side of expression <code>π/ln(π) vs e</code> and if its <strong>greater than</strong> e,
+<code>e^π</code> greater than <code>π^e</code>. Huh. Done.</p>
+
+<p><strong>Note:</strong> We skip mathematical proof that extrema <code>x = e</code> is minimum. Not hard to show.</p>
+
+<h2>Manual computations</h2>
+
+<p><img src="http://i.imgur.com/tTTCC.jpg" alt="" /></p>
+
+<p>Why don&#8217;t we perform calculation manually?</p>
+
+<p>Ok, we have <code>π</code>, which is <code>3.1415</code> or <code>22/7</code> its famous simplest ratio approximation.
+On the other side we have <code>e</code>, which is <code>2.7183</code>. But I&#8217;m not aware of any <code>e</code> approximation.
+Let&#8217;s create one from the definition of <code>e</code>. Take and sum first 5 elements.</p>
+
+<pre><code>1 + 1 + 1/2 + 1/6 + 1/24 = 65/24
+</code></pre>
+
+<p>Excellent. Now we need just compare <code>2.7183^(22/7)</code> and <code>3.1415^(65/24)</code>. What can be simpler?</p>
+
+<p>Rational exponent can be expanded as nth-root of some power:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/4/3/a43d1edf99a795101aa58ce39cc72f52.png" alt="" /></p>
+
+<p>To take n-th root manually we use a special case of <a href="http://en.wikipedia.org/wiki/Newton%27s_method">Newton&#8217;s method</a>.
+Just one iteration:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/2/5/a25d581b7161170fc8ab0dbe74532ecc.png" alt="" /></p>
+
+<p>Estimate for <code>e^π</code>:</p>
+
+<pre><code>2.7183^(22/7)
+sqrt_7(2.7183^22)
+</code></pre>
+
+<p>&#8230;Multiplying 22 times&#8230;</p>
+
+<p>In fact, not all so bad. To calculate <code>a^22</code> we need only 6 multiplications:</p>
+
+<pre><code>a^1 * a^1 = a^2
+a^2 * a^2 = a^4
+a^4 * a^4 = a^8
+a^8 * a^8 = a^16
+a^16 * a^4 = a^20
+a^20 * a^2 = a^22
+</code></pre>
+
+<p>Nth-root we obtain (<em>decimal dropped</em>):</p>
+
+<pre><code>sqrt_7(3585440111)
+</code></pre>
+
+<p>Applying Newton&#8217;s method. Select closest root:</p>
+
+<pre><code>1^7 = 7 &lt; 3585440111
+2^7 = 128 &lt; 3585440111
+3^7 = 2187 &lt; 3585440111
+...
+23^7 = 3404825447 &lt; 3585440111
+24^7 = 4586471424 &gt; 3585440111
+</code></pre>
+
+<p>Good. Most closest value is <code>23</code>. Then</p>
+
+<pre><code>sqrt_7(3585440111.25)
+sqrt_7(23^7 + 180614664)
+23 + 180614664/(7 * 23^6)
+23 + 180614664/1036251223
+23 + 0.17
+23.17
+</code></pre>
+
+<p>And the same for <code>π^e</code>:</p>
+
+<pre><code>3.1415^(65/24)
+sqrt_24(3.1415^65)
+</code></pre>
+
+<p>This power <code>65</code> much larger than <code>22</code>. But it needs just 7 multiplications.</p>
+
+<p>We can cheat here. We get rough result <code>2 * 10^32</code>. Now we test <code>23^24</code> (<em>most closest root from previous</em>) and its value <code>4.8 * 10^32</code>.
+So, definitely nth-root will be lower than <code>23</code>. Solved.</p>
+
+<p>Don&#8217;t ask how many basic arithmetic operations we performed. A lot.</p>
+
+<h2>Liar approach</h2>
+
+<p>Actually, it&#8217;s offensive to use the word &#8220;liar&#8221;.
+There is a whole technique called <a href="http://en.wikipedia.org/wiki/Mathematical_fallacy">Mathematical Fallacy</a>.
+It based on some illegal math transformation (<em>division by zero, roots from negative numbers, etc.</em>) to get <strong>any desired result</strong>.</p>
+
+<p>This is powerful instrument for mathematicians to show magic for not mathematicians.</p>
+
+<p>Suppose, we don&#8217;t know exact value of π. Not a problem, but we know <a href="http://en.wikipedia.org/wiki/Complex_number">complex numbers</a>.
+And also the fact that <code>sqrt(-1) = i</code>. Where <code>i</code> is <a href="http://en.wikipedia.org/wiki/Imaginary_unit">imaginary unit</a></p>
+
+<p>We have bad memory and can&#8217;t remember π value, but we know <a href="http://en.wikipedia.org/wiki/Euler%27s_formula">Euler&#8217;s formula</a></p>
+
+<pre><code>e^(i * x) = cos(x) + i * sin(x)
+</code></pre>
+
+<p>x is a variable. Take <code>x = 2π</code>:</p>
+
+<pre><code>e^(2π * i) = cos(2π) + i * sin(2π)
+</code></pre>
+
+<p>From the school math course we know: <code>cos(2π) = 1</code>, <code>sin(2π) = 0</code>. Just substitute:</p>
+
+<pre><code>e^(2π * i) = 1 + i * 0
+</code></pre>
+
+<p>Everything multiplied by <code>0</code> is <code>0</code>. Next step:</p>
+
+<pre><code>e^(2π * i) = 1
+</code></pre>
+
+<p><code>a^b</code> gives <code>1</code> if <code>b = 0</code>. That we also know from logarithms.</p>
+
+<pre><code>2π * i = 0
+</code></pre>
+
+<p>It means either <code>2</code> or <code>π</code> or <code>i</code> is zero. <code>2</code> is not zero. <code>i</code> is not zero. <code>π</code> we don&#8217;t know.
+Ok, that means <code>π</code> equals to <code>0</code>.</p>
+
+<p>Returning to comparing our constants:</p>
+
+<pre><code>e^0 vs 0^e
+</code></pre>
+
+<p>Left term is <code>1</code>, right is <code>0</code>. That means <code>e^π</code> <strong>greater than</strong> <code>π^e</code>.</p>
+
+<p>The trick that we used hard to spot. Look carefully again through the proof.</p>
+
+<p>The fallacy was where we implicitly took a logarithm and said that <code>2π * i = 0</code>.
+The number <code>e^(2π * i)</code> is not real and we not allowed to logarithm it.
+But if person who listens you don&#8217;t know this fact&#8230; This is an excellent proof.</p>
+
+<h2>Programming approach</h2>
+
+<p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="" /></p>
+
+<p>You not allowed to use calculator. Nothing said about programming language.</p>
+
+<p>One-liner in Java:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Fun approach</h2>
+
+<p>Derived from joke:</p>
+
+<blockquote><p>Scientific lab wasted a lot of money for calculating decimal places of π. They come up with idea, let&#8217;s π will be equal to 4, to save money.</p>
+
+<p>&#8211; But why 4 instead of 3?</p>
+
+<p>&#8211; Because 3 reserved for e.</p></blockquote>
+
+<p>That way <code>e^π</code> equal to <code>81</code>, and <code>π^e</code> equal to <code>64</code>. <code>81 &gt; 64</code>. Simple, concise way.</p>
+
+<h2>Conclusion</h2>
+
+<p>There are much more fun about these irrational bastards. Math is fun.</p>
+
+<p>If you were asked question of such type on interview, 99% that interviewer is joking and want to test your reaction.
+Last solution would be good. But if he or she really expect solution with using calculus, nothing to lose.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 2: 0xCAFEBABE]]></title>
