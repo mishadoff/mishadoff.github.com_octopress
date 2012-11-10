@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-08T01:49:19+02:00</updated>
+  <updated>2012-11-10T19:23:51+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 005]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-005/"/>
+    <updated>2012-11-09T19:01:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-005</id>
+    <content type="html"><![CDATA[<blockquote><p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+
+<p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=5">http://projecteuler.net/problem=5</a></p>
+
+<!-- more -->
+
+
+<p>It's a tricky problem. First look gives us straightforward solution:
+Take a number, test if it evenly divisible by all of needed numbers, if yes - we good,
+otherwise increment number and test again, and again, and again...</p>
+
+<p>No, really, assume it's our function to test divisibility by all 20 numbers:</p>
+
+<p>``` clojure
+(defn evenly-divisible-by-20? [n]
+  (zero? (reduce +</p>
+
+<pre><code>(for [i (range 2 21)]
+  (mod n i)))))
+</code></pre>
+
+<p>```</p>
+
+<p>Awful implementation, but keeps the idea.
+If sum of all remainders equals to zero, then every remainder equals to zero.
+Now, using this function we write naive implementation:</p>
+
+<p>``` clojure</p>
+
+<pre><code>(first
+  (drop-while #(not (evenly-divisible-by-20? %)) (iterate inc 1)))
+</code></pre>
+
+<p>```</p>
+
+<p>Note, function <a href="http://clojuredocs.org/clojure_core/clojure.core/drop-while">drop-while</a>
+similar to take-while, but skips values until they meet predicate condition.</p>
+
+<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more...</p>
+
+<p>I did not post exact answer here, but result greater than 100 millions.
+And obviously this linear algorithm will work considerable amount of time.
+So, stop the execution and let's see at the problem from the other end.</p>
+
+<p><em>What is the smallest number that evenly divisible by 1 and 2?</em>
+Obviously 2.</p>
+
+<p><em>What is the smallest number that evenly divisible by 2 and 3?</em>
+A bit harder, but answer is 6.</p>
+
+<p><em>What is the smallest number that evenly divisible by 4 and 5?</em>
+20.</p>
+
+<blockquote><p>Oh, it's just multiplication</p></blockquote>
+
+<p>Unfortunately, no. Take numbers <code>4</code> and <code>6</code>, multiplication gives us <code>24</code> and it will be evenly divisible by <code>4</code> and <code>6</code>, but
+this number is not the <em>smallest</em>. Snmallest number for this case will be <code>12</code>.</p>
+
+<p>There is a function, that finds smallest number divisible by 2 different numbers.
+This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a>(<em>lcm</em>).
+There are lot of different methods to calculate it, but we will use one that uses
+<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a>(<em>gcd</em>)</p>
+
+<p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
+
+<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid's algorithm</a></p>
+
+<p>``` clojure
+(defn gcd [n k]
+  (loop [a n b k]</p>
+
+<pre><code>(if (zero? b) a (recur b (mod a b)))))
+</code></pre>
+
+<p>```</p>
+
+<p>Using formula above, our <em>lcm</em> function will look like this:</p>
+
+<p><code>clojure
+(defn lcm [n k]
+  (/ (abs (* n k)) (gcd n k)))
+</code></p>
+
+<p>You see, here we need <code>abs</code> function. Nothing hard to implement it, but if we remember
+<a href="">previous problem</a> there are was a reference
+to <code>clojure.contrib.math</code> library. <code>abs</code> there and we can use it, just add to your namespace definition</p>
+
+<p><code>clojure
+(:use [clojure.contrib.math])
+</code></p>
+
+<p>Oh look, even <code>lcm</code> and <code>gcd</code> functions there. Excellent.</p>
+
+<p>Now we can solve the problem. Remember the <code>reduce</code> function?</p>
+
+<p><code>clojure
+(reduce lcm (range 1 21))
+</code></p>
+
+<p>Actually, this one-liner is solution. And it gives us correct result.</p>
+
+<p>What happens here? We iteratively (<em>with using reduce</em>) find the lcm for <code>1</code> and <code>2</code>,
+then for result and <code>3</code>, for result and <code>4</code> and so on.</p>
+
+<p><strong>Great!</strong> One more problem solved!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem005.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> One lesson we learned here. Be aware about library functionality. It helps you
+to solve problems and avoid coward mistakes. For example, we have incorrect above implementation
+for <code>lcm</code> function. If we call <code>(lcm 0 0)</code> program fails with <code>DivideByZero</code> exception.
+It still solve our problem, but in future uses can be an additional problem.
+But in lib implementation this error is covered. And we can be sure that <em>almost always</em> libs contain much less
+errors that your <em>new fancy wheel</em>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 2: 0xCAFEBABE]]></title>
@@ -57,97 +181,6 @@ and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.<
 <p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
 If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
 By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 004]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-004/"/>
-    <updated>2012-10-31T19:30:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-004</id>
-    <content type="html"><![CDATA[<blockquote><p>A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 x 99.</p>
-
-<p>Find the largest palindrome made from the product of two 3-digit numbers.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=4">http://projecteuler.net/problem=4</a></p>
-
-<!-- more -->
-
-
-<p><a href="http://en.wikipedia.org/wiki/Palindrome">Palindrome</a> is very interesting thing.
-It's a sequence (of letters, numbers, words) that reads the same backwards. Examples: <em>MADAM</em>, <em>DID</em>, <em>2002</em>.
-There are even some fun to compose palindrome sentences, like <code>He Goddam Mad Dog, eh?</code></p>
-
-<p>Function to check if sequence is palindromic is very simple.
-Compare first element with the last, second with the penultimate and so on.
-It needs just <code>n/2</code> comparisons, so complexity of that algorithm is <code>O(n)</code>. Here is recursive solution:</p>
-
-<p>``` clojure
-(defn palindrome-recursive? [s]
-  (if (empty? s) true</p>
-
-<pre><code>(let [a (first s) b (last s)]
-  (if (= a b) (recur (rest (butlast s))) false))))
-</code></pre>
-
-<p>```</p>
-
-<p>Note two functions: function <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> - gets last element of collection,
-<a href="http://clojuredocs.org/clojure_core/clojure.core/butlast">butlast</a> - drops last element of collection.
-Both they work in linear time, so you might assume overall complexity is <code>O(n^2)</code>.
-Using vectors we can get index access, and perform test much faster, but this detail is not important for now.</p>
-
-<p>Using more cleaner way (obviously not the best) to implement this, which in particular I prefer, is the following:</p>
-
-<p><code>clojure
-(defn palindrome? [s]
-  (= s (reverse s)))
-</code></p>
-
-<p>Function <a href="http://clojuredocs.org/clojure_core/clojure.core/reverse">reverse</a>, returns given sequence in reverse order in linear time.
-Overall complexity is also <code>O(n)</code>.</p>
-
-<p>To test whether number is palindrome or not, we just cast it to string, then cast string to sequence of chars, and using above function:</p>
-
-<p><code>clojure
-(defn palindrome-number? [n]
-  (palindrome? (seq (str n))))
-</code></p>
-
-<p>Final solution is following:</p>
-
-<p>``` clojure
-(reduce max (filter palindrome-number?</p>
-
-<pre><code>                  (for [i (range 100 1000) j (range i 1000)] (* i j))))
-</code></pre>
-
-<p>```</p>
-
-<p>We just generate all combinations of 3-digit numbers multiplication, filter palindromes, and find maximum. Done.</p>
-
-<p>This technique (<em>wow, is this technique?</em>) called <a href="http://en.wikipedia.org/wiki/Brute-force_search">brute-force</a>.
-It's very consumable, because test each possible combination.
-But it's common algorithm to such sort of problems.
-There are lot of clever brute force optimization to reduce set of possible values, but it is still brute force.
-As you see, in the code above, we also used small optimization.
-We iterate first multiplicand <code>i</code> from <code>100</code> to <code>1000</code> to cover all 3-digits numbers, and <code>j</code> iterated not from <code>100</code> but from <code>i</code>.
-This is because multiplication <code>375 * 468</code> gives the same result as <code>468 * 375</code>. Just because <a href="http://en.wikipedia.org/wiki/Commutative_property">commutative property</a>.
-Roughly, this reduces number of iterations by factor of 2.
-Obviously, there are other optimizations, but they are not so value and reduces readability
-(<em>If first number ends with 5 and second is even, then result ends with 0, and we skip this because in palindromic value 0 should be at the beginning</em>).</p>
-
-<p><strong>Congratulations!</strong> 4 problems solved. And we know "so much" about clojure.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem004.clj">GitHub</a>.</p>
-
-<p><strong>P.S.</strong> We create two separate functions for palindromes: one test sequence for palindrome,
-second test number for palindrome and reuse first implementation. Some can say it's not good,
-because we write functionality that we not needed (function <code>palindrome?</code>).
-Particularly, I agree. We could hide <code>palindrome?</code> implementation inside <code>palindrome-number?</code> or make it private.
-But we haven't did this and have function <code>palindrome?</code> that we can reuse in other problems. Also it shows important concept,
-how we can reuse existing implementations to get new functionality. And again: maybe there is (<em>I'm sure there is</em>) another solution
-which is more clever than bruteforce. But this solution works only <code>0.2</code> sec. on my machine, so this is ok.</p>
 ]]></content>
   </entry>
   

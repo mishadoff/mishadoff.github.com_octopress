@@ -1,0 +1,23 @@
+---
+layout: page
+title: "Quotes"
+date: 2012-11-07 01:42
+comments: false
+sharing: true
+footer: true
+---
+
+> Syntactic sugar causes semicolon cancer.
+>
+> -- [Alan Perlis](http://en.wikipedia.org/wiki/Alan_Perlis)
+<br />
+
+> Code never lies, comments sometimes do.
+>
+> -- [Ron Jeffries](http://en.wikipedia.org/wiki/Ron_Jeffries)
+<br />
+
+> Your code may be elegant, by mine fucking works.
+>
+> -- [Leon Fayer](http://omniti.com/seeds/your-code-may-be-elegant)
+<br />
