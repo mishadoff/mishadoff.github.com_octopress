@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Clojure Euler - mishadoff thoughts</title>
+  <title>Learn Perl - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Finally decided to post here my solutions to Project Euler implemented in Clojure. As all in my life, frequency of posts with solutions will be mood- &hellip;">
+  <meta name="description" content="1
+($current_tasks, $perl) = ($perl, $current_tasks); Long time learning perl was my desire.
+Now I pushed back for a little some of my activities, and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/learn-perl/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Clojure Euler</h1>
+      <h1 class="entry-title">Learn Perl</h1>
     
     
       <p class="meta">
@@ -97,26 +99,51 @@
   
 
 
-<time datetime="2012-10-11T16:51:00+03:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
+<time datetime="2012-11-12T20:38:00+02:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Finally decided to post here my solutions to <a href="http://projecteuler.net/">Project Euler</a> implemented in <a href="http://clojure.org/">Clojure</a>.</p>
+<div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="p">(</span><span class="nv">$current_tasks</span><span class="p">,</span> <span class="nv">$perl</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$perl</span><span class="p">,</span> <span class="nv">$current_tasks</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Long time learning <a href="http://www.perl.org/">perl</a> was my desire.
+Now I pushed back for a little some of my activities, and started with perl.</p>
 
 <!-- more -->
 
 
-<p>As all in my life, frequency of posts with solutions will be mood-dependent.</p>
+<p>The reason for this was the third launch of <a href="https://class.coursera.org/crypto-004/class/index">Stanford Cryptography</a> class on coursera.</p>
 
-<p>The main reason for this series to provide a little introduction to clojure programming language during the solving interesting problems.</p>
+<p>Cryptography is a field that I never know, but would like to. I see a lot of practical applications here,
+but, honestly, for me it&#8217;s more <em>just for fun</em>, than anything else. Isn&#8217;t it interesting to (de)cypher something?</p>
 
-<p>I&#8217;ll also try do my best to explain some general terms, why this approach better or worse than others,
-suggest alternative solutions or thoughts on problem and provide code.
-You allowed to copy that code, calculate the result and past answer directly in Project Euler site, but I don&#8217;t see any sense to do this.
-Problem solving process gives more fun, than result. Approximately <a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">2.718282</a> times more.</p>
+<p>First two launches was marked as lack of time for me, so I postponed it. By the way, other interesting courses was <em>in progress</em>.
+But now I really hope that I get enough time (<em>and patience</em>) to finish the class and get some good knowledge in this field.</p>
+
+<p><img src="http://imgs.xkcd.com/comics/lisp.jpg" alt="" /></p>
+
+<p>I don&#8217;t know why, but I choose perl as primary language for doing programming assignments.</p>
+
+<p>First of all, I needed some fast scripting language for general-purpose problems. To choose between perl and python, I choose perl.
+Because of <em>&#8220;less number of symbols in the name&#8221;</em>, of course. Second of all, I don&#8217;t know perl and it&#8217;s a good reason to learn it <em>in action</em>.
+Also, what is important, I did get only positive reviews from my friends who know perl, but all their stories was like a mistery for me.
+Thought, that only chosen one can learn perl. I want to dispel this myth. To try, at least.</p>
+
+<blockquote><p>There&#8217;s more than one way to do it</p>
+
+<p>&#8211; Perl motto</p></blockquote>
+
+<p>The book that I choose for learning is a classic book (<em>read Perl Bible</em>) from the creator of perl, <a href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>.
+There is fresh, 4th edition, available.</p>
+
+<p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
+
+<p>Hope, I won&#8217;t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
 </div>
 
 
@@ -139,12 +166,12 @@ Problem solving process gives more fun, than result. Approximately <a href="http
   
 
 
-<time datetime="2012-10-11T16:51:00+03:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
+<time datetime="2012-11-12T20:38:00+02:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
+    <a class='category' href='/blog/categories/book/'>book</a>, <a class='category' href='/blog/categories/coursera/'>coursera</a>, <a class='category' href='/blog/categories/life/'>life</a>, <a class='category' href='/blog/categories/perl/'>perl</a>
   
 </span>
 
@@ -153,7 +180,7 @@ Problem solving process gives more fun, than result. Approximately <a href="http
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/learn-perl/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/learn-perl/" >Tweet</a>
   
   
   
@@ -164,10 +191,8 @@ Problem solving process gives more fun, than result. Approximately <a href="http
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/java-magic-part-1-java-dot-net-dot-url/" title="Previous Post: Java Magic. Part 1: java.net.URL">&laquo; Java Magic. Part 1: java.net.URL</a>
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-005/" title="Previous Post: Clojure Euler: Problem 005">&laquo; Clojure Euler: Problem 005</a>
       
-      
-        <a class="basic-alignment right" href="/blog/lisp-live-coding/" title="Next Post: Lisp live-coding">Lisp live-coding &raquo;</a>
       
     </p>
   </footer>
@@ -258,8 +283,8 @@ Problem solving process gives more fun, than result. Approximately <a href="http
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler/';
+        var disqus_identifier = 'http://mishadoff.github.com/blog/learn-perl/';
+        var disqus_url = 'http://mishadoff.github.com/blog/learn-perl/';
         var disqus_script = 'embed.js';
       
     (function () {
