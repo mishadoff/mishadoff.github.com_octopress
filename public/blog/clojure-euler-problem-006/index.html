@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Clojure Euler - mishadoff thoughts</title>
+  <title>Clojure Euler: Problem 006 - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Finally decided to post here my solutions to Project Euler implemented in Clojure. As all in my life, frequency of posts with solutions will be mood- &hellip;">
+  <meta name="description" content="The sum of the squares of the first ten natural numbers is, 12 + 22 + &#8230; + 102 = 385 The square of the sum of the first ten natural numbers is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-006/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Clojure Euler</h1>
+      <h1 class="entry-title">Clojure Euler: Problem 006</h1>
     
     
       <p class="meta">
@@ -97,26 +97,83 @@
   
 
 
-<time datetime="2012-10-11T16:51:00+03:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
+<time datetime="2012-11-17T14:05:00+02:00" pubdate data-updated="true">Nov 17<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Finally decided to post here my solutions to <a href="http://projecteuler.net/">Project Euler</a> implemented in <a href="http://clojure.org/">Clojure</a>.</p>
+<div class="entry-content"><blockquote><p>The sum of the squares of the first ten natural numbers is,</p>
+
+<p>1<sup>2</sup> + 2<sup>2</sup> + &#8230; + 10<sup>2</sup> = 385</p>
+
+<p>The square of the sum of the first ten natural numbers is,</p>
+
+<p>(1 + 2 + &#8230; + 10)<sup>2</sup> = 55<sup>2</sup> = 3025</p>
+
+<p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
+
+<p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=6">http://projecteuler.net/problem=6</a></p>
 
 <!-- more -->
 
 
-<p>As all in my life, frequency of posts with solutions will be mood-dependent.</p>
+<p>This problem is very simple, even simpler than previous one, that confirms fact that all Project Euler problems
+are <strong>NOT</strong> in increasing complexity order. Ok, let&#8217;s split our problem into two subproblems.</p>
 
-<p>The main reason for this series to provide a little introduction to clojure programming language during the solving interesting problems.</p>
+<h3>Sum of the squares</h3>
 
-<p>I&#8217;ll also try do my best to explain some general terms, why this approach better or worse than others,
-suggest alternative solutions or thoughts on problem and provide code.
-You allowed to copy that code, calculate the result and past answer directly in Project Euler site, but I don&#8217;t see any sense to do this.
-Problem solving process gives more fun, than result. Approximately <a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">2.718282</a> times more.</p>
+<p>First, we need a square function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sqr</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, sum of squares of the first one hundred natural numbers we calculate with common <code>(reduce + list)</code> idiom:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Square of the sum</h3>
+
+<p>Just take a sum, and square it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Bind all together</h3>
+
+<p>We splitted our problem into two smaller, now is time to bind all. We can just subtract results obtained
+but you see, that both of smaller solutions uses common piece of code <code>(range 1 101)</code>. Move it to <code>let</code> form.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">rn</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">rn</span><span class="p">))</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="nv">rn</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217; all. I&#8217;ve got result in less than millisecond.
+Maybe there are some pitfalls in this problem (<em>e.g. integer overflow for larger ranges</em>)
+but this most straightforward solution works fine.</p>
+
+<p>Congratulations!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem006.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> First time I solved this problem and was confused: <em>Where is the trick?</em> Seems nowhere.
+That&#8217;s why using most straightforward solution is often the best choice (<em>excluding obvious cases, of course</em>).
+It has fast implementation, and if it fails, it fails fast.</p>
+
+<p><strong>Fail Fast, Succeed Faster</strong></p>
 </div>
 
 
@@ -139,7 +196,7 @@ Problem solving process gives more fun, than result. Approximately <a href="http
   
 
 
-<time datetime="2012-10-11T16:51:00+03:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
+<time datetime="2012-11-17T14:05:00+02:00" pubdate data-updated="true">Nov 17<span>th</span>, 2012</time>
       
 
 <span class="categories">
@@ -153,7 +210,7 @@ Problem solving process gives more fun, than result. Approximately <a href="http
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-006/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-006/" >Tweet</a>
   
   
   
@@ -164,10 +221,8 @@ Problem solving process gives more fun, than result. Approximately <a href="http
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/java-magic-part-1-java-dot-net-dot-url/" title="Previous Post: Java Magic. Part 1: java.net.URL">&laquo; Java Magic. Part 1: java.net.URL</a>
+        <a class="basic-alignment left" href="/blog/learn-perl/" title="Previous Post: Learn Perl">&laquo; Learn Perl</a>
       
-      
-        <a class="basic-alignment right" href="/blog/lisp-live-coding/" title="Next Post: Lisp live-coding">Lisp live-coding &raquo;</a>
       
     </p>
   </footer>
@@ -258,8 +313,8 @@ Problem solving process gives more fun, than result. Approximately <a href="http
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler/';
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-006/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-006/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -61,9 +61,9 @@ Unfortunately, no. Take numbers `4` and `6`, multiplication gives us `24` and it
 this number is not the *smallest*. Snmallest number for this case will be `12`.
 
 There is a function, that finds smallest number divisible by 2 different numbers.
-This function called [Least Common Multiple](http://en.wikipedia.org/wiki/Least_common_multiple)(*lcm*).
+This function called [Least Common Multiple](http://en.wikipedia.org/wiki/Least_common_multiple) (*lcm*).
 There are lot of different methods to calculate it, but we will use one that uses
-[Greatest Common Divisor](http://en.wikipedia.org/wiki/Greatest_common_divisor)(*gcd*)
+[Greatest Common Divisor](http://en.wikipedia.org/wiki/Greatest_common_divisor) (*gcd*)
 
 ![](http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png)
 
@@ -83,7 +83,7 @@ Using formula above, our *lcm* function will look like this:
 ```
 
 You see, here we need `abs` function. Nothing hard to implement it, but if we remember
-[previous problem]({{% post_url 2012-10-31-clojure-euler-problem-004 %}}) there are was a reference
+[previous problem](/blog/clojure-euler-problem-004) there are was a reference
 to `clojure.contrib.math` library. `abs` there and we can use it, just add to your namespace definition
 
 ``` clojure

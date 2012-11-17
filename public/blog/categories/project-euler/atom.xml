@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-12T21:28:12+02:00</updated>
+  <updated>2012-11-17T15:14:02+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 006]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-006/"/>
+    <updated>2012-11-17T14:05:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-006</id>
+    <content type="html"><![CDATA[<blockquote><p>The sum of the squares of the first ten natural numbers is,</p>
+
+<p>1<sup>2</sup> + 2<sup>2</sup> + ... + 10<sup>2</sup> = 385</p>
+
+<p>The square of the sum of the first ten natural numbers is,</p>
+
+<p>(1 + 2 + ... + 10)<sup>2</sup> = 55<sup>2</sup> = 3025</p>
+
+<p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
+
+<p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=6">http://projecteuler.net/problem=6</a></p>
+
+<!-- more -->
+
+
+<p>This problem is very simple, even simpler than previous one, that confirms fact that all Project Euler problems
+are <strong>NOT</strong> in increasing complexity order. Ok, let's split our problem into two subproblems.</p>
+
+<h3>Sum of the squares</h3>
+
+<p>First, we need a square function:</p>
+
+<p><code>clojure
+(defn sqr [n] (* n n))
+</code></p>
+
+<p>Then, sum of squares of the first one hundred natural numbers we calculate with common <code>(reduce + list)</code> idiom:</p>
+
+<p><code>clojure
+(reduce + (map sqr (range 1 101)))
+</code></p>
+
+<h3>Square of the sum</h3>
+
+<p>Just take a sum, and square it:</p>
+
+<p><code>clojure
+(sqr (reduce + (range 1 101)))
+</code></p>
+
+<h3>Bind all together</h3>
+
+<p>We splitted our problem into two smaller, now is time to bind all. We can just subtract results obtained
+but you see, that both of smaller solutions uses common piece of code <code>(range 1 101)</code>. Move it to <code>let</code> form.</p>
+
+<p><code>clojure
+(let [rn (range 1 101)]
+  (- (sqr (reduce + rn)) (reduce + (map sqr rn)))))
+</code></p>
+
+<p>That' all. I've got result in less than millisecond.
+Maybe there are some pitfalls in this problem (<em>e.g. integer overflow for larger ranges</em>)
+but this most straightforward solution works fine.</p>
+
+<p>Congratulations!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem006.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> First time I solved this problem and was confused: <em>Where is the trick?</em> Seems nowhere.
+That's why using most straightforward solution is often the best choice (<em>excluding obvious cases, of course</em>).
+It has fast implementation, and if it fails, it fails fast.</p>
+
+<p><strong>Fail Fast, Succeed Faster</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 005]]></title>
@@ -79,9 +152,9 @@ A bit harder, but answer is 6.</p>
 this number is not the <em>smallest</em>. Snmallest number for this case will be <code>12</code>.</p>
 
 <p>There is a function, that finds smallest number divisible by 2 different numbers.
-This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a>(<em>lcm</em>).
+This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a> (<em>lcm</em>).
 There are lot of different methods to calculate it, but we will use one that uses
-<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a>(<em>gcd</em>)</p>
+<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a> (<em>gcd</em>)</p>
 
 <p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
 
@@ -104,7 +177,7 @@ There are lot of different methods to calculate it, but we will use one that use
 </code></p>
 
 <p>You see, here we need <code>abs</code> function. Nothing hard to implement it, but if we remember
-<a href="">previous problem</a> there are was a reference
+<a href="/blog/clojure-euler-problem-004">previous problem</a> there are was a reference
 to <code>clojure.contrib.math</code> library. <code>abs</code> there and we can use it, just add to your namespace definition</p>
 
 <p><code>clojure
@@ -231,7 +304,7 @@ The same as <code>#(= 0 %)</code>.</li>
 
 <p><strong>P.S.</strong> Instead of using <code>clojure.contrib.math</code> for square root we could just write <code>(Math/sqrt n)</code> and got rid of dependency.
 But for me is better to reuse something that was implemented in library. It's tested and worked, where your implementation can miss some point.
-If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 8 minutes. There are only 8 functions,
+If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 9 minutes. There are only 9 functions,
 but you will probably reinvent them all the time:
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt">expt</a>,
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs">abs</a>,
@@ -560,27 +633,6 @@ Exactly what <a href="http://clojuredocs.org/clojure_core/clojure.core/quot">quo
 It still solves problem in appropriate time and have more readable code. If <code>n</code> grow, I'll think about switching to <code>O(1)</code> strategy, but not for now.</p>
 
 <p>Have fun!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler/"/>
-    <updated>2012-10-11T16:51:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler</id>
-    <content type="html"><![CDATA[<p>Finally decided to post here my solutions to <a href="http://projecteuler.net/">Project Euler</a> implemented in <a href="http://clojure.org/">Clojure</a>.</p>
-
-<!-- more -->
-
-
-<p>As all in my life, frequency of posts with solutions will be mood-dependent.</p>
-
-<p>The main reason for this series to provide a little introduction to clojure programming language during the solving interesting problems.</p>
-
-<p>I'll also try do my best to explain some general terms, why this approach better or worse than others,
-suggest alternative solutions or thoughts on problem and provide code.
-You allowed to copy that code, calculate the result and past answer directly in Project Euler site, but I don't see any sense to do this.
-Problem solving process gives more fun, than result. Approximately <a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">2.718282</a> times more.</p>
 ]]></content>
   </entry>
   

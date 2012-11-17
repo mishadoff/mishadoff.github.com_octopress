@@ -82,7 +82,7 @@ Now, we want to find result. Run the line
 
 **P.S.** Instead of using `clojure.contrib.math` for square root we could just write `(Math/sqrt n)` and got rid of dependency.
 But for me is better to reuse something that was implemented in library. It's tested and worked, where your implementation can miss some point.
-If you have time, dig more into `clojure.contrib.math`. It needs about 8 minutes. There are only 8 functions,
+If you have time, dig more into `clojure.contrib.math`. It needs about 9 minutes. There are only 9 functions,
 but you will probably reinvent them all the time:
 [expt](http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt),
 [abs](http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs),

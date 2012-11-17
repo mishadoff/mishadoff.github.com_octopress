@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-12T21:28:12+02:00</updated>
+  <updated>2012-11-17T15:14:02+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 006]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-006/"/>
+    <updated>2012-11-17T14:05:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-006</id>
+    <content type="html"><![CDATA[<blockquote><p>The sum of the squares of the first ten natural numbers is,</p>
+
+<p>1<sup>2</sup> + 2<sup>2</sup> + &#8230; + 10<sup>2</sup> = 385</p>
+
+<p>The square of the sum of the first ten natural numbers is,</p>
+
+<p>(1 + 2 + &#8230; + 10)<sup>2</sup> = 55<sup>2</sup> = 3025</p>
+
+<p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
+
+<p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=6">http://projecteuler.net/problem=6</a></p>
+
+<!-- more -->
+
+
+<p>This problem is very simple, even simpler than previous one, that confirms fact that all Project Euler problems
+are <strong>NOT</strong> in increasing complexity order. Ok, let&#8217;s split our problem into two subproblems.</p>
+
+<h3>Sum of the squares</h3>
+
+<p>First, we need a square function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sqr</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, sum of squares of the first one hundred natural numbers we calculate with common <code>(reduce + list)</code> idiom:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Square of the sum</h3>
+
+<p>Just take a sum, and square it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Bind all together</h3>
+
+<p>We splitted our problem into two smaller, now is time to bind all. We can just subtract results obtained
+but you see, that both of smaller solutions uses common piece of code <code>(range 1 101)</code>. Move it to <code>let</code> form.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">rn</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">rn</span><span class="p">))</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="nv">rn</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217; all. I&#8217;ve got result in less than millisecond.
+Maybe there are some pitfalls in this problem (<em>e.g. integer overflow for larger ranges</em>)
+but this most straightforward solution works fine.</p>
+
+<p>Congratulations!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem006.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> First time I solved this problem and was confused: <em>Where is the trick?</em> Seems nowhere.
+That&#8217;s why using most straightforward solution is often the best choice (<em>excluding obvious cases, of course</em>).
+It has fast implementation, and if it fails, it fails fast.</p>
+
+<p><strong>Fail Fast, Succeed Faster</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Learn Perl]]></title>
@@ -125,9 +203,9 @@ A bit harder, but answer is 6.</p>
 this number is not the <em>smallest</em>. Snmallest number for this case will be <code>12</code>.</p>
 
 <p>There is a function, that finds smallest number divisible by 2 different numbers.
-This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a>(<em>lcm</em>).
+This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a> (<em>lcm</em>).
 There are lot of different methods to calculate it, but we will use one that uses
-<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a>(<em>gcd</em>)</p>
+<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a> (<em>gcd</em>)</p>
 
 <p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
 
@@ -152,7 +230,7 @@ There are lot of different methods to calculate it, but we will use one that use
 
 
 <p>You see, here we need <code>abs</code> function. Nothing hard to implement it, but if we remember
-<a href="">previous problem</a> there are was a reference
+<a href="http://mishadoff.github.com/blog/clojure-euler-problem-004">previous problem</a> there are was a reference
 to <code>clojure.contrib.math</code> library. <code>abs</code> there and we can use it, just add to your namespace definition</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -647,7 +725,7 @@ The same as <code>#(= 0 %)</code>.</li>
 
 <p><strong>P.S.</strong> Instead of using <code>clojure.contrib.math</code> for square root we could just write <code>(Math/sqrt n)</code> and got rid of dependency.
 But for me is better to reuse something that was implemented in library. It&#8217;s tested and worked, where your implementation can miss some point.
-If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 8 minutes. There are only 8 functions,
+If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 9 minutes. There are only 9 functions,
 but you will probably reinvent them all the time:
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt">expt</a>,
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs">abs</a>,
