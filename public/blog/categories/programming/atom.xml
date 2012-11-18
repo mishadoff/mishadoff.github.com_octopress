@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-17T15:14:02+02:00</updated>
+  <updated>2012-11-18T21:40:42+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,168 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>
+    <link href="http://mishadoff.github.com/blog/java-magic-part-3-finally/"/>
+    <updated>2012-11-18T19:39:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/java-magic-part-3-finally</id>
+    <content type="html"><![CDATA[<p>Every experienced java programmer should know that <code>finally</code> block always executed. But is it true?</p>
+
+<!-- more -->
+
+
+<p>It depends on our definition of program execution. But, generally speaking, <strong>yes</strong>.</p>
+
+<h3>Normal program execution</h3>
+
+<p><em>Aha, look at this</em>, someone might retort:</p>
+
+<p><code>java
+try {
+  System.exit(1);
+} finally {
+  System.out.println("I'm here, man");
+}
+</code></p>
+
+<p><em>You just said, finally block always executed?</em></p>
+
+<p>Well. In that case no, because we speaking about normal flow of program execution.
+This is <em>abnormal</em>.</p>
+
+<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">official tutorial</a></p>
+
+<blockquote><p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p></blockquote>
+
+<p>Your counter question might be: <em>If second line of that code always exectued?</em></p>
+
+<p><code>java
+System.out.println("Line 1");
+System.out.println("Line 2");
+System.out.println("Line 3");
+</code></p>
+
+<p>Sure, because it's linear flow. Nothing can break...<strong>BANG</strong>...<code>Electricity unavailable. Program stopped.</code></p>
+
+<p>What about this? It's also abnormal program execution, and we can't guarantee anything for 100%.
+In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
+
+<p>That's why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
+
+<blockquote><p>I said yes? I meant no!</p></blockquote>
+
+<h3>Perpetuum Mobile</h3>
+
+<p>Consider the following code:</p>
+
+<p>``` java
+try {
+  while (true) {</p>
+
+<pre><code>System.out.println("I print here some useful information");
+</code></pre>
+
+<p>  }
+} finally {
+  System.out.println("Let me run");
+}
+```</p>
+
+<p>Will be the line <em>"Let me run"</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
+
+<p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
+
+<h3>Threads</h3>
+
+<p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
+
+<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn't executed.</p>
+
+<p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
+
+<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
+
+<blockquote><p>...if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p></blockquote>
+
+<p>So, we can treat thread like a program, and make one effective rule:</p>
+
+<p><strong>Rule 1</strong>. Finally executes always, except the case where controlling program or thread was aborted.</p>
+
+<h3>Finally we return</h3>
+
+<p>Ok, now we know when finally is not executed. But do we know when finally is executed?</p>
+
+<p>Consider the example:</p>
+
+<p>``` java
+int someFunc() {
+  try {</p>
+
+<pre><code>return 0;
+</code></pre>
+
+<p>  } finally {</p>
+
+<pre><code>return 1;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>The result is obviously <code>1</code>. Just because <code>finally</code> is always executed.</p>
+
+<p>Consider, next example:</p>
+
+<p>``` java
+int someFunc() {
+  try {</p>
+
+<pre><code>throw new RuntimeException();
+</code></pre>
+
+<p>  } finally {</p>
+
+<pre><code>return 1;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>The result is <code>1</code> again. And it's a problem. We just lose the exception.
+Such issue known as <em>exception swallowing</em>. It is very dangerous, because client's code expect either exception or some value, but it always get only value.</p>
+
+<p>One more less imaginary example.</p>
+
+<p>``` java
+String deposit(int amount) throws DAOException {
+  try {</p>
+
+<pre><code>return dao.deposit(amount);
+</code></pre>
+
+<p>  } finally {</p>
+
+<pre><code>return "OK";
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
+responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string "OK" will be returned.</p>
+
+<p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
+
+<h3>Instead of conclusion</h3>
+
+<p>A lot of programmers are aware about this common mistake. But some are not.
+Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 006]]></title>
@@ -357,161 +519,6 @@ but you will probably reinvent them all the time:
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs">abs</a>,
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a>,
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/round">round</a> and others.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 002]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-002/"/>
-    <updated>2012-10-15T18:46:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-002</id>
-    <content type="html"><![CDATA[<blockquote><p>Each new term in the Fibonacci sequence is generated by adding the previous two terms. By starting with 1 and 2, the first 10 terms will be:</p>
-
-<p>1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...</p>
-
-<p>By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=2">http://projecteuler.net/problem=2</a></p>
-
-<!-- more -->
-
-
-<p>This is not hard problem with objective to make you familliar with <a href="http://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci numbers</a>
-(this numbers will appear in a lot of next problems). It can be implemented with the straightforward manner with the following rules applied:</p>
-
-<ul>
-<li><code>F(0) = 1</code></li>
-<li><code>F(1) = 1</code></li>
-<li><code>F(n) = F(n-1) + F(n-2)</code></li>
-</ul>
-
-
-<p>So, we can define simple recursive function to calculate n-th number of Fibonacci sequence in clojure:</p>
-
-<p>``` clojure
-(defn fib [n]
-  (if (or (= n 1) (= n 0)) 1</p>
-
-<pre><code>(+ (fib (- n 1)) (fib (- n 2)))))
-</code></pre>
-
-<p>```</p>
-
-<p>It's probably not the best implementation of Fibonacci numbers, but it shows the idea.
-We can check that it works correctly by calling <code>(map fib (range 10))</code> that produces sequence <code>(1 1 2 3 5 8 13 21 34 55)</code>.
-Problem appears when we try to calculate <code>40th</code> number. Calling that function on my machine takes ~20 seconds. Not good.</p>
-
-<p>The reason of such bad performance is repeated calculations. Let's see how expanded call <code>(fib 40)</code>.
-It produces <code>(+ (fib 39) (fib 38))</code>, where <code>(fib 39)</code> expanded to <code>(+ (fib 38) (fib 37))</code> and <code>(fib 38)</code> to <code>(+ (fib 37) (fib 36))</code> etc.
-The growth with factor of 2. And with these two expansions we calculated 2 values that we calculated before, <code>37th</code> and <code>38th</code>.</p>
-
-<p>We can make better if we producing our sequence in direct order, instead of reverse. This way function will be more complex than previous:</p>
-
-<p>``` clojure
-(defn fib-seq [n]
-  ((fn [a b c seq]</p>
-
-<pre><code>(cond (= 1 n) [1]
-      (= c n) seq
-      :else (recur b (+ a b) (inc c) (conj seq (+ a b)))))
-</code></pre>
-
-<p>   1 1 2 [1 1]))
-```</p>
-
-<p>Let's see what's new clojure features we used:</p>
-
-<ol>
-<li>We define function inside function. Why we did this? All is because we used "helper"-function for accumulate current Fibonacci sequence.
-It used only in function <code>fib-seq</code>, so we don't need to define it at the root level. It closed for using for everyone, except <code>fib-seq</code>.</li>
-<li>Next thing we define anonymous function by keyword <code>fn</code>. Basically it's the right thing to define functions. <code>defn</code> just shortcut for <code>(def (fn [] ))</code>, and..</li>
-<li>..we pass default (initialization) values for helper function <code>1 1 2 [1 1]</code>.</li>
-<li>I skip logic of helper function here. It is pretty straightforward, just notice two new clojure functions that we used.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/cond">cond</a> - similar to switch-case structure in C-style languages.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/conj">conj</a> - add value to collection. Dependant on collection type,
-insert new value in different places. For our case we using vector, so we add this value to the end of vector.</li>
-</ol>
-
-
-<p>Now we can call <code>(fib-seq 40)</code> and it calculates all 40 values very quickly. Nice.</p>
-
-<p>But let's return to problem description <em>"... whose values do not exceed 4 million..."</em>.
-How do we know how many values we need to take that do not exceed 4 million? 50? 100? 112?
-This is drawback of our <code>fib-seq</code> function and we need to rewrite it...or take a look at clojure mechanism called lazy sequences.</p>
-
-<h3>Lazy sequences</h3>
-
-<p>In few words, lazy sequence is infinite sequence of some values, that calculates due to some expression.
-The main idea here is the word <em>lazy</em> that means we evaluate expressions when they are needed.
-For example, sequence of natural numbers is a lazy sequence. Clojure supports lazy sequences along with operations on them.
-So, we can combine sequences, limit, filter etc. Java do not support lazy sequences but similar functionality can be implemented with generators concept.
-Generator interface provides method <code>next()</code> to retrieve next value in the sequence, and that method evaluates value.
-But this approach is very poor with comparison to clojure lazy sequences.</p>
-
-<p>Lazy sequences in clojure can be treated like ordinary sequences. Obviously some methods make no sense, due to infinity of sequence (<code>count</code>, <code>last</code>, etc.)
-There are way to define lazy sequences by using macro <code>lazy-seq</code>. But most common way to do it with the function iterate.
-It takes function <code>f</code>, and initial value <code>a</code>, and produces lazy sequence <code>(a, f(a), f(f(a)),...)</code>.
-For example lazy sequence of natural numbers we can define as following: <code>(iterate inc 1)</code>. Then we can play with this sequence as we want.</p>
-
-<p><strong>WARNING:</strong> <em>Never call lazy sequence without limiting functions. It tries to evaluate all, and... You know, never call.</em></p>
-
-<p>Now, we have a little understanding what lazy sequence is, and can implement Fibonacci lazy sequence.</p>
-
-<p><code>clojure
-(defn fib-seq-lazy []
-  (map first (iterate (fn [[a b]] [b (+ a b)]) [1 1])))
-</code></p>
-
-<p>Ok, What's here:</p>
-
-<ol>
-<li>Read from the end. We apply anonymous function to vector <code>[1 1]</code> and produce lazy sequence with <code>iterate</code>.</li>
-<li>Note double square brackets in anonymous function definition. Outer brackets indicate function variables.
-Inner brackets indicate that we take one parameter to function as argument.
-This parameter is a sequence and we map to <code>a</code> and <code>b</code>, first and second elements in that sequence.
-For example for first call, <code>a</code> bound to <code>1</code>, <code>b</code> bound to <code>1</code>.</li>
-<li>Our iterate produces lazy sequence with following format <code>([1 1] [1 2] [2 3] [3 5] [5 8] ...)</code>.
-Our Fibonacci sequence is just first value of each pair, and we using...</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/map">map</a> - takes function and applies it to each element of collection.
-This function also produces lazy sequence.</li>
-<li>To gather all in one we get lazy sequence that represent Fibonacci numbers <code>(1 1 2 3 5 8 ...)</code>.</li>
-</ol>
-
-
-<p>Now we have to implement functionality that in problem description. Immediately, code:</p>
-
-<p><code>clojure
-(reduce +
-  (filter even? (take-while #(&lt; % 4000000) (fib-seq-lazy))))
-</code></p>
-
-<p>Another one(<em>two</em>)-liner. Good.</p>
-
-<ol>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/take-while">take-while</a> - takes values from sequence (includes lazy sequences) while condition is true.</li>
-<li><code>#(&lt; % 4000000)</code> - <code>#()</code> it's <a href="http://en.wikipedia.org/wiki/Tautology_%28rhetoric%29">shorter shortcut</a> for anonymous function.
-In our case predicate return true if value lower than 4 millions. Exacly what we need.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/filter">filter</a> - return all values for which predicate return true.
-Instead of take-while it proceed all sequence till the end, and, obviously, do not accept lazy sequences.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/even_q">even?</a> - predicate that return true, if number is even.
-Note: this is common way to append function name with question mark to indicate that this function is predicate (return true or false). Just convention.</li>
-<li>And, finally, sum all of them.</li>
-</ol>
-
-
-<p><strong>Congratulations!</strong> We just solved Project Euler Problem 2.</p>
-
-<p>There are also few optimisations to get result faster, but <a href="http://en.wikipedia.org/wiki/KISS_principle">KISS</a>.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem002.clj">GitHub</a> for lazy!</p>
-
-<p><strong>P.S.</strong> We could use <code>clojure-contrib</code> library, which is often deployed with standard <code>clojure-core</code>.
-<code>clojure-contrib.lazy-seqs</code> library contains method <code>(fibs)</code> that also produces lazy Fibonacci sequence.
-And interestingly it implemented the same way as we did.
-There are two more lazy sequences: prime numbers and powers of 2.
-It's good practice to use existing functionality and not invent vehicle.</p>
-
-<p>Have fun!</p>
 ]]></content>
   </entry>
   
