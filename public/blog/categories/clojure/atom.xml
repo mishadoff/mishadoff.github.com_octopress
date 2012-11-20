@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-18T21:40:42+02:00</updated>
+  <updated>2012-11-20T17:25:52+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 007]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-007/"/>
+    <updated>2012-11-20T15:37:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-007</id>
+    <content type="html"><![CDATA[<blockquote><p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+
+<p>What is the 10001st prime number?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=7">http://projecteuler.net/problem=7</a></p>
+
+<!-- more -->
+
+
+<p>It's also pretty clear problem to make you more familiar with prime numbers.
+As I said in <a href="/blog/clojure-euler-problem-003">Clojure Euler: Problem 003</a>,
+big amount of Project Euler problems devoted to prime numbers so it is <strong>MUST HAVE</strong> (<em>I don't like this phrase either</em>)</p>
+
+<p>You need to implement by yourself effective prime number algorithm. And only after that use one from library.
+As we do.</p>
+
+<p><code>clojure
+(:use [clojure.contrib.lazy-seqs :only (primes)])
+</code></p>
+
+<p>This line import just one symbol <code>primes</code> to your namespace. It's a prime numbers lazy sequence. Lazy sequences briefly covered
+in <a href="/blog/clojure-euler-problem-002">Clojure Euler: Problem 002</a> or <a href="http://en.wikipedia.org/wiki/Lazy_evaluation">Wikipedia article</a>,
+that's enough for now.</p>
+
+<p>Return to question.</p>
+
+<blockquote><p>What is the 10001st prime number?</p></blockquote>
+
+<p>No problem.</p>
+
+<p><code>clojure
+(last (take 10001 primes))
+</code></p>
+
+<p>Two lines of code: one for import, one for solution. What can be simpler?</p>
+
+<p>Note, that <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> return last element of the sequence and works in linear time.</p>
+
+<p>Another one problem solved in few <strike>seconds</strike> minutes.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem007.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> Actually, I lied. In linked solution I use 6 lines of code: namespace declaration, use, <em>empty line</em>,
+comment with executing time, function declaration and, finally, solution.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 006]]></title>
@@ -465,171 +517,6 @@ There are two more lazy sequences: prime numbers and powers of 2.
 It's good practice to use existing functionality and not invent vehicle.</p>
 
 <p>Have fun!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure + Emacs + Leiningen + nREPL]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/"/>
-    <updated>2012-10-13T18:19:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl</id>
-    <content type="html"><![CDATA[<p>This article provides step-by-step instruction how to configure Clojure environment.</p>
-
-<!-- more -->
-
-
-<h3>Little history</h3>
-
-<p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
-But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it's my fault, this time I've created configuration on GitHub</em>).
-So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
-<em>"This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead"</em>.
-Ok, let's see what nrepl is.</p>
-
-<h3>Why emacs?</h3>
-
-<p>I don't know. I like lisp, and emacs created in (e)lisp.
-Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
-Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can't find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
-
-<p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
-
-<p>By the way, there are lot of IDEs that can be configured much simpler way than described in this article:</p>
-
-<ul>
-<li><a href="http://clojure.bighugh.com/">Clojure Box</a> - emacs install, preconfigured for clojure. Only for Windows</li>
-<li><a href="http://code.google.com/p/counterclockwise/">Counter Clockwise</a> - eclipse plugin</li>
-<li><a href="http://www.enclojure.org/">Enclojure</a> - netbeans plugin</li>
-<li><a href="http://plugins.intellij.net/plugin/?id=4050">La Clojure</a> - IDEA plugin</li>
-<li><a href="http://www.vim.org/scripts/script.php?script_id=2501">VimClojure</a> - vim plugin</li>
-<li><a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> - new generation of IDEs?</li>
-</ul>
-
-
-<p>So, before reading, ask yourself, Do I really need emacs?</p>
-
-<h3>Emacs</h3>
-
-<p>First of all you need to install emacs, to get your future clojure coding environment. I'm using ubuntu, so I just type:</p>
-
-<p><code>sudo apt-get install emacs</code></p>
-
-<p>and it install emacs 23. If you using another OS, or do not trust package manager,
-check <a href="http://www.gnu.org/software/emacs/">GNU Emacs official website</a> for installation instructions.</p>
-
-<p>Also, you need to install emacs package-manager.</p>
-
-<ol>
-<li>Copy file <a href="http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el">package.el</a>
-to your <code>~/emacs.d/</code> folder.</li>
-<li>In your <code>~/.emacs</code> file add folowing lines:</li>
-</ol>
-
-
-<p>```
-(add-to-list 'load-path "~/.emacs.d/")
-(load "package")
-(require 'package)
-(add-to-list 'package-archives</p>
-
-<pre><code>'("marmalade" .
-  "http://marmalade-repo.org/packages/"))
-</code></pre>
-
-<p>(package-initialize)
-```</p>
-
-<p>These lines will be loaded after emacs restarted and install package manager.
-To check if it works, type <code>M-x package-list-packages</code> and this show you list of emacs plugins, hope you will find something useful there.</p>
-
-<h3>Leiningen</h3>
-
-<p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
-Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
-
-<p>To install lein 2 (it's shorter name for Leiningen) do the following:</p>
-
-<ol>
-<li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
-<li>Place it on your <code>$PATH</code></li>
-<li>Make it executable</li>
-</ol>
-
-
-<p>On ubuntu this can be performed with the following commands:</p>
-
-<pre><code>cd ~/
-mkdir bin
-</code></pre>
-
-<p>Add line export <code>PATH=~/bin:$PATH</code> to your <code>~/.bashrc</code> file</p>
-
-<pre><code>cd ~/bin
-wget https://raw.github.com/technomancy/leiningen/preview/bin/lein
-chmod +x lein
-</code></pre>
-
-<p>Execute lein, for first time it will download default lein package. To verify installation run <code>lein version</code>.
-On my machine for the post date it prints: <code>Leiningen 2.0.0-preview10 on Java 1.6.0_24 OpenJDK 64-Bit Server VM</code></p>
-
-<h3>nREPL</h3>
-
-<p>We have already installed emacs package manager, so we can get nrepl from there.
-It also needs emacs major mode <code>clojure-mode</code>, so type the following commands in emacs to install needed packages:</p>
-
-<pre><code>M-x package-install clojure-mode
-M-x package-install nrepl
-</code></pre>
-
-<p>Try <code>M-x nrepl-jack-in</code> to execute REPL, where you can play with clojure commands.</p>
-
-<h3>Bind all together</h3>
-
-<p>We have fully configured environment for clojure and how to use it?</p>
-
-<p>Create new clojure project using lein:</p>
-
-<p><code>lein new helloworld</code></p>
-
-<p>Start nREPL server in emacs:</p>
-
-<p><code>M-x nrepl-jack-in</code></p>
-
-<p>Open core project file in emacs:</p>
-
-<p><code>C-f helloworld/src/helloworld/core.clj</code></p>
-
-<p>Write simple function:</p>
-
-<p><code>clojure
-(ns helloworld.core)
-(defn hello []
-  (println "Hell, O'World!"))
-</code></p>
-
-<p>Compile it:</p>
-
-<p><code>C-c C-k</code></p>
-
-<p>Switch to nREPL buffer, change namespace and run hello function:</p>
-
-<p><code>clojure
-(ns helloworld.core)
-(hello)
-</code></p>
-
-<p>Probably, you'll get output:</p>
-
-<pre><code>Hell, O'World!
-nil
-</code></pre>
-
-<p><strong>Congratulations!</strong> You just created working clojure project.</p>
-
-<p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
-There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
-I'll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
-is currently available.</p>
 ]]></content>
   </entry>
   

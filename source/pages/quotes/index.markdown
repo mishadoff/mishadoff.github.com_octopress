@@ -21,3 +21,7 @@ footer: true
 >
 > -- [Leon Fayer](http://omniti.com/seeds/your-code-may-be-elegant)
 <br />
+
+> Testing shows the presence, not the absence of bugs.
+>
+> -- [Edsger Dijkstra](http://en.wikipedia.org/wiki/Edsger_W._Dijkstra)

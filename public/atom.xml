@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-18T21:40:42+02:00</updated>
+  <updated>2012-11-20T17:25:52+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 007]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-007/"/>
+    <updated>2012-11-20T15:37:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-007</id>
+    <content type="html"><![CDATA[<blockquote><p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+
+<p>What is the 10001st prime number?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=7">http://projecteuler.net/problem=7</a></p>
+
+<!-- more -->
+
+
+<p>It&#8217;s also pretty clear problem to make you more familiar with prime numbers.
+As I said in <a href="http://mishadoff.github.com/blog/clojure-euler-problem-003">Clojure Euler: Problem 003</a>,
+big amount of Project Euler problems devoted to prime numbers so it is <strong>MUST HAVE</strong> (<em>I don&#8217;t like this phrase either</em>)</p>
+
+<p>You need to implement by yourself effective prime number algorithm. And only after that use one from library.
+As we do.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.lazy-seqs</span> <span class="ss">:only</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This line import just one symbol <code>primes</code> to your namespace. It&#8217;s a prime numbers lazy sequence. Lazy sequences briefly covered
+in <a href="http://mishadoff.github.com/blog/clojure-euler-problem-002">Clojure Euler: Problem 002</a> or <a href="http://en.wikipedia.org/wiki/Lazy_evaluation">Wikipedia article</a>,
+that&#8217;s enough for now.</p>
+
+<p>Return to question.</p>
+
+<blockquote><p>What is the 10001st prime number?</p></blockquote>
+
+<p>No problem.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">last </span><span class="p">(</span><span class="nb">take </span><span class="mi">10001</span> <span class="nv">primes</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Two lines of code: one for import, one for solution. What can be simpler?</p>
+
+<p>Note, that <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> return last element of the sequence and works in linear time.</p>
+
+<p>Another one problem solved in few <strike>seconds</strike> minutes.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem007.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> Actually, I lied. In linked solution I use 6 lines of code: namespace declaration, use, <em>empty line</em>,
+comment with executing time, function declaration and, finally, solution.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>

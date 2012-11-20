@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-18T21:40:42+02:00</updated>
+  <updated>2012-11-20T17:25:52+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 007]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-007/"/>
+    <updated>2012-11-20T15:37:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-007</id>
+    <content type="html"><![CDATA[<blockquote><p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+
+<p>What is the 10001st prime number?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=7">http://projecteuler.net/problem=7</a></p>
+
+<!-- more -->
+
+
+<p>It's also pretty clear problem to make you more familiar with prime numbers.
+As I said in <a href="/blog/clojure-euler-problem-003">Clojure Euler: Problem 003</a>,
+big amount of Project Euler problems devoted to prime numbers so it is <strong>MUST HAVE</strong> (<em>I don't like this phrase either</em>)</p>
+
+<p>You need to implement by yourself effective prime number algorithm. And only after that use one from library.
+As we do.</p>
+
+<p><code>clojure
+(:use [clojure.contrib.lazy-seqs :only (primes)])
+</code></p>
+
+<p>This line import just one symbol <code>primes</code> to your namespace. It's a prime numbers lazy sequence. Lazy sequences briefly covered
+in <a href="/blog/clojure-euler-problem-002">Clojure Euler: Problem 002</a> or <a href="http://en.wikipedia.org/wiki/Lazy_evaluation">Wikipedia article</a>,
+that's enough for now.</p>
+
+<p>Return to question.</p>
+
+<blockquote><p>What is the 10001st prime number?</p></blockquote>
+
+<p>No problem.</p>
+
+<p><code>clojure
+(last (take 10001 primes))
+</code></p>
+
+<p>Two lines of code: one for import, one for solution. What can be simpler?</p>
+
+<p>Note, that <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> return last element of the sequence and works in linear time.</p>
+
+<p>Another one problem solved in few <strike>seconds</strike> minutes.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem007.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> Actually, I lied. In linked solution I use 6 lines of code: namespace declaration, use, <em>empty line</em>,
+comment with executing time, function declaration and, finally, solution.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>
@@ -416,109 +468,6 @@ and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.<
 <p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
 If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
 By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 003]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-003/"/>
-    <updated>2012-10-30T19:12:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-003</id>
-    <content type="html"><![CDATA[<blockquote><p>The prime factors of 13195 are 5, 7, 13 and 29.</p>
-
-<p>What is the largest prime factor of the number 600851475143?</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=3">http://projecteuler.net/problem=3</a></p>
-
-<!-- more -->
-
-
-<p>If you familiar with <a href="http://en.wikipedia.org/wiki/Prime_number">prime numbers</a>, you apparently know basic algorithms to find them,
-if not, I advice to get familiar with it. There are lot of problems devoted to prime numbers on Project Euler. So, read 10 minutes about prime numbers, and go on.</p>
-
-<p>In few words, prime number is a number starting from 2 that has no divisors except <em>1</em> and <em>itself</em>.
-Exposing this logic on all numbers, we can simply find first prime numbers: <code>2, 3, 5, 7, 11, ...</code></p>
-
-<p>To implement function that search for prime numbers we can implement predicate, that test whether number is prime or not:</p>
-
-<p>``` clojure
-(defn prime? [n]
-   (= 2 (reduce +</p>
-
-<pre><code>            (for [i (range 1 (inc n))]
-              (if (= 0 (mod n i)) 1 0)))))
-</code></pre>
-
-<p>```</p>
-
-<p>We iterate from 1 up to number and calculate reminder of division number by iteration counter.
-If result is zero we return 1, otherwise we return 0.
-For each number we get list with length of that number that marked with 1 for exact divisors.
-For example for <code>6</code> list will be <code>(1 1 1 0 0 1)</code>, and for <code>7</code> list will be <code>(1 0 0 0 0 0 0 1)</code>.
-Than we calculate sum of this list, which represents number of divisors. If count is two, that means number is prime.
-This is simplest algorithm for testing prime number, built from prime number definition.</p>
-
-<p>Performing small optimization you can see that in lists above, first and last elements are always equals to 1.
-We can just drop them. Another optimization is we don't need go on when we found at least one remainder.
-And I'm pretty sure you can find lot of flaws in this implementation.</p>
-
-<p>But the most useful optimization is assumption that we don't need iterate to <code>n</code>, we can iterate to <code>sqrt(n)</code>.
-This is based on fact that if we found some number <code>a</code> that is divisor of <code>n</code>, then there is another number <code>b = n / a</code>.
-And <code>b</code> is also divisior of <code>n</code>. Little transformation gives us <code>a * b = n</code>. Assume <code>a &lt; b</code>, so if we found <code>a</code> we don't need to seek for <code>b</code>.
-Number <code>n</code> is not prime. Maximum value of a achieved when <code>a</code> equals to <code>b</code>, <code>a^2 = n</code>, <code>a = sqrt(n)</code>.
-This is reduce complexity of algorithm from <code>O(n)</code> to <code>O(sqrt(n))</code>.</p>
-
-<p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-002/">previous problem</a> we mentioned <code>clojure.contrib.lazy-seqs</code> package,
-where we have primes lazy sequence. Let's use it!</p>
-
-<p>Algorithm for solving our problem is following:</p>
-
-<ol>
-<li>Iterate through all prime number that less than square root of number</li>
-<li>If this number is divisor add it to list</li>
-<li>Find maximum from that list</li>
-</ol>
-
-
-<p>To transform statements above into clojure, we get:</p>
-
-<p>``` clojure
-(defn greatest-prime-of [number]
-  (reduce max (filter #(zero? (mod number %))</p>
-
-<pre><code>                  (take-while #(&lt; % (sqrt number)) primes))))
-</code></pre>
-
-<p>```</p>
-
-<p>Something new here:</p>
-
-<ul>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/max">max</a> - function that returns the greatest number of its arguments.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/zero_q">zero?</a> - predicate that test whether number is equal to zero or not.
-The same as <code>#(= 0 %)</code>.</li>
-<li><a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a> - function from <code>clojure.contrib.math</code>. Name is obvious.</li>
-</ul>
-
-
-<p>Now, we want to find result. Run the line</p>
-
-<p><code>clojure
-(greatest-prime-of 600851475143))
-</code></p>
-
-<p><strong>Congratulations!</strong> Third problem solved.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem003.clj">GitHub</a> for lazy!</p>
-
-<p><strong>P.S.</strong> Instead of using <code>clojure.contrib.math</code> for square root we could just write <code>(Math/sqrt n)</code> and got rid of dependency.
-But for me is better to reuse something that was implemented in library. It's tested and worked, where your implementation can miss some point.
-If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 9 minutes. There are only 9 functions,
-but you will probably reinvent them all the time:
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt">expt</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs">abs</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/round">round</a> and others.</p>
 ]]></content>
   </entry>
   
