@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: coursera - mishadoff thoughts</title>
+  <title>Pigeon Cypher - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Category: coursera">
+  <meta name="description" content="The skeleton of the pigeon was found in England.
+There is small red box tied to its leg with the handwritten cyphered message.
+Britain cryptographers &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.comblog/categories/coursera/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/pigeon-cypher/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,36 +79,164 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Coursera</h1>
+    
+      <h1 class="entry-title">Pigeon Cypher</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-24T14:52:00+02:00" pubdate data-updated="true">Nov 24<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>The skeleton of the pigeon was found in England.
+There is small red box tied to its leg with the handwritten cyphered message.
+Britain cryptographers failed the attempt to decipher the message and it was released in public.
+It can be a good puzzle for a weekend.</p>
 
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/blog/learn-perl/">Learn Perl</a></h1>
-<time datetime="2012-11-12T20:38:00+02:00" pubdate><span class='month'>Nov</span> <span class='day'>12</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/book/'>book</a>, <a class='category' href='/blog/categories/coursera/'>coursera</a>, <a class='category' href='/blog/categories/life/'>life</a>, <a class='category' href='/blog/categories/perl/'>perl</a></span>
-</footer>
+<!-- more -->
 
 
-</article>
+<h3>Input</h3>
 
+<p><img src="http://news.bbcimg.co.uk/media/images/64345000/jpg/_64345866_masons_pigeon_code_07.jpg" alt="" /></p>
+
+<p>The paper consists of some parts <a href="http://i2.cdn.turner.com/cnn/2012/images/11/23/large-pigeon-message-1.pdf">Full PDF scan</a>:</p>
+
+<ul>
+<li><strong>Title:</strong> &#8220;Pigeon Service&#8221;</li>
+<li><strong>TO:</strong> XO2</li>
+<li><strong>Cyphered Message</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>AOAKN HVPKD FNFJW YIDDC
+</span><span class='line'>RQXSR DJHFP GOVFN MIAPX
+</span><span class='line'>PABUZ WYYNP CMPNW HJRZH
+</span><span class='line'>NLXKG MEMKK ONOIB AKEEQ
+</span><span class='line'>WAOTA RBQRH DJOFM TPZEH
+</span><span class='line'>LKXGH RGGHT JRZCQ FNKTQ
+</span><span class='line'>KLDTS FQIRW AOAKN 27 1525/6</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>Pigeon IDs:</strong> <code>NURP 40 TW 194</code> and <code>NURP 37 OK 76</code>.
+There are was two pigeons as we can see from the field <em>Number of copies sent</em>.</li>
+<li><strong>LIB 1625</strong></li>
+<li><strong>Time of origin:</strong> 1522</li>
+<li><strong>Sender&#8217;s signature:</strong> W Stit Sjt</li>
+</ul>
+
+
+<h3>Output</h3>
+
+<p>The most interesting part of this paper is the ciphered message. It consists of 27 5-letter blocks.
+At the end of the message we can see number 27, probably some sort of control sum of blocks.
+First block <code>AOAKN</code> equals to the last one, so it can be some sort of indicator of the cypher or key used.</p>
+
+<p>From pigeon ids we can know that they were born in <code>1940</code> and <code>1937</code> year respectively, so this cypher from World War II.</p>
+
+<p>Probably, the message was decoded with <a href="http://en.wikipedia.org/wiki/One-time_pad">one time pad</a> cypher, that
+has a perfect secrecy. So, maybe this cypher will never be decrypted.</p>
+
+<p><em>Note:</em> It can be decrypted with bruteforce algorithm, but in that case we can obtain any message.</p>
+
+<p>Anyway, if you interested in this topic, try to spend a couple of hours for breaking the cypher,
+it is a good workout for your brain.</p>
+
+<h3>Links</h3>
+
+<ol>
+<li><a href="http://www.bbc.co.uk/news/uk-20458792">BBC</a></li>
+<li><a href="http://edition.cnn.com/2012/11/23/world/europe/uk-wwii-pigeon-mystery/index.html">CNN</a></li>
+</ol>
+
+
+<p><strong>P.S.</strong> Don&#8217;t be addicted, you have a lot things to do instead of breaking this stupid cypher.
+Very unlikely, but it can be some sort of a joke.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-24T14:52:00+02:00" pubdate data-updated="true">Nov 24<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cryptography/'>cryptography</a>, <a class='category' href='/blog/categories/news/'>news</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/pigeon-cypher/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/pigeon-cypher/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-007/" title="Previous Post: Clojure Euler: Problem 007">&laquo; Clojure Euler: Problem 007</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -186,7 +316,10 @@
       var disqus_shortname = 'mits';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/pigeon-cypher/';
+        var disqus_url = 'http://mishadoff.github.com/blog/pigeon-cypher/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

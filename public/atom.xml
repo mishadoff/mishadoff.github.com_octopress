@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-20T17:25:52+02:00</updated>
+  <updated>2012-11-24T15:42:37+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pigeon Cypher]]></title>
+    <link href="http://mishadoff.github.com/blog/pigeon-cypher/"/>
+    <updated>2012-11-24T14:52:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/pigeon-cypher</id>
+    <content type="html"><![CDATA[<p>The skeleton of the pigeon was found in England.
+There is small red box tied to its leg with the handwritten cyphered message.
+Britain cryptographers failed the attempt to decipher the message and it was released in public.
+It can be a good puzzle for a weekend.</p>
+
+<!-- more -->
+
+
+<h3>Input</h3>
+
+<p><img src="http://news.bbcimg.co.uk/media/images/64345000/jpg/_64345866_masons_pigeon_code_07.jpg" alt="" /></p>
+
+<p>The paper consists of some parts <a href="http://i2.cdn.turner.com/cnn/2012/images/11/23/large-pigeon-message-1.pdf">Full PDF scan</a>:</p>
+
+<ul>
+<li><strong>Title:</strong> &#8220;Pigeon Service&#8221;</li>
+<li><strong>TO:</strong> XO2</li>
+<li><strong>Cyphered Message</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>AOAKN HVPKD FNFJW YIDDC
+</span><span class='line'>RQXSR DJHFP GOVFN MIAPX
+</span><span class='line'>PABUZ WYYNP CMPNW HJRZH
+</span><span class='line'>NLXKG MEMKK ONOIB AKEEQ
+</span><span class='line'>WAOTA RBQRH DJOFM TPZEH
+</span><span class='line'>LKXGH RGGHT JRZCQ FNKTQ
+</span><span class='line'>KLDTS FQIRW AOAKN 27 1525/6</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>Pigeon IDs:</strong> <code>NURP 40 TW 194</code> and <code>NURP 37 OK 76</code>.
+There are was two pigeons as we can see from the field <em>Number of copies sent</em>.</li>
+<li><strong>LIB 1625</strong></li>
+<li><strong>Time of origin:</strong> 1522</li>
+<li><strong>Sender&#8217;s signature:</strong> W Stit Sjt</li>
+</ul>
+
+
+<h3>Output</h3>
+
+<p>The most interesting part of this paper is the ciphered message. It consists of 27 5-letter blocks.
+At the end of the message we can see number 27, probably some sort of control sum of blocks.
+First block <code>AOAKN</code> equals to the last one, so it can be some sort of indicator of the cypher or key used.</p>
+
+<p>From pigeon ids we can know that they were born in <code>1940</code> and <code>1937</code> year respectively, so this cypher from World War II.</p>
+
+<p>Probably, the message was decoded with <a href="http://en.wikipedia.org/wiki/One-time_pad">one time pad</a> cypher, that
+has a perfect secrecy. So, maybe this cypher will never be decrypted.</p>
+
+<p><em>Note:</em> It can be decrypted with bruteforce algorithm, but in that case we can obtain any message.</p>
+
+<p>Anyway, if you interested in this topic, try to spend a couple of hours for breaking the cypher,
+it is a good workout for your brain.</p>
+
+<h3>Links</h3>
+
+<ol>
+<li><a href="http://www.bbc.co.uk/news/uk-20458792">BBC</a></li>
+<li><a href="http://edition.cnn.com/2012/11/23/world/europe/uk-wwii-pigeon-mystery/index.html">CNN</a></li>
+</ol>
+
+
+<p><strong>P.S.</strong> Don&#8217;t be addicted, you have a lot things to do instead of breaking this stupid cypher.
+Very unlikely, but it can be some sort of a joke.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 007]]></title>
