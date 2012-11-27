@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure Euler: Problem 008 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Find the greatest product of five consecutive digits in the 1000-digit number. Permalink: http://projecteuler.net/problem=8 Large number under the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure Euler: Problem 008</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-27T22:53:00+02:00" pubdate data-updated="true">Nov 27<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><blockquote><p>Find the greatest product of five consecutive digits in the 1000-digit number.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=8">http://projecteuler.net/problem=8</a></p>
+
+<p><em>Large number under the cut.</em></p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>73167176531330624919225119674426574742355349194934
+</span><span class='line'>96983520312774506326239578318016984801869478851843
+</span><span class='line'>85861560789112949495459501737958331952853208805511
+</span><span class='line'>12540698747158523863050715693290963295227443043557
+</span><span class='line'>66896648950445244523161731856403098711121722383113
+</span><span class='line'>62229893423380308135336276614282806444486645238749
+</span><span class='line'>30358907296290491560440772390713810515859307960866
+</span><span class='line'>70172427121883998797908792274921901699720888093776
+</span><span class='line'>65727333001053367881220235421809751254540594752243
+</span><span class='line'>52584907711670556013604839586446706324415722155397
+</span><span class='line'>53697817977846174064955149290862569321978468622482
+</span><span class='line'>83972241375657056057490261407972968652414535100474
+</span><span class='line'>82166370484403199890008895243450658541227588666881
+</span><span class='line'>16427171479924442928230863465674813919123162824586
+</span><span class='line'>17866458359124566529476545682848912883142607690042
+</span><span class='line'>24219022671055626321111109370544217506941658960408
+</span><span class='line'>07198403850962455444362981230987879927244284909188
+</span><span class='line'>84580156166097919133875499200524063689912560717606
+</span><span class='line'>05886116467109405077541002256983155200055935729725
+</span><span class='line'>71636269561882670428252483600823257530420752963450</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Idea behind this problem is pretty straightforward:</p>
+
+<ol>
+<li>Init <code>maximum</code> with some small value, zero would be good.</li>
+<li>Take first 5 digits, calculate the product.</li>
+<li>If product is greater than our current <code>maximum</code>, reassign it.</li>
+<li>Shift, to take other 5 digits, and back to the step 1.</li>
+</ol>
+
+
+<p>A simple optimization can be applied: if our last element of 5 digit group is zero,
+then skip 5 shifts. But it&#8217;s details.</p>
+
+<p>Let&#8217;s make our problem little harder to get more from clojure.</p>
+
+<p>Assume that these digits stored in the file. First thing we need: to read the file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;path/to/the/file&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://clojuredocs.org/clojure_core/clojure.core/slurp">slurp</a> is the simplest
+function to read file content (<em>In fact, not only files</em>).
+It just returns string representation of the whole file.</p>
+
+<p>Then we need to break one large string into symbols.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">seq </span><span class="s">&quot;helloyo&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://clojuredocs.org/clojure_core/clojure.core/seq">seq</a> return a sequence with linear access
+to collection. If applied to string, return sequence of characters.</p>
+
+<p>But, there are some garbage in the file we don&#8217;t want, new lines for example.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\n</span><span class="nv">ewline</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(<em>slash</em>) + something - represents character in clojure.
+<code>\newline</code> is a new line, known as <code>\n</code> in other languages.</p>
+
+<p>Now we have long sequence with all digits from file.
+Need to get all consecutive groups with 5 letters.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">partition</span> <span class="mi">5</span> <span class="mi">1</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span><span class="p">]</span> <span class="p">[</span><span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span><span class="p">]</span> <span class="nv">...</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://clojuredocs.org/clojure_core/clojure.core/partition">partition</a>
+is an excelent function for such tasks. We specify <code>5</code> - size of partition,
+and <code>1</code> shift size. It generates all consecutive groups with 5 elements till the end.</p>
+
+<p>Calulating the product for each group gives us the solution.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce * </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not so fast.</p>
+
+<p>You, probably, get <code>ClassCastException</code>.</p>
+
+<p>After reading the file, we just get bunch of characters,
+instead of digits in mathematical sense. And applied mathematical operation <code>*</code> to them.
+So, simply speaking, <code>\1</code> is not <code>1</code>.</p>
+
+<p>That&#8217;s why we need to transform every digit character to it&#8217;s actual digit value.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="sc">\1</span> <span class="sc">\2</span> <span class="sc">\3</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This awful implementation do the work.</p>
+
+<ul>
+<li>Cast each character to int, get the <a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>
+representation for digit.</li>
+<li>From each ASCII value we subtract <code>48</code> and get digit value.</li>
+</ul>
+
+
+<p>Applying <code>product</code> of digits defined earlier we get solution to this problem.</p>
+
+<p>Again, full code on <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem008.clj">GitHub</a>.</p>
+
+<p><strong>P.S.</strong> <code>slurp</code> function very powerful and has may applications. You can specify encoding
+for reading as you want or read whole html page by url. But it is also very dangerous function,
+because reads all file contents to the memory and can take considerable amount of time. If you have
+a large file, say 15GB, read it line by line with buffered reader. Also, note
+<a href="http://clojuredocs.org/clojure_core/clojure.core/spit">spit</a> function. It is opposite to <code>slurp</code> -
+writes string to the file.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-27T22:53:00+02:00" pubdate data-updated="true">Nov 27<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-008/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-008/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/pigeon-cypher/" title="Previous Post: Pigeon Cypher">&laquo; Pigeon Cypher</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/pigeon-cypher/">Pigeon Cypher</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-007/">Clojure Euler: Problem 007</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/java-magic-part-3-finally/">Java Magic. Part 3: Finally</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-006/">Clojure Euler: Problem 006</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("mishadoff", 3, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/mishadoff" class="twitter-follow-button" data-show-count="false">Follow @mishadoff</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-008/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-008/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

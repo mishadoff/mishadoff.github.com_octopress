@@ -12,6 +12,11 @@ footer: true
 > -- [Alan Perlis](http://en.wikipedia.org/wiki/Alan_Perlis)
 <br />
 
+> If you have a procedure with 10 parameters, you probably missed some.
+>
+> -- [Alan Perlis](http://en.wikipedia.org/wiki/Alan_Perlis)
+<br />
+
 > Code never lies, comments sometimes do.
 >
 > -- [Ron Jeffries](http://en.wikipedia.org/wiki/Ron_Jeffries)
@@ -25,3 +30,8 @@ footer: true
 > Testing shows the presence, not the absence of bugs.
 >
 > -- [Edsger Dijkstra](http://en.wikipedia.org/wiki/Edsger_W._Dijkstra)
+<br />
+
+> Lisp isn't a language, it's a building material.
+>
+> -- [Alan Kay](http://en.wikipedia.org/wiki/Alan_Kay)
