@@ -35,3 +35,32 @@ footer: true
 > Lisp isn't a language, it's a building material.
 >
 > -- [Alan Kay](http://en.wikipedia.org/wiki/Alan_Kay)
+<br />
+
+> Most software today is very much like an Egyptian pyramid with millions of bricks
+> piled on top of each other, with no structural integrity,
+> but just done by brute force and thousands of slaves.
+>
+> -- [Alan Kay](http://en.wikipedia.org/wiki/Alan_Kay)
+<br />
+
+> Always code as if the guy who ends up maintaining your
+> code will be a violent psychopath who knows where you live.
+>
+> -- Martin Golding
+<br />
+
+> Perl – The only language that looks the same before and after RSA encryption.
+>
+> -- [Keith Bostic](https://sites.google.com/a/bostic.com/keithbostic/)
+<br />
+
+> Any fool can write code that a computer can understand.
+> Good programmers write code that humans can understand.
+>
+> -- [Martin Fowler](http://martinfowler.com/)
+<br />
+
+> Before software can be reusable it first has to be usable.
+>
+> -- [Ralph Johnson](http://en.wikipedia.org/wiki/Ralph_Johnson_%28computer_scientist%29)
