@@ -4,7 +4,7 @@
   <title><![CDATA[Category: thoughts | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/thoughts/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-11-28T22:28:58+02:00</updated>
+  <updated>2012-11-30T00:39:49+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What is source code?]]></title>
+    <link href="http://mishadoff.github.com/blog/what-is-source-code/"/>
+    <updated>2012-11-29T23:31:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/what-is-source-code</id>
+    <content type="html"><![CDATA[<p>It's not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
+It's not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
+
+<p>I think this term has much wider meaning.</p>
+
+<!-- more -->
+
+
+<p><em>Almost everything you can create is source code.</em></p>
+
+<p>By creation I mean creation in digital world, not building the house.
+Good criteria of source code - is something that may be changed and need to be up-to-date.</p>
+
+<p><a href="https://github.com/WiredEnterprise/Lord-of-the-Files">Article</a> - source code,
+<a href="https://github.com/mishadoff/mishadoff.github.com">Blog</a> - source code,
+<a href="https://github.com/patmorin/ods">Book</a> - source code,
+<a href="https://github.com/magnars/.emacs.d">Configuration</a> - source code,
+<a href="https://github.com/bundestag/gesetze">Laws</a> - source code,
+<a href="https://github.com/norinori2222/boyfriend_require/blob/master/README-en.md">Dating request</a> is also source code.</p>
+
+<p>The word <code>code</code> can be confusing, but it is not.</p>
+
+<p><strong>Code</strong> - is just a set of instructions that can be processed by <em>processor</em>.</p>
+
+<p>From that point of view, processor is our brain.</p>
+
+<p>And if you really appreciate your <em>source code</em>, choose appropriate control version system for it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hello, world!]]></title>
