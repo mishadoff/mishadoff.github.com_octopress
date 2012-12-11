@@ -3,7 +3,7 @@ layout: post
 title: "What is greater: e^π or π^e?"
 date: 2012-11-06 16:00
 comments: true
-categories: [math, fun]
+categories: [math, fun, xkcd]
 published: true
 ---
 

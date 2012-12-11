@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-12-11T14:40:10+02:00</updated>
+  <updated>2012-12-11T19:56:35+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,94 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 009]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-009/"/>
+    <updated>2012-12-11T17:41:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-009</id>
+    <content type="html"><![CDATA[<blockquote><p> A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
+
+<p>For example, 3<sup>2</sup> + 4<sup>2</sup> = 9 + 16 = 25 = 5<sup>2</sup></p>
+
+<p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
+Find the product abc.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=9">http://projecteuler.net/problem=9</a></p>
+
+<!-- more -->
+
+
+<p>Thinking about clever way to solve it...</p>
+
+<p>Nothing good came up in your mind? Try bruteforce.</p>
+
+<p>Again, the idea behind bruteforce for this problem to iterate over all possible values
+for <code>a</code>, <code>b</code> and <code>c</code>, that sums to <code>1000</code> and compose Pythagorean triplet.
+That's why we need predicate to test if three numbers compose triplet:</p>
+
+<p><code>clojure
+(defn is-triplet? [a b c]
+  (= (+ (* a a) (* b b)) (* c c)))
+</code></p>
+
+<p>Then our bruteforce solution looks like this:</p>
+
+<p>``` clojure
+(first (for [a (range 1 1000) b (range 1 1000) c (range 1 1000)</p>
+
+<pre><code>         :when (and (is-triplet? a b c) (= (+ a b c) 1000))] (* a b c)))
+</code></pre>
+
+<p>```</p>
+
+<p>It finds the right solution, in ~45 seconds. Bad enough.</p>
+
+<h3>Trick #1</h3>
+
+<p>Do not iterate on <code>c</code> variable, because knowing <code>a</code> and <code>b</code> we always
+can calculate <code>c = 1000 - a - b</code>.</p>
+
+<p>Problem solution transformed into next one:</p>
+
+<p>``` clojure
+(first (for [a (range 1 1000) b (range 1 1000)</p>
+
+<pre><code>         :let [c (- 1000 a b)]
+         :when (is-triplet? a b c)] (* a b c)))
+</code></pre>
+
+<p>```</p>
+
+<h3>Trick #2</h3>
+
+<p>Use rule <code>a &lt; b &lt; c</code> from problem definition. Then our iteration will be:</p>
+
+<p><code>clojure
+(for [a (range 1 1000) b (range a (- 1000 a))])
+</code></p>
+
+<h3>Trick #3</h3>
+
+<p><code>is-triplet?</code> predicate use 3 multiplications, addition and comparison.
+We can add to <code>:when</code> section, predicate that compare <code>c</code> to <code>b</code>. This is also
+slightly reduce number of <code>is-triplet?</code> execution.</p>
+
+<p><code>clojure
+:when (and (&gt; c b) (is-triplet? a b c))
+</code></p>
+
+<p>Now solution found in ~45 msecs. 1000 times faster. Not bad.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem009.clj">(apply str (reverse "buHtiG"))</a></p>
+
+<p><strong>P.S.</strong> Unfortunately, there was nothing in this problem about new clojure
+functions, programming and even problem was not challenging. But you see the way how
+we solve it. We tried "bad" approach with knowing about all its disadvantages.
+One more step and we improved it and got right solution. So it is not that bad
+approach to try simple solution, even if it is wrong.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 008]]></title>
@@ -392,109 +480,6 @@ for <code>lcm</code> function. If we call <code>(lcm 0 0)</code> program fails w
 It still solve our problem, but in future uses can be an additional problem.
 But in lib implementation this error is covered. And we can be sure that <em>almost always</em> libs contain much less
 errors that your <em>new fancy wheel</em>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 003]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-003/"/>
-    <updated>2012-10-30T19:12:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-003</id>
-    <content type="html"><![CDATA[<blockquote><p>The prime factors of 13195 are 5, 7, 13 and 29.</p>
-
-<p>What is the largest prime factor of the number 600851475143?</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=3">http://projecteuler.net/problem=3</a></p>
-
-<!-- more -->
-
-
-<p>If you familiar with <a href="http://en.wikipedia.org/wiki/Prime_number">prime numbers</a>, you apparently know basic algorithms to find them,
-if not, I advice to get familiar with it. There are lot of problems devoted to prime numbers on Project Euler. So, read 10 minutes about prime numbers, and go on.</p>
-
-<p>In few words, prime number is a number starting from 2 that has no divisors except <em>1</em> and <em>itself</em>.
-Exposing this logic on all numbers, we can simply find first prime numbers: <code>2, 3, 5, 7, 11, ...</code></p>
-
-<p>To implement function that search for prime numbers we can implement predicate, that test whether number is prime or not:</p>
-
-<p>``` clojure
-(defn prime? [n]
-   (= 2 (reduce +</p>
-
-<pre><code>            (for [i (range 1 (inc n))]
-              (if (= 0 (mod n i)) 1 0)))))
-</code></pre>
-
-<p>```</p>
-
-<p>We iterate from 1 up to number and calculate reminder of division number by iteration counter.
-If result is zero we return 1, otherwise we return 0.
-For each number we get list with length of that number that marked with 1 for exact divisors.
-For example for <code>6</code> list will be <code>(1 1 1 0 0 1)</code>, and for <code>7</code> list will be <code>(1 0 0 0 0 0 0 1)</code>.
-Than we calculate sum of this list, which represents number of divisors. If count is two, that means number is prime.
-This is simplest algorithm for testing prime number, built from prime number definition.</p>
-
-<p>Performing small optimization you can see that in lists above, first and last elements are always equals to 1.
-We can just drop them. Another optimization is we don't need go on when we found at least one remainder.
-And I'm pretty sure you can find lot of flaws in this implementation.</p>
-
-<p>But the most useful optimization is assumption that we don't need iterate to <code>n</code>, we can iterate to <code>sqrt(n)</code>.
-This is based on fact that if we found some number <code>a</code> that is divisor of <code>n</code>, then there is another number <code>b = n / a</code>.
-And <code>b</code> is also divisior of <code>n</code>. Little transformation gives us <code>a * b = n</code>. Assume <code>a &lt; b</code>, so if we found <code>a</code> we don't need to seek for <code>b</code>.
-Number <code>n</code> is not prime. Maximum value of a achieved when <code>a</code> equals to <code>b</code>, <code>a^2 = n</code>, <code>a = sqrt(n)</code>.
-This is reduce complexity of algorithm from <code>O(n)</code> to <code>O(sqrt(n))</code>.</p>
-
-<p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-002/">previous problem</a> we mentioned <code>clojure.contrib.lazy-seqs</code> package,
-where we have primes lazy sequence. Let's use it!</p>
-
-<p>Algorithm for solving our problem is following:</p>
-
-<ol>
-<li>Iterate through all prime number that less than square root of number</li>
-<li>If this number is divisor add it to list</li>
-<li>Find maximum from that list</li>
-</ol>
-
-
-<p>To transform statements above into clojure, we get:</p>
-
-<p>``` clojure
-(defn greatest-prime-of [number]
-  (reduce max (filter #(zero? (mod number %))</p>
-
-<pre><code>                  (take-while #(&lt; % (sqrt number)) primes))))
-</code></pre>
-
-<p>```</p>
-
-<p>Something new here:</p>
-
-<ul>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/max">max</a> - function that returns the greatest number of its arguments.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/zero_q">zero?</a> - predicate that test whether number is equal to zero or not.
-The same as <code>#(= 0 %)</code>.</li>
-<li><a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a> - function from <code>clojure.contrib.math</code>. Name is obvious.</li>
-</ul>
-
-
-<p>Now, we want to find result. Run the line</p>
-
-<p><code>clojure
-(greatest-prime-of 600851475143))
-</code></p>
-
-<p><strong>Congratulations!</strong> Third problem solved.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem003.clj">GitHub</a> for lazy!</p>
-
-<p><strong>P.S.</strong> Instead of using <code>clojure.contrib.math</code> for square root we could just write <code>(Math/sqrt n)</code> and got rid of dependency.
-But for me is better to reuse something that was implemented in library. It's tested and worked, where your implementation can miss some point.
-If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 9 minutes. There are only 9 functions,
-but you will probably reinvent them all the time:
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt">expt</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs">abs</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/round">round</a> and others.</p>
 ]]></content>
   </entry>
   
