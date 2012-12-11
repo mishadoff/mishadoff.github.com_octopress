@@ -64,3 +64,8 @@ footer: true
 > Before software can be reusable it first has to be usable.
 >
 > -- [Ralph Johnson](http://en.wikipedia.org/wiki/Ralph_Johnson_%28computer_scientist%29)
+<br />
+
+> If you want to engage in computer crime, don't waste your time developing ninja level hacking skills, because computers are not the weak point.
+>
+> -- [Jeff Atwood](http://www.codinghorror.com/blog/2012/09/computer-crime-then-and-now.html)
