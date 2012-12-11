@@ -52,7 +52,7 @@ select lower-level burster from weapons menu.
 
 ## **Mods**
 * **Deploy portal shields.** For portals that have enough support and high level. Portal shields are relatively rare resources, so don't waste them.
-Also if you deployed shield on high level portal, mush harder for enemy to get resources, and destroy it.
+Also if you deployed shield on high level portal, much harder for enemy to get resources, and destroy it.
 
 ## **Links**
 * **Plan links and fields carefully.** You must not be fast at linking, in case you linking more than 4 portals,
@@ -68,20 +68,20 @@ spent near them gives you a lot of resources.
 
 ## **Area**
 * **Distribute area locally.** Communicate with players from your city and plan what territory can be supported by whom.
-* **Strategic portals.** Don't plan your strategic portals in common places. They can be simply destroyed. Use for your stretegic
-portals some strange place, like portal inside building, mountain portals, island portals, etc.
+* **Strategic portals.** Don't plan your strategic portals in common places. They can be simply destroyed. Use for your strategic
+portals some strange places, like portal inside building, mountain portals, island portals, etc.
 * **Use Intel Map to plan your trip.** Move only in the way you already know. Don't practice *blind trips*.
 
 ## **Friends**
 * **Play with friends.** Preferably, the same level friends. Obviously, you can destroy more, you can capture more.
-Also it's more fun to talk with somebody during the moving.
-* **Communication.** If you see somebody playing ingress near you don't hesitate to meet and make friendship. Even he or she from
+Also, it's more fun to talk with somebody during the moving.
+* **Communication.** If you see somebody playing ingress near you, don't hesitate to meet and make friendship. Even he or she from
 another fraction. Maybe it's your future spouse.
 
 ## **Home playing**
 * **Repair portals.** If you are sitting at office, have enough XM, you still can help your fraction.
-Just open portal keys and you can repair these portals distantly. Keep in mind that resonator xm reduces by 10% each day.
-The tricks is also to repair one most valuable resonator.
+Just open portal keys and you can repair these portals distantly. Keep in mind that resonator XM reduces by 10% each day.
+The trick is also to repair one most valuable resonator.
 * **Solve puzzles.** If you solve some puzzle that appeared on niantic site or in your inventory, you
 can help you fraction a lot by posting code in faction channel.
 * **Manage the actions.** You can sit at home with opened Intel Map and guide somebody to do right things.
