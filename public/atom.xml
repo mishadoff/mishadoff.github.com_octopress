@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-12-11T19:56:35+02:00</updated>
+  <updated>2012-12-15T19:47:42+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 010]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-010/"/>
+    <updated>2012-12-15T00:23:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-010</id>
+    <content type="html"><![CDATA[<blockquote><p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
+
+<p>Find the sum of all the primes below two million.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=10">http://projecteuler.net/problem=10</a></p>
+
+<!-- more -->
+
+
+<p>We have already worked with prime numbers in
+<a href="http://mishadoff.github.com/blog/clojure-euler-problem-003/">Problem 003</a> and
+<a href="http://mishadoff.github.com/blog/clojure-euler-problem-007/">Problem 007</a>. We also decided that
+the best way to work with prime numbers in clojure to use <code>primes</code> lazy-seq
+from <code>clojure.contrib.lazy-seqs</code>.</p>
+
+<p>Gentle reminder: Just add proper <code>:use</code> to your file:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.lazy-seqs</span> <span class="ss">:only</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, the simplest problem solution to use <code>take-while</code> stream and <code>reduce</code> for sum:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">%</span> <span class="mi">2000000</span><span class="p">)</span> <span class="nv">primes</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, one-line solution. Let&#8217;s run it.</p>
+
+<p>Finding result on my nachine takes ~12 seconds. Small enough, but maybe somehow it can be improved?</p>
+
+<h3>Sieve of Eratosthenes</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a> - ancient algorithm
+for finding prime numbers. The best explanation how it works with picture from wiki:</p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="" /></p>
+
+<p>Our first naive implementation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-1</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">n</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Note:</em> <a href="http://clojuredocs.org/clojure_core/clojure.set/difference">clojure.set/difference</a> function
+find the difference between two sets.</p>
+
+<p>This recursive implementation is even worse than our oneliner, it calculates the result in ~24 seconds.</p>
+
+<p>Primary optimisation is to use <code>(* n n)</code> as recursion base instead of <code>n</code>. Because of there are no prime
+numbers if we crossed greater than square root of maximum. Problem evolves.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-2</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>~21 seconds. Still worse.</p>
+
+<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don&#8217;t need
+to go over even numbers.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-3</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>~13 seconds. Much better&#8230; than previous, still worse than first version.</p>
+
+<p>If you looked at <code>difference</code> documentation, take a look at its implementation under &#8220;Source&#8221;.
+Nothing prevent us to pass sequence as second argument instead of set. Just removing casting to set.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-4</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>~6 seconds. Wow! It&#8217;s better than original solution. That means our efforts were not wasteful.</p>
+
+<p>Unfortuantely, we stopped improve our function. But if you want more, other major improvements
+can be done in the following areas:</p>
+
+<ul>
+<li>Use non-persistent set to save prime numbers. It prevent overhead on new objects.</li>
+<li>Use &#8220;wheel trick&#8221; that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
+<li>Use dynamic step of iteration. We changed <code>(inc n)</code> to <code>(+ n 2)</code>, but probably there is smarter solution.</li>
+<li>Do not use <code>(reduce +)</code> because it is linear algorithm. We init <code>nums</code> sequence with some arithmetic progression.
+Its sum can be calculated in O(1) by formula. When we compose another sequence (second argument for <code>difference</code>)
+its also an arithmetic progression and sum can be calculated in O(1). When doing differencem just subtract second sum
+from first sum, and it will be current <code>nums</code> sum.</li>
+</ul>
+
+
+<p>There are much more optimisations can be done to improve prime numbers performace.
+If you interested, read nice Christophe Grand&#8217;s post
+<a href="http://clj-me.cgrand.net/2009/07/30/everybody-loves-the-sieve-of-eratosthenes/">Everybody Loves The Sieve Of Erathosthenes</a></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str &#8220;Git&#8221; &#8220;Hub&#8221;)</a></p>
+
+<p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
+just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 009]]></title>
@@ -1372,6 +1508,101 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 004]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-004/"/>
+    <updated>2012-10-31T19:30:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-004</id>
+    <content type="html"><![CDATA[<blockquote><p>A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 x 99.</p>
+
+<p>Find the largest palindrome made from the product of two 3-digit numbers.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=4">http://projecteuler.net/problem=4</a></p>
+
+<!-- more -->
+
+
+<p><a href="http://en.wikipedia.org/wiki/Palindrome">Palindrome</a> is very interesting thing.
+It&#8217;s a sequence (of letters, numbers, words) that reads the same backwards. Examples: <em>MADAM</em>, <em>DID</em>, <em>2002</em>.
+There are even some fun to compose palindrome sentences, like <code>He Goddam Mad Dog, eh?</code></p>
+
+<p>Function to check if sequence is palindromic is very simple.
+Compare first element with the last, second with the penultimate and so on.
+It needs just <code>n/2</code> comparisons, so complexity of that algorithm is <code>O(n)</code>. Here is recursive solution:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">palindrome-recursive?</span> <span class="p">[</span><span class="nv">s</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">empty?</span> <span class="nv">s</span><span class="p">)</span> <span class="nv">true</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">first </span><span class="nv">s</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">last </span><span class="nv">s</span><span class="p">)]</span>
+</span><span class='line'>      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">rest </span><span class="p">(</span><span class="nb">butlast </span><span class="nv">s</span><span class="p">)))</span> <span class="nv">false</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note two functions: function <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> - gets last element of collection,
+<a href="http://clojuredocs.org/clojure_core/clojure.core/butlast">butlast</a> - drops last element of collection.
+Both they work in linear time, so you might assume overall complexity is <code>O(n^2)</code>.
+Using vectors we can get index access, and perform test much faster, but this detail is not important for now.</p>
+
+<p>Using more cleaner way (obviously not the best) to implement this, which in particular I prefer, is the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">palindrome?</span> <span class="p">[</span><span class="nv">s</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">= </span><span class="nv">s</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">s</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Function <a href="http://clojuredocs.org/clojure_core/clojure.core/reverse">reverse</a>, returns given sequence in reverse order in linear time.
+Overall complexity is also <code>O(n)</code>.</p>
+
+<p>To test whether number is palindrome or not, we just cast it to string, then cast string to sequence of chars, and using above function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">palindrome-number?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">palindrome?</span> <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">str </span><span class="nv">n</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Final solution is following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce max </span><span class="p">(</span><span class="nb">filter </span><span class="nv">palindrome-number?</span>
+</span><span class='line'>                      <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">100</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">j</span> <span class="p">(</span><span class="nb">range </span><span class="nv">i</span> <span class="mi">1000</span><span class="p">)]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">j</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We just generate all combinations of 3-digit numbers multiplication, filter palindromes, and find maximum. Done.</p>
+
+<p>This technique (<em>wow, is this technique?</em>) called <a href="http://en.wikipedia.org/wiki/Brute-force_search">brute-force</a>.
+It&#8217;s very consumable, because test each possible combination.
+But it&#8217;s common algorithm to such sort of problems.
+There are lot of clever brute force optimization to reduce set of possible values, but it is still brute force.
+As you see, in the code above, we also used small optimization.
+We iterate first multiplicand <code>i</code> from <code>100</code> to <code>1000</code> to cover all 3-digits numbers, and <code>j</code> iterated not from <code>100</code> but from <code>i</code>.
+This is because multiplication <code>375 * 468</code> gives the same result as <code>468 * 375</code>. Just because <a href="http://en.wikipedia.org/wiki/Commutative_property">commutative property</a>.
+Roughly, this reduces number of iterations by factor of 2.
+Obviously, there are other optimizations, but they are not so value and reduces readability
+(<em>If first number ends with 5 and second is even, then result ends with 0, and we skip this because in palindromic value 0 should be at the beginning</em>).</p>
+
+<p><strong>Congratulations!</strong> 4 problems solved. And we know &#8220;so much&#8221; about clojure.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem004.clj">GitHub</a>.</p>
+
+<p><strong>P.S.</strong> We create two separate functions for palindromes: one test sequence for palindrome,
+second test number for palindrome and reuse first implementation. Some can say it&#8217;s not good,
+because we write functionality that we not needed (function <code>palindrome?</code>).
+Particularly, I agree. We could hide <code>palindrome?</code> implementation inside <code>palindrome-number?</code> or make it private.
+But we haven&#8217;t did this and have function <code>palindrome?</code> that we can reuse in other problems. Also it shows important concept,
+how we can reuse existing implementations to get new functionality. And again: maybe there is (<em>I&#8217;m sure there is</em>) another solution
+which is more clever than bruteforce. But this solution works only <code>0.2</code> sec. on my machine, so this is ok.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 003]]></title>
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-003/"/>
     <updated>2012-10-30T19:12:00+02:00</updated>
@@ -2024,142 +2255,6 @@ It still solves problem in appropriate time and have more readable code. If <cod
 suggest alternative solutions or thoughts on problem and provide code.
 You allowed to copy that code, calculate the result and past answer directly in Project Euler site, but I don&#8217;t see any sense to do this.
 Problem solving process gives more fun, than result. Approximately <a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">2.718282</a> times more.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Java Magic. Part 1: java.net.URL]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url/"/>
-    <updated>2012-10-11T16:30:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url</id>
-    <content type="html"><![CDATA[<p>Recently, I found on reddit very interesting Java code snippet (slightly modified):</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">HashSet</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">();</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
-</span><span class='line'><span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">60000</span><span class="o">);</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What do you think the output for lines 3 and 5 will be?</p>
-
-<!-- more -->
-
-
-<p>Definitely not <code>true, true</code> if the question was asked. Think for two minutes.</p>
-
-<p>Ok. In most cases it will be <code>true, false</code> because you have internet connection (<em>How else you can read this?</em>).
-Turn off your network cable or wi-fi, and you&#8217;ll get <code>true, true</code>.</p>
-
-<p>The reason is in implementation of <code>hashCode()</code> and <code>equals()</code> methods for <code>URL</code> class.</p>
-
-<p>Let&#8217;s see how hashCode calculated:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
-</span><span class='line'>  <span class="n">hashCode</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We can see hashCode is an instance variable that calculates once. Makes sense, <code>URL</code> is <a href="http://en.wikipedia.org/wiki/Immutable_object">immutable</a>.
-What is handler? It&#8217;s an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
-Just look at <code>URL.hashCode()</code> javadoc:</p>
-
-<blockquote><p>The hash code is based upon all the URL components relevant for URL comparison. As such, this operation is a blocking operation.</p></blockquote>
-
-<p>Stop! <strong>BLOCKING OPERATION?!</strong></p>
-
-<p><em>- Sorry, I couldn&#8217;t check email yesterday due to hashCode calculation.</em></p>
-
-<p>or even better</p>
-
-<p><em>- No, mom, I can&#8217;t watch porn, It&#8217;s hashCode, you know.</em></p>
-
-<p>Ok, let it be blocking. Another exciting part, that handler <strong>resolves host IP address</strong> for hashCode calculation.
-Tries to resolve, to be honest. If it can not do this, it calculates hashCode based on host, which is <em>google.com</em> for our example.
-Shit happens when IP is dynamic, or host have request balancer that also changes host IP.
-In that case we got different hashCodes for one host name, and will have two (or even more) instances in HashSet. Not good at all.
-By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it&#8217;s another topic.</p>
-
-<h3>How to avoid this?</h3>
-
-<ul>
-<li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It&#8217;s not the best choice though, but have deterministic hashCode implementation.</li>
-<li>Do not use <code>java.net.URL</code> in collections. Good option to maintain collection of String objects (that represent host name) and get URL when needed.</li>
-<li>Disable your network adapter during hashCode calculation. (<em>It&#8217;s a joke, but it helps</em>)</li>
-<li>Use your own subclass of URLStreamHandler with proper implementation of hashCode.</li>
-</ul>
-
-
-<p>Finally, I&#8217;m pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hello, world!]]></title>
-    <link href="http://mishadoff.github.com/blog/hello/"/>
-    <updated>2012-10-10T16:10:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/hello</id>
-    <content type="html"><![CDATA[<p>This is my first post.
-It is always hard to begin something, but I&#8217;ll try.</p>
-
-<!-- more -->
-
-
-<h3>Why?</h3>
-
-<p>I had blog earlier on <a href="http://mishadoff.livejournal.com">LiveJournal</a>, it was basically in Ukrainian, my native language.
-But more time I was working on something, less time I had to write something.
-Honestly, it even was not programming specific blog, just random thoughts, xposts, pictures, etc.
-You know this shit. Also, it was very hard to maintain some posts, especially about programming, and I gave up.
-Excellent proof is my failed attempt to share and explain Clojure solutions on <a href="http://projecteuler.net">Project Euler</a>.
-Everything can be a reason: lack of readers, lack of feedback, not interesting topic, very specific topic,
-bad writing style, terrible livejournal layout and so on. Probably, these are all my excuses or maybe I just lazy.</p>
-
-<p>Now I&#8217;ve got something in my mind and have passion to share it.
-No matter if somebody like it or not.
-I really believe that if you share something for this world,
-sooner or later somebody point you on your mistakes. And it&#8217;s a win.
-You got knowledge that didn&#8217;t know earlier and can share it to someone else. Simple loop.</p>
-
-<h3>What?</h3>
-
-<p>I plan to be specific in this blog, so a big part will be about programming, especially Java and Clojure.
-I also love puzzles and stupid self-made pictures (O_o) and they have reserved place in my blog.
-Time to time can appear posts with reference to some clever people, if they have clever thoughts, of course.
-Event reports, some critic, books, movies, music, games, humour.
-Only God knows what else can appear in my mind and therefore in this blog, but I&#8217;ll try to be specific as much as possible.
-Really.</p>
-
-<h3>English?</h3>
-
-<p>As you already understand I&#8217;m not native English speaker or writer or whatever. How many mistakes did you count?</p>
-
-<p>I need some effort even for writing simple sentence in English (<em>Kiev is the capital of Ukraine - not this one</em>).
-And no matter how long I check my grammar or spelling I will have some mistakes. Big deal.
-Improve English is one of my goals, so it&#8217;s ok. <em>adding english in todo list</em></p>
-
-<p>I also don&#8217;t exclude option, that some posts will be in Ukrainian or even in Russian.</p>
-
-<h3>What else?</h3>
-
-<p>I spent half an hour writing this first post and believe that in near future I have more structured thoughts than this bag of words above.
-Good luck and welcome to my blog!</p>
 ]]></content>
   </entry>
   

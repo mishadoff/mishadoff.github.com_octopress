@@ -4,7 +4,7 @@ title: "Clojure Euler: Problem 004"
 date: 2012-10-31 19:30
 comments: true
 categories: [clojure, programming, project-euler]
-published: false
+published: true
 ---
 
 > A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 x 99.

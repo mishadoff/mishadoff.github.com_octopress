@@ -33,6 +33,10 @@
         <lastmod>2012-11-17T14:18:06+02:00</lastmod>
     </url>
     <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-004/</loc>
+        <lastmod>2012-12-15T00:22:51+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/</loc>
         <lastmod>2012-11-06T19:58:22+02:00</lastmod>
     </url>
@@ -81,8 +85,12 @@
         <lastmod>2012-12-11T19:33:38+02:00</lastmod>
     </url>
     <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-010/</loc>
+        <lastmod>2012-12-15T19:43:49+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://mishadoff.github.com/pages/quotes/</loc>
-        <lastmod>2012-12-02T23:26:55+02:00</lastmod>
+        <lastmod>2012-12-14T11:25:11+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/pages/clojure-links/</loc>
@@ -98,10 +106,10 @@
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/archives/</loc>
-        <lastmod>2012-12-11T19:45:24+02:00</lastmod>
+        <lastmod>2012-12-15T19:43:49+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/</loc>
-        <lastmod>2012-12-11T19:45:24+02:00</lastmod>
+        <lastmod>2012-12-15T19:43:49+02:00</lastmod>
     </url>
 </urlset>

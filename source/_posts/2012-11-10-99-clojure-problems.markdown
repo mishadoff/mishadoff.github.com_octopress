@@ -10,12 +10,15 @@ published: false
 There is a popular article [99 Prolog Problems](https://sites.google.com/site/prologsite/prolog-problems) that describes
 how [Prolog](http://en.wikipedia.org/wiki/Prolog) solves various small programming problems.
 There are couple of remakes in [Lisp](http://www.ic.unicamp.br/~meidanis/courses/mc336/2006s2/funcional/L-99_Ninety-Nine_Lisp_Problems.html),
-[Scala](http://aperiodic.net/phil/scala/s-99/), [Haskell](http://www.haskell.org/haskellwiki/H-99:_Ninety-Nine_Haskell_Problems) and even half-complete
-in [Python](http://wiki.python.org/moin/ProblemSets/99%20Prolog%20Problems%20Solutions).
-I found articles of such type extremely useful for programming language understanding, as they show solution for common real-world problems.
+[Scala](http://aperiodic.net/phil/scala/s-99/), [Haskell](http://www.haskell.org/haskellwiki/H-99:_Ninety-Nine_Haskell_Problems)
+and even half-complete in [Python](http://wiki.python.org/moin/ProblemSets/99%20Prolog%20Problems%20Solutions).
+I found articles of such type extremely useful for programming language understanding,
+as they show solution for common real-world problems.
 
 In this article, codename **CLJ-99**, I provide my solutions to these problems,
 reusing as much as possible standard `clojure.core` and `clojure.contrib` functions.
+
+<!-- more -->
 
 Some functions will be used with namespace qualifier e.g. `sets/union` and
 corresponding required namespace can be viewed at the namespace requirements.
@@ -26,17 +29,17 @@ corresponding required namespace can be viewed at the namespace requirements.
 (:require [clojure.contrib.combinatorics :as comb])
 (:require [clojure.set :as sets])
 (:require [clojure.contrib.lazy-seqs :as lazy])
+(:require [clojure.contrib.math :as math])
 ```
-
-<!-- more -->
 
 Solutions will be grouped by topic. To not reinvent wheel, I use the same groups as in original article.
 
 Complexity introduced by stars: \* - simple, \*\* - medium, \*\*\* - hard.
 
-Solution for problem is a function, called `p` plus `two digits number` representing number of problem. E.g. `p03`, `p37`
+Solution for problem is a function, called `p` plus `two digits number` representing number of problem.
+E.g. `p03`, `p37`. Rarely problem will be splitted in two parts, like `p34-a`, `p34-b`.
 
-Improvements are welcome!
+Improvements are very welcome!
 
 Ready? Go!
 
@@ -467,9 +470,102 @@ Write a predicate to find the two prime numbers that sum up to a given even inte
 
 ``` clojure
 (defn p33 [n]
-  (let [pspace (take-while #(< % n) lazy/primes)]
-    (first (for [i pspace j pspace :when (= (+ i j) n)]
+  (let [ps (take-while #(< % n) lazy/primes)]
+    (first (for [i ps j ps :when (= (+ i j) n)]
              [i j]))))
 ```
 
-### P34.
+### P34. (**) A list of Goldbach compositions.
+a) Given a range of integers by its lower and upper limit, print a list of all even numbers
+and their Goldbach composition.
+
+*Example:*
+`(p34-a 9 20) => [[10 3 7] [12 5 7] [14 3 11] [16 3 13] [18 5 13] [20 3 17]]`
+
+```clojure
+(defn p34-a [a b]
+  (for [i (range a (inc b)) :when (even? i)]
+    (cons i (p33 i))))
+```
+
+b) In most cases, if an even number is written as the sum of two prime numbers,
+one of them is very small. Very rarely, the primes are both bigger than say 50.
+Try to find out how many such cases there are in the range 3..2000.
+
+*Example:*
+`(p34-b 3 2000 50) => [[992 73 919] [1382 61 1321] [1856 67 1789] [1928 61 1867]]`
+
+```clojure
+(defn p34-b [a b limit]
+  (for [[q w e] (p34-a a b) :when (and (> w limit) (> e limit))]
+    [q w e]))
+```
+
+### P35. (**) Determine the greatest common divisor of two positive integer numbers.
+
+*Example:*
+`(p35 36 63) => 9`
+
+```clojure
+(defn p35 [a b]
+  (math/gcd a b))
+```
+
+### P36. (**) Determine whether two positive integer numbers are coprime.
+Two numbers are coprime if their greatest common divisor equals 1.
+
+*Example:*
+`(p36 35 64) => true`
+
+```clojure
+(defn p36 [a b]
+  (= 1 (p35 a b)))
+```
+
+### P37. (**) Calculate Euler's totient function phi(m).
+Euler's so-called totient function `phi(m)` is defined as the number of positive integers
+`r` in range `1 <= r < m` that are coprime to `m`.
+
+*Example:*
+`(p37 10) => 4`
+
+```clojure
+(defn p37 [m]
+  (reduce + (for [r (range 1 m)]
+              (if (p36 r m) 1 0))))
+```
+
+### P38. (**) Calculate Euler's totient function phi(m). (2)
+See problem P37 for the definition of Euler's totient function.
+If the list of the prime factors of a number m is known in the form of problem P31
+then the function `phi(m)` can be efficiently calculated as follows:
+
+Let [[p1 m1] [p2 m2] [p3 m3] ...] be the list of prime factors (and their multiplicities)
+of a given number `m`. Then `phi(m)` can be calculated with the following formula:
+
+`phi(m) = (p1 - 1) * p1^(m1 - 1) * (p2 - 1) * p2^(m2 - 1) * (p3 - 1) * p3^(m3 - 1) * ...`
+
+*Example:*
+`(p38 10) => 4`
+
+```clojure
+(defn p38 [m]
+  (reduce * (for [[p m] (p31 m)]
+              (* (dec p) (math/expt p (dec m))))))
+```
+
+### P39. (**) Compare the two methods of calculating Euler's totient function.
+Compare result and execution time.
+
+```clojure
+(defn p39 [m]
+  (let []
+    (println "1st implementation: p37 =>" (time (p37 m)))
+    (println "2nd implementation: p38 =>" (time (p38 m)))))
+```
+
+## Logic and Codes
+
+### P40. (**) Truth tables for logical expressions.
+Define binary predicates `and`, `or`, `nand`, `nor`, `xor`, `impl` and `equ` (for logical equivalence)
+and build truth table for passed expression.
