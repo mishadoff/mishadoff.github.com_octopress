@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2012-12-23T18:36:22+02:00</updated>
+  <updated>2013-01-13T18:44:31+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,68 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DevOps reactions]]></title>
+    <link href="http://mishadoff.github.com/blog/devops-reactions/"/>
+    <updated>2013-01-13T18:10:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/devops-reactions</id>
+    <content type="html"><![CDATA[<p>Just found blog, that illustrates developer feelings with gif-pictures: <a href="http://devopsreactions.tumblr.com/">DevOps reactions</a></p>
+
+<p>It&#8217;s really cool idea.</p>
+
+<!-- more -->
+
+
+<p>Here are the most liked</p>
+
+<h3>When you review undocumented code</h3>
+
+<p><img src="http://i209.photobucket.com/albums/bb315/DJ_Napps/omg.gif" alt="" /></p>
+
+<h3>Security hole will not be fixed because Product wants a new feature</h3>
+
+<p><img src="http://i.imgur.com/w3Nbr.gif" alt="" /></p>
+
+<h3>An error notification comes in that is related to code you worked on</h3>
+
+<p><img src="http://i.imgur.com/An059.gif" alt="" /></p>
+
+<h3>Code freeze</h3>
+
+<p><img src="http://media.tumblr.com/c888a5fc6db74ba2ba4f5dcb3d13e95b/tumblr_inline_mfrh8jAexq1raprkq.gif" alt="" /></p>
+
+<h3>Working on the wrong server</h3>
+
+<p><img src="http://i.imgur.com/da25D.gif" alt="" /></p>
+
+<h3>Deciding whether to perform a risky break/fix</h3>
+
+<p><img src="http://i.imgur.com/SvaAv.gif" alt="" /></p>
+
+<h3>Finding an interesting side-issue while dealing with something else</h3>
+
+<p><img src="http://www.ohmagif.com/wp-content/uploads/2012/12/please-wait-i-need-to-play-in-the-puddle.gif" alt="" /></p>
+
+<h3>Reaction difference when something breaks and one is on vacation</h3>
+
+<p><img src="http://i.imgur.com/c9X6n.gif" alt="" /></p>
+
+<h3>Typical lunch break</h3>
+
+<p><img src="http://media.tumblr.com/tumblr_mekc6kZTap1raprkq.gif" alt="" /></p>
+
+<h3>How time feels when participating in a meeting with non-technical people</h3>
+
+<p><img src="http://i.imgur.com/7xpOF.gif" alt="" /></p>
+
+<h3>Bonus: Holy War (Java vs C#)</h3>
+
+<p><img src="http://i.imgur.com/u9CAo.gif" alt="" /></p>
+
+<p><strong>P.S.</strong> Everyone can submit feeling.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Eclipse Speedup]]></title>
@@ -2432,23 +2494,6 @@ Exactly what <a href="http://clojuredocs.org/clojure_core/clojure.core/quot">quo
 It still solves problem in appropriate time and have more readable code. If <code>n</code> grow, I&#8217;ll think about switching to <code>O(1)</code> strategy, but not for now.</p>
 
 <p>Have fun!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lisp live-coding]]></title>
-    <link href="http://mishadoff.github.com/blog/lisp-live-coding/"/>
-    <updated>2012-10-11T17:14:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/lisp-live-coding</id>
-    <content type="html"><![CDATA[<p>Very inspirational video about live coding with excellent electronic music, written in&#8230; lisp!</p>
-
-<!-- more -->
-
-
-
-
-<div class="embed-video-container"><iframe src="http://player.vimeo.com/video/2503257 "></iframe></div>
-
 ]]></content>
   </entry>
   
