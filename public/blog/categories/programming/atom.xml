@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-01-13T18:44:31+02:00</updated>
+  <updated>2013-01-18T14:56:18+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,153 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 011]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-011/"/>
+    <updated>2013-01-18T13:45:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-011</id>
+    <content type="html"><![CDATA[<blockquote><p>What is the greatest product of four adjacent numbers in the same
+direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=11">http://projecteuler.net/problem=11</a></p>
+
+<!-- more -->
+
+
+<blockquote><p>In the 20 x 20 grid below, four numbers along a diagonal
+line have been enclosed into square brackets</p></blockquote>
+
+<pre><code>08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
+49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
+81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
+52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
+22 31 16 71 51 67 63 89 41 92 36 54 22 40 40 28 66 33 13 80
+24 47 32 60 99 03 45 02 44 75 33 53 78 36 84 20 35 17 12 50
+32 98 81 28 64 23 67 10[26]38 40 67 59 54 70 66 18 38 64 70
+67 26 20 68 02 62 12 20 95[63]94 39 63 08 40 91 66 49 94 21
+24 55 58 05 66 73 99 26 97 17[78]78 96 83 14 88 34 89 63 72
+21 36 23 09 75 00 76 44 20 45 35[14]00 61 33 97 34 31 33 95
+78 17 53 28 22 75 31 67 15 94 03 80 04 62 16 14 09 53 56 92
+16 39 05 42 96 35 31 47 55 58 88 24 00 17 54 24 36 29 85 57
+86 56 00 48 35 71 89 07 05 44 44 37 44 60 21 58 51 54 17 58
+19 80 81 68 05 94 47 69 28 73 92 13 86 52 17 77 04 89 55 40
+04 52 08 83 97 35 99 16 07 97 57 32 16 26 26 79 33 27 98 66
+88 36 68 87 57 62 20 72 03 46 33 67 46 55 12 32 63 93 53 69
+04 42 16 73 38 25 39 11 24 94 72 18 08 46 29 32 40 62 76 36
+20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
+20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
+01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
+</code></pre>
+
+<blockquote><p>The product of these numbers is 26 * 63 * 78 * 14 = 1788696.</p>
+
+<p>What is the greatest product of four adjacent numbers in the
+same direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p></blockquote>
+
+<p>First step is pretty routine, we need to create such grid representation
+in our program from file. For the way how we read files refer
+<a href="/blog/clojure-euler-problem-008">Clojure Euler: Problem 008</a>, we have
+similar problem there.</p>
+
+<p>``` clojure
+(defn get-matrix []
+  (map #(Integer/parseInt (apply str %))</p>
+
+<pre><code>   (partition 2 2 (remove #(or (= \newline %) (= \ %))
+                          (seq (slurp "res/problem011.txt"))))))
+</code></pre>
+
+<p>```</p>
+
+<p>Idea is following: read the file, drop the garbage,
+take all two-digit combinations, concat each and transform to the integer.</p>
+
+<p>To make things simple we reading the numbers in one-dimensional list
+of size 20 x 20 = 400. We always can use formula to represent two dimensional
+indexing for one-dimensional array and vice versa.</p>
+
+<p><em>Example:</em> suppose you need a 3 x 3 matrix <code>A</code></p>
+
+<pre><code>9    2    4
+6    1    7
+5    3    8
+</code></pre>
+
+<p>You can flat it into 1D array <code>B</code></p>
+
+<pre><code>9 2 4 6 1 7 5 3 8
+</code></pre>
+
+<p>Now, when you want <code>A[i][j]</code> use the formula <code>i * size_j + j</code>, where <code>size_j</code>
+is second matrix dimension. Therefore <code>A[1][2] = B[1 * 3 + 2] = B[5] = 7</code>, what is correct.</p>
+
+<p>Implementing that in clojure gives one indexing function</p>
+
+<p>``` clojure
+(defn get-at [i j matrix]
+  (if (and (>= i 0) (&lt; i 20) (>= j 0) (&lt; j 20))</p>
+
+<pre><code>(nth matrix (+ j (* i 20))) 0))
+</code></pre>
+
+<p>```</p>
+
+<p>We check the boundaries of array inside this function, which can be inappropriate
+in many cases, but it is good as we use it in one place.</p>
+
+<p>Ok. We have data, we have methods operate this data, now let's code logic.
+Our good friend - <strong>bruteforce</strong>.</p>
+
+<p>``` clojure
+(let [matrix (get-matrix)</p>
+
+<pre><code>  ways (for [i (range 20) j (range 20)]
+         [(map #(get-at i (+ % j) matrix) (range 4))
+          (map #(get-at (+ % i) j matrix) (range 4))
+          (map #(get-at (+ % i) (+ % j) matrix) (range 4))
+          (map #(get-at (+ % i) (- j %) matrix) (range 4))])]
+(reduce max (map #(reduce * %) (reduce concat ways))))
+</code></pre>
+
+<p>```</p>
+
+<p>We iterate on all matrix elements as start of 4-element range.</p>
+
+<p>We have 4 conditions, each of them represents some direction.
+All these 4 directions represent all possible direction in grid.</p>
+
+<ol>
+<li>NORTH -> SOUTH (Up &amp; Down covered)</li>
+<li>WEST -> EAST (Left &amp; Right covered)</li>
+<li>NW -> SE (backslash diagonals covered)</li>
+<li>NE -> SW (slash diagonals covered)</li>
+</ol>
+
+
+<p>```</p>
+
+<pre><code>S      S * * *         S                  S
+*                       *                *
+*                        *              *
+*                         *            *
+</code></pre>
+
+<p>```</p>
+
+<p><em>S is for start</em></p>
+
+<p>If we obtain all possible 4-element ranges for matrix, just find
+maximum of product.</p>
+
+<p>Problem solved!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem011.clj">github</a></p>
+
+<p><strong>P.S.</strong> Boring problem.
+I think it just for introducing matrices computation.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 010]]></title>
@@ -413,168 +560,6 @@ that's enough for now.</p>
 
 <p><strong>P.S.</strong> Actually, I lied. In linked solution I use 6 lines of code: namespace declaration, use, <em>empty line</em>,
 comment with executing time, function declaration and, finally, solution.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-3-finally/"/>
-    <updated>2012-11-18T19:39:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-3-finally</id>
-    <content type="html"><![CDATA[<p>Every experienced java programmer should know that <code>finally</code> block always executed. But is it true?</p>
-
-<!-- more -->
-
-
-<p>It depends on our definition of program execution. But, generally speaking, <strong>yes</strong>.</p>
-
-<h3>Normal program execution</h3>
-
-<p><em>Aha, look at this</em>, someone might retort:</p>
-
-<p><code>java
-try {
-  System.exit(1);
-} finally {
-  System.out.println("I'm here, man");
-}
-</code></p>
-
-<p><em>You just said, finally block always executed?</em></p>
-
-<p>Well. In that case no, because we speaking about normal flow of program execution.
-This is <em>abnormal</em>.</p>
-
-<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">official tutorial</a></p>
-
-<blockquote><p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p></blockquote>
-
-<p>Your counter question might be: <em>If second line of that code always exectued?</em></p>
-
-<p><code>java
-System.out.println("Line 1");
-System.out.println("Line 2");
-System.out.println("Line 3");
-</code></p>
-
-<p>Sure, because it's linear flow. Nothing can break...<strong>BANG</strong>...<code>Electricity unavailable. Program stopped.</code></p>
-
-<p>What about this? It's also abnormal program execution, and we can't guarantee anything for 100%.
-In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
-
-<p>That's why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
-
-<blockquote><p>I said yes? I meant no!</p></blockquote>
-
-<h3>Perpetuum Mobile</h3>
-
-<p>Consider the following code:</p>
-
-<p>``` java
-try {
-  while (true) {</p>
-
-<pre><code>System.out.println("I print here some useful information");
-</code></pre>
-
-<p>  }
-} finally {
-  System.out.println("Let me run");
-}
-```</p>
-
-<p>Will be the line <em>"Let me run"</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
-
-<p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
-
-<h3>Threads</h3>
-
-<p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
-
-<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn't executed.</p>
-
-<p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
-
-<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
-
-<blockquote><p>...if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p></blockquote>
-
-<p>So, we can treat thread like a program, and make one effective rule:</p>
-
-<p><strong>Rule 1</strong>. Finally executes always, except the case where controlling program or thread was aborted.</p>
-
-<h3>Finally we return</h3>
-
-<p>Ok, now we know when finally is not executed. But do we know when finally is executed?</p>
-
-<p>Consider the example:</p>
-
-<p>``` java
-int someFunc() {
-  try {</p>
-
-<pre><code>return 0;
-</code></pre>
-
-<p>  } finally {</p>
-
-<pre><code>return 1;
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>The result is obviously <code>1</code>. Just because <code>finally</code> is always executed.</p>
-
-<p>Consider, next example:</p>
-
-<p>``` java
-int someFunc() {
-  try {</p>
-
-<pre><code>throw new RuntimeException();
-</code></pre>
-
-<p>  } finally {</p>
-
-<pre><code>return 1;
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>The result is <code>1</code> again. And it's a problem. We just lose the exception.
-Such issue known as <em>exception swallowing</em>. It is very dangerous, because client's code expect either exception or some value, but it always get only value.</p>
-
-<p>One more less imaginary example.</p>
-
-<p>``` java
-String deposit(int amount) throws DAOException {
-  try {</p>
-
-<pre><code>return dao.deposit(amount);
-</code></pre>
-
-<p>  } finally {</p>
-
-<pre><code>return "OK";
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
-responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string "OK" will be returned.</p>
-
-<p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
-
-<h3>Instead of conclusion</h3>
-
-<p>A lot of programmers are aware about this common mistake. But some are not.
-Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
 ]]></content>
   </entry>
   
