@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-01-18T14:56:18+02:00</updated>
+  <updated>2013-01-20T18:58:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,514 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
+    <link href="http://mishadoff.github.com/blog/critical-software-bugs-part-1/"/>
+    <updated>2013-01-20T18:48:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/critical-software-bugs-part-1</id>
+    <content type="html"><![CDATA[<p>Little journey through the history of most critical software bugs
+with some code examples.</p>
+
+<p><em>Do not try to reproduce any of these!</em></p>
+
+<!-- more -->
+
+
+<h3>Intro</h3>
+
+<blockquote><p>Every last bug is the last but one.</p></blockquote>
+
+<p><strong>Bugs</strong> are bad. Some of them cause uncomfortable work, more actions
+than expected, inconsistency, layout issues, etc.
+Some of them &#8221;<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>&#8221; at all.</p>
+
+<p><strong>Bad bugs</strong> much worse. They cause data corruption, invalid data representation,
+unavailability to perform action, losing integrity and so on.</p>
+
+<p>There are <strong>critical bugs</strong> with painful consequences. They can damage the health, nature, people
+break buildings, technics. Theoretically, they
+<a href="http://www.washingtonpost.com/wp-srv/inatl/longterm/coldwar/shatter021099b.htm">can lead to World War III</a>.
+Hope, it&#8217;s just theoretically.</p>
+
+<p>If you are software engineer, you definitely will commit the bugs. No panacea.
+But if we aware about common mistakes, then less likely we make that mistakes.</p>
+
+<p>This article is review of famous most critical software bugs
+including brief history, consequences, root causes, possible solutions, code examples and some advices.</p>
+
+<h3><a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a> (1962)</h3>
+
+<p><strong>History:</strong>
+In 1962, spacecraft <em>Mariner 1</em> was guided by computer program with error causes
+racket do not follow its expected trajectory. To prevent tragic consequences, racket
+was destoyed immediately.</p>
+
+<p><strong>Consequences:</strong> Money, $18 million.</p>
+
+<p><strong>Reason:</strong>
+There are tons of versions about what type of error it was, but official version
+is <em>missing hyphen</em> (&#8216;-&#8216;) in program. Maybe it&#8217;s just a myth for publicity,
+but, anyway, if the reason of bug is incorrect handwritten formula transcription
+from paper to computer, it&#8217;s sad.</p>
+
+<p>Probably, the root cause of that is writer and computer operator were different people.
+It&#8217;s common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
+an enterprise, as nowadays. That&#8217;s why scientist, programmer, and operator could be
+different people.</p>
+
+<p>Related story, it&#8217;s why zero symbol has a period or diagonal line inside - to prevent
+confusing with &#8220;big O&#8221; for &#8220;typer&#8221; person. Just compare <code>0</code> and <code>O</code>.</p>
+
+<p><strong>Solution:</strong>
+It&#8217;s hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
+If you type into computer from someone&#8217;s paper sheet, check, re-check and double re-check
+what you typing. Ask if you have concerns. Especially, if it is the program for spaceship.</p>
+
+<p>In very <em>far-fetched</em> example missing minus sign can result into invalid computation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">double</span> <span class="nf">getDiscountPercent</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mf">0.25</span><span class="o">;</span> <span class="c1">// instead of return -0.25;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">double</span> <span class="nf">calculatePrice</span><span class="o">(</span><span class="kt">double</span> <span class="n">initial</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">initial</span> <span class="o">*</span> <span class="o">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">getDiscountPercent</span><span class="o">());</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That way instead of paying $75, you pay $125.</p>
+
+<p><strong>Lesson:</strong> Always check your manual rewriting actions.</p>
+
+<h3><a href="http://en.wikipedia.org/wiki/Siberian_pipeline_sabotage">Siberian pipeline sabotage</a> (1982)</h3>
+
+<p><strong>History:</strong> Cold war. Soviet Union steal technology for managing gas pipelines from Canada. This
+technology intentionally contained the bug (<a href="http://en.wikipedia.org/wiki/Logic_bomb">Logic Bomb</a>), developed by CIA
+for sabotage purposes. Bomb triggered.</p>
+
+<p><strong>Consequences:</strong> The greatest non-nuclear explosion in the world.</p>
+
+<p><strong>Reason:</strong> Every microship from stolen technology would
+work fine just for 10 million cycles, after that switches to another mode.</p>
+
+<p>They <em>used someone&#8217;s code</em>.</p>
+
+<p><strong>Solution:</strong></p>
+
+<blockquote><p>You shall not steal</p>
+
+<p>&#8211; <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p></blockquote>
+
+<p>Honestly, if someone&#8217;s technology used for critical areas, like gas
+transportation, it must be reviewed and tested. 100 times.</p>
+
+<p>Story can be translated as:</p>
+
+<p>I found memory card on the city dump.
+Card contained one shell script <code>please-execute-me.sh</code>.
+I <em>executed</em> it. System crashed. Who&#8217;s guilty? Just me.</p>
+
+<p>Use software from trusted sources.</p>
+
+<p>In modern software world, we often use someone&#8217;s libraries, frameworks,
+APIs to build our own applications. We <em>expect</em> that code is <em>reviewed</em> and <em>tested</em>.
+If not, we can help to do it. How we can be sure these libs without logic bombs?</p>
+
+<p>Trust or review the sources. That&#8217;s why I love open source software.</p>
+
+<p>Logic bomb detection is not that hard. Just find the code that causes error
+and see the reason of that error. Again, code review helps <em>to prevent</em> the
+logic bomb instead of <em>fixing it</em>. Build application to production only from
+version control system (<em>which is controlled, right?</em>)</p>
+
+<p>Just for educational purposes: simple example of time-triggered logic bomb</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogicBombRunner</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">Thread</span> <span class="n">thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">LogicBomb</span><span class="o">());</span>
+</span><span class='line'>                <span class="n">thread</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">LogicBomb</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">private</span> <span class="kt">long</span> <span class="n">toStop</span><span class="o">;</span>
+</span><span class='line'>        <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">TIME_TO_TRIGGER</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">100</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">public</span> <span class="nf">LogicBomb</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">toStop</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="n">TIME_TO_TRIGGER</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                        <span class="k">if</span> <span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">toStop</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;System works fine.&quot;</span><span class="o">);</span>
+</span><span class='line'>                                <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>                                        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+</span><span class='line'>                                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                                        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span><span class='line'>                                <span class="o">}</span>
+</span><span class='line'>                        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>                                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Logic bomb triggered.&quot;</span><span class="o">);</span>
+</span><span class='line'>                                <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">();</span>
+</span><span class='line'>                        <span class="o">}</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yes. It throws <code>RuntimeException</code> after approximately 100 days from <code>LogicBomb</code> object creation.</p>
+
+<p><strong>Lesson:</strong> Do not steal. Trust to very limited circle of people.</p>
+
+<h3><a href="http://en.wikipedia.org/wiki/Therac-25">Therac-25</a> (1985 - 1987)</h3>
+
+<p><strong>History:</strong> Therac-25 was a medical device for radiation therapy.
+It could deliver either beta-particles or X-rays. Unfortunately,
+operating system for controling the device was written with error,
+that causes sad results.</p>
+
+<p><strong>Consequences:</strong> At least 2 patients died, 4 patients were given overdose,
+approximately 100 times intended dose.</p>
+
+<p><strong>Reason:</strong> Investigation concluded the common reason was a
+<em>bad software design</em>, <em>development practices</em> and a <em>set of bugs</em>
+instead of some particular critical bug.</p>
+
+<p>These bad practices and bugs include:</p>
+
+<ul>
+<li>No code review</li>
+<li>Poor exception handling</li>
+<li>No integration testing until device was assembled in the hospital</li>
+<li>Poor hardware design</li>
+<li><em>Bad code</em> reuse</li>
+<li>Concurrency issues</li>
+</ul>
+
+
+<p><strong>Solution:</strong> Code review its a must. Even if you working
+alone in the team, show sources to some your friend (programmer).
+Two pair of eyes can spot the mistake two times more.</p>
+
+<p><em>Poor exception handling</em>. If failure occurs, no one knows about that failure.
+Never handle exception like that:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">catch</span> <span class="o">(</span><span class="n">SomeException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In 99% there are must be a proper handling. If you don&#8217;t know how
+to handle, rethrow it, possible with wrapping:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">catch</span> <span class="o">(</span><span class="n">SomeException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="k">throw</span> <span class="k">new</span> <span class="nf">SpecificException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Much better to throw responsibility for handling one level up
+in method signature:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">method</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">SomeException</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If your real intention to left catch block empty, say this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">catch</span> <span class="o">(</span><span class="n">SomeExcpetion</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// swallowing this exception is intended</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Bad code reuse</em>. <a href="http://en.wikipedia.org/wiki/Code_reuse">Code reuse</a> is a good thing.
+Except the case when you reuse something with errors.</p>
+
+<p>For example, I have following method for testing if number is even in some of my
+previous projects (<em>yes, look at your code that was written few years ago</em>):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isEven</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This method returns incorrect result <code>true</code> for all negative odd numbers. Just because
+<code>%</code> operator returns <code>-1</code> except <code>1</code> for negative numbers. Better do <em>NOT</em> reuse such method.
+Just write new. And replace old method immediately.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isEven</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Concurrency</em>. Software world hardest issues are concurrency issues.</p>
+
+<blockquote><p>You have a problem and decide to use threads.
+Two now problems have you.</p>
+
+<p>&#8211; Some guy from internet</p></blockquote>
+
+<br>
+
+
+<blockquote><p>You have a problem and decide to use locks.
+Now you have</p>
+
+<p>&#8211; Some another guy from internet</p></blockquote>
+
+<p>If you know that some object will be shared between threads, one solution to
+add <code>synchronized</code> (<a href="http://en.wikipedia.org/wiki/Monitor_%28synchronization%29">Monitor object</a>)
+to each read/write state method. It will slow
+your work with that object but prevent a lot of unexpected errors.</p>
+
+<p>Although, there are much flexible synchronization mechanisms in java that
+plain old <code>synchronized</code> as <a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphores</a>,
+<a href="http://en.wikipedia.org/wiki/Mutual_exclusion">mutexes</a>,
+<a href="http://en.wikipedia.org/wiki/Read_write_lock_pattern">read-write locks</a>.</p>
+
+<p>I reccomend to use java package <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>.
+It consists of a lot of concurrency techniques, like <code>Synchronizers</code>, <code>Executors</code>,
+<code>Atomics</code>, <code>Concurrent Collections</code>, <code>Futures</code>, <code>Callbacks</code> etc.</p>
+
+<p><strong>As a bonus:</strong> Good books about concurrency in Java:</p>
+
+<ul>
+<li><a href="http://www.goodreads.com/book/show/127932.Java_Concurrency_in_Practice">Java Concurrency in Practice</a></li>
+<li><a href="http://www.goodreads.com/book/show/629608.Concurrent_Programming_in_Java">Concurrent Programming in Java</a></li>
+</ul>
+
+
+<p><strong>Lesson:</strong> Always handle exceptions. Pay more attention to concurrency issues.</p>
+
+<h3><a href="http://en.wikipedia.org/wiki/MIM-104_Patriot">Patriot Missile</a> (1991)</h3>
+
+<p><strong>History:</strong> In 1991, American battery fired Patriot Missile to intercept Iraq missile.
+Interception failed because of system bug in time step calculation.
+Iraq missile destroyed an American Army barracks.</p>
+
+<p><strong>Consequences:</strong> 28 soldiers died, 100 injured.</p>
+
+<p><strong>Reason:</strong> Floating point rounding error. System&#8217;s internal clock was calculating
+time by 0.1 seconds step (0.1, 0.2, 0.3, &#8230;). As <code>0.1 = 1/10</code> have infinite binary representation
+<code>0.0001100110011001100110011001100110011001100110011001100..</code>
+and for this calculation 24-bit register was used,
+register hold just <code>0.00011001100110011001100</code> introducing truncating error
+<code>0.00000000000000000000000110011</code> what is approximately <code>0.0000001</code> in decimal.</p>
+
+<p>Small enough, huh?</p>
+
+<p>Not really, Multiplying this number for 100 hours gives:</p>
+
+<pre><code>0.0000001 * 100 * 60 * 60 * 10 = 0.36 sec
+</code></pre>
+
+<p>During that time Iraq missile travels a half kilometer, and was out of tracking radius
+for Patriot Missile. Bad things happen.</p>
+
+<p><strong>Solution:</strong> Floats are very error-prone if we don&#8217;t handle them correctly.</p>
+
+<p>Predict the output of the following code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">0.0</span><span class="o">;</span> <span class="n">d</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="o">;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Iteration&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Infinite loop. The same problem as described above.</p>
+
+<p>One solution is to use float that have exact binary representation.
+<code>0.125</code>, <code>0.25</code>, <code>0.5</code> for example.
+But this greatly reduces the space of allowed values and give less flexibility.</p>
+
+<p>Another solution to use big decimal or ratio types.
+Java, as example, have out-of-the-box <code>BigDecimal</code> class. Loop above rewritten with
+that class works as expected:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">BigDecimal</span> <span class="n">init</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;0.0&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">BigDecimal</span> <span class="n">bound</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;1.0&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">BigDecimal</span> <span class="n">step</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;0.1&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">BigDecimal</span> <span class="n">d</span> <span class="o">=</span> <span class="n">init</span><span class="o">;</span> <span class="o">!</span><span class="n">d</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">bound</span><span class="o">);</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">step</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">d</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One disadvantage it has slower execution than with floats. Consider trade-off
+between time and accuracy. If human lives on the stake, it&#8217;s not relevant choice.</p>
+
+<p><code>Ratio</code> class can be defined without any problems and used similar way.</p>
+
+<p><strong>Lesson:</strong> If you need very accurate calculations use big decimals or ratios.</p>
+
+<h3><a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a> (1998)</h3>
+
+<p><strong>History:</strong> Again about space. In 1998, communication with Mars Climate Orbiter
+was lost, because of changed trajectory. Space probe was crashed near Mars.</p>
+
+<p><strong>Consequences:</strong> Money, $327 million</p>
+
+<p><strong>Reason:</strong> Navigation system design was developed by another team.
+To represent Force they used <a href="http://en.wikipedia.org/wiki/Pound-force">pound-force</a>
+from <a href="http://en.wikipedia.org/wiki/Imperial_units">Imperial units</a>
+instead of <a href="http://en.wikipedia.org/wiki/Newton_%28unit%29">Newton</a>
+from <a href="http://en.wikipedia.org/wiki/Metric_system">metric system</a>.</p>
+
+<pre><code>1 Newton = 0.22 pound-force
+</code></pre>
+
+<p>Without provided conversion between them system failed.</p>
+
+<p>Issue resemble to using dates in different timezones, but much more critical.</p>
+
+<p><strong>Solution:</strong> First of all, at least one science-aware person must perform code review.
+At least for code blocks with formulas and calculations. If there are comments about using pound-force,
+the problem easy spotted. Second of all, received code must be tested on model
+instead of physical machine. This is also, likely, detects the issue.
+Developer who wrote that less guilty, but still guilty.</p>
+
+<p>There are different approaches to implement this in java:</p>
+
+<p>very bad approach, we don&#8217;t know what units are used:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">new</span> <span class="nf">Force</span><span class="o">(</span><span class="mf">1.533</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>better (still bad) approach to indicate with comment:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// force in Newtons!</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">Force</span><span class="o">(</span><span class="mf">1.533</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>better (still bad) approach to indicate different constructors for different units:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">new</span> <span class="nf">ForceInNewtons</span><span class="o">(</span><span class="mf">1.533</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I prefer approach where you specifies a <em>value</em> and <em>unit</em> in the constructor, and
+they converted to something common unit (metric) convenient for use in internal representation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">enum</span> <span class="n">ForceUnit</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">NEWTON</span><span class="o">,</span>
+</span><span class='line'>  <span class="n">POUND_FORCE</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">new</span> <span class="nf">Force</span><span class="o">(</span><span class="mf">1.533</span><span class="o">,</span> <span class="n">ForceUnit</span><span class="o">.</span><span class="na">NEWTON</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A bit more code, but it is understandable and easy to use for different unit systems.
+Unit conversion method can be defined either at the <code>enum ForceUnit</code> or <code>class Force</code> level.</p>
+
+<p><strong>Lesson:</strong> Always explicitly indicate what units used in your code.</p>
+
+<p><em>To be continued.</em></p>
+
+<h3>Links</h3>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
+<li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
+<li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History&#8217;s Worst Software Bugs</a></li>
+<li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
+<li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
+<li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
+<li><a href="http://courses.cs.vt.edu/cs3604/lib/Therac_25/Therac_1.html">An Investigation of the Therac-25 Accidents</a></li>
+<li><a href="http://seeri.etsu.edu/SECodeCases/ethicsC/PatriotMissile.htm">An Analysis of the Patriot Missile System</a></li>
+<li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
+<li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 011]]></title>
@@ -2296,179 +2804,6 @@ There are two more lazy sequences: prime numbers and powers of 2.
 It&#8217;s good practice to use existing functionality and not invent vehicle.</p>
 
 <p>Have fun!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure + Emacs + Leiningen + nREPL]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/"/>
-    <updated>2012-10-13T18:19:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl</id>
-    <content type="html"><![CDATA[<p>This article provides step-by-step instruction how to configure Clojure environment.</p>
-
-<!-- more -->
-
-
-<h3>Little history</h3>
-
-<p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
-But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it&#8217;s my fault, this time I&#8217;ve created configuration on GitHub</em>).
-So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
-<em>&#8220;This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead&#8221;</em>.
-Ok, let&#8217;s see what nrepl is.</p>
-
-<h3>Why emacs?</h3>
-
-<p>I don&#8217;t know. I like lisp, and emacs created in (e)lisp.
-Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
-Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can&#8217;t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
-
-<p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
-
-<p>By the way, there are lot of IDEs that can be configured much simpler way than described in this article:</p>
-
-<ul>
-<li><a href="http://clojure.bighugh.com/">Clojure Box</a> - emacs install, preconfigured for clojure. Only for Windows</li>
-<li><a href="http://code.google.com/p/counterclockwise/">Counter Clockwise</a> - eclipse plugin</li>
-<li><a href="http://www.enclojure.org/">Enclojure</a> - netbeans plugin</li>
-<li><a href="http://plugins.intellij.net/plugin/?id=4050">La Clojure</a> - IDEA plugin</li>
-<li><a href="http://www.vim.org/scripts/script.php?script_id=2501">VimClojure</a> - vim plugin</li>
-<li><a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> - new generation of IDEs?</li>
-</ul>
-
-
-<p>So, before reading, ask yourself, Do I really need emacs?</p>
-
-<h3>Emacs</h3>
-
-<p>First of all you need to install emacs, to get your future clojure coding environment. I&#8217;m using ubuntu, so I just type:</p>
-
-<p><code>sudo apt-get install emacs</code></p>
-
-<p>and it install emacs 23. If you using another OS, or do not trust package manager,
-check <a href="http://www.gnu.org/software/emacs/">GNU Emacs official website</a> for installation instructions.</p>
-
-<p>Also, you need to install emacs package-manager.</p>
-
-<ol>
-<li>Copy file <a href="http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el">package.el</a>
-to your <code>~/emacs.d/</code> folder.</li>
-<li>In your <code>~/.emacs</code> file add folowing lines:</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>(add-to-list 'load-path "~/.emacs.d/")
-</span><span class='line'>(load "package")
-</span><span class='line'>(require 'package)
-</span><span class='line'>(add-to-list 'package-archives
-</span><span class='line'>    '("marmalade" .
-</span><span class='line'>      "http://marmalade-repo.org/packages/"))
-</span><span class='line'>(package-initialize)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>These lines will be loaded after emacs restarted and install package manager.
-To check if it works, type <code>M-x package-list-packages</code> and this show you list of emacs plugins, hope you will find something useful there.</p>
-
-<h3>Leiningen</h3>
-
-<p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
-Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
-
-<p>To install lein 2 (it&#8217;s shorter name for Leiningen) do the following:</p>
-
-<ol>
-<li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
-<li>Place it on your <code>$PATH</code></li>
-<li>Make it executable</li>
-</ol>
-
-
-<p>On ubuntu this can be performed with the following commands:</p>
-
-<pre><code>cd ~/
-mkdir bin
-</code></pre>
-
-<p>Add line export <code>PATH=~/bin:$PATH</code> to your <code>~/.bashrc</code> file</p>
-
-<pre><code>cd ~/bin
-wget https://raw.github.com/technomancy/leiningen/preview/bin/lein
-chmod +x lein
-</code></pre>
-
-<p>Execute lein, for first time it will download default lein package. To verify installation run <code>lein version</code>.
-On my machine for the post date it prints: <code>Leiningen 2.0.0-preview10 on Java 1.6.0_24 OpenJDK 64-Bit Server VM</code></p>
-
-<h3>nREPL</h3>
-
-<p>We have already installed emacs package manager, so we can get nrepl from there.
-It also needs emacs major mode <code>clojure-mode</code>, so type the following commands in emacs to install needed packages:</p>
-
-<pre><code>M-x package-install clojure-mode
-M-x package-install nrepl
-</code></pre>
-
-<p>Try <code>M-x nrepl-jack-in</code> to execute REPL, where you can play with clojure commands.</p>
-
-<h3>Bind all together</h3>
-
-<p>We have fully configured environment for clojure and how to use it?</p>
-
-<p>Create new clojure project using lein:</p>
-
-<p><code>lein new helloworld</code></p>
-
-<p>Start nREPL server in emacs:</p>
-
-<p><code>M-x nrepl-jack-in</code></p>
-
-<p>Open core project file in emacs:</p>
-
-<p><code>C-f helloworld/src/helloworld/core.clj</code></p>
-
-<p>Write simple function:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">helloworld.core</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">hello</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">println </span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Compile it:</p>
-
-<p><code>C-c C-k</code></p>
-
-<p>Switch to nREPL buffer, change namespace and run hello function:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">helloworld.core</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nf">hello</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Probably, you&#8217;ll get output:</p>
-
-<pre><code>Hell, O'World!
-nil
-</code></pre>
-
-<p><strong>Congratulations!</strong> You just created working clojure project.</p>
-
-<p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
-There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
-I&#8217;ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
-is currently available.</p>
 ]]></content>
   </entry>
   
