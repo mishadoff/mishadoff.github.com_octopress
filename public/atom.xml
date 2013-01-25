@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-01-25T13:48:46+02:00</updated>
+  <updated>2013-01-25T17:47:43+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 013]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-013/"/>
+    <updated>2013-01-25T16:33:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-013</id>
+    <content type="html"><![CDATA[<blockquote><p>Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=13">http://projecteuler.net/problem=13</a></p>
+
+<!-- more -->
+
+
+<p><em>Assume, here is a huge amount of digits. In any case, you can always find them in permalink.</em></p>
+
+<p>What is the problem to sum one-hundred numbers?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="nv">numbers</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Done.</p>
+
+<p>Are you kidding me? Not so fast. The question is <em>what type of number you must choose</em>
+to sum all these numbers. <code>int</code>? <code>long</code>? <code>looooong</code>? <code>super long long</code>?</p>
+
+<p>Technique to sum very long numbers called
+<a href="http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">Bignum arithmetic</a>.
+To solve that problem you just need to implement this technique&#8230; or use already implemented.</p>
+
+<p>Java (<em>yeah we talking about it</em>) support long arithmetics with
+<a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">BigInteger</a>.
+And clojure does.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With that function you&#8217;ll get the big number.
+Just truncate first 10 digits and you are good.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">apply str </span><span class="p">(</span><span class="nb">take </span><span class="mi">10</span> <span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(for [i &#8221;<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>&#8221;] i)</p>
+
+<p><strong>P.S.</strong> Ideally, last line should be wrapped
+with <code>(read-string ...)</code> to produce number type. But we using
+manual submission, so it is fair.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 012]]></title>
@@ -2705,111 +2760,6 @@ Particularly, I agree. We could hide <code>palindrome?</code> implementation ins
 But we haven&#8217;t did this and have function <code>palindrome?</code> that we can reuse in other problems. Also it shows important concept,
 how we can reuse existing implementations to get new functionality. And again: maybe there is (<em>I&#8217;m sure there is</em>) another solution
 which is more clever than bruteforce. But this solution works only <code>0.2</code> sec. on my machine, so this is ok.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 003]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-003/"/>
-    <updated>2012-10-30T19:12:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-003</id>
-    <content type="html"><![CDATA[<blockquote><p>The prime factors of 13195 are 5, 7, 13 and 29.</p>
-
-<p>What is the largest prime factor of the number 600851475143?</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=3">http://projecteuler.net/problem=3</a></p>
-
-<!-- more -->
-
-
-<p>If you familiar with <a href="http://en.wikipedia.org/wiki/Prime_number">prime numbers</a>, you apparently know basic algorithms to find them,
-if not, I advice to get familiar with it. There are lot of problems devoted to prime numbers on Project Euler. So, read 10 minutes about prime numbers, and go on.</p>
-
-<p>In few words, prime number is a number starting from 2 that has no divisors except <em>1</em> and <em>itself</em>.
-Exposing this logic on all numbers, we can simply find first prime numbers: <code>2, 3, 5, 7, 11, ...</code></p>
-
-<p>To implement function that search for prime numbers we can implement predicate, that test whether number is prime or not:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">prime?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class='line'>   <span class="p">(</span><span class="nb">= </span><span class="mi">2</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
-</span><span class='line'>                <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">))]</span>
-</span><span class='line'>                  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">i</span><span class="p">))</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We iterate from 1 up to number and calculate reminder of division number by iteration counter.
-If result is zero we return 1, otherwise we return 0.
-For each number we get list with length of that number that marked with 1 for exact divisors.
-For example for <code>6</code> list will be <code>(1 1 1 0 0 1)</code>, and for <code>7</code> list will be <code>(1 0 0 0 0 0 0 1)</code>.
-Than we calculate sum of this list, which represents number of divisors. If count is two, that means number is prime.
-This is simplest algorithm for testing prime number, built from prime number definition.</p>
-
-<p>Performing small optimization you can see that in lists above, first and last elements are always equals to 1.
-We can just drop them. Another optimization is we don&#8217;t need go on when we found at least one remainder.
-And I&#8217;m pretty sure you can find lot of flaws in this implementation.</p>
-
-<p>But the most useful optimization is assumption that we don&#8217;t need iterate to <code>n</code>, we can iterate to <code>sqrt(n)</code>.
-This is based on fact that if we found some number <code>a</code> that is divisor of <code>n</code>, then there is another number <code>b = n / a</code>.
-And <code>b</code> is also divisior of <code>n</code>. Little transformation gives us <code>a * b = n</code>. Assume <code>a &lt; b</code>, so if we found <code>a</code> we don&#8217;t need to seek for <code>b</code>.
-Number <code>n</code> is not prime. Maximum value of a achieved when <code>a</code> equals to <code>b</code>, <code>a^2 = n</code>, <code>a = sqrt(n)</code>.
-This is reduce complexity of algorithm from <code>O(n)</code> to <code>O(sqrt(n))</code>.</p>
-
-<p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-002/">previous problem</a> we mentioned <code>clojure.contrib.lazy-seqs</code> package,
-where we have primes lazy sequence. Let&#8217;s use it!</p>
-
-<p>Algorithm for solving our problem is following:</p>
-
-<ol>
-<li>Iterate through all prime number that less than square root of number</li>
-<li>If this number is divisor add it to list</li>
-<li>Find maximum from that list</li>
-</ol>
-
-
-<p>To transform statements above into clojure, we get:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">greatest-prime-of</span> <span class="p">[</span><span class="nv">number</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">reduce max </span><span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nf">mod</span> <span class="nv">number</span> <span class="nv">%</span><span class="p">))</span>
-</span><span class='line'>                      <span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">%</span> <span class="p">(</span><span class="nf">sqrt</span> <span class="nv">number</span><span class="p">))</span> <span class="nv">primes</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Something new here:</p>
-
-<ul>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/max">max</a> - function that returns the greatest number of its arguments.</li>
-<li><a href="http://clojuredocs.org/clojure_core/clojure.core/zero_q">zero?</a> - predicate that test whether number is equal to zero or not.
-The same as <code>#(= 0 %)</code>.</li>
-<li><a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a> - function from <code>clojure.contrib.math</code>. Name is obvious.</li>
-</ul>
-
-
-<p>Now, we want to find result. Run the line</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">greatest-prime-of</span> <span class="mi">600851475143</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Congratulations!</strong> Third problem solved.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem003.clj">GitHub</a> for lazy!</p>
-
-<p><strong>P.S.</strong> Instead of using <code>clojure.contrib.math</code> for square root we could just write <code>(Math/sqrt n)</code> and got rid of dependency.
-But for me is better to reuse something that was implemented in library. It&#8217;s tested and worked, where your implementation can miss some point.
-If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 9 minutes. There are only 9 functions,
-but you will probably reinvent them all the time:
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt">expt</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/abs">abs</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/sqrt">sqrt</a>,
-<a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/round">round</a> and others.</p>
 ]]></content>
   </entry>
   

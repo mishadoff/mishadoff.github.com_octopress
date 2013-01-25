@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-01-25T13:48:46+02:00</updated>
+  <updated>2013-01-25T17:47:43+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 013]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-013/"/>
+    <updated>2013-01-25T16:33:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-013</id>
+    <content type="html"><![CDATA[<blockquote><p>Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=13">http://projecteuler.net/problem=13</a></p>
+
+<!-- more -->
+
+
+<p><em>Assume, here is a huge amount of digits. In any case, you can always find them in permalink.</em></p>
+
+<p>What is the problem to sum one-hundred numbers?</p>
+
+<p><code>clojure
+(reduce + numbers)
+</code></p>
+
+<p>Done.</p>
+
+<p>Are you kidding me? Not so fast. The question is <em>what type of number you must choose</em>
+to sum all these numbers. <code>int</code>? <code>long</code>? <code>looooong</code>? <code>super long long</code>?</p>
+
+<p>Technique to sum very long numbers called
+<a href="http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">Bignum arithmetic</a>.
+To solve that problem you just need to implement this technique... or use already implemented.</p>
+
+<p>Java (<em>yeah we talking about it</em>) support long arithmetics with
+<a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">BigInteger</a>.
+And clojure does.</p>
+
+<p><code>clojure
+(reduce + (map bigint numbers))
+</code></p>
+
+<p>With that function you'll get the big number.
+Just truncate first 10 digits and you are good.</p>
+
+<p><code>clojure
+(apply str (take 10 (str (reduce + (map bigint numbers)))))
+</code></p>
+
+<p>(for [i "<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>"] i)</p>
+
+<p><strong>P.S.</strong> Ideally, last line should be wrapped
+with <code>(read-string ...)</code> to produce number type. But we using
+manual submission, so it is fair.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 012]]></title>
@@ -529,139 +581,6 @@ functions, programming and even problem was not challenging. But you see the way
 we solve it. We tried "bad" approach with knowing about all its disadvantages.
 One more step and we improved it and got right solution. So it is not that bad
 approach to try simple solution, even if it is wrong.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 008]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-008/"/>
-    <updated>2012-11-27T22:53:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-008</id>
-    <content type="html"><![CDATA[<blockquote><p>Find the greatest product of five consecutive digits in the 1000-digit number.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=8">http://projecteuler.net/problem=8</a></p>
-
-<p><em>Large number under the cut.</em></p>
-
-<!-- more -->
-
-
-<p><code>
-73167176531330624919225119674426574742355349194934
-96983520312774506326239578318016984801869478851843
-85861560789112949495459501737958331952853208805511
-12540698747158523863050715693290963295227443043557
-66896648950445244523161731856403098711121722383113
-62229893423380308135336276614282806444486645238749
-30358907296290491560440772390713810515859307960866
-70172427121883998797908792274921901699720888093776
-65727333001053367881220235421809751254540594752243
-52584907711670556013604839586446706324415722155397
-53697817977846174064955149290862569321978468622482
-83972241375657056057490261407972968652414535100474
-82166370484403199890008895243450658541227588666881
-16427171479924442928230863465674813919123162824586
-17866458359124566529476545682848912883142607690042
-24219022671055626321111109370544217506941658960408
-07198403850962455444362981230987879927244284909188
-84580156166097919133875499200524063689912560717606
-05886116467109405077541002256983155200055935729725
-71636269561882670428252483600823257530420752963450
-</code></p>
-
-<p>Idea behind this problem is pretty straightforward:</p>
-
-<ol>
-<li>Init <code>maximum</code> with some small value, zero would be good.</li>
-<li>Take first 5 digits, calculate the product.</li>
-<li>If product is greater than our current <code>maximum</code>, reassign it.</li>
-<li>Shift, to take other 5 digits, and back to the step 1.</li>
-</ol>
-
-
-<p>A simple optimization can be applied: if our last element of 5 digit group is zero,
-then skip 5 shifts. But it's details.</p>
-
-<p>Let's make our problem little harder to get more from clojure.</p>
-
-<p>Assume that these digits stored in the file. First thing we need: to read the file.</p>
-
-<p><code>clojure
-(slurp "path/to/the/file")
-</code></p>
-
-<p><a href="http://clojuredocs.org/clojure_core/clojure.core/slurp">slurp</a> is the simplest
-function to read file content (<em>In fact, not only files</em>).
-It just returns string representation of the whole file.</p>
-
-<p>Then we need to break one large string into symbols.</p>
-
-<p><code>clojure
-(seq "helloyo") =&gt; (\h \e \l \l \o \y \o)
-</code></p>
-
-<p><a href="http://clojuredocs.org/clojure_core/clojure.core/seq">seq</a> return a sequence with linear access
-to collection. If applied to string, return sequence of characters.</p>
-
-<p>But, there are some garbage in the file we don't want, new lines for example.</p>
-
-<p><code>clojure
-(remove #(= \newline %) [\h \e \l \l \o \newline \y \o])
-</code></p>
-
-<p>(<em>slash</em>) + something - represents character in clojure.
-<code>\newline</code> is a new line, known as <code>\n</code> in other languages.</p>
-
-<p>Now we have long sequence with all digits from file.
-Need to get all consecutive groups with 5 letters.</p>
-
-<p><code>clojure
-(partition 5 1 [\h \e \l \l \o \y \o]) =&gt; [[\h \e \l \l \o] [\e \l \l \o \y] ... ]
-</code></p>
-
-<p><a href="http://clojuredocs.org/clojure_core/clojure.core/partition">partition</a>
-is an excelent function for such tasks. We specify <code>5</code> - size of partition,
-and <code>1</code> shift size. It generates all consecutive groups with 5 elements till the end.</p>
-
-<p>Calulating the product for each group gives us the solution.</p>
-
-<p><code>clojure
-(reduce * [1 2 3 4])
-</code></p>
-
-<p>Not so fast.</p>
-
-<p>You, probably, get <code>ClassCastException</code>.</p>
-
-<p>After reading the file, we just get bunch of characters,
-instead of digits in mathematical sense. And applied mathematical operation <code>*</code> to them.
-So, simply speaking, <code>\1</code> is not <code>1</code>.</p>
-
-<p>That's why we need to transform every digit character to it's actual digit value.</p>
-
-<p><code>clojure
-(map #(- (int %) 48) [\1 \2 \3]) =&gt; [1 2 3]
-</code></p>
-
-<p>This awful implementation do the work.</p>
-
-<ul>
-<li>Cast each character to int, get the <a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>
-representation for digit.</li>
-<li>From each ASCII value we subtract <code>48</code> and get digit value.</li>
-</ul>
-
-
-<p>Applying <code>product</code> of digits defined earlier we get solution to this problem.</p>
-
-<p>Again, full code on <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem008.clj">GitHub</a>.</p>
-
-<p><strong>P.S.</strong> <code>slurp</code> function very powerful and has may applications. You can specify encoding
-for reading as you want or read whole html page by url. But it is also very dangerous function,
-because reads all file contents to the memory and can take considerable amount of time. If you have
-a large file, say 15GB, read it line by line with buffered reader. Also, note
-<a href="http://clojuredocs.org/clojure_core/clojure.core/spit">spit</a> function. It is opposite to <code>slurp</code> -
-writes string to the file.</p>
 ]]></content>
   </entry>
   

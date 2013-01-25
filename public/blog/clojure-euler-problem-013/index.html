@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Java Magic. Part 2: 0xCAFEBABE - mishadoff thoughts</title>
+  <title>Clojure Euler: Problem 013 - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s CAFEBABE. To make sure, create simple java file, call it Hello.java &hellip;">
+  <meta name="description" content="Work out the first ten digits of the sum of the following one-hundred 50-digit numbers. Permalink: http://projecteuler.net/problem=13 Assume, here is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-013/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Java Magic. Part 2: 0xCAFEBABE</h1>
+      <h1 class="entry-title">Clojure Euler: Problem 013</h1>
     
     
       <p class="meta">
@@ -97,54 +97,60 @@
   
 
 
-<time datetime="2012-10-31T19:42:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
+<time datetime="2013-01-25T16:33:00+02:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s <code>CAFEBABE</code>.</p>
+<div class="entry-content"><blockquote><p>Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=13">http://projecteuler.net/problem=13</a></p>
 
 <!-- more -->
 
 
-<p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
+<p><em>Assume, here is a huge amount of digits. In any case, you can always find them in permalink.</em></p>
+
+<p>What is the problem to sum one-hundred numbers?</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="nv">numbers</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
+<p>Done.</p>
 
-<p><img src="/images/cafebabe.png" title="cafebabe" alt="" /></p>
+<p>Are you kidding me? Not so fast. The question is <em>what type of number you must choose</em>
+to sum all these numbers. <code>int</code>? <code>long</code>? <code>looooong</code>? <code>super long long</code>?</p>
 
-<p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
+<p>Technique to sum very long numbers called
+<a href="http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">Bignum arithmetic</a>.
+To solve that problem you just need to implement this technique&#8230; or use already implemented.</p>
 
-<blockquote><p>We used to go to lunch at a place called St Michael&#8217;s Alley.
-According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
-It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
-When Jerry died, they even put up a little Buddhist-esque shrine.
-When we used to go there, we referred to the place as Cafe Dead.
-Somewhere along the line it was noticed that this was a HEX number.
-I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
-I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after &#8220;CAFE&#8221; (it seemed to be a good theme)
-I hit on BABE and decided to use it. At that time, it didn&#8217;t seem terribly important or destined to go anywhere but the trash-can of history.
-So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
-and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p></blockquote>
+<p>Java (<em>yeah we talking about it</em>) support long arithmetics with
+<a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">BigInteger</a>.
+And clojure does.</p>
 
-<p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
-If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
-By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With that function you&#8217;ll get the big number.
+Just truncate first 10 digits and you are good.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">apply str </span><span class="p">(</span><span class="nb">take </span><span class="mi">10</span> <span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(for [i &#8221;<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>&#8221;] i)</p>
+
+<p><strong>P.S.</strong> Ideally, last line should be wrapped
+with <code>(read-string ...)</code> to produce number type. But we using
+manual submission, so it is fair.</p>
 </div>
 
 
@@ -167,12 +173,12 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
   
 
 
-<time datetime="2012-10-31T19:42:00+02:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
+<time datetime="2013-01-25T16:33:00+02:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
   
 </span>
 
@@ -181,7 +187,7 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-013/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-013/" >Tweet</a>
   
   
   
@@ -192,10 +198,8 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/clojure-euler-problem-004/" title="Previous Post: Clojure Euler: Problem 004">&laquo; Clojure Euler: Problem 004</a>
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-012/" title="Previous Post: Clojure Euler: Problem 012">&laquo; Clojure Euler: Problem 012</a>
       
-      
-        <a class="basic-alignment right" href="/blog/what-is-greater-e-pi-or-pi-e/" title="Next Post: What is greater: e^π or π^e?">What is greater: e^π or π^e? &raquo;</a>
       
     </p>
   </footer>
@@ -286,8 +290,8 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/';
-        var disqus_url = 'http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/';
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-013/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-013/';
         var disqus_script = 'embed.js';
       
     (function () {
