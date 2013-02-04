@@ -75,3 +75,9 @@ footer: true
 >
 > -- [Ralph Johnson](http://en.wikipedia.org/wiki/Ralph_Johnson_%28computer_scientist%29)
 <br />
+
+> ...one of the main causes of the fall of the Roman Empire was that, lacking zero,
+> they had no way to indicate successful termination of their C programs.
+>
+> -- Robert Firth
+<br />
