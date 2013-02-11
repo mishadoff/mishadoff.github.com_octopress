@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-12T00:38:29+02:00</updated>
+  <updated>2013-02-12T00:44:42+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -890,13 +890,17 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
     <id>http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url</id>
     <content type="html"><![CDATA[<p>Recently, I found on reddit very interesting Java code snippet (slightly modified):</p>
 
-<p>{% codeblock lang:java %}
-HashSet set = new HashSet();
-set.add(new URL("http://google.com"));
-set.contains(new URL("http://google.com"));
-Thread.sleep(60000);
-set.contains(new URL("http://google.com"));
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">HashSet</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">();</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">60000</span><span class="o">);</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>What do you think the output for lines 3 and 5 will be?</p>
 
@@ -912,17 +916,25 @@ Turn off your network cable or wi-fi, and you'll get <code>true, true</code>.</p
 
 <p>Let's see how hashCode calculated:</p>
 
-<p>{% codeblock lang:java %}
-public synchronized int hashCode() {
-  if (hashCode != -1)</p>
-
-<pre><code>return hashCode;
-</code></pre>
-
-<p>  hashCode = handler.hashCode(this);
-  return hashCode;
-}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">hashCode</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>We can see hashCode is an instance variable that calculates once. Makes sense, <code>URL</code> is <a href="http://en.wikipedia.org/wiki/Immutable_object">immutable</a>.
 What is handler? It's an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.

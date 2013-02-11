@@ -32,7 +32,7 @@ such style.
 
 After reading, you'll understand what time/space complexity is, difference between *Theta* and *Big-O* notations,
 recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
-skill to classify that complexities on O(n), O(n^2), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
+skill to classify that complexities on O(n), O(n^2 ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
 with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.
 
 ### 2. [On Structural Immutability](http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/)
@@ -41,5 +41,3 @@ with solutions. It is more productive to solve this exercises by yourselves and 
 ### 4. [40+ Fantastic Game Development Tutorials From Across the Web](http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/)
 
 ### 5. [What is your best programming joke](http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458)
-
-Tags:

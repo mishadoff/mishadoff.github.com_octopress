@@ -4,7 +4,7 @@
   <title><![CDATA[Category: digest | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/digest/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-12T00:38:29+02:00</updated>
+  <updated>2013-02-12T00:44:42+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,50 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Programming Digest 1]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
-    <updated>2013-02-12T02:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
-    <content type="html"><![CDATA[<!-- more -->
-
-
-<h3>1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
-
-<blockquote><p>...it's highly likely that someone on the loop will be unimpressed with you,
-even if you are Alan Turing. Especially if you're Alan Turing,
-in fact, since it means you obviously don't know C++</p></blockquote>
-
-<p>The quote accurately explains what this post about. The author gives great mental and
-technical tips about interviewing process (not only in Google).
-Big portion of motivation guaranteed, perhaps you man feel dumber after reading.</p>
-
-<p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
-graphs, other data structures, math, operating systems and at least one programming language very well.
-Not bad, right? After reading that article I've build long-term learning plan for myself, which is still
-not succesful. Great article.</p>
-
-<h3>2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
-
-<p>This article helps you partially cover first thing from previous article: <em>algorithm complexity</em>.
-By the way it is written with understandable <em>for programmers</em> language, examples, pictures, excerpts - I like
-such style.</p>
-
-<p>After reading, you'll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
-recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
-skill to classify that complexities on O(n), O(n<sup>2),</sup> O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
-with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
-
-<h3>2. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
-
-<h3>4. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
-
-<h3>5. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
-
-<p>Tags:</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest Announcement]]></title>
