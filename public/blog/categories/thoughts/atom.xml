@@ -4,7 +4,7 @@
   <title><![CDATA[Category: thoughts | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/thoughts/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-04T02:26:13+02:00</updated>
+  <updated>2013-02-12T00:38:29+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest Announcement]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-announcement/"/>
+    <updated>2013-02-11T23:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-announcement</id>
+    <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
+on the internet and give basic description for them.</p>
+
+<!-- more -->
+
+
+<p>I do not plan this <em>digest</em> as periodical thing,
+so the first pattern I found appropriate is to publish this as soon
+as I have ten articles marked as <em>favorite</em> somewhere.</p>
+
+<p>That's the rule: <strong>each post - 10 articles</strong>.</p>
+
+<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I've read.</p>
+
+<p>Hard to say what topics will be covered.
+I call it <em>programming digest</em> because most of articles will be somehow
+related to programming, but do not blame me if you see articles with another
+topic (math or humour), believe me they can be interesting also.</p>
+
+<p>By the way, a lot of articles may be old, even very old (<em>don't call me Necromancer</em>)
+but if they appear here, I found them somehow relevant and important to post.</p>
+
+<p>Hope, you'll find such sort of digest is interesting for reading and I like if you
+share your favorite <em>programming-related</em> articles with me.</p>
+
+<p>Have fun!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[What is source code?]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-04T02:26:13+02:00</updated>
+  <updated>2013-02-12T00:37:18+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 1]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
+    <updated>2013-02-12T02:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
+    <content type="html"><![CDATA[<!-- more -->
+
+
+<h3>1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
+
+<blockquote><p>&#8230;it&#8217;s highly likely that someone on the loop will be unimpressed with you,
+even if you are Alan Turing. Especially if you&#8217;re Alan Turing,
+in fact, since it means you obviously don&#8217;t know C++</p></blockquote>
+
+<p>The quote accurately explains what this post about. The author gives great mental and
+technical tips about interviewing process (not only in Google).
+Big portion of motivation guaranteed, perhaps you man feel dumber after reading.</p>
+
+<p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
+graphs, other data structures, math, operating systems and at least one programming language very well.
+Not bad, right? After reading that article I&#8217;ve build long-term learning plan for myself, which is still
+not succesful. Great article.</p>
+
+<h3>2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
+
+<p>This article helps you partially cover first thing from previous article: <em>algorithm complexity</em>.
+By the way it is written with understandable <em>for programmers</em> language, examples, pictures, excerpts - I like
+such style.</p>
+
+<p>After reading, you&#8217;ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
+recursive functions complexity and lot more. By the way you will learn basic types of time complexities, and get
+skill to differentiate complexities by yourselves. Note the articles consists of some excercises, which immediately followed
+with solutions. But it is more productive to solve this exercises and then compare to solutions.</p>
+
+<h3>2. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
+
+<h3>4. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
+
+<h3>5. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
+
+<p>Tags:</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest Announcement]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-announcement/"/>
+    <updated>2013-02-11T23:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-announcement</id>
+    <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
+on the internet and give basic description for them.</p>
+
+<!-- more -->
+
+
+<p>I do not plan this <em>digest</em> as periodical thing,
+so the first pattern I found appropriate is to publish this as soon
+as I have ten articles marked as <em>favorite</em> somewhere.</p>
+
+<p>That&#8217;s the rule: <strong>each post - 10 articles</strong>.</p>
+
+<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I&#8217;ve read.</p>
+
+<p>Hard to say what topics will be covered.
+I call it <em>programming digest</em> because most of articles will be somehow
+related to programming, but do not blame me if you see articles with another
+topic (math or humour), believe me they can be interesting also.</p>
+
+<p>By the way, a lot of articles may be old, even very old (<em>don&#8217;t call me Necromancer</em>)
+but if they appear here, I found them somehow relevant and important to post.</p>
+
+<p>Hope, you&#8217;ll find such sort of digest is interesting for reading and I like if you
+share your favorite <em>programming-related</em> articles with me.</p>
+
+<p>Have fun!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
+    <updated>2013-02-01T17:43:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
+    <content type="html"><![CDATA[<p>Clojure is fun</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Data Analysis: Facebook Hacker Cup 2013]]></title>
@@ -2575,498 +2662,6 @@ There is fresh, 4th edition, available.</p>
 <p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
 
 <p>Hope, I won&#8217;t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 005]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-005/"/>
-    <updated>2012-11-09T19:01:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-005</id>
-    <content type="html"><![CDATA[<blockquote><p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
-
-<p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=5">http://projecteuler.net/problem=5</a></p>
-
-<!-- more -->
-
-
-<p>It&#8217;s a tricky problem. First look gives us straightforward solution:
-Take a number, test if it evenly divisible by all of needed numbers, if yes - we good,
-otherwise increment number and test again, and again, and again&#8230;</p>
-
-<p>No, really, assume it&#8217;s our function to test divisibility by all 20 numbers:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">evenly-divisible-by-20?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="mi">21</span><span class="p">)]</span>
-</span><span class='line'>      <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">i</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Awful implementation, but keeps the idea.
-If sum of all remainders equals to zero, then every remainder equals to zero.
-Now, using this function we write naive implementation:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">first</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">drop-while </span><span class="o">#</span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nf">evenly-divisible-by-20?</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">iterate inc </span><span class="mi">1</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note, function <a href="http://clojuredocs.org/clojure_core/clojure.core/drop-while">drop-while</a>
-similar to take-while, but skips values until they meet predicate condition.</p>
-
-<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more&#8230;</p>
-
-<p>I did not post exact answer here, but result greater than 100 millions.
-And obviously this linear algorithm will work considerable amount of time.
-So, stop the execution and let&#8217;s see at the problem from the other end.</p>
-
-<p><em>What is the smallest number that evenly divisible by 1 and 2?</em>
-Obviously 2.</p>
-
-<p><em>What is the smallest number that evenly divisible by 2 and 3?</em>
-A bit harder, but answer is 6.</p>
-
-<p><em>What is the smallest number that evenly divisible by 4 and 5?</em>
-20.</p>
-
-<blockquote><p>Oh, it&#8217;s just multiplication</p></blockquote>
-
-<p>Unfortunately, no. Take numbers <code>4</code> and <code>6</code>, multiplication gives us <code>24</code> and it will be evenly divisible by <code>4</code> and <code>6</code>, but
-this number is not the <em>smallest</em>. Snmallest number for this case will be <code>12</code>.</p>
-
-<p>There is a function, that finds smallest number divisible by 2 different numbers.
-This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a> (<em>lcm</em>).
-There are lot of different methods to calculate it, but we will use one that uses
-<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a> (<em>gcd</em>)</p>
-
-<p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
-
-<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid&#8217;s algorithm</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">gcd</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">a</span> <span class="nv">n</span> <span class="nv">b</span> <span class="nv">k</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">b</span><span class="p">)</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">recur</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Using formula above, our <em>lcm</em> function will look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">lcm</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">abs</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">k</span><span class="p">))</span> <span class="p">(</span><span class="nf">gcd</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You see, here we need <code>abs</code> function. Nothing hard to implement it, but if we remember
-<a href="http://mishadoff.github.com/blog/clojure-euler-problem-004">previous problem</a> there are was a reference
-to <code>clojure.contrib.math</code> library. <code>abs</code> there and we can use it, just add to your namespace definition</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.math</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Oh look, even <code>lcm</code> and <code>gcd</code> functions there. Excellent.</p>
-
-<p>Now we can solve the problem. Remember the <code>reduce</code> function?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce </span><span class="nv">lcm</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">21</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Actually, this one-liner is solution. And it gives us correct result.</p>
-
-<p>What happens here? We iteratively (<em>with using reduce</em>) find the lcm for <code>1</code> and <code>2</code>,
-then for result and <code>3</code>, for result and <code>4</code> and so on.</p>
-
-<p><strong>Great!</strong> One more problem solved!</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem005.clj">GitHub</a></p>
-
-<p><strong>P.S.</strong> One lesson we learned here. Be aware about library functionality. It helps you
-to solve problems and avoid coward mistakes. For example, we have incorrect above implementation
-for <code>lcm</code> function. If we call <code>(lcm 0 0)</code> program fails with <code>DivideByZero</code> exception.
-It still solve our problem, but in future uses can be an additional problem.
-But in lib implementation this error is covered. And we can be sure that <em>almost always</em> libs contain much less
-errors that your <em>new fancy wheel</em>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What is greater: e^π or π^e?]]></title>
-    <link href="http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/"/>
-    <updated>2012-11-06T16:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e</id>
-    <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don&#8217;t have it?</p>
-
-<!-- more -->
-
-
-<p>I don&#8217;t remember the exact origin of this meme, but this situation was almost every time when we played with numbers.</p>
-
-<blockquote><p>&#8211; Propose a number.</p>
-
-<p>&#8211; e<sup>π.</sup></p>
-
-<p>&#8211; Integer, shithead!</p></blockquote>
-
-<p>This even might appear in usual conversations:</p>
-
-<blockquote><p>&#8211; What is her size?</p>
-
-<p>&#8211; e<sup>π</sup></p>
-
-<p>&#8211; So small. I prefer π<sup>e.</sup></p></blockquote>
-
-<p>And a following arguing about <strong>what is greater?</strong> Until we simply compare results using calculator.</p>
-
-<p>Let&#8217;s see how this problem can be solved without using a calc.</p>
-
-<p><strong>Warning:</strong> Goal of this article not only to show correct solution to the problem, but provide other solutions (<em>even incorrect!</em>) that can convince somebody.</p>
-
-<h2>Origins</h2>
-
-<p><a href="http://en.wikipedia.org/wiki/Pi">π</a> is the mathematical constant. It&#8217;s just a number that represents ratio between circle circumference and diameter <code>C/d</code>.
-Approximately, equal to <code>3.1415</code>. <a href="http://webdocs.cs.ualberta.ca/~smillie/Pi10000.html">Get more decimal places for FREE!</a></p>
-
-<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pi_eq_C_over_d.svg/600px-Pi_eq_C_over_d.svg.png" width="300" height="300"></p>
-
-<p><a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">e</a> is the harder one. If you sum infinite sequence below, you&#8217;ll get <code>e</code>.
-Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmltest/gifcity/e.2mil">FREE decimal places without registration!</a></p>
-
-<p><img src="http://upload.wikimedia.org/math/8/0/5/8050a584d4b528e6293bf02c34f6e399.png" alt="" /></p>
-
-<p>I&#8217;m pretty sure that&#8217;s more than enough you need to know to solve the problem.</p>
-
-<h2>Google It</h2>
-
-<p><a href="https://www.google.com/#hl=uk&amp;gs_nf=3&amp;tok=WfGdb7x83ofvKLc_85HnIw&amp;cp=5&amp;gs_id=227&amp;xhr=t&amp;q=e^pi+-+pi^e&amp;pf=p&amp;output=search&amp;sclient=psy-ab&amp;oq=e^pi+&amp;gs_l=&amp;pbx=1&amp;bav=on.2,or.r_gc.r_pw.r_qf.&amp;fp=51e735cc3a152124&amp;bpcl=37643589&amp;biw=1280&amp;bih=634">Get answer from google</a></p>
-
-<h2>Rough estimate</h2>
-
-<p><img src="http://i.imgur.com/Jv0W1.jpg" alt="" /></p>
-
-<p>We can use exponent function on integers, so let&#8217;s just round the numbers.
-<code>3.1415</code> becomes <code>3</code>, <code>2.7183</code> becomes&#8230; <code>3</code> also.</p>
-
-<pre><code>3^3 vs 3^3
-27 = 27
-</code></pre>
-
-<p>They are equal. Wrong answer.</p>
-
-<p>Let&#8217;s use <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">floor and ceiling</a> functions.</p>
-
-<p>Floor: <code>floor(e) = 2</code>, <code>floor(π) = 3</code></p>
-
-<pre><code>2^3 vs 3^2
-8 &lt; 9
-</code></pre>
-
-<p>Ceiling: <code>ceil(e) = 3</code>, <code>ceil(π) = 4</code></p>
-
-<pre><code>3^4 vs 4^3
-81 &gt; 64
-</code></pre>
-
-<p>Two different results depend on round function that we use. Can&#8217;t be sure.
-Need another method for verification.</p>
-
-<h2>Calculus</h2>
-
-<p><img src="http://i.imgur.com/Low4R.jpg" alt="" /></p>
-
-<p>This needs basic understanding of <a href="http://en.wikipedia.org/wiki/Logarithm">logarithm</a> and <a href="http://en.wikipedia.org/wiki/Derivative">derivative</a></p>
-
-<pre><code>e^π vs π^e
-</code></pre>
-
-<p>Use logarithm property <code>a &lt; b =&gt; log(a) &lt; log(b)</code>, and take <code>log</code> with base <code>e</code> (<code>ln</code>).
-Honestly, it&#8217;s not logarithm property, but <a href="http://en.wikipedia.org/wiki/Monotonic_function">monotonic function</a> property. Who cares?</p>
-
-<pre><code>ln(e^π) vs ln(π^e)
-</code></pre>
-
-<p>Use logarithm property <code>log_a(a^b) = b</code></p>
-
-<pre><code>π vs ln(π^e)
-</code></pre>
-
-<p>Use logarithm property <code>log_a(b^c) = c * log_a(b)</code></p>
-
-<pre><code>π vs e * ln(π)
-</code></pre>
-
-<p>Now, people who know value of <code>ln(π)</code> can answer the question. We don&#8217;t know. Move <code>ln(π)</code> to the left side</p>
-
-<pre><code>π/ln(π) vs e
-</code></pre>
-
-<p>Take a look at expression <code>π/ln(π)</code>. Change <code>π</code> to <code>x</code>. Got <code>x/ln(x)</code>. What is it? It&#8217;s a function!</p>
-
-<p>Let&#8217;s find extrema of this function <code>f(x)</code>. Take first derivative.</p>
-
-<pre><code>f'(x) = (ln(x) - 1)/(ln^2(x))
-</code></pre>
-
-<p>We get extrema at the points where derivative equals to zero</p>
-
-<pre><code>(ln(x) - 1)/(ln^2(x)) = 0
-</code></pre>
-
-<p>Ratio number equals to zero if its numerator equals to zero.</p>
-
-<pre><code>ln(x) - 1 = 0
-</code></pre>
-
-<p>Move <code>1</code> to the right</p>
-
-<pre><code>ln(x) = 1
-</code></pre>
-
-<p>Logarithm equals to <code>1</code> if base equals to argument. Therefore</p>
-
-<pre><code>x = e
-</code></pre>
-
-<p>And if you know <code>1/ln(x)</code> behavior, you get that extremum is a minimum of function <code>f(x)</code>.
-Substitute <code>x</code> with <code>e</code></p>
-
-<pre><code>e/ln(e) = e
-</code></pre>
-
-<p>Function minimum is <code>e</code> where <code>x = e</code>. If <code>x = π</code>, due to minimum, function value will be <strong>greater than</strong> <code>e</code>.
-Remember that we do this to get estimate of <code>π/ln(π)</code> which was on the left side of expression <code>π/ln(π) vs e</code> and if its <strong>greater than</strong> e,
-<code>e^π</code> greater than <code>π^e</code>. Huh. Done.</p>
-
-<p><strong>Note:</strong> We skip mathematical proof that extrema <code>x = e</code> is minimum. Not hard to show.</p>
-
-<h2>Manual computations</h2>
-
-<p><img src="http://i.imgur.com/tTTCC.jpg" alt="" /></p>
-
-<p>Why don&#8217;t we perform calculation manually?</p>
-
-<p>Ok, we have <code>π</code>, which is <code>3.1415</code> or <code>22/7</code> its famous simplest ratio approximation.
-On the other side we have <code>e</code>, which is <code>2.7183</code>. But I&#8217;m not aware of any <code>e</code> approximation.
-Let&#8217;s create one from the definition of <code>e</code>. Take and sum first 5 elements.</p>
-
-<pre><code>1 + 1 + 1/2 + 1/6 + 1/24 = 65/24
-</code></pre>
-
-<p>Excellent. Now we need just compare <code>2.7183^(22/7)</code> and <code>3.1415^(65/24)</code>. What can be simpler?</p>
-
-<p>Rational exponent can be expanded as nth-root of some power:</p>
-
-<p><img src="http://upload.wikimedia.org/math/a/4/3/a43d1edf99a795101aa58ce39cc72f52.png" alt="" /></p>
-
-<p>To take n-th root manually we use a special case of <a href="http://en.wikipedia.org/wiki/Newton%27s_method">Newton&#8217;s method</a>.
-Just one iteration:</p>
-
-<p><img src="http://upload.wikimedia.org/math/a/2/5/a25d581b7161170fc8ab0dbe74532ecc.png" alt="" /></p>
-
-<p>Estimate for <code>e^π</code>:</p>
-
-<pre><code>2.7183^(22/7)
-sqrt_7(2.7183^22)
-</code></pre>
-
-<p>&#8230;Multiplying 22 times&#8230;</p>
-
-<p>In fact, not all so bad. To calculate <code>a^22</code> we need only 6 multiplications:</p>
-
-<pre><code>a^1 * a^1 = a^2
-a^2 * a^2 = a^4
-a^4 * a^4 = a^8
-a^8 * a^8 = a^16
-a^16 * a^4 = a^20
-a^20 * a^2 = a^22
-</code></pre>
-
-<p>Nth-root we obtain (<em>decimal dropped</em>):</p>
-
-<pre><code>sqrt_7(3585440111)
-</code></pre>
-
-<p>Applying Newton&#8217;s method. Select closest root:</p>
-
-<pre><code>1^7 = 7 &lt; 3585440111
-2^7 = 128 &lt; 3585440111
-3^7 = 2187 &lt; 3585440111
-...
-23^7 = 3404825447 &lt; 3585440111
-24^7 = 4586471424 &gt; 3585440111
-</code></pre>
-
-<p>Good. Most closest value is <code>23</code>. Then</p>
-
-<pre><code>sqrt_7(3585440111.25)
-sqrt_7(23^7 + 180614664)
-23 + 180614664/(7 * 23^6)
-23 + 180614664/1036251223
-23 + 0.17
-23.17
-</code></pre>
-
-<p>And the same for <code>π^e</code>:</p>
-
-<pre><code>3.1415^(65/24)
-sqrt_24(3.1415^65)
-</code></pre>
-
-<p>This power <code>65</code> much larger than <code>22</code>. But it needs just 7 multiplications.</p>
-
-<p>We can cheat here. We get rough result <code>2 * 10^32</code>. Now we test <code>23^24</code> (<em>most closest root from previous</em>) and its value <code>4.8 * 10^32</code>.
-So, definitely nth-root will be lower than <code>23</code>. Solved.</p>
-
-<p>Don&#8217;t ask how many basic arithmetic operations we performed. A lot.</p>
-
-<h2>Liar approach</h2>
-
-<p>Actually, it&#8217;s offensive to use the word &#8220;liar&#8221;.
-There is a whole technique called <a href="http://en.wikipedia.org/wiki/Mathematical_fallacy">Mathematical Fallacy</a>.
-It based on some illegal math transformation (<em>division by zero, roots from negative numbers, etc.</em>) to get <strong>any desired result</strong>.</p>
-
-<p>This is powerful instrument for mathematicians to show magic for not mathematicians.</p>
-
-<p>Suppose, we don&#8217;t know exact value of π. Not a problem, but we know <a href="http://en.wikipedia.org/wiki/Complex_number">complex numbers</a>.
-And also the fact that <code>sqrt(-1) = i</code>. Where <code>i</code> is <a href="http://en.wikipedia.org/wiki/Imaginary_unit">imaginary unit</a></p>
-
-<p>We have bad memory and can&#8217;t remember π value, but we know <a href="http://en.wikipedia.org/wiki/Euler%27s_formula">Euler&#8217;s formula</a></p>
-
-<pre><code>e^(i * x) = cos(x) + i * sin(x)
-</code></pre>
-
-<p>x is a variable. Take <code>x = 2π</code>:</p>
-
-<pre><code>e^(2π * i) = cos(2π) + i * sin(2π)
-</code></pre>
-
-<p>From the school math course we know: <code>cos(2π) = 1</code>, <code>sin(2π) = 0</code>. Just substitute:</p>
-
-<pre><code>e^(2π * i) = 1 + i * 0
-</code></pre>
-
-<p>Everything multiplied by <code>0</code> is <code>0</code>. Next step:</p>
-
-<pre><code>e^(2π * i) = 1
-</code></pre>
-
-<p><code>a^b</code> gives <code>1</code> if <code>b = 0</code>. That we also know from logarithms.</p>
-
-<pre><code>2π * i = 0
-</code></pre>
-
-<p>It means either <code>2</code> or <code>π</code> or <code>i</code> is zero. <code>2</code> is not zero. <code>i</code> is not zero. <code>π</code> we don&#8217;t know.
-Ok, that means <code>π</code> equals to <code>0</code>.</p>
-
-<p>Returning to comparing our constants:</p>
-
-<pre><code>e^0 vs 0^e
-</code></pre>
-
-<p>Left term is <code>1</code>, right is <code>0</code>. That means <code>e^π</code> <strong>greater than</strong> <code>π^e</code>.</p>
-
-<p>The trick that we used hard to spot. Look carefully again through the proof.</p>
-
-<p>The fallacy was where we implicitly took a logarithm and said that <code>2π * i = 0</code>.
-The number <code>e^(2π * i)</code> is not real and we not allowed to logarithm it.
-But if person who listens you don&#8217;t know this fact&#8230; This is an excellent proof.</p>
-
-<h2>Programming approach</h2>
-
-<p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="" /></p>
-
-<p>You not allowed to use calculator. Nothing said about programming language.</p>
-
-<p>One-liner in Java:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Fun approach</h2>
-
-<p>Derived from joke:</p>
-
-<blockquote><p>Scientific lab wasted a lot of money for calculating decimal places of π. They come up with idea, let&#8217;s π will be equal to 4, to save money.</p>
-
-<p>&#8211; But why 4 instead of 3?</p>
-
-<p>&#8211; Because 3 reserved for e.</p></blockquote>
-
-<p>That way <code>e^π</code> equal to <code>81</code>, and <code>π^e</code> equal to <code>64</code>. <code>81 &gt; 64</code>. Simple, concise way.</p>
-
-<h2>Conclusion</h2>
-
-<p>There are much more fun about these irrational bastards. Math is fun.</p>
-
-<p>If you were asked question of such type on interview, 99% that interviewer is joking and want to test your reaction.
-Last solution would be good. But if he or she really expect solution with using calculus, nothing to lose.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Java Magic. Part 2: 0xCAFEBABE]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/"/>
-    <updated>2012-10-31T19:42:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe</id>
-    <content type="html"><![CDATA[<p>Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s <code>CAFEBABE</code>.</p>
-
-<!-- more -->
-
-
-<p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
-
-<p><img src="http://mishadoff.github.com/images/cafebabe.png" title="cafebabe" alt="" /></p>
-
-<p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
-
-<blockquote><p>We used to go to lunch at a place called St Michael&#8217;s Alley.
-According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
-It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
-When Jerry died, they even put up a little Buddhist-esque shrine.
-When we used to go there, we referred to the place as Cafe Dead.
-Somewhere along the line it was noticed that this was a HEX number.
-I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
-I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after &#8220;CAFE&#8221; (it seemed to be a good theme)
-I hit on BABE and decided to use it. At that time, it didn&#8217;t seem terribly important or destined to go anywhere but the trash-can of history.
-So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
-and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p></blockquote>
-
-<p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
-If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
-By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
 ]]></content>
   </entry>
   
