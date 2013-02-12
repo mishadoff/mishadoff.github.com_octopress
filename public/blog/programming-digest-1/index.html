@@ -9,8 +9,8 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="1. Get that job at Google &#8230;it&#8217;s highly likely that someone on the loop will be unimpressed with you,
-even if you are Alan Turing. &hellip;">
+  <meta name="description" content="How to get job at Google, estimate complexity of your algorithm,
+what is Structural Immutability, why PHP is awful and Java is awesome, best &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,7 +105,10 @@ even if you are Alan Turing. &hellip;">
   </header>
 
 
-<div class="entry-content"><!-- more -->
+<div class="entry-content"><p>How to get job at Google, estimate complexity of your algorithm,
+what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
+
+<!-- more -->
 
 
 <h3>1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
@@ -126,21 +129,106 @@ not succesful. Great article.</p>
 <h3>2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
 
 <p>This article helps you partially cover first thing from previous article: <em>algorithm complexity</em>.
-By the way it is written with understandable <em>for programmers</em> language, examples, pictures, excerpts - I like
+By the way, it is written with understandable (<em>for programmers</em>) language, examples, pictures, excerpts - I like
 such style.</p>
 
 <p>After reading, you&#8217;ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
-recursive functions complexity and lot more. By the way you will learn basic types of time complexities, and get
-skill to differentiate complexities by yourselves. Note the articles consists of some excercises, which immediately followed
-with solutions. But it is more productive to solve this exercises and then compare to solutions.</p>
+recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
+skill to classify that complexities on O(n), O(n<sup>2</sup> ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
+with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
 
-<h3>2. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
+<p>If you already know all that, don&#8217;t skip! It also helpful to fresh you knowledge.</p>
 
-<h3>4. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
+<h3>3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
 
-<h3>5. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
+<p>What is Structural Immutability?</p>
 
-<p>Tags:</p>
+<p>We know difference between mutable and immutable data structures and their pros and cons.
+Structural immutability means that you <em>can</em> change the contents of you data, but <em>can not</em> change their structure.
+It gives better performance than plain immutable objects, but also keep your concurrent programs easier than with
+full mutability. Plain old array is an example. Read it to know more.</p>
+
+<h3>4. <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">PHP: a fractal of bad design</a></h3>
+
+<blockquote><p>Virtually every feature in PHP is broken somehow</p></blockquote>
+
+<p>Whole article is a criticism of bad PHP language design.</p>
+
+<blockquote><p>PHP was originally designed explicitly for non-programmers (and, reading between the lines, non-programs)</p></blockquote>
+
+<p>Total destroy. I mean it - total.</p>
+
+<blockquote><p>Array&#8230; This one datatype acts as a list, ordered hash, ordered set,
+sparse list, and occasionally some strange combination of those.
+How does it perform? What kind of memory use will there be?
+Who knows? Not like I have other options, anyway.</p></blockquote>
+
+<p>As I never know PHP, and hope won&#8217;t, that article was one of the funniest things I ever read.</p>
+
+<blockquote><p>equality operator is not transitive&#8230;comparison is not even consistent</p></blockquote>
+
+<p>If you PHPist don&#8217;t go away, just read it. Maybe it will change your life.</p>
+
+<blockquote><p>Genericism&#8230; There is none. If a function might need to do two slightly different things, PHP just has two functions.</p></blockquote>
+
+<p>Stop quoting. Just read it.</p>
+
+<h3>5. <a href="http://grimoire.ca/mysql/choose-something-else">Do Not Pass This Way Again</a></h3>
+
+<blockquote><p>Considering MySQL? Use something else. Already on MySQL? Migrate.</p></blockquote>
+
+<p>This article logically continues previous one, but for now critisism on MySQL.
+Perhaps, it is not powerful as PHP version, but still worth to read.</p>
+
+<h3>6. <a href="http://www.omsn.de/blog/big-arrays-in-java">Big arrays in Java</a></h3>
+
+<p>Two articles of hate in a row, and currently Java? No way.
+How much we hate Java so we love it. By the way, JDK8 is soon.</p>
+
+<p>Maybe this post not so expressive as previous ones, but it reveals capability I never knew of.
+How to create array in Java with size greater than <code>Integer.MAX_VALUE</code>. Use the undocumented
+class <code>sun.misc.Unsafe</code>. Just note this only works in SunJDK and OpenJDK.</p>
+
+<h3>7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
+
+<p>If we started about JDK8&#8230;</p>
+
+<p>The most interesting feature set in expected JDK8 is Project Lambda.</p>
+
+<p>Functional interfaces and functions without all that finals in lexical scope and anonymous classes,
+common patterns for list processing like <code>map</code>, <code>reduce</code> and <code>filter</code>,
+parallelism, streams, method references and lot more comming soon.</p>
+
+<p><em>What is the default method implementation in the interface?!</em></p>
+
+<h3>8. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
+
+<p>Have you ever had the passion to write your own game?</p>
+
+<p>I had. Because I like games and I even tried. Unfortunately, not so succesful as expected, but anyway.</p>
+
+<blockquote><p>We need to go deeper</p></blockquote>
+
+<p>Honestly, it&#8217;s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
+you really interested in gamedev, you&#8217;ll find a lot of there including game algorithms,
+popular engine tutorials, math behind the games, design questions and more useful tips. Great stuff.</p>
+
+<h3>9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
+
+<p>Bored to pair your socks every time? Learn how to do it efficiently.</p>
+
+<p>At first glance it is a humorous question, indeed it is, but also it is an interesting real-world
+problem with variety of algorithms can be applied. I think all algorithm courses should be teached
+that way.</p>
+
+<h3>10. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
+
+<blockquote><p>If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.</p>
+
+<p>The rest of them will write Perl programs.</p></blockquote>
+
+<p>If you have an hour or two reserved for laughing, just read this. A <strong>lot</strong> of
+crazy programming jokes. Stackoverflow community is amazing.</p>
 </div>
 
 
@@ -218,15 +306,15 @@ with solutions. But it is more productive to solve this exercises and then compa
       </li>
     
       <li class="post">
-        <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/data-analysis-facebook-hacker-cup/">Data Analysis: Facebook Hacker Cup 2013</a>
       </li>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-013/">Clojure Euler: Problem 013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-012/">Clojure Euler: Problem 012</a>
       </li>
     
   </ul>
