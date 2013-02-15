@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-12T02:58:15+02:00</updated>
+  <updated>2013-02-16T01:13:14+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
+    <updated>2013-02-16T01:08:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
+    <content type="html"><![CDATA[<blockquote><p>Which starting number, under one million, produces the longest Collatz chain?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
+
+<!-- more -->
+
+
+<blockquote><p>The following iterative sequence is defined for the set of positive integers:</p>
+
+<p>n → n/2 (n is even)</p>
+
+<p>n → 3n + 1 (n is odd)</p>
+
+<p>Using the rule above and starting with 13, we generate the following sequence:</p>
+
+<p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+
+<p>It can be seen that this sequence (starting at 13 and finishing at 1)
+contains 10 terms. Although it has not been proved yet (Collatz Problem),
+it is thought that all starting numbers finish at 1.</p>
+
+<p>Which starting number, under one million, produces the longest chain?</p>
+
+<p>NOTE: Once the chain starts the terms are allowed to go above one million.</p></blockquote>
+
+<p>Sequences again.
+So, first of all we need function to detect next collatz number.
+It is pretty straightforward:</p>
+
+<p><code>clojure
+(defn collatz-next [n]
+  (if (even? n) (/ n 2) (inc (* n 3))))
+</code></p>
+
+<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
+starting from number <code>n</code>:</p>
+
+<p><code>clojure
+(iterate collatz-next n)
+</code></p>
+
+<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
+count of collatz chain sequence:</p>
+
+<p><code>clojure
+(defn collatz-chain-length [n]
+  (inc (count (take-while #(&gt; % 1) (iterate collatz-next n)))))
+</code></p>
+
+<p>Now we have almost all code logic and just use it: calculate collatz chain
+for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
+
+<p>``` clojure
+(first (reduce #(if (> (second %1) (second %2)) %1 %2)</p>
+
+<pre><code>           (map #(list % (collatz-chain-length %)) (range 1 1000000))))
+</code></pre>
+
+<p>```</p>
+
+<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
+
+<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
+and I have no idea how to solve it another way.</p>
+
+<p>I am sure there is a better algorithm than mine. But I don't know it.
+What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
+
+<blockquote><p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p></blockquote>
+
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,...</p>
+
+<p>Got it?</p>
+
+<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
+chain length of <code>13</code>, and whole its path to <code>1</code> we don't need to calculate length
+for <code>40</code>, <code>20</code> and so on.</p>
+
+<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
+it to have recursive solution.</p>
+
+<p>Here the first (<em>and final</em>) version:</p>
+
+<p>``` clojure
+(defn collatz-chain-recursive [n]
+  (if (= n 1) 1</p>
+
+<pre><code>  (inc (collatz-chain-recursive (collatz-next n)))))
+</code></pre>
+
+<p>```</p>
+
+<p>Recursion is impressive at the point that its implementation
+almost exactly follows the problem definition. It is easy to understand.</p>
+
+<p>But, as you may notice our implementation not
+<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
+have troubles. Do not think about it unless we actually have them.</p>
+
+<p>For the sake of fun let's run this function instead of previous to
+obtain the results.</p>
+
+<p><strong>20 seconds</strong>, it is great. I even don't think that
+this simple recursive function gives such boost in performance.</p>
+
+<p>One little tweak in result function:</p>
+
+<p>``` clojure
+(first
+  (apply max-key second</p>
+
+<pre><code>     (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
+</code></pre>
+
+<p>```</p>
+
+<p>And we have <strong>~12 seconds</strong>.</p>
+
+<p>Unexpected "The End". Yeah, I love The Doors.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
+
+<p><strong>P.S.</strong> I really wanted to explain technique called
+<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
+simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
+but seems that caching result doesn't have much sense here because
+12 seconds is acceptable. We will have chance to introduce
+memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 013]]></title>
@@ -493,94 +629,6 @@ If you interested, read nice Christophe Grand's post
 
 <p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
 just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 009]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-009/"/>
-    <updated>2012-12-11T17:41:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-009</id>
-    <content type="html"><![CDATA[<blockquote><p> A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
-
-<p>For example, 3<sup>2</sup> + 4<sup>2</sup> = 9 + 16 = 25 = 5<sup>2</sup></p>
-
-<p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-Find the product abc.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=9">http://projecteuler.net/problem=9</a></p>
-
-<!-- more -->
-
-
-<p>Thinking about clever way to solve it...</p>
-
-<p>Nothing good came up in your mind? Try bruteforce.</p>
-
-<p>Again, the idea behind bruteforce for this problem to iterate over all possible values
-for <code>a</code>, <code>b</code> and <code>c</code>, that sums to <code>1000</code> and compose Pythagorean triplet.
-That's why we need predicate to test if three numbers compose triplet:</p>
-
-<p><code>clojure
-(defn is-triplet? [a b c]
-  (= (+ (* a a) (* b b)) (* c c)))
-</code></p>
-
-<p>Then our bruteforce solution looks like this:</p>
-
-<p>``` clojure
-(first (for [a (range 1 1000) b (range 1 1000) c (range 1 1000)</p>
-
-<pre><code>         :when (and (is-triplet? a b c) (= (+ a b c) 1000))] (* a b c)))
-</code></pre>
-
-<p>```</p>
-
-<p>It finds the right solution, in ~45 seconds. Bad enough.</p>
-
-<h3>Trick #1</h3>
-
-<p>Do not iterate on <code>c</code> variable, because knowing <code>a</code> and <code>b</code> we always
-can calculate <code>c = 1000 - a - b</code>.</p>
-
-<p>Problem solution transformed into next one:</p>
-
-<p>``` clojure
-(first (for [a (range 1 1000) b (range 1 1000)</p>
-
-<pre><code>         :let [c (- 1000 a b)]
-         :when (is-triplet? a b c)] (* a b c)))
-</code></pre>
-
-<p>```</p>
-
-<h3>Trick #2</h3>
-
-<p>Use rule <code>a &lt; b &lt; c</code> from problem definition. Then our iteration will be:</p>
-
-<p><code>clojure
-(for [a (range 1 1000) b (range a (- 1000 a))])
-</code></p>
-
-<h3>Trick #3</h3>
-
-<p><code>is-triplet?</code> predicate use 3 multiplications, addition and comparison.
-We can add to <code>:when</code> section, predicate that compare <code>c</code> to <code>b</code>. This is also
-slightly reduce number of <code>is-triplet?</code> execution.</p>
-
-<p><code>clojure
-:when (and (&gt; c b) (is-triplet? a b c))
-</code></p>
-
-<p>Now solution found in ~45 msecs. 1000 times faster. Not bad.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem009.clj">(apply str (reverse "buHtiG"))</a></p>
-
-<p><strong>P.S.</strong> Unfortunately, there was nothing in this problem about new clojure
-functions, programming and even problem was not challenging. But you see the way how
-we solve it. We tried "bad" approach with knowing about all its disadvantages.
-One more step and we improved it and got right solution. So it is not that bad
-approach to try simple solution, even if it is wrong.</p>
 ]]></content>
   </entry>
   

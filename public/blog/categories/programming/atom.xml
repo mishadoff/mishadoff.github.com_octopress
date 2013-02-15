@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-12T02:58:15+02:00</updated>
+  <updated>2013-02-16T01:13:14+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
+    <updated>2013-02-16T01:08:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
+    <content type="html"><![CDATA[<blockquote><p>Which starting number, under one million, produces the longest Collatz chain?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
+
+<!-- more -->
+
+
+<blockquote><p>The following iterative sequence is defined for the set of positive integers:</p>
+
+<p>n → n/2 (n is even)</p>
+
+<p>n → 3n + 1 (n is odd)</p>
+
+<p>Using the rule above and starting with 13, we generate the following sequence:</p>
+
+<p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+
+<p>It can be seen that this sequence (starting at 13 and finishing at 1)
+contains 10 terms. Although it has not been proved yet (Collatz Problem),
+it is thought that all starting numbers finish at 1.</p>
+
+<p>Which starting number, under one million, produces the longest chain?</p>
+
+<p>NOTE: Once the chain starts the terms are allowed to go above one million.</p></blockquote>
+
+<p>Sequences again.
+So, first of all we need function to detect next collatz number.
+It is pretty straightforward:</p>
+
+<p><code>clojure
+(defn collatz-next [n]
+  (if (even? n) (/ n 2) (inc (* n 3))))
+</code></p>
+
+<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
+starting from number <code>n</code>:</p>
+
+<p><code>clojure
+(iterate collatz-next n)
+</code></p>
+
+<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
+count of collatz chain sequence:</p>
+
+<p><code>clojure
+(defn collatz-chain-length [n]
+  (inc (count (take-while #(&gt; % 1) (iterate collatz-next n)))))
+</code></p>
+
+<p>Now we have almost all code logic and just use it: calculate collatz chain
+for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
+
+<p>``` clojure
+(first (reduce #(if (> (second %1) (second %2)) %1 %2)</p>
+
+<pre><code>           (map #(list % (collatz-chain-length %)) (range 1 1000000))))
+</code></pre>
+
+<p>```</p>
+
+<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
+
+<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
+and I have no idea how to solve it another way.</p>
+
+<p>I am sure there is a better algorithm than mine. But I don't know it.
+What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
+
+<blockquote><p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p></blockquote>
+
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,...</p>
+
+<p>Got it?</p>
+
+<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
+chain length of <code>13</code>, and whole its path to <code>1</code> we don't need to calculate length
+for <code>40</code>, <code>20</code> and so on.</p>
+
+<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
+it to have recursive solution.</p>
+
+<p>Here the first (<em>and final</em>) version:</p>
+
+<p>``` clojure
+(defn collatz-chain-recursive [n]
+  (if (= n 1) 1</p>
+
+<pre><code>  (inc (collatz-chain-recursive (collatz-next n)))))
+</code></pre>
+
+<p>```</p>
+
+<p>Recursion is impressive at the point that its implementation
+almost exactly follows the problem definition. It is easy to understand.</p>
+
+<p>But, as you may notice our implementation not
+<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
+have troubles. Do not think about it unless we actually have them.</p>
+
+<p>For the sake of fun let's run this function instead of previous to
+obtain the results.</p>
+
+<p><strong>20 seconds</strong>, it is great. I even don't think that
+this simple recursive function gives such boost in performance.</p>
+
+<p>One little tweak in result function:</p>
+
+<p>``` clojure
+(first
+  (apply max-key second</p>
+
+<pre><code>     (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
+</code></pre>
+
+<p>```</p>
+
+<p>And we have <strong>~12 seconds</strong>.</p>
+
+<p>Unexpected "The End". Yeah, I love The Doors.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
+
+<p><strong>P.S.</strong> I really wanted to explain technique called
+<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
+simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
+but seems that caching result doesn't have much sense here because
+12 seconds is acceptable. We will have chance to introduce
+memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 1]]></title>
@@ -697,462 +833,6 @@ Not bad as improvement.</p>
 <p><strong>P.S.</strong> If you test-addicted person, you, probably, point out
 that function <code>num-of-divisors</code> yields incorrect result for input <code>1</code>.
 We can live with that, because our needed number is much greater than 1.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
-    <link href="http://mishadoff.github.com/blog/critical-software-bugs-part-1/"/>
-    <updated>2013-01-20T18:48:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/critical-software-bugs-part-1</id>
-    <content type="html"><![CDATA[<p>Little journey through the history of most critical software bugs
-with some code examples.</p>
-
-<p><em>Do not try to reproduce any of these!</em></p>
-
-<!-- more -->
-
-
-<h3>Intro</h3>
-
-<blockquote><p>Every last bug is the last but one.</p></blockquote>
-
-<p><strong>Bugs</strong> are bad. Some of them cause uncomfortable work, more actions
-than expected, inconsistency, layout issues, etc.
-Some of them "<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>" at all.</p>
-
-<p><strong>Bad bugs</strong> much worse. They cause data corruption, invalid data representation,
-unavailability to perform action, losing integrity and so on.</p>
-
-<p>There are <strong>critical bugs</strong> with painful consequences. They can damage the health, nature, people
-break buildings, technics. Theoretically, they
-<a href="http://www.washingtonpost.com/wp-srv/inatl/longterm/coldwar/shatter021099b.htm">can lead to World War III</a>.
-Hope, it's just theoretically.</p>
-
-<p>If you are software engineer, you definitely will commit the bugs. No panacea.
-But if we aware about common mistakes, then less likely we make that mistakes.</p>
-
-<p>This article is review of famous most critical software bugs
-including brief history, consequences, root causes, possible solutions, code examples and some advices.</p>
-
-<h3><a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a> (1962)</h3>
-
-<p><strong>History:</strong>
-In 1962, spacecraft <em>Mariner 1</em> was guided by computer program with error causes
-racket do not follow its expected trajectory. To prevent tragic consequences, racket
-was destoyed immediately.</p>
-
-<p><strong>Consequences:</strong> Money, $18 million.</p>
-
-<p><strong>Reason:</strong>
-There are tons of versions about what type of error it was, but official version
-is <em>missing hyphen</em> ('-') in program. Maybe it's just a myth for publicity,
-but, anyway, if the reason of bug is incorrect handwritten formula transcription
-from paper to computer, it's sad.</p>
-
-<p>Probably, the root cause of that is writer and computer operator were different people.
-It's common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
-an enterprise, as nowadays. That's why scientist, programmer, and operator could be
-different people.</p>
-
-<p>Related story, it's why zero symbol has a period or diagonal line inside - to prevent
-confusing with "big O" for "typer" person. Just compare <code>0</code> and <code>O</code>.</p>
-
-<p><strong>Solution:</strong>
-It's hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
-If you type into computer from someone's paper sheet, check, re-check and double re-check
-what you typing. Ask if you have concerns. Especially, if it is the program for spaceship.</p>
-
-<p>In very <em>far-fetched</em> example missing minus sign can result into invalid computation:</p>
-
-<p>``` java
-double getDiscountPercent() {</p>
-
-<pre><code>return 0.25; // instead of return -0.25;
-</code></pre>
-
-<p>}</p>
-
-<p>double calculatePrice(double initial) {</p>
-
-<pre><code>return initial * (1.0 + getDiscountPercent());
-</code></pre>
-
-<p>}
-```</p>
-
-<p>That way instead of paying $75, you pay $125.</p>
-
-<p><strong>Lesson:</strong> Always check your manual rewriting actions.</p>
-
-<h3><a href="http://en.wikipedia.org/wiki/Siberian_pipeline_sabotage">Siberian pipeline sabotage</a> (1982)</h3>
-
-<p><strong>History:</strong> Cold war. Soviet Union steal technology for managing gas pipelines from Canada. This
-technology intentionally contained the bug (<a href="http://en.wikipedia.org/wiki/Logic_bomb">Logic Bomb</a>), developed by CIA
-for sabotage purposes. Bomb triggered.</p>
-
-<p><strong>Consequences:</strong> The greatest non-nuclear explosion in the world.</p>
-
-<p><strong>Reason:</strong> Every microship from stolen technology would
-work fine just for 10 million cycles, after that switches to another mode.</p>
-
-<p>They <em>used someone's code</em>.</p>
-
-<p><strong>Solution:</strong></p>
-
-<blockquote><p>You shall not steal</p>
-
-<p>-- <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p></blockquote>
-
-<p>Honestly, if someone's technology used for critical areas, like gas
-transportation, it must be reviewed and tested. 100 times.</p>
-
-<p>Story can be translated as:</p>
-
-<p>I found memory card on the city dump.
-Card contained one shell script <code>please-execute-me.sh</code>.
-I <em>executed</em> it. System crashed. Who's guilty? Just me.</p>
-
-<p>Use software from trusted sources.</p>
-
-<p>In modern software world, we often use someone's libraries, frameworks,
-APIs to build our own applications. We <em>expect</em> that code is <em>reviewed</em> and <em>tested</em>.
-If not, we can help to do it. How we can be sure these libs without logic bombs?</p>
-
-<p>Trust or review the sources. That's why I love open source software.</p>
-
-<p>Logic bomb detection is not that hard. Just find the code that causes error
-and see the reason of that error. Again, code review helps <em>to prevent</em> the
-logic bomb instead of <em>fixing it</em>. Build application to production only from
-version control system (<em>which is controlled, right?</em>)</p>
-
-<p>Just for educational purposes: simple example of time-triggered logic bomb</p>
-
-<p>``` java
-public class LogicBombRunner {</p>
-
-<pre><code>    public static void main(String[] args) {
-            Thread thread = new Thread(new LogicBomb());
-            thread.start();
-    }
-</code></pre>
-
-<p>}</p>
-
-<p>class LogicBomb implements Runnable {</p>
-
-<pre><code>    private long toStop;
-    private final long TIME_TO_TRIGGER = 1000 * 60 * 60 * 24 * 100;
-
-    public LogicBomb() {
-            toStop = System.currentTimeMillis() + TIME_TO_TRIGGER;
-    }
-
-    @Override
-    public void run() {
-            while (true) {
-                    if (System.currentTimeMillis() &lt; toStop) {
-                            System.out.println("System works fine.");
-                            try {
-                                    Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                            }
-                    } else {
-                            System.out.println("Logic bomb triggered.");
-                            throw new RuntimeException();
-                    }
-            }
-    }
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-
-<p>Yes. It throws <code>RuntimeException</code> after approximately 100 days from <code>LogicBomb</code> object creation.</p>
-
-<p><strong>Lesson:</strong> Do not steal. Trust to very limited circle of people.</p>
-
-<h3><a href="http://en.wikipedia.org/wiki/Therac-25">Therac-25</a> (1985 - 1987)</h3>
-
-<p><strong>History:</strong> Therac-25 was a medical device for radiation therapy.
-It could deliver either beta-particles or X-rays. Unfortunately,
-operating system for controling the device was written with error,
-that causes sad results.</p>
-
-<p><strong>Consequences:</strong> At least 2 patients died, 4 patients were given overdose,
-approximately 100 times intended dose.</p>
-
-<p><strong>Reason:</strong> Investigation concluded the common reason was a
-<em>bad software design</em>, <em>development practices</em> and a <em>set of bugs</em>
-instead of some particular critical bug.</p>
-
-<p>These bad practices and bugs include:</p>
-
-<ul>
-<li>No code review</li>
-<li>Poor exception handling</li>
-<li>No integration testing until device was assembled in the hospital</li>
-<li>Poor hardware design</li>
-<li><em>Bad code</em> reuse</li>
-<li>Concurrency issues</li>
-</ul>
-
-
-<p><strong>Solution:</strong> Code review its a must. Even if you working
-alone in the team, show sources to some your friend (programmer).
-Two pair of eyes can spot the mistake two times more.</p>
-
-<p><em>Poor exception handling</em>. If failure occurs, no one knows about that failure.
-Never handle exception like that:</p>
-
-<p>``` java
-catch (SomeException e) {</p>
-
-<p>}
-```</p>
-
-<p>In 99% there are must be a proper handling. If you don't know how
-to handle, rethrow it, possible with wrapping:</p>
-
-<p><code>java
-catch (SomeException e) {
-   throw new SpecificException(e);
-}
-</code></p>
-
-<p>Much better to throw responsibility for handling one level up
-in method signature:</p>
-
-<p><code>java
-void method() throws SomeException
-</code></p>
-
-<p>If your real intention to left catch block empty, say this:</p>
-
-<p><code>java
-catch (SomeExcpetion e) {
-  // swallowing this exception is intended
-}
-</code></p>
-
-<p><em>Bad code reuse</em>. <a href="http://en.wikipedia.org/wiki/Code_reuse">Code reuse</a> is a good thing.
-Except the case when you reuse something with errors.</p>
-
-<p>For example, I have following method for testing if number is even in some of my
-previous projects (<em>yes, look at your code that was written few years ago</em>):</p>
-
-<p>``` java
-static boolean isEven(int num) {</p>
-
-<pre><code>return num % 2 != 1;
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This method returns incorrect result <code>true</code> for all negative odd numbers. Just because
-<code>%</code> operator returns <code>-1</code> except <code>1</code> for negative numbers. Better do <em>NOT</em> reuse such method.
-Just write new. And replace old method immediately.</p>
-
-<p>``` java
-static boolean isEven(int num) {</p>
-
-<pre><code>return num % 2 == 0;
-</code></pre>
-
-<p>}
-```</p>
-
-<p><em>Concurrency</em>. Software world hardest issues are concurrency issues.</p>
-
-<blockquote><p>You have a problem and decide to use threads.
-Two now problems have you.</p>
-
-<p>-- Some guy from internet</p></blockquote>
-
-<br>
-
-
-<blockquote><p>You have a problem and decide to use locks.
-Now you have</p>
-
-<p>-- Some another guy from internet</p></blockquote>
-
-<p>If you know that some object will be shared between threads, one solution to
-add <code>synchronized</code> (<a href="http://en.wikipedia.org/wiki/Monitor_%28synchronization%29">Monitor object</a>)
-to each read/write state method. It will slow
-your work with that object but prevent a lot of unexpected errors.</p>
-
-<p>Although, there are much flexible synchronization mechanisms in java that
-plain old <code>synchronized</code> as <a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphores</a>,
-<a href="http://en.wikipedia.org/wiki/Mutual_exclusion">mutexes</a>,
-<a href="http://en.wikipedia.org/wiki/Read_write_lock_pattern">read-write locks</a>.</p>
-
-<p>I reccomend to use java package <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>.
-It consists of a lot of concurrency techniques, like <code>Synchronizers</code>, <code>Executors</code>,
-<code>Atomics</code>, <code>Concurrent Collections</code>, <code>Futures</code>, <code>Callbacks</code> etc.</p>
-
-<p><strong>As a bonus:</strong> Good books about concurrency in Java:</p>
-
-<ul>
-<li><a href="http://www.goodreads.com/book/show/127932.Java_Concurrency_in_Practice">Java Concurrency in Practice</a></li>
-<li><a href="http://www.goodreads.com/book/show/629608.Concurrent_Programming_in_Java">Concurrent Programming in Java</a></li>
-</ul>
-
-
-<p><strong>Lesson:</strong> Always handle exceptions. Pay more attention to concurrency issues.</p>
-
-<h3><a href="http://en.wikipedia.org/wiki/MIM-104_Patriot">Patriot Missile</a> (1991)</h3>
-
-<p><strong>History:</strong> In 1991, American battery fired Patriot Missile to intercept Iraq missile.
-Interception failed because of system bug in time step calculation.
-Iraq missile destroyed an American Army barracks.</p>
-
-<p><strong>Consequences:</strong> 28 soldiers died, 100 injured.</p>
-
-<p><strong>Reason:</strong> Floating point rounding error. System's internal clock was calculating
-time by 0.1 seconds step (0.1, 0.2, 0.3, ...). As <code>0.1 = 1/10</code> have infinite binary representation
-<code>0.0001100110011001100110011001100110011001100110011001100..</code>
-and for this calculation 24-bit register was used,
-register hold just <code>0.00011001100110011001100</code> introducing truncating error
-<code>0.00000000000000000000000110011</code> what is approximately <code>0.0000001</code> in decimal.</p>
-
-<p>Small enough, huh?</p>
-
-<p>Not really, Multiplying this number for 100 hours gives:</p>
-
-<pre><code>0.0000001 * 100 * 60 * 60 * 10 = 0.36 sec
-</code></pre>
-
-<p>During that time Iraq missile travels a half kilometer, and was out of tracking radius
-for Patriot Missile. Bad things happen.</p>
-
-<p><strong>Solution:</strong> Floats are very error-prone if we don't handle them correctly.</p>
-
-<p>Predict the output of the following code:</p>
-
-<p>``` java
-for (double d = 0.0; d != 1.0; d = d + 0.1) {</p>
-
-<pre><code>System.out.println("Iteration");
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Infinite loop. The same problem as described above.</p>
-
-<p>One solution is to use float that have exact binary representation.
-<code>0.125</code>, <code>0.25</code>, <code>0.5</code> for example.
-But this greatly reduces the space of allowed values and give less flexibility.</p>
-
-<p>Another solution to use big decimal or ratio types.
-Java, as example, have out-of-the-box <code>BigDecimal</code> class. Loop above rewritten with
-that class works as expected:</p>
-
-<p>``` java
-BigDecimal init = new BigDecimal("0.0");
-BigDecimal bound = new BigDecimal("1.0");
-BigDecimal step = new BigDecimal("0.1")</p>
-
-<p>for (BigDecimal d = init; !d.equals(bound); d = d.add(step)) {</p>
-
-<pre><code>    System.out.println(d);
-</code></pre>
-
-<p>}
-```</p>
-
-<p>One disadvantage it has slower execution than with floats. Consider trade-off
-between time and accuracy. If human lives on the stake, it's not relevant choice.</p>
-
-<p><code>Ratio</code> class can be defined without any problems and used similar way.</p>
-
-<p><strong>Lesson:</strong> If you need very accurate calculations use big decimals or ratios.</p>
-
-<h3><a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a> (1998)</h3>
-
-<p><strong>History:</strong> Again about space. In 1998, communication with Mars Climate Orbiter
-was lost, because of changed trajectory. Space probe was crashed near Mars.</p>
-
-<p><strong>Consequences:</strong> Money, $327 million</p>
-
-<p><strong>Reason:</strong> Navigation system design was developed by another team.
-To represent Force they used <a href="http://en.wikipedia.org/wiki/Pound-force">pound-force</a>
-from <a href="http://en.wikipedia.org/wiki/Imperial_units">Imperial units</a>
-instead of <a href="http://en.wikipedia.org/wiki/Newton_%28unit%29">Newton</a>
-from <a href="http://en.wikipedia.org/wiki/Metric_system">metric system</a>.</p>
-
-<pre><code>1 Newton = 0.22 pound-force
-</code></pre>
-
-<p>Without provided conversion between them system failed.</p>
-
-<p>Issue resemble to using dates in different timezones, but much more critical.</p>
-
-<p><strong>Solution:</strong> First of all, at least one science-aware person must perform code review.
-At least for code blocks with formulas and calculations. If there are comments about using pound-force,
-the problem easy spotted. Second of all, received code must be tested on model
-instead of physical machine. This is also, likely, detects the issue.
-Developer who wrote that less guilty, but still guilty.</p>
-
-<p>There are different approaches to implement this in java:</p>
-
-<p>very bad approach, we don't know what units are used:</p>
-
-<p><code>java
-new Force(1.533);
-</code></p>
-
-<p>better (still bad) approach to indicate with comment:</p>
-
-<p><code>java
-// force in Newtons!
-new Force(1.533);
-</code></p>
-
-<p>better (still bad) approach to indicate different constructors for different units:</p>
-
-<p><code>java
-new ForceInNewtons(1.533);
-</code></p>
-
-<p>I prefer approach where you specifies a <em>value</em> and <em>unit</em> in the constructor, and
-they converted to something common unit (metric) convenient for use in internal representation:</p>
-
-<p>``` java
-enum ForceUnit {
-  NEWTON,
-  POUND_FORCE
-}</p>
-
-<p>new Force(1.533, ForceUnit.NEWTON);
-```</p>
-
-<p>A bit more code, but it is understandable and easy to use for different unit systems.
-Unit conversion method can be defined either at the <code>enum ForceUnit</code> or <code>class Force</code> level.</p>
-
-<p><strong>Lesson:</strong> Always explicitly indicate what units used in your code.</p>
-
-<p><em>To be continued.</em></p>
-
-<h3>Links</h3>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
-<li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
-<li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History's Worst Software Bugs</a></li>
-<li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
-<li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
-<li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
-<li><a href="http://courses.cs.vt.edu/cs3604/lib/Therac_25/Therac_1.html">An Investigation of the Therac-25 Accidents</a></li>
-<li><a href="http://seeri.etsu.edu/SECodeCases/ethicsC/PatriotMissile.htm">An Analysis of the Patriot Missile System</a></li>
-<li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
-<li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

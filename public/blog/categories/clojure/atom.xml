@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-12T02:58:15+02:00</updated>
+  <updated>2013-02-16T01:13:14+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
+    <updated>2013-02-16T01:08:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
+    <content type="html"><![CDATA[<blockquote><p>Which starting number, under one million, produces the longest Collatz chain?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
+
+<!-- more -->
+
+
+<blockquote><p>The following iterative sequence is defined for the set of positive integers:</p>
+
+<p>n → n/2 (n is even)</p>
+
+<p>n → 3n + 1 (n is odd)</p>
+
+<p>Using the rule above and starting with 13, we generate the following sequence:</p>
+
+<p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+
+<p>It can be seen that this sequence (starting at 13 and finishing at 1)
+contains 10 terms. Although it has not been proved yet (Collatz Problem),
+it is thought that all starting numbers finish at 1.</p>
+
+<p>Which starting number, under one million, produces the longest chain?</p>
+
+<p>NOTE: Once the chain starts the terms are allowed to go above one million.</p></blockquote>
+
+<p>Sequences again.
+So, first of all we need function to detect next collatz number.
+It is pretty straightforward:</p>
+
+<p><code>clojure
+(defn collatz-next [n]
+  (if (even? n) (/ n 2) (inc (* n 3))))
+</code></p>
+
+<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
+starting from number <code>n</code>:</p>
+
+<p><code>clojure
+(iterate collatz-next n)
+</code></p>
+
+<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
+count of collatz chain sequence:</p>
+
+<p><code>clojure
+(defn collatz-chain-length [n]
+  (inc (count (take-while #(&gt; % 1) (iterate collatz-next n)))))
+</code></p>
+
+<p>Now we have almost all code logic and just use it: calculate collatz chain
+for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
+
+<p>``` clojure
+(first (reduce #(if (> (second %1) (second %2)) %1 %2)</p>
+
+<pre><code>           (map #(list % (collatz-chain-length %)) (range 1 1000000))))
+</code></pre>
+
+<p>```</p>
+
+<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
+
+<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
+and I have no idea how to solve it another way.</p>
+
+<p>I am sure there is a better algorithm than mine. But I don't know it.
+What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
+
+<blockquote><p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p></blockquote>
+
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,...</p>
+
+<p>Got it?</p>
+
+<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
+chain length of <code>13</code>, and whole its path to <code>1</code> we don't need to calculate length
+for <code>40</code>, <code>20</code> and so on.</p>
+
+<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
+it to have recursive solution.</p>
+
+<p>Here the first (<em>and final</em>) version:</p>
+
+<p>``` clojure
+(defn collatz-chain-recursive [n]
+  (if (= n 1) 1</p>
+
+<pre><code>  (inc (collatz-chain-recursive (collatz-next n)))))
+</code></pre>
+
+<p>```</p>
+
+<p>Recursion is impressive at the point that its implementation
+almost exactly follows the problem definition. It is easy to understand.</p>
+
+<p>But, as you may notice our implementation not
+<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
+have troubles. Do not think about it unless we actually have them.</p>
+
+<p>For the sake of fun let's run this function instead of previous to
+obtain the results.</p>
+
+<p><strong>20 seconds</strong>, it is great. I even don't think that
+this simple recursive function gives such boost in performance.</p>
+
+<p>One little tweak in result function:</p>
+
+<p>``` clojure
+(first
+  (apply max-key second</p>
+
+<pre><code>     (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
+</code></pre>
+
+<p>```</p>
+
+<p>And we have <strong>~12 seconds</strong>.</p>
+
+<p>Unexpected "The End". Yeah, I love The Doors.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
+
+<p><strong>P.S.</strong> I really wanted to explain technique called
+<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
+simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
+but seems that caching result doesn't have much sense here because
+12 seconds is acceptable. We will have chance to introduce
+memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Data Analysis: Facebook Hacker Cup 2013]]></title>
@@ -712,136 +848,6 @@ maximum of product.</p>
 
 <p><strong>P.S.</strong> Boring problem.
 I think it just for introducing matrices computation.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 010]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-010/"/>
-    <updated>2012-12-15T00:23:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-010</id>
-    <content type="html"><![CDATA[<blockquote><p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
-
-<p>Find the sum of all the primes below two million.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=10">http://projecteuler.net/problem=10</a></p>
-
-<!-- more -->
-
-
-<p>We have already worked with prime numbers in
-<a href="/blog/clojure-euler-problem-003/">Problem 003</a> and
-<a href="/blog/clojure-euler-problem-007/">Problem 007</a>. We also decided that
-the best way to work with prime numbers in clojure to use <code>primes</code> lazy-seq
-from <code>clojure.contrib.lazy-seqs</code>.</p>
-
-<p>Gentle reminder: Just add proper <code>:use</code> to your file:</p>
-
-<p><code>clojure
-(:use [clojure.contrib.lazy-seqs :only (primes)])
-</code></p>
-
-<p>Then, the simplest problem solution to use <code>take-while</code> stream and <code>reduce</code> for sum:</p>
-
-<p><code>clojure
-(reduce + (take-while #(&lt; % 2000000) primes))
-</code></p>
-
-<p>Again, one-line solution. Let's run it.</p>
-
-<p>Finding result on my nachine takes ~12 seconds. Small enough, but maybe somehow it can be improved?</p>
-
-<h3>Sieve of Eratosthenes</h3>
-
-<p><a href="http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a> - ancient algorithm
-for finding prime numbers. The best explanation how it works with picture from wiki:</p>
-
-<p><img src="http://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="" /></p>
-
-<p>Our first naive implementation:</p>
-
-<p>```clojure
-(defn sieve-1 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; n 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (set (range (* n n) 2000000 n))) (inc n)))))
-</code></pre>
-
-<p>```</p>
-
-<p><em>Note:</em> <a href="http://clojuredocs.org/clojure_core/clojure.set/difference">clojure.set/difference</a> function
-find the difference between two sets.</p>
-
-<p>This recursive implementation is even worse than our oneliner, it calculates the result in ~24 seconds.</p>
-
-<p>Primary optimisation is to use <code>(* n n)</code> as recursion base instead of <code>n</code>. Because of there are no prime
-numbers if we crossed greater than square root of maximum. Problem evolves.</p>
-
-<p>``` clojure
-(defn sieve-2 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; (* n n) 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (set (range (* n n) 2000000 n))) (inc n)))))
-</code></pre>
-
-<p>```</p>
-
-<p>~21 seconds. Still worse.</p>
-
-<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don't need
-to go over even numbers.</p>
-
-<p>```clojure
-(defn sieve-3 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; (* n n) 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (set (range (* n n) 2000000 n))) (+ n 2)))))
-</code></pre>
-
-<p>```</p>
-
-<p>~13 seconds. Much better... than previous, still worse than first version.</p>
-
-<p>If you looked at <code>difference</code> documentation, take a look at its implementation under "Source".
-Nothing prevent us to pass sequence as second argument instead of set. Just removing casting to set.</p>
-
-<p>``` clojure
-(defn sieve-4 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; (* n n) 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (range (* n n) 2000000 n)) (+ n 2)))))
-</code></pre>
-
-<p>```</p>
-
-<p>~6 seconds. Wow! It's better than original solution. That means our efforts were not wasteful.</p>
-
-<p>Unfortuantely, we stopped improve our function. But if you want more, other major improvements
-can be done in the following areas:</p>
-
-<ul>
-<li>Use non-persistent set to save prime numbers. It prevent overhead on new objects.</li>
-<li>Use "wheel trick" that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
-<li>Use dynamic step of iteration. We changed <code>(inc n)</code> to <code>(+ n 2)</code>, but probably there is smarter solution.</li>
-<li>Do not use <code>(reduce +)</code> because it is linear algorithm. We init <code>nums</code> sequence with some arithmetic progression.
-Its sum can be calculated in O(1) by formula. When we compose another sequence (second argument for <code>difference</code>)
-its also an arithmetic progression and sum can be calculated in O(1). When doing differencem just subtract second sum
-from first sum, and it will be current <code>nums</code> sum.</li>
-</ul>
-
-
-<p>There are much more optimisations can be done to improve prime numbers performace.
-If you interested, read nice Christophe Grand's post
-<a href="http://clj-me.cgrand.net/2009/07/30/everybody-loves-the-sieve-of-eratosthenes/">Everybody Loves The Sieve Of Erathosthenes</a></p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str "Git" "Hub")</a></p>
-
-<p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
-just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
 ]]></content>
   </entry>
   
