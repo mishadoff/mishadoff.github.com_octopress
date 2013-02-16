@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-16T01:13:14+02:00</updated>
+  <updated>2013-02-16T16:06:06+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,258 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Standard ML]]></title>
+    <link href="http://mishadoff.github.com/blog/standard-ml/"/>
+    <updated>2013-02-16T13:33:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/standard-ml</id>
+    <content type="html"><![CDATA[<p>Last weekend I was hacking <a href="http://en.wikipedia.org/wiki/Standard_ML">Standard ML</a> a bit.</p>
+
+<!-- more -->
+
+
+<h3>Coursera</h3>
+
+<p>There are excellent course on coursera called <a href="https://class.coursera.org/proglang-2012-001/class/index">Programming Languages</a></p>
+
+<p>Currently, the first half is available, that explains basic and advanced functional programming constructions
+with Standard ML as primary language. Later some idioms will be presented using
+<strong>Racket</strong> and <strong>Ruby</strong> (<em>maybe, I will finally understand ruby</em>) so you can treat this course as introduction
+to these languages. In fact, it teaches much more than &#8221;<em>how to code in XXX</em>&#8221;.</p>
+
+<h3>Tools</h3>
+
+<p>For playing with ML you need <a href="http://www.smlnj.org/">SML/NJ</a> compiler and
+<a href="http://www.smlnj.org/doc/Emacs/sml-mode.html">sml-mode</a> for emacs.</p>
+
+<p><em>If you don&#8217;t have emacs installed, do it right now!</em></p>
+
+<h3>Play</h3>
+
+<p>Following snippets give you basic understanding of ML or
+refresh your knowledge for syntax.</p>
+
+<p>Print &#8220;Hello, world!&#8221;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">print_hello_world</span> <span class="p">()</span> <span class="p">=</span> <span class="n">print</span> <span class="s2">&quot;Hello, world</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Variables (<em>in fact, values</em>):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">a</span> <span class="p">=</span> <span class="mi">38</span><span class="p">;</span>
+</span><span class='line'><span class="kr">val</span> <span class="nv">b</span> <span class="p">=</span> <span class="n">a</span> <span class="n">+</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'><span class="kr">val</span> <span class="nv">c</span> <span class="p">=</span> <span class="n">b</span> <span class="n">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Conditionals:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">cond</span> <span class="p">=</span> <span class="kr">if</span> <span class="mi">5</span> <span class="n">&gt;</span> <span class="mi">4</span> <span class="kr">then</span> <span class="mi">5</span> <span class="kr">else</span> <span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Boolean operators have terrible names:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">cond2</span> <span class="p">=</span> <span class="kr">if</span> <span class="mi">5</span> <span class="n">&gt;</span> <span class="mi">4</span> <span class="kr">andalso</span> <span class="mi">4</span> <span class="n">&gt;</span> <span class="mi">5</span> <span class="kr">then</span> <span class="mi">5</span> <span class="kr">else</span> <span class="mi">7</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Function with one parameter:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">square</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Function with more than one parameter:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">sum</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">y</span> <span class="n">+</span> <span class="n">z</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Actually, it&#8217;s not three parameters, it&#8217;s one parameter - tuple:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">swap</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To access tuple elements use hash-number, note you can specify tuple type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">get_month</span> <span class="p">(</span><span class="n">date</span> <span class="p">:</span> <span class="n">int</span> <span class="n">*</span> <span class="n">string</span> <span class="n">*</span> <span class="n">int</span><span class="p">)</span> <span class="p">:</span> <span class="n">string</span><span class="p">=</span> <span class="p">(</span><span class="nl">#2</span> <span class="n">date</span><span class="p">)</span>
+</span><span class='line'><span class="kr">val</span> <span class="nv">month1</span> <span class="p">=</span> <span class="n">get_month</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can specify input types and return type, but ML is very clever. Almost always
+it can detect correct type using <em>type inference</em> without explicit definition.</p>
+
+<p><em>I don&#8217;t understand it! Explain, please</em>. Comments:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="cm">(* Operation &#39;*&#39; defined for int types, so this function has type int -&gt; int *)</span>
+</span><span class='line'><span class="kr">fun</span> <span class="nf">cube</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is records. It&#8217;s like named tuples.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">get_month_real</span> <span class="p">({</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">})</span> <span class="p">=</span> <span class="n">month</span>
+</span><span class='line'><span class="kr">val</span> <span class="nv">month2</span> <span class="p">=</span> <span class="n">get_month_real</span><span class="p">({</span><span class="n">year</span><span class="p">=</span><span class="mi">2012</span><span class="p">,</span> <span class="n">month</span><span class="p">=</span><span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="n">day</span><span class="p">=</span><span class="mi">21</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Using <code>let</code> form we can define new lexical scope:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">add3</span> <span class="n">x</span> <span class="p">=</span>
+</span><span class='line'>    <span class="kr">let</span>
+</span><span class='line'>        <span class="kr">val</span> <span class="nv">num</span> <span class="p">=</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="kr">in</span>
+</span><span class='line'>        <span class="n">x</span> <span class="n">+</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="kr">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This leads to closures (<em>function + context</em>):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">add3</span> <span class="n">x</span> <span class="p">=</span>
+</span><span class='line'>    <span class="kr">let</span>
+</span><span class='line'>        <span class="kr">val</span> <span class="nv">num</span> <span class="p">=</span> <span class="mi">3</span>
+</span><span class='line'>        <span class="kr">fun</span> <span class="nf">add_to</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">num</span>
+</span><span class='line'>    <span class="kr">in</span>
+</span><span class='line'>        <span class="n">add_to</span> <span class="n">x</span>
+</span><span class='line'>    <span class="kr">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Function <code>add_to</code> capture <code>num</code> value from context.</p>
+
+<p>By the way functions are first-class objects and values also,
+so we can assign one function to another:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">another_cube</span> <span class="p">=</span> <span class="n">cube</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Function composition becomes a piece of cake:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">cube_and_cube</span> <span class="p">=</span> <span class="n">cube</span> <span class="n">o</span> <span class="n">cube</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We even can pass function as a parameter:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">binary_apply</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'><span class="n">binary_apply</span><span class="p">(</span><span class="n">swap</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We don&#8217;t forced to provide function name, we can use lambdas:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="n">binary_apply</span><span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">46</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This helps us easily implement such useful functions as <code>map</code>, <code>reduce</code> and <code>filter</code>.
+But they are already available in
+<a href="http://www.standardml.org/Basis/manpages.html">Standard ML Basis Library</a></p>
+
+<p>Another great feature is <em>pattern-matching</em>. Here is factorial function</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">x</span> <span class="p">=</span>
+</span><span class='line'>    <span class="kr">case</span> <span class="n">x</span> <span class="kr">of</span>
+</span><span class='line'>        <span class="mi">0</span> <span class="p">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="n">|</span> <span class="p">_</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span> <span class="n">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or list concatenation</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">concat</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
+</span><span class='line'>    <span class="kr">case</span> <span class="n">x</span> <span class="kr">of</span>
+</span><span class='line'>        <span class="p">[]</span> <span class="p">=&gt;</span> <span class="n">y</span>
+</span><span class='line'>      <span class="n">|</span> <span class="n">x::xs</span> <span class="p">=&gt;</span> <span class="n">x::concat</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Honestly, it&#8217;s just baby examples of pattern matching. In fact, it is much more
+powerful.</p>
+
+<p>And the last thing I wanted to show is datatypes:</p>
+
+<p>To define a list:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">datatype</span> <span class="nd">&#39;a</span> <span class="kt">list</span> <span class="p">=</span> <span class="nc">EMPTY</span> <span class="p">|</span> <span class="nc">CONS</span> <span class="kr">of</span> <span class="nd">&#39;a</span> <span class="n">*</span> <span class="nd">&#39;a</span> <span class="n">list</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To create that list:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">list</span> <span class="p">=</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">EMPTY</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s very small part of all that can be done in ML. There are also a lot of useful
+constructs and idioms that not covered: type synonyms, polymorphic types,
+equality types, tail recursion, mutual recursion, function wrapping,
+currying, partial application, advanced pattern matching, signatures,
+modules and lot more.</p>
+
+<p>If you really interested you will find a lot of these terms exciting.</p>
+
+<p>Full code is available on
+<a href="https://github.com/mishadoff/prog-experiment/blob/master/sml/play.sml">github</a></p>
+
+<h3>Impressions</h3>
+
+<p>ML is a great language. Perhaps, it is not so great as Java in enterprise, and not
+so great as Clojure in rapid prototyping, but it&#8217;s worth to devote
+few days for ML basics. It really improve your dev skills and maybe made your
+<em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
@@ -2835,52 +3087,6 @@ That&#8217;s why using most straightforward solution is often the best choice (<
 It has fast implementation, and if it fails, it fails fast.</p>
 
 <p><strong>Fail Fast, Succeed Faster</strong></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Learn Perl]]></title>
-    <link href="http://mishadoff.github.com/blog/learn-perl/"/>
-    <updated>2012-11-12T20:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/learn-perl</id>
-    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="p">(</span><span class="nv">$current_tasks</span><span class="p">,</span> <span class="nv">$perl</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$perl</span><span class="p">,</span> <span class="nv">$current_tasks</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Long time learning <a href="http://www.perl.org/">perl</a> was my desire.
-Now I pushed back for a little some of my activities, and started with perl.</p>
-
-<!-- more -->
-
-
-<p>The reason for this was the third launch of <a href="https://class.coursera.org/crypto-004/class/index">Stanford Cryptography</a> class on coursera.</p>
-
-<p>Cryptography is a field that I never know, but would like to. I see a lot of practical applications here,
-but, honestly, for me it&#8217;s more <em>just for fun</em>, than anything else. Isn&#8217;t it interesting to (de)cypher something?</p>
-
-<p>First two launches was marked as lack of time for me, so I postponed it. By the way, other interesting courses was <em>in progress</em>.
-But now I really hope that I get enough time (<em>and patience</em>) to finish the class and get some good knowledge in this field.</p>
-
-<p><img src="http://imgs.xkcd.com/comics/lisp.jpg" alt="" /></p>
-
-<p>I don&#8217;t know why, but I choose perl as primary language for doing programming assignments.</p>
-
-<p>First of all, I needed some fast scripting language for general-purpose problems. To choose between perl and python, I choose perl.
-Because of <em>&#8220;less number of symbols in the name&#8221;</em>, of course. Second of all, I don&#8217;t know perl and it&#8217;s a good reason to learn it <em>in action</em>.
-Also, what is important, I did get only positive reviews from my friends who know perl, but all their stories was like a mistery for me.
-Thought, that only chosen one can learn perl. I want to dispel this myth. To try, at least.</p>
-
-<blockquote><p>There&#8217;s more than one way to do it</p>
-
-<p>&#8211; Perl motto</p></blockquote>
-
-<p>The book that I choose for learning is a classic book (<em>read Perl Bible</em>) from the creator of perl, <a href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>.
-There is fresh, 4th edition, available.</p>
-
-<p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
-
-<p>Hope, I won&#8217;t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
 ]]></content>
   </entry>
   
