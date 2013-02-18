@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-16T16:06:06+02:00</updated>
+  <updated>2013-02-19T00:42:23+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 015]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
+    <updated>2013-02-19T00:38:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
+    <content type="html"><![CDATA[<blockquote><p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
+(without backtracking) to the bottom right corner.</p>
+
+<p>How many routes are there through a 20 x 20 grid?</p></blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=15">http://projecteuler.net/problem=15</a></p>
+
+<!-- more -->
+
+
+<p><img src="http://projecteuler.net/project/images/p_015.gif" alt="" /></p>
+
+<p>Picture is always a huge help to find correct the solution.
+Let's see the pattern here, with another picture</p>
+
+<p><em>Warning:</em> If you don't understand art, don't look at that picture.</p>
+
+<p><img src="http://i.imgur.com/WNEQNxG.png" alt="" /></p>
+
+<p>It's a solution for 3 x 3 grid. We trying to process it by steps:</p>
+
+<ul>
+<li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
+to be at the start so we put <code>1</code> to that point.</li>
+<li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
+on the edges of the second diagonal line.</li>
+<li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
+so there are two routes, and so on.</li>
+</ul>
+
+
+<p>If you just output the numbers from each diagonal line you'll get:</p>
+
+<p>```</p>
+
+<pre><code>   1
+  1 1
+ 1 2 1
+1 3 3 1
+</code></pre>
+
+<p>```</p>
+
+<p>It's famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle</a>.
+Each element in this triangle obtained by sum of two closest elements from the upper row.</p>
+
+<p>To get desired result we need to sum these numbers again, until we get one number.
+But it's also numbers from Pascal's triangle.</p>
+
+<p>```</p>
+
+<pre><code>1   3   3   1
+  4   6   4
+   10  10
+     20
+</code></pre>
+
+<p>```</p>
+
+<p>We can treat Pascal's triangle as a sequence, and each row is an element. Then the
+following function calculates next row:</p>
+
+<p>``` clojure
+(defn routes-extend [lst]
+  (let [size (count lst)]</p>
+
+<pre><code>(for [i (range (inc size))]
+  (if (or (= 0 i) (= size i)) 1
+    (+ (nth lst (dec i)) (nth lst i))))))
+</code></pre>
+
+<p>```</p>
+
+<p>Usage:</p>
+
+<p><code>
+(routes-extend [1]) =&gt; [1 1]
+(routes-extend [1 1]) =&gt; [1 2 1]
+</code></p>
+
+<p>Now we can build infinite sequence of Pascal's triangle rows:</p>
+
+<p><code>clojure
+(iterate routes-extend [1])
+</code></p>
+
+<p>For <code>3 x 3</code> grid we had 7 diagonals, each of them represented one row.
+Take a guess. For <code>n x n</code> grid we need to get <code>2 * n + 1</code> row. And take it
+middle element, which, of course, will be with the index <code>n</code>.</p>
+
+<p>That's the final solution:</p>
+
+<p><code>clojure
+(let [n 20 d (inc (* n 2))]
+  (nth (last (take d (iterate routes-extend [1]))) n))
+</code></p>
+
+<p>Problem solved.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem015.clj">Code</a></p>
+
+<p><strong>P.S</strong> Two points I want to admit here. First of all, drawing pictures
+and trying to understand problem with pictures is a powerful technique that must be
+used for every problem.</p>
+
+<p>Second of all, you can see that our algorithm has complexity of <code>O(n^2)</code>. But ideal
+solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/Binomial_coefficient">binomial coefficient</a>
+<code>(2*n, n)</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
@@ -499,136 +615,6 @@ maximum of product.</p>
 
 <p><strong>P.S.</strong> Boring problem.
 I think it just for introducing matrices computation.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 010]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-010/"/>
-    <updated>2012-12-15T00:23:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-010</id>
-    <content type="html"><![CDATA[<blockquote><p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
-
-<p>Find the sum of all the primes below two million.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=10">http://projecteuler.net/problem=10</a></p>
-
-<!-- more -->
-
-
-<p>We have already worked with prime numbers in
-<a href="/blog/clojure-euler-problem-003/">Problem 003</a> and
-<a href="/blog/clojure-euler-problem-007/">Problem 007</a>. We also decided that
-the best way to work with prime numbers in clojure to use <code>primes</code> lazy-seq
-from <code>clojure.contrib.lazy-seqs</code>.</p>
-
-<p>Gentle reminder: Just add proper <code>:use</code> to your file:</p>
-
-<p><code>clojure
-(:use [clojure.contrib.lazy-seqs :only (primes)])
-</code></p>
-
-<p>Then, the simplest problem solution to use <code>take-while</code> stream and <code>reduce</code> for sum:</p>
-
-<p><code>clojure
-(reduce + (take-while #(&lt; % 2000000) primes))
-</code></p>
-
-<p>Again, one-line solution. Let's run it.</p>
-
-<p>Finding result on my nachine takes ~12 seconds. Small enough, but maybe somehow it can be improved?</p>
-
-<h3>Sieve of Eratosthenes</h3>
-
-<p><a href="http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a> - ancient algorithm
-for finding prime numbers. The best explanation how it works with picture from wiki:</p>
-
-<p><img src="http://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="" /></p>
-
-<p>Our first naive implementation:</p>
-
-<p>```clojure
-(defn sieve-1 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; n 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (set (range (* n n) 2000000 n))) (inc n)))))
-</code></pre>
-
-<p>```</p>
-
-<p><em>Note:</em> <a href="http://clojuredocs.org/clojure_core/clojure.set/difference">clojure.set/difference</a> function
-find the difference between two sets.</p>
-
-<p>This recursive implementation is even worse than our oneliner, it calculates the result in ~24 seconds.</p>
-
-<p>Primary optimisation is to use <code>(* n n)</code> as recursion base instead of <code>n</code>. Because of there are no prime
-numbers if we crossed greater than square root of maximum. Problem evolves.</p>
-
-<p>``` clojure
-(defn sieve-2 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; (* n n) 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (set (range (* n n) 2000000 n))) (inc n)))))
-</code></pre>
-
-<p>```</p>
-
-<p>~21 seconds. Still worse.</p>
-
-<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don't need
-to go over even numbers.</p>
-
-<p>```clojure
-(defn sieve-3 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; (* n n) 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (set (range (* n n) 2000000 n))) (+ n 2)))))
-</code></pre>
-
-<p>```</p>
-
-<p>~13 seconds. Much better... than previous, still worse than first version.</p>
-
-<p>If you looked at <code>difference</code> documentation, take a look at its implementation under "Source".
-Nothing prevent us to pass sequence as second argument instead of set. Just removing casting to set.</p>
-
-<p>``` clojure
-(defn sieve-4 []
-  (loop [nums (set (cons 2 (range 3 2000000 2))) n 3]</p>
-
-<pre><code>(if (&gt; (* n n) 2000000) (reduce + nums)
-    (recur (clojure.set/difference nums (range (* n n) 2000000 n)) (+ n 2)))))
-</code></pre>
-
-<p>```</p>
-
-<p>~6 seconds. Wow! It's better than original solution. That means our efforts were not wasteful.</p>
-
-<p>Unfortuantely, we stopped improve our function. But if you want more, other major improvements
-can be done in the following areas:</p>
-
-<ul>
-<li>Use non-persistent set to save prime numbers. It prevent overhead on new objects.</li>
-<li>Use "wheel trick" that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
-<li>Use dynamic step of iteration. We changed <code>(inc n)</code> to <code>(+ n 2)</code>, but probably there is smarter solution.</li>
-<li>Do not use <code>(reduce +)</code> because it is linear algorithm. We init <code>nums</code> sequence with some arithmetic progression.
-Its sum can be calculated in O(1) by formula. When we compose another sequence (second argument for <code>difference</code>)
-its also an arithmetic progression and sum can be calculated in O(1). When doing differencem just subtract second sum
-from first sum, and it will be current <code>nums</code> sum.</li>
-</ul>
-
-
-<p>There are much more optimisations can be done to improve prime numbers performace.
-If you interested, read nice Christophe Grand's post
-<a href="http://clj-me.cgrand.net/2009/07/30/everybody-loves-the-sieve-of-eratosthenes/">Everybody Loves The Sieve Of Erathosthenes</a></p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str "Git" "Hub")</a></p>
-
-<p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
-just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
 ]]></content>
   </entry>
   

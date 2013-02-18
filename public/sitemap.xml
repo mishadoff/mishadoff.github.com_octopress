@@ -133,6 +133,10 @@
         <lastmod>2013-02-16T16:05:40+02:00</lastmod>
     </url>
     <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-015/</loc>
+        <lastmod>2013-02-19T00:37:32+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://mishadoff.github.com/pages/quotes/</loc>
         <lastmod>2013-02-03T21:05:44+02:00</lastmod>
     </url>
@@ -150,10 +154,10 @@
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/archives/</loc>
-        <lastmod>2013-02-16T16:05:40+02:00</lastmod>
+        <lastmod>2013-02-19T00:37:32+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/</loc>
-        <lastmod>2013-02-16T16:05:40+02:00</lastmod>
+        <lastmod>2013-02-19T00:37:32+02:00</lastmod>
     </url>
 </urlset>
