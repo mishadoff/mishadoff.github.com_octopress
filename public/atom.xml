@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-19T00:42:23+02:00</updated>
+  <updated>2013-02-21T00:24:56+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Heisenberg Principle]]></title>
+    <link href="http://mishadoff.github.com/blog/heisenberg-principle/"/>
+    <updated>2013-02-21T00:24:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/heisenberg-principle</id>
+    <content type="html"><![CDATA[<p>It is so obvious, so I decided to write about it.</p>
+
+<!-- more -->
+
+
+<p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
+came from quantum mechanics and means that you can&#8217;t know exactly
+both coordinates and speed of particle. If you improve accuracy of detecting
+position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
+
+<p>In human-readable form it sounds like</p>
+
+<blockquote><p>Either one or the other</p></blockquote>
+
+<p>The same in every field, even in software engineering.
+If you implementing something or fixing bugs and your boss
+yelling: &#8220;you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>&#8221;
+tell him <em>either one or the other</em>.</p>
+
+<p><strong>P.S.</strong> Actually, you can say &#8220;go fuck yourself&#8221;, but it won&#8217;t be polite.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 015]]></title>
@@ -2956,183 +2986,6 @@ that&#8217;s enough for now.</p>
 
 <p><strong>P.S.</strong> Actually, I lied. In linked solution I use 6 lines of code: namespace declaration, use, <em>empty line</em>,
 comment with executing time, function declaration and, finally, solution.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-3-finally/"/>
-    <updated>2012-11-18T19:39:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-3-finally</id>
-    <content type="html"><![CDATA[<p>Every experienced java programmer should know that <code>finally</code> block always executed. But is it true?</p>
-
-<!-- more -->
-
-
-<p>It depends on our definition of program execution. But, generally speaking, <strong>yes</strong>.</p>
-
-<h3>Normal program execution</h3>
-
-<p><em>Aha, look at this</em>, someone might retort:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;I&#39;m here, man&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>You just said, finally block always executed?</em></p>
-
-<p>Well. In that case no, because we speaking about normal flow of program execution.
-This is <em>abnormal</em>.</p>
-
-<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">official tutorial</a></p>
-
-<blockquote><p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p></blockquote>
-
-<p>Your counter question might be: <em>If second line of that code always exectued?</em></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 1&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 2&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 3&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sure, because it&#8217;s linear flow. Nothing can break&#8230;<strong>BANG</strong>&#8230;<code>Electricity unavailable. Program stopped.</code></p>
-
-<p>What about this? It&#8217;s also abnormal program execution, and we can&#8217;t guarantee anything for 100%.
-In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
-
-<p>That&#8217;s why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
-
-<blockquote><p>I said yes? I meant no!</p></blockquote>
-
-<h3>Perpetuum Mobile</h3>
-
-<p>Consider the following code:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;I print here some useful information&quot;</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Let me run&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Will be the line <em>&#8220;Let me run&#8221;</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
-
-<p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
-
-<h3>Threads</h3>
-
-<p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
-
-<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn&#8217;t executed.</p>
-
-<p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
-
-<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
-
-<blockquote><p>&#8230;if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p></blockquote>
-
-<p>So, we can treat thread like a program, and make one effective rule:</p>
-
-<p><strong>Rule 1</strong>. Finally executes always, except the case where controlling program or thread was aborted.</p>
-
-<h3>Finally we return</h3>
-
-<p>Ok, now we know when finally is not executed. But do we know when finally is executed?</p>
-
-<p>Consider the example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="nf">someFunc</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The result is obviously <code>1</code>. Just because <code>finally</code> is always executed.</p>
-
-<p>Consider, next example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="nf">someFunc</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The result is <code>1</code> again. And it&#8217;s a problem. We just lose the exception.
-Such issue known as <em>exception swallowing</em>. It is very dangerous, because client&#8217;s code expect either exception or some value, but it always get only value.</p>
-
-<p>One more less imaginary example.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">DAOException</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">dao</span><span class="o">.</span><span class="na">deposit</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;OK&quot;</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
-responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string &#8220;OK&#8221; will be returned.</p>
-
-<p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
-
-<h3>Instead of conclusion</h3>
-
-<p>A lot of programmers are aware about this common mistake. But some are not.
-Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
 ]]></content>
   </entry>
   

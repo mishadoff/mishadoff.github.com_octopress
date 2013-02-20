@@ -4,7 +4,7 @@
   <title><![CDATA[Category: thoughts | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/thoughts/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-19T00:42:23+02:00</updated>
+  <updated>2013-02-21T00:24:56+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Heisenberg Principle]]></title>
+    <link href="http://mishadoff.github.com/blog/heisenberg-principle/"/>
+    <updated>2013-02-21T00:24:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/heisenberg-principle</id>
+    <content type="html"><![CDATA[<p>It is so obvious, so I decided to write about it.</p>
+
+<!-- more -->
+
+
+<p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
+came from quantum mechanics and means that you can't know exactly
+both coordinates and speed of particle. If you improve accuracy of detecting
+position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
+
+<p>In human-readable form it sounds like</p>
+
+<blockquote><p>Either one or the other</p></blockquote>
+
+<p>The same in every field, even in software engineering.
+If you implementing something or fixing bugs and your boss
+yelling: "you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>"
+tell him <em>either one or the other</em>.</p>
+
+<p><strong>P.S.</strong> Actually, you can say "go fuck yourself", but it won't be polite.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest Announcement]]></title>
