@@ -9,7 +9,8 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Stirling’s approximation is a formula % <![CDATA[ \begin{align*} & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right) = \sum_{i= &hellip;">
+  <meta name="description" content="Do you like factorials? Probably, you do. If no, whatever, read this post to know
+how get rid of factorials. TL;DR % <![CDATA[ \begin{align*} & ln(n &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,34 +111,165 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-02-22T01:18:00+02:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2013</time>
+<time datetime="2013-02-23T01:38:00+02:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Stirling’s approximation is a formula</p>
+<div class="entry-content"><p>Do you like factorials?</p>
+
+<p>Probably, you do. If no, whatever, read this post to know
+how get rid of factorials.</p>
 
 <!-- more -->
+
+<h3 id="tldr">TL;DR</h3>
 
 <script type="math/tex; mode=display">% <![CDATA[
 
 \begin{align*}
-  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
-  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
-  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
-      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
-      \vdots & \ddots & \vdots \\
-      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
-    \end{array} \right)
-  \left( \begin{array}{c}
-      y_1 \\
-      \vdots \\
-      y_n
-    \end{array} \right)
+  & ln(n!) = n \cdot ln(n) - n + 1
 \end{align*}
  %]]></script>
+
+<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling’s approximation</a>
+or just Stirling’s formula.
+It allows to replace factorials with their approximation.
+If you not interested in math, skip to <a href="#usage">formula usage</a></p>
+
+<h3 id="proof">Proof</h3>
+
+<p>Replace factorial with its definition:</p>
+
+<script type="math/tex; mode=display">
+ln(n!) = ln(1 \cdot 2 \cdot 3 ...)
+</script>
+
+<p>Transform logarithm of multiplication to sum of logarithms:</p>
+
+<script type="math/tex; mode=display">
+ln(1 \cdot 2 \cdot 3 ...) = ln(1) + ln(2) + ln(3) + ... + ln(n)
+</script>
+
+<p>Take a look at the integral $\int_a^b f(x) dx$.
+Replace $f(x)$ with $ln(x)$, $a$ with $1$, and $b$ with $n$. Then use numerical
+integration with step <code>1</code> and <a href="http://en.wikipedia.org/wiki/Rectangle_method">right rectangle rule</a></p>
+
+<script type="math/tex; mode=display">
+\int_1^n ln(x) dx \approx ln(2) + ln(3) + ... + ln(n)
+</script>
+
+<p>Right-hand parts of two previous formulas are equal, with respect $ln(1)=0$. Then:</p>
+
+<script type="math/tex; mode=display">
+ln(1 \cdot 2 \cdot 3 ...) \approx \int_1^n ln(x) dx
+</script>
+
+<p>Calculate integral using <a href="http://en.wikipedia.org/wiki/Integration_by_parts">integration by parts</a>:</p>
+
+<script type="math/tex; mode=display">
+\int ln(x) dx = x \cdot ln(x) - \int x d(ln(x)) = x \cdot ln(x) - \int dt = x \cdot ln(x) - x + C
+</script>
+
+<p>Applying boundaries <code>[1..n]</code></p>
+
+<script type="math/tex; mode=display">
+n \cdot ln(n) - n + C - 1 \cdot ln(1) + 1 - C = n \cdot ln(n) - n + 1
+</script>
+
+<p>yields final result:</p>
+
+<script type="math/tex; mode=display">
+ln(n!) = n \cdot ln(n) - n + 1
+</script>
+
+<p>Exactly what on the top.</p>
+
+<h3 id="developer-proof">Developer Proof</h3>
+
+<p>It is much simpler proof, with lose of accuracy, but still valid for partial applications.</p>
+
+<p>Replace factorial with its definition:</p>
+
+<script type="math/tex; mode=display">
+ln(n!) = ln(1 \cdot 2 \cdot 3 ...)
+</script>
+
+<p>Transform logarithm of multiplication to sum of logarithms:</p>
+
+<script type="math/tex; mode=display">
+ln(1 \cdot 2 \cdot 3 ...) = ln(1) + ln(2) + ln(3) + ... = \sum_{i=1}^n ln(i)
+</script>
+
+<p>From monotonic property of logarithms $a \leq b \rightarrow ln(a) \leq ln(b)$
+take upper bound for each $ln(i)$:</p>
+
+<script type="math/tex; mode=display">
+\forall i \; ln(i) \leq ln(n)
+</script>
+
+<p>Then, using worst case substitution, sum can be rewritten as:</p>
+
+<script type="math/tex; mode=display">
+\sum_{i=1}^n ln(i) \leq \sum_{i=1}^N ln(n)
+</script>
+
+<p>But $ln(n)$ does not depend on <code>i</code>, so get rid of sum:</p>
+
+<script type="math/tex; mode=display">
+\sum_{i=1}^n ln(n) = n \cdot ln(n)
+</script>
+
+<p>Done.</p>
+
+<h3 id="a-idusageausage"><a id="usage"></a>Usage</h3>
+
+<ul>
+  <li><strong>Algorithm complexity</strong></li>
+</ul>
+
+<p>No one cares about <code>O(log(n!))</code> of your algorithm, but everybody
+knows that <code>O(n log n)</code>, <a href="http://en.wikipedia.org/wiki/Time_complexity#Linearithmic.2Fquasilinear_time">linearithmic complexity</a>,
+is very good property of algorithm. By the way, do not scare people with factorial sign.</p>
+
+<ul>
+  <li><strong>Overflow prevention</strong></li>
+</ul>
+
+<p>If you try to calculate <code>ln(n!)</code> with most straightforward implementation
+without suitable datatype, you’ll likely get the number overflow exception, in spite
+of result value is not very large. For example for <code>n=100</code> overall result is
+approximately <code>363</code> (<em>Stirling’s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
+
+<ul>
+  <li><strong>Speedup</strong></li>
+</ul>
+
+<p>As far as I know, calculating factorial is <code>O(n)</code> complexity algorithm,
+because we need <code>n</code> multiplications. Using Stirling’s approximation we need to calculate $n^n$ term, that can
+be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wiki/Exponentiation_by_squaring">clever trick</a></p>
+
+<ul>
+  <li><strong>Gamma function</strong></li>
+</ul>
+
+<p>It can be surprising, but factorials defined not only for positive integers.
+So, for example <code>2.5!</code> is completely valid expression. <code>-6!</code> also. They can be calculated
+using <a href="http://en.wikipedia.org/wiki/Gamma_function">Gamma-functions</a> for real numbers. Unfortunately, they are
+pretty complicated, so people use Stirling’s formula instead.</p>
+
+<ul>
+  <li><strong>Partial applications</strong></li>
+</ul>
+
+<p>Almost everything that using factorials can use Stirling’s approximation. Permutations,
+binomial coefficients, fractals, number theory and a huge amount of topics I’m not aware of.</p>
+
+<p><strong>P.S.</strong> Stirling’s formula presented here is rough enough. More accurate formula is
+$n! = \sqrt{2\pi} n^{n + 0.5}e^{-n}$.
+Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirling.html">here</a>.</p>
 </div>
 
 
@@ -160,12 +292,12 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-02-22T01:18:00+02:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2013</time>
+<time datetime="2013-02-23T01:38:00+02:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/math/'>math</a>
+    <a class='category' href='/blog/categories/algorithms/'>algorithms</a>, <a class='category' href='/blog/categories/math/'>math</a>
   
 </span>
 
