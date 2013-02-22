@@ -4,7 +4,7 @@
   <title><![CDATA[Category: news | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/news/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -25,43 +25,37 @@ It can be a good puzzle for a weekend.</p>
 
 <!-- more -->
 
-
-<h3>Input</h3>
+<h3 id="input">Input</h3>
 
 <p><img src="http://news.bbcimg.co.uk/media/images/64345000/jpg/_64345866_masons_pigeon_code_07.jpg" alt="" /></p>
 
 <p>The paper consists of some parts <a href="http://i2.cdn.turner.com/cnn/2012/images/11/23/large-pigeon-message-1.pdf">Full PDF scan</a>:</p>
 
 <ul>
-<li><strong>Title:</strong> "Pigeon Service"</li>
-<li><strong>TO:</strong> XO2</li>
-<li><strong>Ciphered Message</strong></li>
+  <li><strong>Title:</strong> “Pigeon Service”</li>
+  <li><strong>TO:</strong> XO2</li>
+  <li><strong>Ciphered Message</strong></li>
 </ul>
 
-
-<p>```</p>
-
-<pre><code>AOAKN HVPKD FNFJW YIDDC
-RQXSR DJHFP GOVFN MIAPX
-PABUZ WYYNP CMPNW HJRZH
-NLXKG MEMKK ONOIB AKEEQ
-WAOTA RBQRH DJOFM TPZEH
-LKXGH RGGHT JRZCQ FNKTQ
-KLDTS FQIRW AOAKN 27 1525/6
-</code></pre>
-
-<p>```</p>
+<p><code>
+    AOAKN HVPKD FNFJW YIDDC
+    RQXSR DJHFP GOVFN MIAPX
+    PABUZ WYYNP CMPNW HJRZH
+    NLXKG MEMKK ONOIB AKEEQ
+    WAOTA RBQRH DJOFM TPZEH
+    LKXGH RGGHT JRZCQ FNKTQ
+    KLDTS FQIRW AOAKN 27 1525/6
+</code></p>
 
 <ul>
-<li><strong>Pigeon IDs:</strong> <code>NURP 40 TW 194</code> and <code>NURP 37 OK 76</code>.
+  <li><strong>Pigeon IDs:</strong> <code>NURP 40 TW 194</code> and <code>NURP 37 OK 76</code>.
 There are was two pigeons as we can see from the field <em>Number of copies sent</em>.</li>
-<li><strong>LIB 1625</strong></li>
-<li><strong>Time of origin:</strong> 1522</li>
-<li><strong>Sender's signature:</strong> W Stit Sjt</li>
+  <li><strong>LIB 1625</strong></li>
+  <li><strong>Time of origin:</strong> 1522</li>
+  <li><strong>Sender’s signature:</strong> W Stit Sjt</li>
 </ul>
 
-
-<h3>Output</h3>
+<h3 id="output">Output</h3>
 
 <p>The most interesting part of this paper is the ciphered message. It consists of 27 5-letter blocks.
 At the end of the message we can see number 27, probably some sort of control sum of blocks.
@@ -77,15 +71,14 @@ has a perfect secrecy. So, maybe this cipher will never be decrypted.</p>
 <p>Anyway, if you interested in this topic, try to spend a couple of hours for breaking the cipher,
 it is a good workout for your brain.</p>
 
-<h3>Links</h3>
+<h3 id="links">Links</h3>
 
 <ol>
-<li><a href="http://www.bbc.co.uk/news/uk-20458792">BBC</a></li>
-<li><a href="http://edition.cnn.com/2012/11/23/world/europe/uk-wwii-pigeon-mystery/index.html">CNN</a></li>
+  <li><a href="http://www.bbc.co.uk/news/uk-20458792">BBC</a></li>
+  <li><a href="http://edition.cnn.com/2012/11/23/world/europe/uk-wwii-pigeon-mystery/index.html">CNN</a></li>
 </ol>
 
-
-<p><strong>P.S.</strong> Don't be addicted, you have a lot things to do instead of breaking this stupid cipher.
+<p><strong>P.S.</strong> Don’t be addicted, you have a lot things to do instead of breaking this stupid cipher.
 Very unlikely, but it can be some sort of a joke.</p>
 ]]></content>
   </entry>

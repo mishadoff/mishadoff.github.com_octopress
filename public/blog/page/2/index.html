@@ -9,8 +9,8 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="What is the greatest product of four adjacent numbers in the same
-direction (up, down, left, right, or diagonally) in the 20 x 20 grid? Permalink: &hellip;">
+  <meta name="description" content="Little journey through the history of most critical software bugs
+with some code examples. Do not try to reproduce any of these! ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -26,9 +26,22 @@ direction (up, down, left, right, or diagonally) in the 20 x 20 grid? Permalink:
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -85,6 +98,50 @@ direction (up, down, left, right, or diagonally) in the 20 x 20 grid? Permalink:
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/critical-software-bugs-part-1/">Critical Software Bugs: Part 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T18:48:00+02:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Little journey through the history of most critical software bugs
+with some code examples.</p>
+
+<p><em>Do not try to reproduce any of these!</em></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/critical-software-bugs-part-1/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/clojure-euler-problem-011/">Clojure Euler: Problem 011</a></h1>
     
     
@@ -108,8 +165,10 @@ direction (up, down, left, right, or diagonally) in the 20 x 20 grid? Permalink:
   </header>
 
 
-  <div class="entry-content"><blockquote><p>What is the greatest product of four adjacent numbers in the same
-direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p></blockquote>
+  <div class="entry-content"><blockquote>
+  <p>What is the greatest product of four adjacent numbers in the same
+direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=11">http://projecteuler.net/problem=11</a></p>
 
@@ -154,7 +213,7 @@ direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p></block
 
   <div class="entry-content"><p>Just found blog, that illustrates developer feelings with gif-pictures: <a href="http://devopsreactions.tumblr.com/">DevOps reactions</a></p>
 
-<p>It&#8217;s really cool idea.</p>
+<p>It’s really cool idea.</p>
 
 </div>
   
@@ -237,9 +296,11 @@ some operation to be finished?</p>
   </header>
 
 
-  <div class="entry-content"><blockquote><p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
+  <div class="entry-content"><blockquote>
+  <p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
 
-<p>Find the sum of all the primes below two million.</p></blockquote>
+  <p>Find the sum of all the primes below two million.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=10">http://projecteuler.net/problem=10</a></p>
 
@@ -282,12 +343,16 @@ some operation to be finished?</p>
   </header>
 
 
-  <div class="entry-content"><blockquote><p> A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
+  <div class="entry-content"><blockquote>
+  <p>A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a^2 + b^2 = c^2</p>
 
-<p>For example, 3<sup>2</sup> + 4<sup>2</sup> = 9 + 16 = 25 = 5<sup>2</sup></p>
+  <p>For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2</p>
+</blockquote>
 
-<p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-Find the product abc.</p></blockquote>
+<blockquote>
+  <p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
+Find the product abc.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=9">http://projecteuler.net/problem=9</a></p>
 
@@ -372,8 +437,8 @@ This is very impressive game with capability to run over the city with your frie
   </header>
 
 
-  <div class="entry-content"><p>It&#8217;s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
-It&#8217;s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
+  <div class="entry-content"><p>It’s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
+It’s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
 
 <p>I think this term has much wider meaning.</p>
 
@@ -416,7 +481,9 @@ It&#8217;s not even <code>Factories</code>, <code>Builders</code> and <code>Prox
   </header>
 
 
-  <div class="entry-content"><blockquote><p>Find the greatest product of five consecutive digits in the 1000-digit number.</p></blockquote>
+  <div class="entry-content"><blockquote>
+  <p>Find the greatest product of five consecutive digits in the 1000-digit number.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=8">http://projecteuler.net/problem=8</a></p>
 
@@ -477,51 +544,6 @@ It can be a good puzzle for a weekend.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/clojure-euler-problem-007/">Clojure Euler: Problem 007</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-20T15:37:00+02:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
-
-<p>What is the 10001st prime number?</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=7">http://projecteuler.net/problem=7</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/clojure-euler-problem-007/">Read more &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -539,6 +561,10 @@ It can be a good puzzle for a weekend.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling&#8217;s Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -552,10 +578,6 @@ It can be a good puzzle for a weekend.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

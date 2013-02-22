@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: java - mishadoff thoughts</title>
+  <title>Stirling's Approximation - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Category: java">
+  <meta name="description" content="Stirling’s approximation is a formula % <![CDATA[ \begin{align*} & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right) = \sum_{i= &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.comblog/categories/java/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/stirlings-approximation/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -90,95 +90,113 @@ MathJax.Hub.Config({
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Java</h1>
+    
+      <h1 class="entry-title">Stirling's Approximation</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-22T01:18:00+02:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Stirling’s approximation is a formula</p>
 
-  
-  <h2>2013</h2>
+<!-- more -->
 
-<article>
-  
-<h1><a href="/blog/critical-software-bugs-part-1/">Critical Software Bugs: Part 1</a></h1>
-<time datetime="2013-01-20T18:48:00+02:00" pubdate><span class='month'>Jan</span> <span class='day'>20</span> <span class='year'>2013</span></time>
+<script type="math/tex; mode=display">% <![CDATA[
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bug/'>bug</a>, <a class='category' href='/blog/categories/history/'>history</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/blog/eclipse-speedup/">Eclipse Speedup</a></h1>
-<time datetime="2012-12-23T18:00:00+02:00" pubdate><span class='month'>Dec</span> <span class='day'>23</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/eclipse/'>eclipse</a>, <a class='category' href='/blog/categories/ide/'>ide</a>, <a class='category' href='/blog/categories/java/'>java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/java-magic-part-3-finally/">Java Magic. Part 3: Finally</a></h1>
-<time datetime="2012-11-18T19:39:00+02:00" pubdate><span class='month'>Nov</span> <span class='day'>18</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/java-magic-part-2-0xcafebabe/">Java Magic. Part 2: 0xCAFEBABE</a></h1>
-<time datetime="2012-10-31T19:42:00+02:00" pubdate><span class='month'>Oct</span> <span class='day'>31</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/java-magic-part-1-java-dot-net-dot-url/">Java Magic. Part 1: java.net.URL</a></h1>
-<time datetime="2012-10-11T16:30:00+03:00" pubdate><span class='month'>Oct</span> <span class='day'>11</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+ %]]></script>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-22T01:18:00+02:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/math/'>math</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/stirlings-approximation/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/stirlings-approximation/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/heisenberg-principle/" title="Previous Post: Heisenberg Principle">&laquo; Heisenberg Principle</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -258,7 +276,10 @@ MathJax.Hub.Config({
       var disqus_shortname = 'mits';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/stirlings-approximation/';
+        var disqus_url = 'http://mishadoff.github.com/blog/stirlings-approximation/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

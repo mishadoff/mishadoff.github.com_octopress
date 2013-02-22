@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -108,179 +121,162 @@
 
 <!-- more -->
 
-
-<h3>Coursera</h3>
+<h3 id="coursera">Coursera</h3>
 
 <p>There are excellent course on coursera called <a href="https://class.coursera.org/proglang-2012-001/class/index">Programming Languages</a></p>
 
 <p>Currently, the first half is available, that explains basic and advanced functional programming constructions
 with Standard ML as primary language. Later some idioms will be presented using
 <strong>Racket</strong> and <strong>Ruby</strong> (<em>maybe, I will finally understand ruby</em>) so you can treat this course as introduction
-to these languages. In fact, it teaches much more than &#8221;<em>how to code in XXX</em>&#8221;.</p>
+to these languages. In fact, it teaches much more than “<em>how to code in XXX</em>”.</p>
 
-<h3>Tools</h3>
+<h3 id="tools">Tools</h3>
 
 <p>For playing with ML you need <a href="http://www.smlnj.org/">SML/NJ</a> compiler and
 <a href="http://www.smlnj.org/doc/Emacs/sml-mode.html">sml-mode</a> for emacs.</p>
 
-<p><em>If you don&#8217;t have emacs installed, do it right now!</em></p>
+<p><em>If you don’t have emacs installed, do it right now!</em></p>
 
-<h3>Play</h3>
+<h3 id="play">Play</h3>
 
 <p>Following snippets give you basic understanding of ML or
 refresh your knowledge for syntax.</p>
 
-<p>Print &#8220;Hello, world!&#8221;:</p>
+<p>Print “Hello, world!”:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">print_hello_world</span> <span class="p">()</span> <span class="p">=</span> <span class="n">print</span> <span class="s2">&quot;Hello, world</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">print_hello_world</span> <span class="p">()</span> <span class="p">=</span> <span class="n">print</span> <span class="s2">&quot;Hello, world</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Variables (<em>in fact, values</em>):</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">a</span> <span class="p">=</span> <span class="mi">38</span><span class="p">;</span>
-</span><span class='line'><span class="kr">val</span> <span class="nv">b</span> <span class="p">=</span> <span class="n">a</span> <span class="n">+</span> <span class="mi">3</span><span class="p">;</span>
-</span><span class='line'><span class="kr">val</span> <span class="nv">c</span> <span class="p">=</span> <span class="n">b</span> <span class="n">+</span> <span class="mi">1</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">a</span> <span class="p">=</span> <span class="mi">38</span><span class="p">;</span>
+</span><span class="line"><span class="kr">val</span> <span class="nv">b</span> <span class="p">=</span> <span class="n">a</span> <span class="n">+</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class="line"><span class="kr">val</span> <span class="nv">c</span> <span class="p">=</span> <span class="n">b</span> <span class="n">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Conditionals:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">cond</span> <span class="p">=</span> <span class="kr">if</span> <span class="mi">5</span> <span class="n">&gt;</span> <span class="mi">4</span> <span class="kr">then</span> <span class="mi">5</span> <span class="kr">else</span> <span class="mi">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">cond</span> <span class="p">=</span> <span class="kr">if</span> <span class="mi">5</span> <span class="n">&gt;</span> <span class="mi">4</span> <span class="kr">then</span> <span class="mi">5</span> <span class="kr">else</span> <span class="mi">4</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Boolean operators have terrible names:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">cond2</span> <span class="p">=</span> <span class="kr">if</span> <span class="mi">5</span> <span class="n">&gt;</span> <span class="mi">4</span> <span class="kr">andalso</span> <span class="mi">4</span> <span class="n">&gt;</span> <span class="mi">5</span> <span class="kr">then</span> <span class="mi">5</span> <span class="kr">else</span> <span class="mi">7</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">cond2</span> <span class="p">=</span> <span class="kr">if</span> <span class="mi">5</span> <span class="n">&gt;</span> <span class="mi">4</span> <span class="kr">andalso</span> <span class="mi">4</span> <span class="n">&gt;</span> <span class="mi">5</span> <span class="kr">then</span> <span class="mi">5</span> <span class="kr">else</span> <span class="mi">7</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Function with one parameter:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">square</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">square</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Function with more than one parameter:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">sum</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">y</span> <span class="n">+</span> <span class="n">z</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">sum</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">y</span> <span class="n">+</span> <span class="n">z</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<p>Actually, it’s not three parameters, it’s one parameter - tuple:</p>
 
-<p>Actually, it&#8217;s not three parameters, it&#8217;s one parameter - tuple:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">swap</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">swap</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>To access tuple elements use hash-number, note you can specify tuple type:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">get_month</span> <span class="p">(</span><span class="n">date</span> <span class="p">:</span> <span class="n">int</span> <span class="n">*</span> <span class="n">string</span> <span class="n">*</span> <span class="n">int</span><span class="p">)</span> <span class="p">:</span> <span class="n">string</span><span class="p">=</span> <span class="p">(</span><span class="nl">#2</span> <span class="n">date</span><span class="p">)</span>
-</span><span class='line'><span class="kr">val</span> <span class="nv">month1</span> <span class="p">=</span> <span class="n">get_month</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">get_month</span> <span class="p">(</span><span class="n">date</span> <span class="p">:</span> <span class="n">int</span> <span class="n">*</span> <span class="n">string</span> <span class="n">*</span> <span class="n">int</span><span class="p">)</span> <span class="p">:</span> <span class="n">string</span><span class="p">=</span> <span class="p">(</span><span class="nl">#2</span> <span class="n">date</span><span class="p">)</span>
+</span><span class="line"><span class="kr">val</span> <span class="nv">month1</span> <span class="p">=</span> <span class="n">get_month</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>You can specify input types and return type, but ML is very clever. Almost always
 it can detect correct type using <em>type inference</em> without explicit definition.</p>
 
-<p><em>I don&#8217;t understand it! Explain, please</em>. Comments:</p>
+<p><em>I don’t understand it! Explain, please</em>. Comments:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="cm">(* Operation &#39;*&#39; defined for int types, so this function has type int -&gt; int *)</span>
-</span><span class='line'><span class="kr">fun</span> <span class="nf">cube</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="cm">(* Operation &#39;*&#39; defined for int types, so this function has type int -&gt; int *)</span>
+</span><span class="line"><span class="kr">fun</span> <span class="nf">cube</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<p>There is records. It’s like named tuples.</p>
 
-<p>There is records. It&#8217;s like named tuples.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">get_month_real</span> <span class="p">({</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">})</span> <span class="p">=</span> <span class="n">month</span>
-</span><span class='line'><span class="kr">val</span> <span class="nv">month2</span> <span class="p">=</span> <span class="n">get_month_real</span><span class="p">({</span><span class="n">year</span><span class="p">=</span><span class="mi">2012</span><span class="p">,</span> <span class="n">month</span><span class="p">=</span><span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="n">day</span><span class="p">=</span><span class="mi">21</span><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">get_month_real</span> <span class="p">({</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">})</span> <span class="p">=</span> <span class="n">month</span>
+</span><span class="line"><span class="kr">val</span> <span class="nv">month2</span> <span class="p">=</span> <span class="n">get_month_real</span><span class="p">({</span><span class="n">year</span><span class="p">=</span><span class="mi">2012</span><span class="p">,</span> <span class="n">month</span><span class="p">=</span><span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="n">day</span><span class="p">=</span><span class="mi">21</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Using <code>let</code> form we can define new lexical scope:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">add3</span> <span class="n">x</span> <span class="p">=</span>
-</span><span class='line'>    <span class="kr">let</span>
-</span><span class='line'>        <span class="kr">val</span> <span class="nv">num</span> <span class="p">=</span> <span class="mi">3</span>
-</span><span class='line'>    <span class="kr">in</span>
-</span><span class='line'>        <span class="n">x</span> <span class="n">+</span> <span class="mi">3</span>
-</span><span class='line'>    <span class="kr">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">add3</span> <span class="n">x</span> <span class="p">=</span>
+</span><span class="line">    <span class="kr">let</span>
+</span><span class="line">        <span class="kr">val</span> <span class="nv">num</span> <span class="p">=</span> <span class="mi">3</span>
+</span><span class="line">    <span class="kr">in</span>
+</span><span class="line">        <span class="n">x</span> <span class="n">+</span> <span class="mi">3</span>
+</span><span class="line">    <span class="kr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>This leads to closures (<em>function + context</em>):</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">add3</span> <span class="n">x</span> <span class="p">=</span>
-</span><span class='line'>    <span class="kr">let</span>
-</span><span class='line'>        <span class="kr">val</span> <span class="nv">num</span> <span class="p">=</span> <span class="mi">3</span>
-</span><span class='line'>        <span class="kr">fun</span> <span class="nf">add_to</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">num</span>
-</span><span class='line'>    <span class="kr">in</span>
-</span><span class='line'>        <span class="n">add_to</span> <span class="n">x</span>
-</span><span class='line'>    <span class="kr">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">add3</span> <span class="n">x</span> <span class="p">=</span>
+</span><span class="line">    <span class="kr">let</span>
+</span><span class="line">        <span class="kr">val</span> <span class="nv">num</span> <span class="p">=</span> <span class="mi">3</span>
+</span><span class="line">        <span class="kr">fun</span> <span class="nf">add_to</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">num</span>
+</span><span class="line">    <span class="kr">in</span>
+</span><span class="line">        <span class="n">add_to</span> <span class="n">x</span>
+</span><span class="line">    <span class="kr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Function <code>add_to</code> capture <code>num</code> value from context.</p>
 
 <p>By the way functions are first-class objects and values also,
 so we can assign one function to another:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">another_cube</span> <span class="p">=</span> <span class="n">cube</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">another_cube</span> <span class="p">=</span> <span class="n">cube</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Function composition becomes a piece of cake:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">cube_and_cube</span> <span class="p">=</span> <span class="n">cube</span> <span class="n">o</span> <span class="n">cube</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">cube_and_cube</span> <span class="p">=</span> <span class="n">cube</span> <span class="n">o</span> <span class="n">cube</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>We even can pass function as a parameter:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">binary_apply</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'><span class="n">binary_apply</span><span class="p">(</span><span class="n">swap</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">binary_apply</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class="line"><span class="n">binary_apply</span><span class="p">(</span><span class="n">swap</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<p>We don’t forced to provide function name, we can use lambdas:</p>
 
-<p>We don&#8217;t forced to provide function name, we can use lambdas:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="n">binary_apply</span><span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">46</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="n">binary_apply</span><span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">46</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>This helps us easily implement such useful functions as <code>map</code>, <code>reduce</code> and <code>filter</code>.
 But they are already available in
@@ -288,50 +284,46 @@ But they are already available in
 
 <p>Another great feature is <em>pattern-matching</em>. Here is factorial function</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">x</span> <span class="p">=</span>
-</span><span class='line'>    <span class="kr">case</span> <span class="n">x</span> <span class="kr">of</span>
-</span><span class='line'>        <span class="mi">0</span> <span class="p">=&gt;</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="n">|</span> <span class="p">_</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span> <span class="n">-</span> <span class="mi">1</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">x</span> <span class="p">=</span>
+</span><span class="line">    <span class="kr">case</span> <span class="n">x</span> <span class="kr">of</span>
+</span><span class="line">        <span class="mi">0</span> <span class="p">=&gt;</span> <span class="mi">1</span>
+</span><span class="line">      <span class="n">|</span> <span class="p">_</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span> <span class="n">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>or list concatenation</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">fun</span> <span class="nf">concat</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
-</span><span class='line'>    <span class="kr">case</span> <span class="n">x</span> <span class="kr">of</span>
-</span><span class='line'>        <span class="p">[]</span> <span class="p">=&gt;</span> <span class="n">y</span>
-</span><span class='line'>      <span class="n">|</span> <span class="n">x::xs</span> <span class="p">=&gt;</span> <span class="n">x::concat</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">concat</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
+</span><span class="line">    <span class="kr">case</span> <span class="n">x</span> <span class="kr">of</span>
+</span><span class="line">        <span class="p">[]</span> <span class="p">=&gt;</span> <span class="n">y</span>
+</span><span class="line">      <span class="n">|</span> <span class="n">x::xs</span> <span class="p">=&gt;</span> <span class="n">x::concat</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<p>Honestly, it&#8217;s just baby examples of pattern matching. In fact, it is much more
+<p>Honestly, it’s just baby examples of pattern matching. In fact, it is much more
 powerful.</p>
 
 <p>And the last thing I wanted to show is datatypes:</p>
 
 <p>To define a list:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">datatype</span> <span class="nd">&#39;a</span> <span class="kt">list</span> <span class="p">=</span> <span class="nc">EMPTY</span> <span class="p">|</span> <span class="nc">CONS</span> <span class="kr">of</span> <span class="nd">&#39;a</span> <span class="n">*</span> <span class="nd">&#39;a</span> <span class="n">list</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">datatype</span> <span class="nd">&#39;a</span> <span class="kt">list</span> <span class="p">=</span> <span class="nc">EMPTY</span> <span class="p">|</span> <span class="nc">CONS</span> <span class="kr">of</span> <span class="nd">&#39;a</span> <span class="n">*</span> <span class="nd">&#39;a</span> <span class="n">list</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>To create that list:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sml'><span class='line'><span class="kr">val</span> <span class="nv">list</span> <span class="p">=</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">EMPTY</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">list</span> <span class="p">=</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">EMPTY</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<p>That&#8217;s very small part of all that can be done in ML. There are also a lot of useful
+<p>That’s very small part of all that can be done in ML. There are also a lot of useful
 constructs and idioms that not covered: type synonyms, polymorphic types,
 equality types, tail recursion, mutual recursion, function wrapping,
 currying, partial application, advanced pattern matching, signatures,
@@ -342,10 +334,10 @@ modules and lot more.</p>
 <p>Full code is available on
 <a href="https://github.com/mishadoff/prog-experiment/blob/master/sml/play.sml">github</a></p>
 
-<h3>Impressions</h3>
+<h3 id="impressions">Impressions</h3>
 
 <p>ML is a great language. Perhaps, it is not so great as Java in enterprise, and not
-so great as Clojure in rapid prototyping, but it&#8217;s worth to devote
+so great as Clojure in rapid prototyping, but it’s worth to devote
 few days for ML basics. It really improve your dev skills and maybe made your
 <em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
 </div>
@@ -419,6 +411,10 @@ few days for ML basics. It really improve your dev skills and maybe made your
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -432,10 +428,6 @@ few days for ML basics. It really improve your dev skills and maybe made your
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

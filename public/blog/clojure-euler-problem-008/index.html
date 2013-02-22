@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -104,7 +117,9 @@
   </header>
 
 
-<div class="entry-content"><blockquote><p>Find the greatest product of five consecutive digits in the 1000-digit number.</p></blockquote>
+<div class="entry-content"><blockquote>
+  <p>Find the greatest product of five consecutive digits in the 1000-digit number.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=8">http://projecteuler.net/problem=8</a></p>
 
@@ -112,72 +127,66 @@
 
 <!-- more -->
 
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>73167176531330624919225119674426574742355349194934
-</span><span class='line'>96983520312774506326239578318016984801869478851843
-</span><span class='line'>85861560789112949495459501737958331952853208805511
-</span><span class='line'>12540698747158523863050715693290963295227443043557
-</span><span class='line'>66896648950445244523161731856403098711121722383113
-</span><span class='line'>62229893423380308135336276614282806444486645238749
-</span><span class='line'>30358907296290491560440772390713810515859307960866
-</span><span class='line'>70172427121883998797908792274921901699720888093776
-</span><span class='line'>65727333001053367881220235421809751254540594752243
-</span><span class='line'>52584907711670556013604839586446706324415722155397
-</span><span class='line'>53697817977846174064955149290862569321978468622482
-</span><span class='line'>83972241375657056057490261407972968652414535100474
-</span><span class='line'>82166370484403199890008895243450658541227588666881
-</span><span class='line'>16427171479924442928230863465674813919123162824586
-</span><span class='line'>17866458359124566529476545682848912883142607690042
-</span><span class='line'>24219022671055626321111109370544217506941658960408
-</span><span class='line'>07198403850962455444362981230987879927244284909188
-</span><span class='line'>84580156166097919133875499200524063689912560717606
-</span><span class='line'>05886116467109405077541002256983155200055935729725
-</span><span class='line'>71636269561882670428252483600823257530420752963450</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">73167176531330624919225119674426574742355349194934
+</span><span class="line">96983520312774506326239578318016984801869478851843
+</span><span class="line">85861560789112949495459501737958331952853208805511
+</span><span class="line">12540698747158523863050715693290963295227443043557
+</span><span class="line">66896648950445244523161731856403098711121722383113
+</span><span class="line">62229893423380308135336276614282806444486645238749
+</span><span class="line">30358907296290491560440772390713810515859307960866
+</span><span class="line">70172427121883998797908792274921901699720888093776
+</span><span class="line">65727333001053367881220235421809751254540594752243
+</span><span class="line">52584907711670556013604839586446706324415722155397
+</span><span class="line">53697817977846174064955149290862569321978468622482
+</span><span class="line">83972241375657056057490261407972968652414535100474
+</span><span class="line">82166370484403199890008895243450658541227588666881
+</span><span class="line">16427171479924442928230863465674813919123162824586
+</span><span class="line">17866458359124566529476545682848912883142607690042
+</span><span class="line">24219022671055626321111109370544217506941658960408
+</span><span class="line">07198403850962455444362981230987879927244284909188
+</span><span class="line">84580156166097919133875499200524063689912560717606
+</span><span class="line">05886116467109405077541002256983155200055935729725
+</span><span class="line">71636269561882670428252483600823257530420752963450</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Idea behind this problem is pretty straightforward:</p>
 
 <ol>
-<li>Init <code>maximum</code> with some small value, zero would be good.</li>
-<li>Take first 5 digits, calculate the product.</li>
-<li>If product is greater than our current <code>maximum</code>, reassign it.</li>
-<li>Shift, to take other 5 digits, and back to the step 1.</li>
+  <li>Init <code>maximum</code> with some small value, zero would be good.</li>
+  <li>Take first 5 digits, calculate the product.</li>
+  <li>If product is greater than our current <code>maximum</code>, reassign it.</li>
+  <li>Shift, to take other 5 digits, and back to the step 1.</li>
 </ol>
 
-
 <p>A simple optimization can be applied: if our last element of 5 digit group is zero,
-then skip 5 shifts. But it&#8217;s details.</p>
+then skip 5 shifts. But it’s details.</p>
 
-<p>Let&#8217;s make our problem little harder to get more from clojure.</p>
+<p>Let’s make our problem little harder to get more from clojure.</p>
 
 <p>Assume that these digits stored in the file. First thing we need: to read the file.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;path/to/the/file&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;path/to/the/file&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p><a href="http://clojuredocs.org/clojure_core/clojure.core/slurp">slurp</a> is the simplest
 function to read file content (<em>In fact, not only files</em>).
@@ -185,20 +194,18 @@ It just returns string representation of the whole file.</p>
 
 <p>Then we need to break one large string into symbols.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">seq </span><span class="s">&quot;helloyo&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">seq </span><span class="s">&quot;helloyo&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p><a href="http://clojuredocs.org/clojure_core/clojure.core/seq">seq</a> return a sequence with linear access
 to collection. If applied to string, return sequence of characters.</p>
 
-<p>But, there are some garbage in the file we don&#8217;t want, new lines for example.</p>
+<p>But, there are some garbage in the file we don’t want, new lines for example.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\n</span><span class="nv">ewline</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\n</span><span class="nv">ewline</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>(<em>slash</em>) + something - represents character in clojure.
 <code>\newline</code> is a new line, known as <code>\n</code> in other languages.</p>
@@ -206,10 +213,9 @@ to collection. If applied to string, return sequence of characters.</p>
 <p>Now we have long sequence with all digits from file.
 Need to get all consecutive groups with 5 letters.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">partition</span> <span class="mi">5</span> <span class="mi">1</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span><span class="p">]</span> <span class="p">[</span><span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span><span class="p">]</span> <span class="nv">...</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">partition</span> <span class="mi">5</span> <span class="mi">1</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span><span class="p">]</span> <span class="p">[</span><span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span><span class="p">]</span> <span class="nv">...</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p><a href="http://clojuredocs.org/clojure_core/clojure.core/partition">partition</a>
 is an excelent function for such tasks. We specify <code>5</code> - size of partition,
@@ -217,10 +223,9 @@ and <code>1</code> shift size. It generates all consecutive groups with 5 elemen
 
 <p>Calulating the product for each group gives us the solution.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce * </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce * </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Not so fast.</p>
 
@@ -230,21 +235,19 @@ and <code>1</code> shift size. It generates all consecutive groups with 5 elemen
 instead of digits in mathematical sense. And applied mathematical operation <code>*</code> to them.
 So, simply speaking, <code>\1</code> is not <code>1</code>.</p>
 
-<p>That&#8217;s why we need to transform every digit character to it&#8217;s actual digit value.</p>
+<p>That’s why we need to transform every digit character to it’s actual digit value.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="sc">\1</span> <span class="sc">\2</span> <span class="sc">\3</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="sc">\1</span> <span class="sc">\2</span> <span class="sc">\3</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>This awful implementation do the work.</p>
 
 <ul>
-<li>Cast each character to int, get the <a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>
+  <li>Cast each character to int, get the <a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>
 representation for digit.</li>
-<li>From each ASCII value we subtract <code>48</code> and get digit value.</li>
+  <li>From each ASCII value we subtract <code>48</code> and get digit value.</li>
 </ul>
-
 
 <p>Applying <code>product</code> of digits defined earlier we get solution to this problem.</p>
 
@@ -327,6 +330,10 @@ writes string to the file.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -340,10 +347,6 @@ writes string to the file.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

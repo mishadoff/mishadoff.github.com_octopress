@@ -4,7 +4,7 @@
   <title><![CDATA[Category: sml | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/sml/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -22,29 +22,28 @@
 
 <!-- more -->
 
-
-<h3>Coursera</h3>
+<h3 id="coursera">Coursera</h3>
 
 <p>There are excellent course on coursera called <a href="https://class.coursera.org/proglang-2012-001/class/index">Programming Languages</a></p>
 
 <p>Currently, the first half is available, that explains basic and advanced functional programming constructions
 with Standard ML as primary language. Later some idioms will be presented using
 <strong>Racket</strong> and <strong>Ruby</strong> (<em>maybe, I will finally understand ruby</em>) so you can treat this course as introduction
-to these languages. In fact, it teaches much more than "<em>how to code in XXX</em>".</p>
+to these languages. In fact, it teaches much more than “<em>how to code in XXX</em>”.</p>
 
-<h3>Tools</h3>
+<h3 id="tools">Tools</h3>
 
 <p>For playing with ML you need <a href="http://www.smlnj.org/">SML/NJ</a> compiler and
 <a href="http://www.smlnj.org/doc/Emacs/sml-mode.html">sml-mode</a> for emacs.</p>
 
-<p><em>If you don't have emacs installed, do it right now!</em></p>
+<p><em>If you don’t have emacs installed, do it right now!</em></p>
 
-<h3>Play</h3>
+<h3 id="play">Play</h3>
 
 <p>Following snippets give you basic understanding of ML or
 refresh your knowledge for syntax.</p>
 
-<p>Print "Hello, world!":</p>
+<p>Print “Hello, world!”:</p>
 
 <p><code>sml
 fun print_hello_world () = print "Hello, world\n";
@@ -82,7 +81,7 @@ fun square x = x * x
 fun sum (x, y, z) = x + y + z
 </code></p>
 
-<p>Actually, it's not three parameters, it's one parameter - tuple:</p>
+<p>Actually, it’s not three parameters, it’s one parameter - tuple:</p>
 
 <p><code>sml
 fun swap (x, y) = (y, x)
@@ -98,14 +97,14 @@ val month1 = get_month(2012, "January", 21);
 <p>You can specify input types and return type, but ML is very clever. Almost always
 it can detect correct type using <em>type inference</em> without explicit definition.</p>
 
-<p><em>I don't understand it! Explain, please</em>. Comments:</p>
+<p><em>I don’t understand it! Explain, please</em>. Comments:</p>
 
 <p><code>sml
 (* Operation '*' defined for int types, so this function has type int -&gt; int *)
 fun cube x = x * x * x
 </code></p>
 
-<p>There is records. It's like named tuples.</p>
+<p>There is records. It’s like named tuples.</p>
 
 <p><code>sml
 fun get_month_real ({year, month, day}) = month
@@ -114,32 +113,26 @@ val month2 = get_month_real({year=2012, month="January", day=21});
 
 <p>Using <code>let</code> form we can define new lexical scope:</p>
 
-<p>``` sml
-fun add3 x =</p>
-
-<pre><code>let
-    val num = 3
-in
-    x + 3
-end
-</code></pre>
-
-<p>```</p>
+<p><code>sml
+fun add3 x =
+    let
+        val num = 3
+    in
+        x + 3
+    end
+</code></p>
 
 <p>This leads to closures (<em>function + context</em>):</p>
 
-<p>``` sml
-fun add3 x =</p>
-
-<pre><code>let
-    val num = 3
-    fun add_to x = x + num
-in
-    add_to x
-end
-</code></pre>
-
-<p>```</p>
+<p><code>sml
+fun add3 x =
+    let
+        val num = 3
+        fun add_to x = x + num
+    in
+        add_to x
+    end
+</code></p>
 
 <p>Function <code>add_to</code> capture <code>num</code> value from context.</p>
 
@@ -163,7 +156,7 @@ fun binary_apply (f, x, y) = f (x, y)
 binary_apply(swap, 1, 2);
 </code></p>
 
-<p>We don't forced to provide function name, we can use lambdas:</p>
+<p>We don’t forced to provide function name, we can use lambdas:</p>
 
 <p><code>sml
 binary_apply(fn (x, y) =&gt; x * y, 23, 46)
@@ -175,29 +168,23 @@ But they are already available in
 
 <p>Another great feature is <em>pattern-matching</em>. Here is factorial function</p>
 
-<p>``` sml
-fun factorial x =</p>
-
-<pre><code>case x of
-    0 =&gt; 1
-  | _ =&gt; x * factorial(x - 1)
-</code></pre>
-
-<p>```</p>
+<p><code>sml
+fun factorial x =
+    case x of
+        0 =&gt; 1
+      | _ =&gt; x * factorial(x - 1)
+</code></p>
 
 <p>or list concatenation</p>
 
-<p>``` sml
-fun concat (x, y) =</p>
+<p><code>sml
+fun concat (x, y) =
+    case x of
+        [] =&gt; y
+      | x::xs =&gt; x::concat(xs, y)
+</code></p>
 
-<pre><code>case x of
-    [] =&gt; y
-  | x::xs =&gt; x::concat(xs, y)
-</code></pre>
-
-<p>```</p>
-
-<p>Honestly, it's just baby examples of pattern matching. In fact, it is much more
+<p>Honestly, it’s just baby examples of pattern matching. In fact, it is much more
 powerful.</p>
 
 <p>And the last thing I wanted to show is datatypes:</p>
@@ -214,7 +201,7 @@ datatype 'a list = EMPTY | CONS of 'a * 'a list
 val list = CONS(1, CONS(2, CONS(3, EMPTY)))
 </code></p>
 
-<p>That's very small part of all that can be done in ML. There are also a lot of useful
+<p>That’s very small part of all that can be done in ML. There are also a lot of useful
 constructs and idioms that not covered: type synonyms, polymorphic types,
 equality types, tail recursion, mutual recursion, function wrapping,
 currying, partial application, advanced pattern matching, signatures,
@@ -225,10 +212,10 @@ modules and lot more.</p>
 <p>Full code is available on
 <a href="https://github.com/mishadoff/prog-experiment/blob/master/sml/play.sml">github</a></p>
 
-<h3>Impressions</h3>
+<h3 id="impressions">Impressions</h3>
 
 <p>ML is a great language. Perhaps, it is not so great as Java in enterprise, and not
-so great as Clojure in rapid prototyping, but it's worth to devote
+so great as Clojure in rapid prototyping, but it’s worth to devote
 few days for ML basics. It really improve your dev skills and maybe made your
 <em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
 ]]></content>

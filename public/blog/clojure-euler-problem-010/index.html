@@ -9,7 +9,7 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17. Find the sum of all the primes below two million. Permalink: http://projecteuler.net/problem=10 &hellip;">
+  <meta name="description" content="The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17. Find the sum of all the primes below two million. Permalink: http://projecteuler.net/problem= &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -104,14 +117,15 @@
   </header>
 
 
-<div class="entry-content"><blockquote><p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
+<div class="entry-content"><blockquote>
+  <p>The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.</p>
 
-<p>Find the sum of all the primes below two million.</p></blockquote>
+  <p>Find the sum of all the primes below two million.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=10">http://projecteuler.net/problem=10</a></p>
 
 <!-- more -->
-
 
 <p>We have already worked with prime numbers in
 <a href="/blog/clojure-euler-problem-003/">Problem 003</a> and
@@ -121,23 +135,21 @@ from <code>clojure.contrib.lazy-seqs</code>.</p>
 
 <p>Gentle reminder: Just add proper <code>:use</code> to your file:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.lazy-seqs</span> <span class="ss">:only</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)])</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.lazy-seqs</span> <span class="ss">:only</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Then, the simplest problem solution to use <code>take-while</code> stream and <code>reduce</code> for sum:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">%</span> <span class="mi">2000000</span><span class="p">)</span> <span class="nv">primes</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">%</span> <span class="mi">2000000</span><span class="p">)</span> <span class="nv">primes</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<p>Again, one-line solution. Let&#8217;s run it.</p>
+<p>Again, one-line solution. Let’s run it.</p>
 
 <p>Finding result on my nachine takes ~12 seconds. Small enough, but maybe somehow it can be improved?</p>
 
-<h3>Sieve of Eratosthenes</h3>
+<h3 id="sieve-of-eratosthenes">Sieve of Eratosthenes</h3>
 
 <p><a href="http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a> - ancient algorithm
 for finding prime numbers. The best explanation how it works with picture from wiki:</p>
@@ -146,16 +158,15 @@ for finding prime numbers. The best explanation how it works with picture from w
 
 <p>Our first naive implementation:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-1</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">n</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-1</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">n</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p><em>Note:</em> <a href="http://clojuredocs.org/clojure_core/clojure.set/difference">clojure.set/difference</a> function
 find the difference between two sets.</p>
@@ -165,70 +176,66 @@ find the difference between two sets.</p>
 <p>Primary optimisation is to use <code>(* n n)</code> as recursion base instead of <code>n</code>. Because of there are no prime
 numbers if we crossed greater than square root of maximum. Problem evolves.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-2</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-2</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>~21 seconds. Still worse.</p>
 
-<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don&#8217;t need
+<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don’t need
 to go over even numbers.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-3</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-3</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<p>~13 seconds. Much better… than previous, still worse than first version.</p>
 
-<p>~13 seconds. Much better&#8230; than previous, still worse than first version.</p>
-
-<p>If you looked at <code>difference</code> documentation, take a look at its implementation under &#8220;Source&#8221;.
+<p>If you looked at <code>difference</code> documentation, take a look at its implementation under “Source”.
 Nothing prevent us to pass sequence as second argument instead of set. Just removing casting to set.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-4</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sieve-4</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="mi">2000000</span> <span class="mi">2</span><span class="p">)))</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">nums</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<p>~6 seconds. Wow! It&#8217;s better than original solution. That means our efforts were not wasteful.</p>
+<p>~6 seconds. Wow! It’s better than original solution. That means our efforts were not wasteful.</p>
 
 <p>Unfortuantely, we stopped improve our function. But if you want more, other major improvements
 can be done in the following areas:</p>
 
 <ul>
-<li>Use non-persistent set to save prime numbers. It prevent overhead on new objects.</li>
-<li>Use &#8220;wheel trick&#8221; that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
-<li>Use dynamic step of iteration. We changed <code>(inc n)</code> to <code>(+ n 2)</code>, but probably there is smarter solution.</li>
-<li>Do not use <code>(reduce +)</code> because it is linear algorithm. We init <code>nums</code> sequence with some arithmetic progression.
+  <li>Use non-persistent set to save prime numbers. It prevent overhead on new objects.</li>
+  <li>Use “wheel trick” that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
+  <li>Use dynamic step of iteration. We changed <code>(inc n)</code> to <code>(+ n 2)</code>, but probably there is smarter solution.</li>
+  <li>Do not use <code>(reduce +)</code> because it is linear algorithm. We init <code>nums</code> sequence with some arithmetic progression.
 Its sum can be calculated in O(1) by formula. When we compose another sequence (second argument for <code>difference</code>)
 its also an arithmetic progression and sum can be calculated in O(1). When doing differencem just subtract second sum
 from first sum, and it will be current <code>nums</code> sum.</li>
 </ul>
 
-
 <p>There are much more optimisations can be done to improve prime numbers performace.
-If you interested, read nice Christophe Grand&#8217;s post
+If you interested, read nice Christophe Grand’s post
 <a href="http://clj-me.cgrand.net/2009/07/30/everybody-loves-the-sieve-of-eratosthenes/">Everybody Loves The Sieve Of Erathosthenes</a></p>
 
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str &#8220;Git&#8221; &#8220;Hub&#8221;)</a></p>
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str “Git” “Hub”)</a></p>
 
 <p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
 just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
@@ -303,6 +310,10 @@ just to show the point <strong>if you want to improve something, probably, you c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -316,10 +327,6 @@ just to show the point <strong>if you want to improve something, probably, you c
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

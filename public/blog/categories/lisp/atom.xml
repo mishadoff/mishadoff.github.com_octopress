@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lisp | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/lisp/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -18,10 +18,9 @@
     <link href="http://mishadoff.github.com/blog/lisp-live-coding/"/>
     <updated>2012-10-11T17:14:00+03:00</updated>
     <id>http://mishadoff.github.com/blog/lisp-live-coding</id>
-    <content type="html"><![CDATA[<p>Very inspirational video about live coding with excellent electronic music, written in... lisp!</p>
+    <content type="html"><![CDATA[<p>Very inspirational video about live coding with excellent electronic music, written in… lisp!</p>
 
 <!-- more -->
-
 
 <p><div class="embed-video-container"><iframe src="http://player.vimeo.com/video/2503257 "></iframe></div></p>
 ]]></content>

@@ -9,7 +9,7 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Every experienced java programmer should know that finally block always executed. But is it true? ">
+  <meta name="description" content="By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13. What is the 10001st prime number? Permalink: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -78,6 +91,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/clojure-euler-problem-007/">Clojure Euler: Problem 007</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T15:37:00+02:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote>
+  <p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+</blockquote>
+
+<blockquote>
+  <p>What is the 10001st prime number?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=7">http://projecteuler.net/problem=7</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/clojure-euler-problem-007/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -148,17 +210,29 @@
   </header>
 
 
-  <div class="entry-content"><blockquote><p>The sum of the squares of the first ten natural numbers is,</p>
+  <div class="entry-content"><blockquote>
+  <p>The sum of the squares of the first ten natural numbers is,</p>
+</blockquote>
 
-<p>1<sup>2</sup> + 2<sup>2</sup> + &#8230; + 10<sup>2</sup> = 385</p>
+<blockquote>
+  <p>1^2 + 2^2 + … + 10^2 = 385</p>
+</blockquote>
 
-<p>The square of the sum of the first ten natural numbers is,</p>
+<blockquote>
+  <p>The square of the sum of the first ten natural numbers is,</p>
+</blockquote>
 
-<p>(1 + 2 + &#8230; + 10)<sup>2</sup> = 55<sup>2</sup> = 3025</p>
+<blockquote>
+  <p>(1 + 2 + … + 10)^2 = 55^2 = 3025</p>
+</blockquote>
 
-<p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
+<blockquote>
+  <p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
+</blockquote>
 
-<p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p></blockquote>
+<blockquote>
+  <p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=6">http://projecteuler.net/problem=6</a></p>
 
@@ -201,10 +275,9 @@
   </header>
 
 
-  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="p">(</span><span class="nv">$current_tasks</span><span class="p">,</span> <span class="nv">$perl</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$perl</span><span class="p">,</span> <span class="nv">$current_tasks</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
+  <div class="entry-content"><div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="perl"><span class="line"><span class="p">(</span><span class="nv">$current_tasks</span><span class="p">,</span> <span class="nv">$perl</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$perl</span><span class="p">,</span> <span class="nv">$current_tasks</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Long time learning <a href="http://www.perl.org/">perl</a> was my desire.
 Now I pushed back for a little some of my activities, and started with perl.</p>
@@ -214,6 +287,56 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   
     <footer>
       <a rel="full-article" href="/blog/learn-perl/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/99-clojure-problems/">99 Clojure Problems</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-10T16:20:00+02:00" pubdate data-updated="true">Nov 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There is a popular article <a href="https://sites.google.com/site/prologsite/prolog-problems">99 Prolog Problems</a> that describes
+how <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a> solves various small programming problems.
+There are couple of remakes in <a href="http://www.ic.unicamp.br/~meidanis/courses/mc336/2006s2/funcional/L-99_Ninety-Nine_Lisp_Problems.html">Lisp</a>,
+<a href="http://aperiodic.net/phil/scala/s-99/">Scala</a>, <a href="http://www.haskell.org/haskellwiki/H-99:_Ninety-Nine_Haskell_Problems">Haskell</a>
+and even half-complete in <a href="http://wiki.python.org/moin/ProblemSets/99%20Prolog%20Problems%20Solutions">Python</a>.
+I found articles of such type extremely useful for programming language understanding,
+as they show solution for common real-world problems.</p>
+
+<p>In this article, codename <strong>CLJ-99</strong>, I provide my solutions to these problems,
+reusing as much as possible standard <code>clojure.core</code> and <code>clojure.contrib</code> functions.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/99-clojure-problems/">Read more &rarr;</a>
     </footer>
   
 
@@ -248,9 +371,13 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   </header>
 
 
-  <div class="entry-content"><blockquote><p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+  <div class="entry-content"><blockquote>
+  <p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+</blockquote>
 
-<p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p></blockquote>
+<blockquote>
+  <p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=5">http://projecteuler.net/problem=5</a></p>
 
@@ -293,7 +420,7 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   </header>
 
 
-  <div class="entry-content"><p>You can answer almost immediately using calculator, but what if you don&#8217;t have it?</p>
+  <div class="entry-content"><p>You can answer almost immediately using calculator, but what if you don’t have it?</p>
 
 </div>
   
@@ -334,7 +461,7 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   </header>
 
 
-  <div class="entry-content"><p>Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s <code>CAFEBABE</code>.</p>
+  <div class="entry-content"><p>Did you know that all java classes start with the same 4 bytes. In hex it’s <code>CAFEBABE</code>.</p>
 
 </div>
   
@@ -375,9 +502,13 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   </header>
 
 
-  <div class="entry-content"><blockquote><p>A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 x 99.</p>
+  <div class="entry-content"><blockquote>
+  <p>A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 x 99.</p>
+</blockquote>
 
-<p>Find the largest palindrome made from the product of two 3-digit numbers.</p></blockquote>
+<blockquote>
+  <p>Find the largest palindrome made from the product of two 3-digit numbers.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=4">http://projecteuler.net/problem=4</a></p>
 
@@ -420,9 +551,13 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   </header>
 
 
-  <div class="entry-content"><blockquote><p>The prime factors of 13195 are 5, 7, 13 and 29.</p>
+  <div class="entry-content"><blockquote>
+  <p>The prime factors of 13195 are 5, 7, 13 and 29.</p>
+</blockquote>
 
-<p>What is the largest prime factor of the number 600851475143?</p></blockquote>
+<blockquote>
+  <p>What is the largest prime factor of the number 600851475143?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=3">http://projecteuler.net/problem=3</a></p>
 
@@ -431,94 +566,6 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   
     <footer>
       <a rel="full-article" href="/blog/clojure-euler-problem-003/">Read more &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/clojure-euler-problem-002/">Clojure Euler: Problem 002</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-15T18:46:00+03:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>Each new term in the Fibonacci sequence is generated by adding the previous two terms. By starting with 1 and 2, the first 10 terms will be:</p>
-
-<p>1, 2, 3, 5, 8, 13, 21, 34, 55, 89, &#8230;</p>
-
-<p>By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.</p></blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=2">http://projecteuler.net/problem=2</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/clojure-euler-problem-002/">Read more &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/">Clojure + Emacs + Leiningen + nREPL</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-13T18:19:00+03:00" pubdate data-updated="true">Oct 13<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This article provides step-by-step instruction how to configure Clojure environment.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/">Read more &rarr;</a>
     </footer>
   
 
@@ -542,6 +589,10 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling&#8217;s Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -555,10 +606,6 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

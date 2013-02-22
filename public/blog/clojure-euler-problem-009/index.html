@@ -9,7 +9,7 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a2 + b2 = c2 For example, 32 + 42 = 9 + 16 = 25 = 52 There &hellip;">
+  <meta name="description" content="A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a^2 + b^2 = c^2 For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -104,87 +117,85 @@
   </header>
 
 
-<div class="entry-content"><blockquote><p> A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
+<div class="entry-content"><blockquote>
+  <p>A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a^2 + b^2 = c^2</p>
 
-<p>For example, 3<sup>2</sup> + 4<sup>2</sup> = 9 + 16 = 25 = 5<sup>2</sup></p>
+  <p>For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2</p>
+</blockquote>
 
-<p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-Find the product abc.</p></blockquote>
+<blockquote>
+  <p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
+Find the product abc.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=9">http://projecteuler.net/problem=9</a></p>
 
 <!-- more -->
 
-
-<p>Thinking about clever way to solve it&#8230;</p>
+<p>Thinking about clever way to solve it…</p>
 
 <p>Nothing good came up in your mind? Try bruteforce.</p>
 
 <p>Again, the idea behind bruteforce for this problem to iterate over all possible values
 for <code>a</code>, <code>b</code> and <code>c</code>, that sums to <code>1000</code> and compose Pythagorean triplet.
-That&#8217;s why we need predicate to test if three numbers compose triplet:</p>
+That’s why we need predicate to test if three numbers compose triplet:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">is-triplet?</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">b</span> <span class="nv">b</span><span class="p">))</span> <span class="p">(</span><span class="nb">* </span><span class="nv">c</span> <span class="nv">c</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">is-triplet?</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">b</span> <span class="nv">b</span><span class="p">))</span> <span class="p">(</span><span class="nb">* </span><span class="nv">c</span> <span class="nv">c</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Then our bruteforce solution looks like this:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">c</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span class='line'>             <span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="mi">1000</span><span class="p">))]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">c</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span class="line">             <span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="mi">1000</span><span class="p">))]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>It finds the right solution, in ~45 seconds. Bad enough.</p>
 
-<h3>Trick #1</h3>
+<h3 id="trick-1">Trick #1</h3>
 
 <p>Do not iterate on <code>c</code> variable, because knowing <code>a</code> and <code>b</code> we always
 can calculate <code>c = 1000 - a - b</code>.</p>
 
 <p>Problem solution transformed into next one:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span class='line'>             <span class="ss">:let</span> <span class="p">[</span><span class="nv">c</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1000</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)]</span>
-</span><span class='line'>             <span class="ss">:when</span> <span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span class="line">             <span class="ss">:let</span> <span class="p">[</span><span class="nv">c</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1000</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)]</span>
+</span><span class="line">             <span class="ss">:when</span> <span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<h3>Trick #2</h3>
+<h3 id="trick-2">Trick #2</h3>
 
 <p>Use rule <code>a &lt; b &lt; c</code> from problem definition. Then our iteration will be:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="nv">a</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1000</span> <span class="nv">a</span><span class="p">))])</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="nv">a</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1000</span> <span class="nv">a</span><span class="p">))])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<h3>Trick #3</h3>
+<h3 id="trick-3">Trick #3</h3>
 
 <p><code>is-triplet?</code> predicate use 3 multiplications, addition and comparison.
 We can add to <code>:when</code> section, predicate that compare <code>c</code> to <code>b</code>. This is also
 slightly reduce number of <code>is-triplet?</code> execution.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">c</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">c</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Now solution found in ~45 msecs. 1000 times faster. Not bad.</p>
 
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem009.clj">(apply str (reverse &#8220;buHtiG&#8221;))</a></p>
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem009.clj">(apply str (reverse “buHtiG”))</a></p>
 
 <p><strong>P.S.</strong> Unfortunately, there was nothing in this problem about new clojure
 functions, programming and even problem was not challenging. But you see the way how
-we solve it. We tried &#8220;bad&#8221; approach with knowing about all its disadvantages.
+we solve it. We tried “bad” approach with knowing about all its disadvantages.
 One more step and we improved it and got right solution. So it is not that bad
 approach to try simple solution, even if it is wrong.</p>
 </div>
@@ -258,6 +269,10 @@ approach to try simple solution, even if it is wrong.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -271,10 +286,6 @@ approach to try simple solution, even if it is wrong.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

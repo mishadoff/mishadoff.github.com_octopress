@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -25,14 +25,15 @@ with some code examples.</p>
 
 <!-- more -->
 
+<h3 id="intro">Intro</h3>
 
-<h3>Intro</h3>
-
-<blockquote><p>Every last bug is the last but one.</p></blockquote>
+<blockquote>
+  <p>Every last bug is the last but one.</p>
+</blockquote>
 
 <p><strong>Bugs</strong> are bad. Some of them cause uncomfortable work, more actions
 than expected, inconsistency, layout issues, etc.
-Some of them "<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>" at all.</p>
+Some of them “<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>” at all.</p>
 
 <p><strong>Bad bugs</strong> much worse. They cause data corruption, invalid data representation,
 unavailability to perform action, losing integrity and so on.</p>
@@ -40,7 +41,7 @@ unavailability to perform action, losing integrity and so on.</p>
 <p>There are <strong>critical bugs</strong> with painful consequences. They can damage the health, nature, people
 break buildings, technics. Theoretically, they
 <a href="http://www.washingtonpost.com/wp-srv/inatl/longterm/coldwar/shatter021099b.htm">can lead to World War III</a>.
-Hope, it's just theoretically.</p>
+Hope, it’s just theoretically.</p>
 
 <p>If you are software engineer, you definitely will commit the bugs. No panacea.
 But if we aware about common mistakes, then less likely we make that mistakes.</p>
@@ -48,7 +49,7 @@ But if we aware about common mistakes, then less likely we make that mistakes.</
 <p>This article is review of famous most critical software bugs
 including brief history, consequences, root causes, possible solutions, code examples and some advices.</p>
 
-<h3><a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a> (1962)</h3>
+<h3 id="mariner-1httpenwikipediaorgwikimariner1-1962"><a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a> (1962)</h3>
 
 <p><strong>History:</strong>
 In 1962, spacecraft <em>Mariner 1</em> was guided by computer program with error causes
@@ -59,46 +60,40 @@ was destoyed immediately.</p>
 
 <p><strong>Reason:</strong>
 There are tons of versions about what type of error it was, but official version
-is <em>missing hyphen</em> ('-') in program. Maybe it's just a myth for publicity,
+is <em>missing hyphen</em> (‘-‘) in program. Maybe it’s just a myth for publicity,
 but, anyway, if the reason of bug is incorrect handwritten formula transcription
-from paper to computer, it's sad.</p>
+from paper to computer, it’s sad.</p>
 
 <p>Probably, the root cause of that is writer and computer operator were different people.
-It's common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
-an enterprise, as nowadays. That's why scientist, programmer, and operator could be
+It’s common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
+an enterprise, as nowadays. That’s why scientist, programmer, and operator could be
 different people.</p>
 
-<p>Related story, it's why zero symbol has a period or diagonal line inside - to prevent
-confusing with "big O" for "typer" person. Just compare <code>0</code> and <code>O</code>.</p>
+<p>Related story, it’s why zero symbol has a period or diagonal line inside - to prevent
+confusing with “big O” for “typer” person. Just compare <code>0</code> and <code>O</code>.</p>
 
 <p><strong>Solution:</strong>
-It's hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
-If you type into computer from someone's paper sheet, check, re-check and double re-check
+It’s hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
+If you type into computer from someone’s paper sheet, check, re-check and double re-check
 what you typing. Ask if you have concerns. Especially, if it is the program for spaceship.</p>
 
 <p>In very <em>far-fetched</em> example missing minus sign can result into invalid computation:</p>
 
 <p>``` java
-double getDiscountPercent() {</p>
+double getDiscountPercent() {
+    return 0.25; // instead of return -0.25;
+}</p>
 
-<pre><code>return 0.25; // instead of return -0.25;
-</code></pre>
-
-<p>}</p>
-
-<p>double calculatePrice(double initial) {</p>
-
-<pre><code>return initial * (1.0 + getDiscountPercent());
-</code></pre>
-
-<p>}
+<p>double calculatePrice(double initial) {
+    return initial * (1.0 + getDiscountPercent());
+}
 ```</p>
 
 <p>That way instead of paying $75, you pay $125.</p>
 
 <p><strong>Lesson:</strong> Always check your manual rewriting actions.</p>
 
-<h3><a href="http://en.wikipedia.org/wiki/Siberian_pipeline_sabotage">Siberian pipeline sabotage</a> (1982)</h3>
+<h3 id="siberian-pipeline-sabotagehttpenwikipediaorgwikisiberianpipelinesabotage-1982"><a href="http://en.wikipedia.org/wiki/Siberian_pipeline_sabotage">Siberian pipeline sabotage</a> (1982)</h3>
 
 <p><strong>History:</strong> Cold war. Soviet Union steal technology for managing gas pipelines from Canada. This
 technology intentionally contained the bug (<a href="http://en.wikipedia.org/wiki/Logic_bomb">Logic Bomb</a>), developed by CIA
@@ -109,30 +104,32 @@ for sabotage purposes. Bomb triggered.</p>
 <p><strong>Reason:</strong> Every microship from stolen technology would
 work fine just for 10 million cycles, after that switches to another mode.</p>
 
-<p>They <em>used someone's code</em>.</p>
+<p>They <em>used someone’s code</em>.</p>
 
 <p><strong>Solution:</strong></p>
 
-<blockquote><p>You shall not steal</p>
+<blockquote>
+  <p>You shall not steal</p>
 
-<p>-- <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p></blockquote>
+  <p>– <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p>
+</blockquote>
 
-<p>Honestly, if someone's technology used for critical areas, like gas
+<p>Honestly, if someone’s technology used for critical areas, like gas
 transportation, it must be reviewed and tested. 100 times.</p>
 
 <p>Story can be translated as:</p>
 
 <p>I found memory card on the city dump.
 Card contained one shell script <code>please-execute-me.sh</code>.
-I <em>executed</em> it. System crashed. Who's guilty? Just me.</p>
+I <em>executed</em> it. System crashed. Who’s guilty? Just me.</p>
 
 <p>Use software from trusted sources.</p>
 
-<p>In modern software world, we often use someone's libraries, frameworks,
+<p>In modern software world, we often use someone’s libraries, frameworks,
 APIs to build our own applications. We <em>expect</em> that code is <em>reviewed</em> and <em>tested</em>.
 If not, we can help to do it. How we can be sure these libs without logic bombs?</p>
 
-<p>Trust or review the sources. That's why I love open source software.</p>
+<p>Trust or review the sources. That’s why I love open source software.</p>
 
 <p>Logic bomb detection is not that hard. Just find the code that causes error
 and see the reason of that error. Again, code review helps <em>to prevent</em> the
@@ -142,15 +139,12 @@ version control system (<em>which is controlled, right?</em>)</p>
 <p>Just for educational purposes: simple example of time-triggered logic bomb</p>
 
 <p>``` java
-public class LogicBombRunner {</p>
-
-<pre><code>    public static void main(String[] args) {
-            Thread thread = new Thread(new LogicBomb());
-            thread.start();
-    }
-</code></pre>
-
-<p>}</p>
+public class LogicBombRunner {
+        public static void main(String[] args) {
+                Thread thread = new Thread(new LogicBomb());
+                thread.start();
+        }
+}</p>
 
 <p>class LogicBomb implements Runnable {</p>
 
@@ -176,10 +170,8 @@ public class LogicBombRunner {</p>
                             throw new RuntimeException();
                     }
             }
-    }
+    } }
 </code></pre>
-
-<p>}</p>
 
 <p>```</p>
 
@@ -187,7 +179,7 @@ public class LogicBombRunner {</p>
 
 <p><strong>Lesson:</strong> Do not steal. Trust to very limited circle of people.</p>
 
-<h3><a href="http://en.wikipedia.org/wiki/Therac-25">Therac-25</a> (1985 - 1987)</h3>
+<h3 id="therac-25httpenwikipediaorgwikitherac-25-1985---1987"><a href="http://en.wikipedia.org/wiki/Therac-25">Therac-25</a> (1985 - 1987)</h3>
 
 <p><strong>History:</strong> Therac-25 was a medical device for radiation therapy.
 It could deliver either beta-particles or X-rays. Unfortunately,
@@ -204,14 +196,13 @@ instead of some particular critical bug.</p>
 <p>These bad practices and bugs include:</p>
 
 <ul>
-<li>No code review</li>
-<li>Poor exception handling</li>
-<li>No integration testing until device was assembled in the hospital</li>
-<li>Poor hardware design</li>
-<li><em>Bad code</em> reuse</li>
-<li>Concurrency issues</li>
+  <li>No code review</li>
+  <li>Poor exception handling</li>
+  <li>No integration testing until device was assembled in the hospital</li>
+  <li>Poor hardware design</li>
+  <li><em>Bad code</em> reuse</li>
+  <li>Concurrency issues</li>
 </ul>
-
 
 <p><strong>Solution:</strong> Code review its a must. Even if you working
 alone in the team, show sources to some your friend (programmer).
@@ -226,7 +217,7 @@ catch (SomeException e) {</p>
 <p>}
 ```</p>
 
-<p>In 99% there are must be a proper handling. If you don't know how
+<p>In 99% there are must be a proper handling. If you don’t know how
 to handle, rethrow it, possible with wrapping:</p>
 
 <p><code>java
@@ -256,42 +247,38 @@ Except the case when you reuse something with errors.</p>
 <p>For example, I have following method for testing if number is even in some of my
 previous projects (<em>yes, look at your code that was written few years ago</em>):</p>
 
-<p>``` java
-static boolean isEven(int num) {</p>
-
-<pre><code>return num % 2 != 1;
-</code></pre>
-
-<p>}
-```</p>
+<p><code>java
+static boolean isEven(int num) {
+    return num % 2 != 1;
+}
+</code></p>
 
 <p>This method returns incorrect result <code>true</code> for all negative odd numbers. Just because
 <code>%</code> operator returns <code>-1</code> except <code>1</code> for negative numbers. Better do <em>NOT</em> reuse such method.
 Just write new. And replace old method immediately.</p>
 
-<p>``` java
-static boolean isEven(int num) {</p>
-
-<pre><code>return num % 2 == 0;
-</code></pre>
-
-<p>}
-```</p>
+<p><code>java
+static boolean isEven(int num) {
+    return num % 2 == 0;
+}
+</code></p>
 
 <p><em>Concurrency</em>. Software world hardest issues are concurrency issues.</p>
 
-<blockquote><p>You have a problem and decide to use threads.
+<blockquote>
+  <p>You have a problem and decide to use threads.
 Two now problems have you.</p>
 
-<p>-- Some guy from internet</p></blockquote>
+  <p>– Some guy from internet
+<br /></p>
+</blockquote>
 
-<br>
-
-
-<blockquote><p>You have a problem and decide to use locks.
+<blockquote>
+  <p>You have a problem and decide to use locks.
 Now you have</p>
 
-<p>-- Some another guy from internet</p></blockquote>
+  <p>– Some another guy from internet</p>
+</blockquote>
 
 <p>If you know that some object will be shared between threads, one solution to
 add <code>synchronized</code> (<a href="http://en.wikipedia.org/wiki/Monitor_%28synchronization%29">Monitor object</a>)
@@ -310,14 +297,13 @@ It consists of a lot of concurrency techniques, like <code>Synchronizers</code>,
 <p><strong>As a bonus:</strong> Good books about concurrency in Java:</p>
 
 <ul>
-<li><a href="http://www.goodreads.com/book/show/127932.Java_Concurrency_in_Practice">Java Concurrency in Practice</a></li>
-<li><a href="http://www.goodreads.com/book/show/629608.Concurrent_Programming_in_Java">Concurrent Programming in Java</a></li>
+  <li><a href="http://www.goodreads.com/book/show/127932.Java_Concurrency_in_Practice">Java Concurrency in Practice</a></li>
+  <li><a href="http://www.goodreads.com/book/show/629608.Concurrent_Programming_in_Java">Concurrent Programming in Java</a></li>
 </ul>
-
 
 <p><strong>Lesson:</strong> Always handle exceptions. Pay more attention to concurrency issues.</p>
 
-<h3><a href="http://en.wikipedia.org/wiki/MIM-104_Patriot">Patriot Missile</a> (1991)</h3>
+<h3 id="patriot-missilehttpenwikipediaorgwikimim-104patriot-1991"><a href="http://en.wikipedia.org/wiki/MIM-104_Patriot">Patriot Missile</a> (1991)</h3>
 
 <p><strong>History:</strong> In 1991, American battery fired Patriot Missile to intercept Iraq missile.
 Interception failed because of system bug in time step calculation.
@@ -325,8 +311,8 @@ Iraq missile destroyed an American Army barracks.</p>
 
 <p><strong>Consequences:</strong> 28 soldiers died, 100 injured.</p>
 
-<p><strong>Reason:</strong> Floating point rounding error. System's internal clock was calculating
-time by 0.1 seconds step (0.1, 0.2, 0.3, ...). As <code>0.1 = 1/10</code> have infinite binary representation
+<p><strong>Reason:</strong> Floating point rounding error. System’s internal clock was calculating
+time by 0.1 seconds step (0.1, 0.2, 0.3, …). As <code>0.1 = 1/10</code> have infinite binary representation
 <code>0.0001100110011001100110011001100110011001100110011001100..</code>
 and for this calculation 24-bit register was used,
 register hold just <code>0.00011001100110011001100</code> introducing truncating error
@@ -342,18 +328,15 @@ register hold just <code>0.00011001100110011001100</code> introducing truncating
 <p>During that time Iraq missile travels a half kilometer, and was out of tracking radius
 for Patriot Missile. Bad things happen.</p>
 
-<p><strong>Solution:</strong> Floats are very error-prone if we don't handle them correctly.</p>
+<p><strong>Solution:</strong> Floats are very error-prone if we don’t handle them correctly.</p>
 
 <p>Predict the output of the following code:</p>
 
-<p>``` java
-for (double d = 0.0; d != 1.0; d = d + 0.1) {</p>
-
-<pre><code>System.out.println("Iteration");
-</code></pre>
-
-<p>}
-```</p>
+<p><code>java
+for (double d = 0.0; d != 1.0; d = d + 0.1) {
+    System.out.println("Iteration");
+}
+</code></p>
 
 <p>Infinite loop. The same problem as described above.</p>
 
@@ -366,26 +349,23 @@ Java, as example, have out-of-the-box <code>BigDecimal</code> class. Loop above 
 that class works as expected:</p>
 
 <p>``` java
-BigDecimal init = new BigDecimal("0.0");
-BigDecimal bound = new BigDecimal("1.0");
-BigDecimal step = new BigDecimal("0.1")</p>
+BigDecimal init = new BigDecimal(“0.0”);
+BigDecimal bound = new BigDecimal(“1.0”);
+BigDecimal step = new BigDecimal(“0.1”)</p>
 
-<p>for (BigDecimal d = init; !d.equals(bound); d = d.add(step)) {</p>
-
-<pre><code>    System.out.println(d);
-</code></pre>
-
-<p>}
+<p>for (BigDecimal d = init; !d.equals(bound); d = d.add(step)) {
+        System.out.println(d);
+}
 ```</p>
 
 <p>One disadvantage it has slower execution than with floats. Consider trade-off
-between time and accuracy. If human lives on the stake, it's not relevant choice.</p>
+between time and accuracy. If human lives on the stake, it’s not relevant choice.</p>
 
 <p><code>Ratio</code> class can be defined without any problems and used similar way.</p>
 
 <p><strong>Lesson:</strong> If you need very accurate calculations use big decimals or ratios.</p>
 
-<h3><a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a> (1998)</h3>
+<h3 id="mars-climate-orbiterhttpenwikipediaorgwikimarsclimateorbiter-1998"><a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a> (1998)</h3>
 
 <p><strong>History:</strong> Again about space. In 1998, communication with Mars Climate Orbiter
 was lost, because of changed trajectory. Space probe was crashed near Mars.</p>
@@ -413,7 +393,7 @@ Developer who wrote that less guilty, but still guilty.</p>
 
 <p>There are different approaches to implement this in java:</p>
 
-<p>very bad approach, we don't know what units are used:</p>
+<p>very bad approach, we don’t know what units are used:</p>
 
 <p><code>java
 new Force(1.533);
@@ -451,21 +431,20 @@ Unit conversion method can be defined either at the <code>enum ForceUnit</code> 
 
 <p><em>To be continued.</em></p>
 
-<h3>Links</h3>
+<h3 id="links">Links</h3>
 
 <ul>
-<li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
-<li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
-<li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History's Worst Software Bugs</a></li>
-<li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
-<li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
-<li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
-<li><a href="http://courses.cs.vt.edu/cs3604/lib/Therac_25/Therac_1.html">An Investigation of the Therac-25 Accidents</a></li>
-<li><a href="http://seeri.etsu.edu/SECodeCases/ethicsC/PatriotMissile.htm">An Analysis of the Patriot Missile System</a></li>
-<li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
-<li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
+  <li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
+  <li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History’s Worst Software Bugs</a></li>
+  <li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
+  <li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
+  <li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
+  <li><a href="http://courses.cs.vt.edu/cs3604/lib/Therac_25/Therac_1.html">An Investigation of the Therac-25 Accidents</a></li>
+  <li><a href="http://seeri.etsu.edu/SECodeCases/ethicsC/PatriotMissile.htm">An Analysis of the Patriot Missile System</a></li>
+  <li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
+  <li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
 </ul>
-
 ]]></content>
   </entry>
   
@@ -479,22 +458,21 @@ some operation to be finished?</p>
 
 <!-- more -->
 
-
 <p><img src="http://upload.wikimedia.org/wikipedia/en/3/34/Eclipse-logo.png" alt="" /></p>
 
 <p>If you here, probably, the answer is yes. You are bored with that slow functionality and want
 to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
 
 <p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
-Add SSD to make filesystem operations faster. We assume you can't afford all that. All you can is setup your
+Add SSD to make filesystem operations faster. We assume you can’t afford all that. All you can is setup your
 eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
 almost everything is identical in other versions for other platforms.</p>
 
-<h3>Eclipse tweaks</h3>
+<h3 id="eclipse-tweaks">Eclipse tweaks</h3>
 
-<h4>Plugins</h4>
+<h4 id="plugins">Plugins</h4>
 
-<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn't
+<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn’t
 work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
 It is not deleting, you always can enable it back.</p>
 
@@ -511,16 +489,15 @@ not used at all.</p>
 
 <p><img src="http://i.imgur.com/7wRoR.png" alt="" /></p>
 
-<h4>eclipse.ini</h4>
+<h4 id="eclipseini">eclipse.ini</h4>
 
 <p>Following tweaks based on editing <code>eclipse.ini</code> file located in root folder
 of your eclipse instalation.</p>
 
 <ul>
-<li><strong>Use specific JVM to run eclipse.</strong>
+  <li><strong>Use specific JVM to run eclipse.</strong>
 This allows do not take into account system properties which alters your JDK.</li>
 </ul>
-
 
 <p><code>
 -vm
@@ -528,18 +505,23 @@ This allows do not take into account system properties which alters your JDK.</l
 </code></p>
 
 <ul>
-<li><p><strong>Use latest JDK to run eclipse.</strong>
+  <li>
+    <p><strong>Use latest JDK to run eclipse.</strong>
 Much better if you point your eclipse to the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">latest JDK</a>.
-<em>Rumors</em> said it has better performance.</p></li>
-<li><p><strong>Use Sun JDK to run eclipse.</strong>
-The reason behind this has the same explanation.</p></li>
-<li><p><strong>Configure VM arguments.</strong>
+<em>Rumors</em> said it has better performance.</p>
+  </li>
+  <li>
+    <p><strong>Use Sun JDK to run eclipse.</strong>
+The reason behind this has the same explanation.</p>
+  </li>
+  <li>
+    <p><strong>Configure VM arguments.</strong>
 You can set your own values for virtual machine if you think
 they are appropriate
 (<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning">Performance related options</a>)
-I use following settings to increase heap size (objects) to <code>768Mb</code> and permgen (classes) to <code>256 Mb</code> on my <code>3Gb</code> RAM machine.</p></li>
+I use following settings to increase heap size (objects) to <code>768Mb</code> and permgen (classes) to <code>256 Mb</code> on my <code>3Gb</code> RAM machine.</p>
+  </li>
 </ul>
-
 
 <p><code>
 -vmargs
@@ -550,7 +532,7 @@ I use following settings to increase heap size (objects) to <code>768Mb</code> a
 </code></p>
 
 <p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
-step of JVM loading you will get performance boost. But it's very risky change.</p>
+step of JVM loading you will get performance boost. But it’s very risky change.</p>
 
 <p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
 experimental VM options like (some of these):</p>
@@ -567,9 +549,9 @@ experimental VM options like (some of these):</p>
 <p>Check all <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fruntime-options.html">Eclipse runtime options</a>
 for reference and choose ones that appropriate for you.</p>
 
-<h4>Disable animations</h4>
+<h4 id="disable-animations">Disable animations</h4>
 
-<p>Animations it's cool. But I always disable animations if it possible in all tools.
+<p>Animations it’s cool. But I always disable animations if it possible in all tools.
 Also, classic theme is most usable for me.</p>
 
 <pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
@@ -577,7 +559,7 @@ Also, classic theme is most usable for me.</p>
 
 <p><img src="http://i.imgur.com/mzLp7.png" alt="" /></p>
 
-<h4>Disable label decorations</h4>
+<h4 id="disable-label-decorations">Disable label decorations</h4>
 
 <p>Label decorations are small icons on project, file, class levels that helps
 visually indicate some state of file. Like commited it to git or no.
@@ -588,7 +570,7 @@ They are provided by various plugins and rarely useful. Just left ones that you 
 
 <p><img src="http://i.imgur.com/MKZp5.png" alt="" /></p>
 
-<h4>Autocompletion</h4>
+<h4 id="autocompletion">Autocompletion</h4>
 
 <p>Sometimes on slow machines or when you have a lot of classes in your classpath autocompletion performance is terrible.
 Small improvement you can get by reducing group of possible proposals. I left only <code>Java Proposals</code> and <code>Template Proposals</code>:</p>
@@ -598,7 +580,7 @@ Small improvement you can get by reducing group of possible proposals. I left on
 
 <p><img src="http://i.imgur.com/Aa7MY.png" alt="" /></p>
 
-<h4>Uncheck validators</h4>
+<h4 id="uncheck-validators">Uncheck validators</h4>
 
 <p>If you are sure in your competence just suspend all validators. If problem appears, you always
 can identify the reason, but you save your development time.</p>
@@ -608,9 +590,9 @@ can identify the reason, but you save your development time.</p>
 
 <p><img src="http://i.imgur.com/n1XQ2.png" alt="" /></p>
 
-<h4>Close unrelated projects</h4>
+<h4 id="close-unrelated-projects">Close unrelated projects</h4>
 
-<p>If you working in context of few projects, better to have all unrelated projects closed. They won't appear
+<p>If you working in context of few projects, better to have all unrelated projects closed. They won’t appear
 in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
 You can add any number of projects to one working set, and quickly switch between different working sets
 in one workspace.</p>
@@ -618,7 +600,7 @@ in one workspace.</p>
 <pre><code>Right Click on Project -&gt; Assign Working Sets..
 </code></pre>
 
-<h4>Close unused tabs in editor</h4>
+<h4 id="close-unused-tabs-in-editor">Close unused tabs in editor</h4>
 
 <p>Big number of tabs in editor can greatly slow down your performance. Just limit them.</p>
 
@@ -629,14 +611,14 @@ in one workspace.</p>
 
 <p><img src="http://i.imgur.com/gjRd8.png" alt="" /></p>
 
-<h4>Disable spell check</h4>
+<h4 id="disable-spell-check">Disable spell check</h4>
 
-<p>Are you developer or what? I don't see any reason to have <code>spell check</code> enabled.</p>
+<p>Are you developer or what? I don’t see any reason to have <code>spell check</code> enabled.</p>
 
 <pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
 </code></pre>
 
-<h4>Disable autobuild</h4>
+<h4 id="disable-autobuild">Disable autobuild</h4>
 
 <p>Probably, you aware about when you want to build your project and when not.</p>
 
@@ -645,10 +627,10 @@ Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 
 Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Rebuild class files modified by others'
 </code></pre>
 
-<h4>Hotkeys</h4>
+<h4 id="hotkeys">Hotkeys</h4>
 
 <p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
-single operation, your development process won't be fast. Configure most-often used actions
+single operation, your development process won’t be fast. Configure most-often used actions
 to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
 
 <pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys
@@ -659,16 +641,15 @@ to hotkeys and learn them. You will get a positive feedback after a week of usag
 <pre><code>Window -&gt; Hide Toolbar
 </code></pre>
 
-<h3>Useful Links</h3>
+<h3 id="useful-links">Useful Links</h3>
 
 <ul>
-<li><a href="http://wiki.eclipse.org/Eclipse.ini">http://wiki.eclipse.org/Eclipse.ini</a></li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
-<li><a href="http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/">http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/</a></li>
-<li><a href="http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/">http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/</a></li>
-<li><a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590">http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590</a></li>
+  <li><a href="http://wiki.eclipse.org/Eclipse.ini">http://wiki.eclipse.org/Eclipse.ini</a></li>
+  <li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
+  <li><a href="http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/">http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/</a></li>
+  <li><a href="http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/">http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/</a></li>
+  <li><a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590">http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590</a></li>
 </ul>
-
 
 <p><strong>P.S.</strong> This article planned to be updatable, other tweaks are welcome!</p>
 ]]></content>
@@ -683,10 +664,9 @@ to hotkeys and learn them. You will get a positive feedback after a week of usag
 
 <!-- more -->
 
-
 <p>It depends on our definition of program execution. But, generally speaking, <strong>yes</strong>.</p>
 
-<h3>Normal program execution</h3>
+<h3 id="normal-program-execution">Normal program execution</h3>
 
 <p><em>Aha, look at this</em>, someone might retort:</p>
 
@@ -705,7 +685,9 @@ This is <em>abnormal</em>.</p>
 
 <p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">official tutorial</a></p>
 
-<blockquote><p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p></blockquote>
+<blockquote>
+  <p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p>
+</blockquote>
 
 <p>Your counter question might be: <em>If second line of that code always exectued?</em></p>
 
@@ -715,121 +697,104 @@ System.out.println("Line 2");
 System.out.println("Line 3");
 </code></p>
 
-<p>Sure, because it's linear flow. Nothing can break...<strong>BANG</strong>...<code>Electricity unavailable. Program stopped.</code></p>
+<p>Sure, because it’s linear flow. Nothing can break…<strong>BANG</strong>…<code>Electricity unavailable. Program stopped.</code></p>
 
-<p>What about this? It's also abnormal program execution, and we can't guarantee anything for 100%.
+<p>What about this? It’s also abnormal program execution, and we can’t guarantee anything for 100%.
 In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
 
-<p>That's why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
+<p>That’s why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
 
-<blockquote><p>I said yes? I meant no!</p></blockquote>
+<blockquote>
+  <p>I said yes? I meant no!</p>
+</blockquote>
 
-<h3>Perpetuum Mobile</h3>
+<h3 id="perpetuum-mobile">Perpetuum Mobile</h3>
 
 <p>Consider the following code:</p>
 
-<p>``` java
+<p><code>java
 try {
-  while (true) {</p>
-
-<pre><code>System.out.println("I print here some useful information");
-</code></pre>
-
-<p>  }
+  while (true) {
+    System.out.println("I print here some useful information");
+  }
 } finally {
   System.out.println("Let me run");
 }
-```</p>
+</code></p>
 
-<p>Will be the line <em>"Let me run"</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
+<p>Will be the line <em>“Let me run”</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
 
 <p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
 
-<h3>Threads</h3>
+<h3 id="threads">Threads</h3>
 
 <p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
 
-<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn't executed.</p>
+<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn’t executed.</p>
 
 <p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
 
 <p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
 
-<blockquote><p>...if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p></blockquote>
+<blockquote>
+  <p>…if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p>
+</blockquote>
 
 <p>So, we can treat thread like a program, and make one effective rule:</p>
 
 <p><strong>Rule 1</strong>. Finally executes always, except the case where controlling program or thread was aborted.</p>
 
-<h3>Finally we return</h3>
+<h3 id="finally-we-return">Finally we return</h3>
 
 <p>Ok, now we know when finally is not executed. But do we know when finally is executed?</p>
 
 <p>Consider the example:</p>
 
-<p>``` java
+<p><code>java
 int someFunc() {
-  try {</p>
-
-<pre><code>return 0;
-</code></pre>
-
-<p>  } finally {</p>
-
-<pre><code>return 1;
-</code></pre>
-
-<p>  }
+  try {
+    return 0;
+  } finally {
+    return 1;
+  }
 }
-```</p>
+</code></p>
 
 <p>The result is obviously <code>1</code>. Just because <code>finally</code> is always executed.</p>
 
 <p>Consider, next example:</p>
 
-<p>``` java
+<p><code>java
 int someFunc() {
-  try {</p>
-
-<pre><code>throw new RuntimeException();
-</code></pre>
-
-<p>  } finally {</p>
-
-<pre><code>return 1;
-</code></pre>
-
-<p>  }
+  try {
+    throw new RuntimeException();
+  } finally {
+    return 1;
+  }
 }
-```</p>
+</code></p>
 
-<p>The result is <code>1</code> again. And it's a problem. We just lose the exception.
-Such issue known as <em>exception swallowing</em>. It is very dangerous, because client's code expect either exception or some value, but it always get only value.</p>
+<p>The result is <code>1</code> again. And it’s a problem. We just lose the exception.
+Such issue known as <em>exception swallowing</em>. It is very dangerous, because client’s code expect either exception or some value, but it always get only value.</p>
 
 <p>One more less imaginary example.</p>
 
-<p>``` java
+<p><code>java
 String deposit(int amount) throws DAOException {
-  try {</p>
-
-<pre><code>return dao.deposit(amount);
-</code></pre>
-
-<p>  } finally {</p>
-
-<pre><code>return "OK";
-</code></pre>
-
-<p>  }
+  try {
+    return dao.deposit(amount);
+  } finally {
+    return "OK";
+  }
 }
-```</p>
+</code></p>
 
 <p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
-responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string "OK" will be returned.</p>
+responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string “OK” will be returned.</p>
 
 <p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
 
-<h3>Instead of conclusion</h3>
+<h3 id="instead-of-conclusion">Instead of conclusion</h3>
 
 <p>A lot of programmers are aware about this common mistake. But some are not.
 Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
@@ -841,41 +806,39 @@ Maybe these two simple rules give you a tiny light on coward <code>finally</code
     <link href="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/"/>
     <updated>2012-10-31T19:42:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe</id>
-    <content type="html"><![CDATA[<p>Did you know that all java classes start with the same 4 bytes. In hex it's <code>CAFEBABE</code>.</p>
+    <content type="html"><![CDATA[<p>Did you know that all java classes start with the same 4 bytes. In hex it’s <code>CAFEBABE</code>.</p>
 
 <!-- more -->
 
-
 <p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
 
-<p>``` java
-public class Hello {</p>
-
-<pre><code>public static void main(String[] args) {
-    System.out.println("Hell, O'World!");
+<p><code>java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hell, O'World!");
+    }
 }
-</code></pre>
-
-<p>}
-```</p>
+</code></p>
 
 <p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
 
-<p><img src="/images/cafebabe.png" title="cafebabe" alt="" /></p>
+<p><img src="/images/cafebabe.png" alt="" title="cafebabe" /></p>
 
 <p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
 
-<blockquote><p>We used to go to lunch at a place called St Michael's Alley.
+<blockquote>
+  <p>We used to go to lunch at a place called St Michael’s Alley.
 According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
 It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
 When Jerry died, they even put up a little Buddhist-esque shrine.
 When we used to go there, we referred to the place as Cafe Dead.
 Somewhere along the line it was noticed that this was a HEX number.
 I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
-I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after "CAFE" (it seemed to be a good theme)
-I hit on BABE and decided to use it. At that time, it didn't seem terribly important or destined to go anywhere but the trash-can of history.
+I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after “CAFE” (it seemed to be a good theme)
+I hit on BABE and decided to use it. At that time, it didn’t seem terribly important or destined to go anywhere but the trash-can of history.
 So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
-and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p></blockquote>
+and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p>
+</blockquote>
 
 <p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
 If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
@@ -896,25 +859,24 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">HashSet</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">();</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">“</span><span class="nl">http:</span><span class="c1">//google.com”));</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">“</span><span class="nl">http:</span><span class="c1">//google.com”));</span>
 </span><span class='line'><span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">60000</span><span class="o">);</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">“</span><span class="nl">http:</span><span class="c1">//google.com”));</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>What do you think the output for lines 3 and 5 will be?</p>
 
 <!-- more -->
 
-
 <p>Definitely not <code>true, true</code> if the question was asked. Think for two minutes.</p>
 
 <p>Ok. In most cases it will be <code>true, false</code> because you have internet connection (<em>How else you can read this?</em>).
-Turn off your network cable or wi-fi, and you'll get <code>true, true</code>.</p>
+Turn off your network cable or wi-fi, and you’ll get <code>true, true</code>.</p>
 
 <p>The reason is in implementation of <code>hashCode()</code> and <code>equals()</code> methods for <code>URL</code> class.</p>
 
-<p>Let's see how hashCode calculated:</p>
+<p>Let’s see how hashCode calculated:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -922,51 +884,46 @@ Turn off your network cable or wi-fi, and you'll get <code>true, true</code>.</p
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">hashCode</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">hashCode</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
 </span><span class='line'>  <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>We can see hashCode is an instance variable that calculates once. Makes sense, <code>URL</code> is <a href="http://en.wikipedia.org/wiki/Immutable_object">immutable</a>.
-What is handler? It's an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
+What is handler? It’s an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
 Just look at <code>URL.hashCode()</code> javadoc:</p>
 
-<blockquote><p>The hash code is based upon all the URL components relevant for URL comparison. As such, this operation is a blocking operation.</p></blockquote>
+<blockquote>
+  <p>The hash code is based upon all the URL components relevant for URL comparison. As such, this operation is a blocking operation.</p>
+</blockquote>
 
 <p>Stop! <strong>BLOCKING OPERATION?!</strong></p>
 
-<p><em>- Sorry, I couldn't check email yesterday due to hashCode calculation.</em></p>
+<p><em>- Sorry, I couldn’t check email yesterday due to hashCode calculation.</em></p>
 
 <p>or even better</p>
 
-<p><em>- No, mom, I can't watch porn, It's hashCode, you know.</em></p>
+<p><em>- No, mom, I can’t watch porn, It’s hashCode, you know.</em></p>
 
 <p>Ok, let it be blocking. Another exciting part, that handler <strong>resolves host IP address</strong> for hashCode calculation.
 Tries to resolve, to be honest. If it can not do this, it calculates hashCode based on host, which is <em>google.com</em> for our example.
 Shit happens when IP is dynamic, or host have request balancer that also changes host IP.
 In that case we got different hashCodes for one host name, and will have two (or even more) instances in HashSet. Not good at all.
-By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it's another topic.</p>
+By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it’s another topic.</p>
 
-<h3>How to avoid this?</h3>
+<h3 id="how-to-avoid-this">How to avoid this?</h3>
 
 <ul>
-<li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It's not the best choice though, but have deterministic hashCode implementation.</li>
-<li>Do not use <code>java.net.URL</code> in collections. Good option to maintain collection of String objects (that represent host name) and get URL when needed.</li>
-<li>Disable your network adapter during hashCode calculation. (<em>It's a joke, but it helps</em>)</li>
-<li>Use your own subclass of URLStreamHandler with proper implementation of hashCode.</li>
+  <li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It’s not the best choice though, but have deterministic hashCode implementation.</li>
+  <li>Do not use <code>java.net.URL</code> in collections. Good option to maintain collection of String objects (that represent host name) and get URL when needed.</li>
+  <li>Disable your network adapter during hashCode calculation. (<em>It’s a joke, but it helps</em>)</li>
+  <li>Use your own subclass of URLStreamHandler with proper implementation of hashCode.</li>
 </ul>
 
-
-<p>Finally, I'm pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
+<p>Finally, I’m pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
 ]]></content>
   </entry>
   

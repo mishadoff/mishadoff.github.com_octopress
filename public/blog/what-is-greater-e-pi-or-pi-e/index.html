@@ -9,7 +9,7 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="You can answer almost immediately using calculator, but what if you don&#8217;t have it? I don&#8217;t remember the exact origin of this meme, but &hellip;">
+  <meta name="description" content="You can answer almost immediately using calculator, but what if you don’t have it? I don’t remember the exact origin of this meme, but this situation &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -104,57 +117,60 @@
   </header>
 
 
-<div class="entry-content"><p>You can answer almost immediately using calculator, but what if you don&#8217;t have it?</p>
+<div class="entry-content"><p>You can answer almost immediately using calculator, but what if you don’t have it?</p>
 
 <!-- more -->
 
+<p>I don’t remember the exact origin of this meme, but this situation was almost every time when we played with numbers.</p>
 
-<p>I don&#8217;t remember the exact origin of this meme, but this situation was almost every time when we played with numbers.</p>
+<blockquote>
+  <p>– Propose a number.</p>
 
-<blockquote><p>&#8211; Propose a number.</p>
+  <p>– e^π.</p>
 
-<p>&#8211; e<sup>π.</sup></p>
-
-<p>&#8211; Integer, shithead!</p></blockquote>
+  <p>– Integer, shithead!</p>
+</blockquote>
 
 <p>This even might appear in usual conversations:</p>
 
-<blockquote><p>&#8211; What is her size?</p>
+<blockquote>
+  <p>– What is her size?</p>
 
-<p>&#8211; e<sup>π</sup></p>
+  <p>– e^π</p>
 
-<p>&#8211; So small. I prefer π<sup>e.</sup></p></blockquote>
+  <p>– So small. I prefer π^e.</p>
+</blockquote>
 
 <p>And a following arguing about <strong>what is greater?</strong> Until we simply compare results using calculator.</p>
 
-<p>Let&#8217;s see how this problem can be solved without using a calc.</p>
+<p>Let’s see how this problem can be solved without using a calc.</p>
 
 <p><strong>Warning:</strong> Goal of this article not only to show correct solution to the problem, but provide other solutions (<em>even incorrect!</em>) that can convince somebody.</p>
 
-<h2>Origins</h2>
+<h2 id="origins">Origins</h2>
 
-<p><a href="http://en.wikipedia.org/wiki/Pi">π</a> is the mathematical constant. It&#8217;s just a number that represents ratio between circle circumference and diameter <code>C/d</code>.
+<p><a href="http://en.wikipedia.org/wiki/Pi">π</a> is the mathematical constant. It’s just a number that represents ratio between circle circumference and diameter <code>C/d</code>.
 Approximately, equal to <code>3.1415</code>. <a href="http://webdocs.cs.ualberta.ca/~smillie/Pi10000.html">Get more decimal places for FREE!</a></p>
 
-<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pi_eq_C_over_d.svg/600px-Pi_eq_C_over_d.svg.png" width="300" height="300"></p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pi_eq_C_over_d.svg/600px-Pi_eq_C_over_d.svg.png" width="300" height="300" /></p>
 
-<p><a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">e</a> is the harder one. If you sum infinite sequence below, you&#8217;ll get <code>e</code>.
+<p><a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">e</a> is the harder one. If you sum infinite sequence below, you’ll get <code>e</code>.
 Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmltest/gifcity/e.2mil">FREE decimal places without registration!</a></p>
 
 <p><img src="http://upload.wikimedia.org/math/8/0/5/8050a584d4b528e6293bf02c34f6e399.png" alt="" /></p>
 
-<p>I&#8217;m pretty sure that&#8217;s more than enough you need to know to solve the problem.</p>
+<p>I’m pretty sure that’s more than enough you need to know to solve the problem.</p>
 
-<h2>Google It</h2>
+<h2 id="google-it">Google It</h2>
 
 <p><a href="https://www.google.com/#hl=uk&amp;gs_nf=3&amp;tok=WfGdb7x83ofvKLc_85HnIw&amp;cp=5&amp;gs_id=227&amp;xhr=t&amp;q=e^pi+-+pi^e&amp;pf=p&amp;output=search&amp;sclient=psy-ab&amp;oq=e^pi+&amp;gs_l=&amp;pbx=1&amp;bav=on.2,or.r_gc.r_pw.r_qf.&amp;fp=51e735cc3a152124&amp;bpcl=37643589&amp;biw=1280&amp;bih=634">Get answer from google</a></p>
 
-<h2>Rough estimate</h2>
+<h2 id="rough-estimate">Rough estimate</h2>
 
 <p><img src="http://i.imgur.com/Jv0W1.jpg" alt="" /></p>
 
-<p>We can use exponent function on integers, so let&#8217;s just round the numbers.
-<code>3.1415</code> becomes <code>3</code>, <code>2.7183</code> becomes&#8230; <code>3</code> also.</p>
+<p>We can use exponent function on integers, so let’s just round the numbers.
+<code>3.1415</code> becomes <code>3</code>, <code>2.7183</code> becomes… <code>3</code> also.</p>
 
 <pre><code>3^3 vs 3^3
 27 = 27
@@ -162,7 +178,7 @@ Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmlt
 
 <p>They are equal. Wrong answer.</p>
 
-<p>Let&#8217;s use <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">floor and ceiling</a> functions.</p>
+<p>Let’s use <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">floor and ceiling</a> functions.</p>
 
 <p>Floor: <code>floor(e) = 2</code>, <code>floor(π) = 3</code></p>
 
@@ -176,10 +192,10 @@ Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmlt
 81 &gt; 64
 </code></pre>
 
-<p>Two different results depend on round function that we use. Can&#8217;t be sure.
+<p>Two different results depend on round function that we use. Can’t be sure.
 Need another method for verification.</p>
 
-<h2>Calculus</h2>
+<h2 id="calculus">Calculus</h2>
 
 <p><img src="http://i.imgur.com/Low4R.jpg" alt="" /></p>
 
@@ -189,7 +205,7 @@ Need another method for verification.</p>
 </code></pre>
 
 <p>Use logarithm property <code>a &lt; b =&gt; log(a) &lt; log(b)</code>, and take <code>log</code> with base <code>e</code> (<code>ln</code>).
-Honestly, it&#8217;s not logarithm property, but <a href="http://en.wikipedia.org/wiki/Monotonic_function">monotonic function</a> property. Who cares?</p>
+Honestly, it’s not logarithm property, but <a href="http://en.wikipedia.org/wiki/Monotonic_function">monotonic function</a> property. Who cares?</p>
 
 <pre><code>ln(e^π) vs ln(π^e)
 </code></pre>
@@ -204,14 +220,14 @@ Honestly, it&#8217;s not logarithm property, but <a href="http://en.wikipedia.or
 <pre><code>π vs e * ln(π)
 </code></pre>
 
-<p>Now, people who know value of <code>ln(π)</code> can answer the question. We don&#8217;t know. Move <code>ln(π)</code> to the left side</p>
+<p>Now, people who know value of <code>ln(π)</code> can answer the question. We don’t know. Move <code>ln(π)</code> to the left side</p>
 
 <pre><code>π/ln(π) vs e
 </code></pre>
 
-<p>Take a look at expression <code>π/ln(π)</code>. Change <code>π</code> to <code>x</code>. Got <code>x/ln(x)</code>. What is it? It&#8217;s a function!</p>
+<p>Take a look at expression <code>π/ln(π)</code>. Change <code>π</code> to <code>x</code>. Got <code>x/ln(x)</code>. What is it? It’s a function!</p>
 
-<p>Let&#8217;s find extrema of this function <code>f(x)</code>. Take first derivative.</p>
+<p>Let’s find extrema of this function <code>f(x)</code>. Take first derivative.</p>
 
 <pre><code>f'(x) = (ln(x) - 1)/(ln^2(x))
 </code></pre>
@@ -248,15 +264,15 @@ Remember that we do this to get estimate of <code>π/ln(π)</code> which was on 
 
 <p><strong>Note:</strong> We skip mathematical proof that extrema <code>x = e</code> is minimum. Not hard to show.</p>
 
-<h2>Manual computations</h2>
+<h2 id="manual-computations">Manual computations</h2>
 
 <p><img src="http://i.imgur.com/tTTCC.jpg" alt="" /></p>
 
-<p>Why don&#8217;t we perform calculation manually?</p>
+<p>Why don’t we perform calculation manually?</p>
 
 <p>Ok, we have <code>π</code>, which is <code>3.1415</code> or <code>22/7</code> its famous simplest ratio approximation.
-On the other side we have <code>e</code>, which is <code>2.7183</code>. But I&#8217;m not aware of any <code>e</code> approximation.
-Let&#8217;s create one from the definition of <code>e</code>. Take and sum first 5 elements.</p>
+On the other side we have <code>e</code>, which is <code>2.7183</code>. But I’m not aware of any <code>e</code> approximation.
+Let’s create one from the definition of <code>e</code>. Take and sum first 5 elements.</p>
 
 <pre><code>1 + 1 + 1/2 + 1/6 + 1/24 = 65/24
 </code></pre>
@@ -267,7 +283,7 @@ Let&#8217;s create one from the definition of <code>e</code>. Take and sum first
 
 <p><img src="http://upload.wikimedia.org/math/a/4/3/a43d1edf99a795101aa58ce39cc72f52.png" alt="" /></p>
 
-<p>To take n-th root manually we use a special case of <a href="http://en.wikipedia.org/wiki/Newton%27s_method">Newton&#8217;s method</a>.
+<p>To take n-th root manually we use a special case of <a href="http://en.wikipedia.org/wiki/Newton%27s_method">Newton’s method</a>.
 Just one iteration:</p>
 
 <p><img src="http://upload.wikimedia.org/math/a/2/5/a25d581b7161170fc8ab0dbe74532ecc.png" alt="" /></p>
@@ -278,7 +294,7 @@ Just one iteration:</p>
 sqrt_7(2.7183^22)
 </code></pre>
 
-<p>&#8230;Multiplying 22 times&#8230;</p>
+<p>…Multiplying 22 times…</p>
 
 <p>In fact, not all so bad. To calculate <code>a^22</code> we need only 6 multiplications:</p>
 
@@ -295,7 +311,7 @@ a^20 * a^2 = a^22
 <pre><code>sqrt_7(3585440111)
 </code></pre>
 
-<p>Applying Newton&#8217;s method. Select closest root:</p>
+<p>Applying Newton’s method. Select closest root:</p>
 
 <pre><code>1^7 = 7 &lt; 3585440111
 2^7 = 128 &lt; 3585440111
@@ -326,20 +342,20 @@ sqrt_24(3.1415^65)
 <p>We can cheat here. We get rough result <code>2 * 10^32</code>. Now we test <code>23^24</code> (<em>most closest root from previous</em>) and its value <code>4.8 * 10^32</code>.
 So, definitely nth-root will be lower than <code>23</code>. Solved.</p>
 
-<p>Don&#8217;t ask how many basic arithmetic operations we performed. A lot.</p>
+<p>Don’t ask how many basic arithmetic operations we performed. A lot.</p>
 
-<h2>Liar approach</h2>
+<h2 id="liar-approach">Liar approach</h2>
 
-<p>Actually, it&#8217;s offensive to use the word &#8220;liar&#8221;.
+<p>Actually, it’s offensive to use the word “liar”.
 There is a whole technique called <a href="http://en.wikipedia.org/wiki/Mathematical_fallacy">Mathematical Fallacy</a>.
 It based on some illegal math transformation (<em>division by zero, roots from negative numbers, etc.</em>) to get <strong>any desired result</strong>.</p>
 
 <p>This is powerful instrument for mathematicians to show magic for not mathematicians.</p>
 
-<p>Suppose, we don&#8217;t know exact value of π. Not a problem, but we know <a href="http://en.wikipedia.org/wiki/Complex_number">complex numbers</a>.
+<p>Suppose, we don’t know exact value of π. Not a problem, but we know <a href="http://en.wikipedia.org/wiki/Complex_number">complex numbers</a>.
 And also the fact that <code>sqrt(-1) = i</code>. Where <code>i</code> is <a href="http://en.wikipedia.org/wiki/Imaginary_unit">imaginary unit</a></p>
 
-<p>We have bad memory and can&#8217;t remember π value, but we know <a href="http://en.wikipedia.org/wiki/Euler%27s_formula">Euler&#8217;s formula</a></p>
+<p>We have bad memory and can’t remember π value, but we know <a href="http://en.wikipedia.org/wiki/Euler%27s_formula">Euler’s formula</a></p>
 
 <pre><code>e^(i * x) = cos(x) + i * sin(x)
 </code></pre>
@@ -364,7 +380,7 @@ And also the fact that <code>sqrt(-1) = i</code>. Where <code>i</code> is <a hre
 <pre><code>2π * i = 0
 </code></pre>
 
-<p>It means either <code>2</code> or <code>π</code> or <code>i</code> is zero. <code>2</code> is not zero. <code>i</code> is not zero. <code>π</code> we don&#8217;t know.
+<p>It means either <code>2</code> or <code>π</code> or <code>i</code> is zero. <code>2</code> is not zero. <code>i</code> is not zero. <code>π</code> we don’t know.
 Ok, that means <code>π</code> equals to <code>0</code>.</p>
 
 <p>Returning to comparing our constants:</p>
@@ -378,9 +394,9 @@ Ok, that means <code>π</code> equals to <code>0</code>.</p>
 
 <p>The fallacy was where we implicitly took a logarithm and said that <code>2π * i = 0</code>.
 The number <code>e^(2π * i)</code> is not real and we not allowed to logarithm it.
-But if person who listens you don&#8217;t know this fact&#8230; This is an excellent proof.</p>
+But if person who listens you don’t know this fact… This is an excellent proof.</p>
 
-<h2>Programming approach</h2>
+<h2 id="programming-approach">Programming approach</h2>
 
 <p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="" /></p>
 
@@ -388,24 +404,25 @@ But if person who listens you don&#8217;t know this fact&#8230; This is an excel
 
 <p>One-liner in Java:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">));</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<h2>Fun approach</h2>
+<h2 id="fun-approach">Fun approach</h2>
 
 <p>Derived from joke:</p>
 
-<blockquote><p>Scientific lab wasted a lot of money for calculating decimal places of π. They come up with idea, let&#8217;s π will be equal to 4, to save money.</p>
+<blockquote>
+  <p>Scientific lab wasted a lot of money for calculating decimal places of π. They come up with idea, let’s π will be equal to 4, to save money.</p>
 
-<p>&#8211; But why 4 instead of 3?</p>
+  <p>– But why 4 instead of 3?</p>
 
-<p>&#8211; Because 3 reserved for e.</p></blockquote>
+  <p>– Because 3 reserved for e.</p>
+</blockquote>
 
 <p>That way <code>e^π</code> equal to <code>81</code>, and <code>π^e</code> equal to <code>64</code>. <code>81 &gt; 64</code>. Simple, concise way.</p>
 
-<h2>Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>There are much more fun about these irrational bastards. Math is fun.</p>
 
@@ -482,6 +499,10 @@ Last solution would be good. But if he or she really expect solution with using 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -495,10 +516,6 @@ Last solution would be good. But if he or she really expect solution with using 
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

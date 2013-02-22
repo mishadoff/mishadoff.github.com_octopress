@@ -26,9 +26,22 @@ of Facebook Hacker Cup 2013 If you only &hellip;">
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -109,13 +122,12 @@ of Facebook Hacker Cup 2013 If you only &hellip;">
 
 <!-- more -->
 
-
 <p>To answer this question we use results from the qualification round
 of <a href="https://www.facebook.com/hackercup">Facebook Hacker Cup 2013</a></p>
 
 <p>If you only interested in statistics, <a href="#stats">skip!</a></p>
 
-<h3>0. Intro</h3>
+<h3 id="intro">0. Intro</h3>
 
 <p>As you may know, Facebook Hacker Cup is a programming contest. You have programming
 problem and you need to solve it, in most cases in efficient way. You get input file
@@ -125,7 +137,7 @@ any of contestants after round.</p>
 
 <p>These sources we use to get programming language statistics.</p>
 
-<h3>1. Data</h3>
+<h3 id="data">1. Data</h3>
 
 <p>Primary resource in statistics is data.</p>
 
@@ -134,19 +146,18 @@ any of contestants after round.</p>
 Open every link manually takes much time, so we will use automated approach
 and will write program. Yes, in clojure.</p>
 
-<h4>Dependencies</h4>
+<h4 id="dependencies">Dependencies</h4>
 
 <p>For facebook authentification we can use:</p>
 
 <ul>
-<li><a href="https://github.com/DerGuteMoritz/clj-oauth2">OAuth authentification</a></li>
-<li><a href="https://developers.facebook.com/">Facebook app</a></li>
-<li><a href="http://seleniumhq.org/">Selenium</a></li>
+  <li><a href="https://github.com/DerGuteMoritz/clj-oauth2">OAuth authentification</a></li>
+  <li><a href="https://developers.facebook.com/">Facebook app</a></li>
+  <li><a href="http://seleniumhq.org/">Selenium</a></li>
 </ul>
 
-
-<p>I didn&#8217;t think too much about alternatives,
-because I wanted to try selenium in clojure. It&#8217;s a time!</p>
+<p>I didn’t think too much about alternatives,
+because I wanted to try selenium in clojure. It’s a time!</p>
 
 <p>In few words, selenium provides capability to perform programmatically
 browser events. Often used in automation. To use selenium in clojure program
@@ -157,195 +168,175 @@ additional help <code>[org.clojure/clojure-contrib "1.2.0"]</code>.</p>
 
 <p>In code we use following <em>requires</em></p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clj-http.client</span> <span class="ss">:as</span> <span class="nv">http</span><span class="p">])</span>
-</span><span class='line'><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clj-webdriver.taxi</span> <span class="ss">:as</span> <span class="nv">web</span><span class="p">])</span>
-</span><span class='line'><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clj-webdriver.core</span> <span class="ss">:as</span> <span class="nv">c</span><span class="p">])</span>
-</span><span class='line'><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clojure.contrib.math</span> <span class="ss">:as</span> <span class="nv">math</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clj-http.client</span> <span class="ss">:as</span> <span class="nv">http</span><span class="p">])</span>
+</span><span class="line"><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clj-webdriver.taxi</span> <span class="ss">:as</span> <span class="nv">web</span><span class="p">])</span>
+</span><span class="line"><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clj-webdriver.core</span> <span class="ss">:as</span> <span class="nv">c</span><span class="p">])</span>
+</span><span class="line"><span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clojure.contrib.math</span> <span class="ss">:as</span> <span class="nv">math</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<h4>Automation</h4>
+<h4 id="automation">Automation</h4>
 
 <p>Before we will automate actions to gather sources we need to decide
 what these actions are?</p>
 
 <ul>
-<li>Run browser</li>
-<li>Open facebook url</li>
-<li>Login to facebook
+  <li>Run browser</li>
+  <li>Open facebook url</li>
+  <li>Login to facebook
+    <ul>
+      <li>Enter login</li>
+      <li>Enter password</li>
+      <li>Press submit</li>
+    </ul>
+  </li>
+  <li>Go to scoreboard page</li>
+  <li>Process each page <code>loop [1..n]</code>
+    <ul>
+      <li>Go to page <code>n</code></li>
+      <li>Get all links</li>
+      <li>Filter links with sources</li>
+      <li>Process each link <code>loop [1..k]</code>
+        <ul>
+          <li>Go to link url <code>k</code></li>
+          <li>Get all page source</li>
+          <li>Filter out source code</li>
+          <li>Generate file name</li>
+          <li>Write source to file</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Pretty clear, right? Let’s code it sequentially.</p>
+
+<h4 id="implementation">Implementation</h4>
 
 <ul>
-<li>Enter login</li>
-<li>Enter password</li>
-<li>Press submit</li>
+  <li><em>Run browser</em> and <em>Open facebook url</em></li>
 </ul>
-</li>
-<li>Go to scoreboard page</li>
-<li>Process each page <code>loop [1..n]</code>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">web/set-driver!</span> <span class="p">{</span><span class="ss">:browser</span> <span class="ss">:firefox</span><span class="p">}</span> <span class="s">&quot;http://facebook.com&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-<li>Go to page <code>n</code></li>
-<li>Get all links</li>
-<li>Filter links with sources</li>
-<li>Process each link <code>loop [1..k]</code>
+  <li><em>Login to facebook</em></li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">web/input-text</span> <span class="s">&quot;#email&quot;</span> <span class="nv">username</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nf">web/input-text</span> <span class="s">&quot;#pass&quot;</span> <span class="nv">password</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nf">web/submit</span> <span class="s">&quot;#pass&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-<li>Go to link url <code>k</code></li>
-<li>Get all page source</li>
-<li>Filter out source code</li>
-<li>Generate file name</li>
-<li>Write source to file</li>
-</ul>
-</li>
-</ul>
-</li>
+  <li><em>Go to scoreboard page</em></li>
 </ul>
 
-
-<p>Pretty clear, right? Let&#8217;s code it sequentially.</p>
-
-<h4>Implementation</h4>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">web/to</span> <span class="s">&quot;https://www.facebook.com/hackercup/scoreboard?round=185564241586420&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-<li><em>Run browser</em> and <em>Open facebook url</em></li>
+  <li><em>Process each page</em></li>
 </ul>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">page-num</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">114</span><span class="p">))]</span>
+</span><span class="line">  <span class="p">(</span><span class="nf">process-page</span> <span class="nv">page-num</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">web/set-driver!</span> <span class="p">{</span><span class="ss">:browser</span> <span class="ss">:firefox</span><span class="p">}</span> <span class="s">&quot;http://facebook.com&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><em>Login to facebook</em></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">web/input-text</span> <span class="s">&quot;#email&quot;</span> <span class="nv">username</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nf">web/input-text</span> <span class="s">&quot;#pass&quot;</span> <span class="nv">password</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nf">web/submit</span> <span class="s">&quot;#pass&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><em>Go to scoreboard page</em></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">web/to</span> <span class="s">&quot;https://www.facebook.com/hackercup/scoreboard?round=185564241586420&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><em>Process each page</em></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">page-num</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="mi">114</span><span class="p">))]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">process-page</span> <span class="nv">page-num</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Number of pages is hardcoded. It&#8217;s ok.
+<p>Number of pages is hardcoded. It’s ok.
 What is <code>process-page</code> method?</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">process-page</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">url</span> <span class="p">(</span><span class="nb">str </span><span class="s">&quot;https://www.facebook.com/hackercup/scoreboard?round=185564241586420&amp;page=&quot;</span> <span class="nv">n</span><span class="p">)]</span>
-</span><span class='line'>    <span class="p">(</span><span class="nf">web/to</span> <span class="nv">url</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">e</span> <span class="p">(</span><span class="nf">web/find-elements</span> <span class="p">{</span><span class="ss">:css</span> <span class="s">&quot;a&quot;</span><span class="p">})</span>
-</span><span class='line'>            <span class="ss">:let</span> <span class="p">[</span><span class="nv">url</span> <span class="p">(</span><span class="nf">c/attribute</span> <span class="nv">e</span> <span class="s">&quot;href&quot;</span><span class="p">)]</span>
-</span><span class='line'>            <span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="nv">url</span> <span class="p">(</span><span class="nf">.startsWith</span> <span class="nv">url</span> <span class="s">&quot;https://fbcdn-dragon-a.akamaihd.net/&quot;</span><span class="p">))]</span>
-</span><span class='line'>      <span class="p">(</span><span class="nf">process-url</span> <span class="nv">url</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">process-page</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">url</span> <span class="p">(</span><span class="nb">str </span><span class="s">&quot;https://www.facebook.com/hackercup/scoreboard?round=185564241586420&amp;page=&quot;</span> <span class="nv">n</span><span class="p">)]</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">web/to</span> <span class="nv">url</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">e</span> <span class="p">(</span><span class="nf">web/find-elements</span> <span class="p">{</span><span class="ss">:css</span> <span class="s">&quot;a&quot;</span><span class="p">})</span>
+</span><span class="line">            <span class="ss">:let</span> <span class="p">[</span><span class="nv">url</span> <span class="p">(</span><span class="nf">c/attribute</span> <span class="nv">e</span> <span class="s">&quot;href&quot;</span><span class="p">)]</span>
+</span><span class="line">            <span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="nv">url</span> <span class="p">(</span><span class="nf">.startsWith</span> <span class="nv">url</span> <span class="s">&quot;https://fbcdn-dragon-a.akamaihd.net/&quot;</span><span class="p">))]</span>
+</span><span class="line">      <span class="p">(</span><span class="nf">process-url</span> <span class="nv">url</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>First of all,  we concat scoreboard link with page number to get actual link to each page.
 Then we go to that page obtain all <code>a</code> elements, get their <code>href</code> values and filter
 to save only ones that contain source code.</p>
 
 <ul>
-<li><em>Process each url</em></li>
+  <li><em>Process each url</em></li>
 </ul>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">process-url</span> <span class="p">[</span><span class="nv">url</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">source-code</span> <span class="p">(</span><span class="ss">:body</span> <span class="p">(</span><span class="nf">http/get</span> <span class="nv">url</span><span class="p">))</span>
-</span><span class='line'>        <span class="nv">file-name</span> <span class="p">(</span><span class="nf">generate-filename</span> <span class="nv">url</span><span class="p">)]</span>
-</span><span class='line'>    <span class="p">(</span><span class="nf">spit</span> <span class="nv">file-name</span> <span class="nv">source-code</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">process-url</span> <span class="p">[</span><span class="nv">url</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">source-code</span> <span class="p">(</span><span class="ss">:body</span> <span class="p">(</span><span class="nf">http/get</span> <span class="nv">url</span><span class="p">))</span>
+</span><span class="line">        <span class="nv">file-name</span> <span class="p">(</span><span class="nf">generate-filename</span> <span class="nv">url</span><span class="p">)]</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">spit</span> <span class="nv">file-name</span> <span class="nv">source-code</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>In this part we obtain html source of url and get its <code>:body</code> tag.
-As all source urls contain just plain text, we don&#8217;t need additional
+As all source urls contain just plain text, we don’t need additional
 filtering. Just save it to file.</p>
 
 <ul>
-<li><em>Generate file name</em></li>
+  <li><em>Generate file name</em></li>
 </ul>
 
-
-<p>I don&#8217;t want to name file as url. That&#8217;s why for naming we use following
+<p>I don’t want to name file as url. That’s why for naming we use following
 function: <code>timestamp + underscore + absolute value of url hashcode</code></p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">generate-filename</span> <span class="p">[</span><span class="nv">url</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">str </span><span class="nv">DIRECTORY</span> <span class="p">(</span><span class="nf">System/currentTimeMillis</span><span class="p">)</span> <span class="s">&quot;_&quot;</span> <span class="p">(</span><span class="nf">math/abs</span> <span class="p">(</span><span class="nf">hash</span> <span class="nv">url</span><span class="p">))</span> <span class="s">&quot;.txt&quot;</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">generate-filename</span> <span class="p">[</span><span class="nv">url</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">str </span><span class="nv">DIRECTORY</span> <span class="p">(</span><span class="nf">System/currentTimeMillis</span><span class="p">)</span> <span class="s">&quot;_&quot;</span> <span class="p">(</span><span class="nf">math/abs</span> <span class="p">(</span><span class="nf">hash</span> <span class="nv">url</span><span class="p">))</span> <span class="s">&quot;.txt&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p><code>DIRECTORY</code> is just <code>def</code> for folder where you want to place all sources.</p>
 
 <p>Whole script source available <a href="https://github.com/mishadoff/clj-statistic-tools/blob/master/src/clj_statistic_tools/fbhackercup2013.clj">here</a></p>
 
-<h4>Execution</h4>
+<h4 id="execution">Execution</h4>
 
 <p>To run that script you need to write in clojure REPL
 <code>(run "username" "password")</code>, with correct values for <em>username</em> and <em>password</em>, obviously.</p>
 
 <p>It works some time. <em>Some time</em> equals to eight hours on my machine. Long enough.
-But it&#8217;s ideal time for <em>night crawling</em>!</p>
+But it’s ideal time for <em>night crawling</em>!</p>
 
 <p>In the morning I had all work done.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="nv">ls</span> <span class="mi">-1</span> <span class="err">|</span> <span class="nv">wc</span> <span class="nv">-l</span> <span class="o">&amp;&amp;</span> <span class="nv">du</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nv">ls</span> <span class="mi">-1</span> <span class="err">|</span> <span class="nv">wc</span> <span class="nv">-l</span> <span class="o">&amp;&amp;</span> <span class="nv">du</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>prints</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="mi">20348</span>
-</span><span class='line'><span class="mi">291120</span>  <span class="nv">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="mi">20348</span>
+</span><span class="line"><span class="mi">291120</span>  <span class="nv">.</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Good sign. We have more than 20K of source codes with total size almost 300Mb.</p>
 
-<h3>2. Analysis</h3>
+<h3 id="analysis">2. Analysis</h3>
 
 <p>Data is good. But no one interested in raw data, so we need process it.</p>
 
@@ -365,9 +356,9 @@ detect language in my files. Rvm, gems and modules driving me crazy. I surrender
 
 <p>Another solution to use javascript library <a href="http://softwaremaniacs.org/soft/highlight/en/">Highlight.js</a>.
 It is used in syntax coloring, but have automatic language detection. Again, javascript and
-reading files from filesystem&#8230; Don&#8217;t tell me about Node.js</p>
+reading files from filesystem… Don’t tell me about Node.js</p>
 
-<p>I decided to write my own &#8220;classifier&#8221;. Honestly, it&#8217;s just regexp matching mechanism
+<p>I decided to write my own “classifier”. Honestly, it’s just regexp matching mechanism
 on common language constructions: keywords, imports, most used functions, etc.</p>
 
 <p>Iterative approach has been used.</p>
@@ -375,7 +366,7 @@ on common language constructions: keywords, imports, most used functions, etc.</
 <p>Select some popular language construction say <code>#include &lt;iostream&gt;</code> and filter it as <code>C</code>. After filtering
 we detect some subset of <code>C</code> language, remove them from all files list and repeat again with another construction.</p>
 
-<p><em>I don&#8217;t know how <code>C++</code> different from <code>C</code>, so I accept them both as interchangeable languages but call it <code>C/C++</code>.
+<p><em>I don’t know how <code>C++</code> different from <code>C</code>, so I accept them both as interchangeable languages but call it <code>C/C++</code>.
 By the way, <code>C - C++ = 0</code>, so we assume they are equal.</em></p>
 
 <p>I developed some number of patterns (they can be reviewed
@@ -385,115 +376,113 @@ and processed all gathered source files.</p>
 <p>Unfortunately, not all files were processed succesfully. I reviewed approximately 2000 files manually, few
 new languages were detected but big amount of them were the crap: input data, binary files, some text information.</p>
 
-<p>I think we don&#8217;t lose too much if we say <em>only 99% of files were processed</em>.</p>
+<p>I think we don’t lose too much if we say <em>only 99% of files were processed</em>.</p>
 
-<h3><a id="stats"></a>3. Statistics</h3>
+<h3 id="a-idstatsa3-statistics"><a id="stats"></a>3. Statistics</h3>
 
 <p><img src="http://i.imgur.com/sWyfLqv.png" alt="" /></p>
 
-<p>If you don&#8217;t like this visualization, you can create your own. Here is data:</p>
+<p>If you don’t like this visualization, you can create your own. Here is data:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="nv">C/C++</span>          <span class="mi">10524</span>
-</span><span class='line'><span class="nv">Java</span>            <span class="mi">3117</span>
-</span><span class='line'><span class="nv">Python</span>          <span class="mi">3102</span>
-</span><span class='line'><span class="nv">C#</span>              <span class="mi">1233</span>
-</span><span class='line'><span class="nv">PHP</span>              <span class="mi">821</span>
-</span><span class='line'><span class="nv">Ruby</span>             <span class="mi">488</span>
-</span><span class='line'><span class="nv">Perl</span>             <span class="mi">142</span>
-</span><span class='line'><span class="nv">Pascal/Delphi</span>    <span class="mi">136</span>
-</span><span class='line'><span class="nv">Javascript</span>       <span class="mi">109</span>
-</span><span class='line'><span class="nv">Haskell</span>           <span class="mi">85</span>
-</span><span class='line'><span class="nv">Scala</span>             <span class="mi">72</span>
-</span><span class='line'><span class="nv">Clojure</span>           <span class="mi">29</span>
-</span><span class='line'><span class="nv">Go</span>                <span class="mi">28</span>
-</span><span class='line'><span class="nv">Visual</span> <span class="nv">Basic</span>      <span class="mi">19</span>
-</span><span class='line'><span class="nv">F#</span>                <span class="mi">12</span>
-</span><span class='line'><span class="nv">Scheme</span>             <span class="mi">8</span>
-</span><span class='line'><span class="nv">OCaml</span>              <span class="mi">7</span>
-</span><span class='line'><span class="nv">Common</span> <span class="nv">Lisp</span>        <span class="mi">6</span>
-</span><span class='line'><span class="nv">Lua</span>                <span class="mi">5</span>
-</span><span class='line'><span class="nv">Matlab</span>             <span class="mi">4</span>
-</span><span class='line'><span class="nv">Cocoa</span>              <span class="mi">3</span>
-</span><span class='line'><span class="nv">Groovy</span>             <span class="mi">2</span>
-</span><span class='line'><span class="nv">Dart</span>               <span class="mi">2</span>
-</span><span class='line'><span class="nv">awk</span>                <span class="mi">1</span>
-</span><span class='line'><span class="nv">Powershell</span>         <span class="mi">1</span>
-</span><span class='line'><span class="nv">bash</span>               <span class="mi">1</span>
-</span><span class='line'><span class="nv">Kotlin</span>             <span class="mi">1</span>
-</span><span class='line'><span class="nv">ActionScript</span>       <span class="mi">1</span>
-</span><span class='line'><span class="nv">Dylan</span>              <span class="mi">1</span>
-</span><span class='line'><span class="nv">--------------------</span>
-</span><span class='line'><span class="nv">crap</span>             <span class="mi">192</span>
-</span><span class='line'><span class="nb">not </span><span class="nv">detected</span>     <span class="mi">196</span>
-</span><span class='line'><span class="nv">--------------------</span>
-</span><span class='line'><span class="nv">TOTAL</span>          <span class="mi">20348</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nv">C/C++</span>          <span class="mi">10524</span>
+</span><span class="line"><span class="nv">Java</span>            <span class="mi">3117</span>
+</span><span class="line"><span class="nv">Python</span>          <span class="mi">3102</span>
+</span><span class="line"><span class="nv">C#</span>              <span class="mi">1233</span>
+</span><span class="line"><span class="nv">PHP</span>              <span class="mi">821</span>
+</span><span class="line"><span class="nv">Ruby</span>             <span class="mi">488</span>
+</span><span class="line"><span class="nv">Perl</span>             <span class="mi">142</span>
+</span><span class="line"><span class="nv">Pascal/Delphi</span>    <span class="mi">136</span>
+</span><span class="line"><span class="nv">Javascript</span>       <span class="mi">109</span>
+</span><span class="line"><span class="nv">Haskell</span>           <span class="mi">85</span>
+</span><span class="line"><span class="nv">Scala</span>             <span class="mi">72</span>
+</span><span class="line"><span class="nv">Clojure</span>           <span class="mi">29</span>
+</span><span class="line"><span class="nv">Go</span>                <span class="mi">28</span>
+</span><span class="line"><span class="nv">Visual</span> <span class="nv">Basic</span>      <span class="mi">19</span>
+</span><span class="line"><span class="nv">F#</span>                <span class="mi">12</span>
+</span><span class="line"><span class="nv">Scheme</span>             <span class="mi">8</span>
+</span><span class="line"><span class="nv">OCaml</span>              <span class="mi">7</span>
+</span><span class="line"><span class="nv">Common</span> <span class="nv">Lisp</span>        <span class="mi">6</span>
+</span><span class="line"><span class="nv">Lua</span>                <span class="mi">5</span>
+</span><span class="line"><span class="nv">Matlab</span>             <span class="mi">4</span>
+</span><span class="line"><span class="nv">Cocoa</span>              <span class="mi">3</span>
+</span><span class="line"><span class="nv">Groovy</span>             <span class="mi">2</span>
+</span><span class="line"><span class="nv">Dart</span>               <span class="mi">2</span>
+</span><span class="line"><span class="nv">awk</span>                <span class="mi">1</span>
+</span><span class="line"><span class="nv">Powershell</span>         <span class="mi">1</span>
+</span><span class="line"><span class="nv">bash</span>               <span class="mi">1</span>
+</span><span class="line"><span class="nv">Kotlin</span>             <span class="mi">1</span>
+</span><span class="line"><span class="nv">ActionScript</span>       <span class="mi">1</span>
+</span><span class="line"><span class="nv">Dylan</span>              <span class="mi">1</span>
+</span><span class="line"><span class="nv">--------------------</span>
+</span><span class="line"><span class="nv">crap</span>             <span class="mi">192</span>
+</span><span class="line"><span class="nb">not </span><span class="nv">detected</span>     <span class="mi">196</span>
+</span><span class="line"><span class="nv">--------------------</span>
+</span><span class="line"><span class="nv">TOTAL</span>          <span class="mi">20348</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<h3>4. Conclusion</h3>
+<h3 id="conclusion">4. Conclusion</h3>
 
 <ul>
-<li>Top 5 was predicted but it&#8217;s extremely crazy that C/C++ occur more than 50%</li>
-<li>Python has almost the same amount as Java</li>
-<li>Good occurence of functional languages: Haskell, F#, Scala, Clojure, Ocaml</li>
-<li>29 Clojure files that means there ~10 clojurists.</li>
-<li>Two languages I never heard of:
+  <li>Top 5 was predicted but it’s extremely crazy that C/C++ occur more than 50%</li>
+  <li>Python has almost the same amount as Java</li>
+  <li>Good occurence of functional languages: Haskell, F#, Scala, Clojure, Ocaml</li>
+  <li>29 Clojure files that means there ~10 clojurists.</li>
+  <li>Two languages I never heard of:
 <a href="http://www.dartlang.org/">Dart</a> and
 <a href="http://opendylan.org/">Dylan</a></li>
-<li><em>Parenthesis</em> languages still used: Common Lisp, Scheme and Clojure (of course)</li>
-<li>Respect to matlabists</li>
-<li>Few <em>exotic languages</em> used: awk, powershell, bash</li>
-<li><a href="http://kotlin.jetbrains.org/">Kotlin</a> becomes popular!</li>
+  <li><em>Parenthesis</em> languages still used: Common Lisp, Scheme and Clojure (of course)</li>
+  <li>Respect to matlabists</li>
+  <li>Few <em>exotic languages</em> used: awk, powershell, bash</li>
+  <li><a href="http://kotlin.jetbrains.org/">Kotlin</a> becomes popular!</li>
 </ul>
-
 
 <p><em>Warning:</em> Do not treat this statistics as real-world pattern. It is a programming competition with
 a lot of geeks, they can use all they want. Also do not blame their code for quality. It was created just for
 correctness and speed. Pay attention to code quality in production, but always remember:</p>
 
-<blockquote><p>Your code may be elegant, by mine fucking works.</p>
+<blockquote>
+  <p>Your code may be elegant, by mine fucking works.</p>
 
-<p>&#8211; <a href="http://omniti.com/seeds/your-code-may-be-elegant">Leon Fayer</a></p></blockquote>
-
-<br />
-
+  <p>– <a href="http://omniti.com/seeds/your-code-may-be-elegant">Leon Fayer</a>
+<br /></p>
+</blockquote>
 
 <p><strong>P.S.</strong> First of all, it is not high-accurate statistics. As I am not
-programming guru, I don&#8217;t know all possible languages&#8217; constructions
+programming guru, I don’t know all possible languages’ constructions
 so it is likely that one construction overlapped with another. In that case
 only first one will be checked. Ideally, would be good to have language
 detecting library in clojure for future analysis. <em>Maybe</em>, I will do it.
@@ -570,6 +559,10 @@ of hardcode, but it works. Just in the spirit of Facebook Hacker Cup.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -583,10 +576,6 @@ of hardcode, but it works. Just in the spirit of Facebook Hacker Cup.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

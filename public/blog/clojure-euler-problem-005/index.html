@@ -25,9 +25,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -104,51 +117,52 @@
   </header>
 
 
-<div class="entry-content"><blockquote><p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+<div class="entry-content"><blockquote>
+  <p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+</blockquote>
 
-<p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p></blockquote>
+<blockquote>
+  <p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=5">http://projecteuler.net/problem=5</a></p>
 
 <!-- more -->
 
-
-<p>It&#8217;s a tricky problem. First look gives us straightforward solution:
+<p>It’s a tricky problem. First look gives us straightforward solution:
 Take a number, test if it evenly divisible by all of needed numbers, if yes - we good,
-otherwise increment number and test again, and again, and again&#8230;</p>
+otherwise increment number and test again, and again, and again…</p>
 
-<p>No, really, assume it&#8217;s our function to test divisibility by all 20 numbers:</p>
+<p>No, really, assume it’s our function to test divisibility by all 20 numbers:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">evenly-divisible-by-20?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="mi">21</span><span class="p">)]</span>
-</span><span class='line'>      <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">i</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">evenly-divisible-by-20?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="mi">21</span><span class="p">)]</span>
+</span><span class="line">      <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">i</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Awful implementation, but keeps the idea.
 If sum of all remainders equals to zero, then every remainder equals to zero.
 Now, using this function we write naive implementation:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">first</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">drop-while </span><span class="o">#</span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nf">evenly-divisible-by-20?</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">iterate inc </span><span class="mi">1</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">first</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">drop-while </span><span class="o">#</span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nf">evenly-divisible-by-20?</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">iterate inc </span><span class="mi">1</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Note, function <a href="http://clojuredocs.org/clojure_core/clojure.core/drop-while">drop-while</a>
 similar to take-while, but skips values until they meet predicate condition.</p>
 
-<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more&#8230;</p>
+<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more…</p>
 
 <p>I did not post exact answer here, but result greater than 100 millions.
 And obviously this linear algorithm will work considerable amount of time.
-So, stop the execution and let&#8217;s see at the problem from the other end.</p>
+So, stop the execution and let’s see at the problem from the other end.</p>
 
 <p><em>What is the smallest number that evenly divisible by 1 and 2?</em>
 Obviously 2.</p>
@@ -159,7 +173,9 @@ A bit harder, but answer is 6.</p>
 <p><em>What is the smallest number that evenly divisible by 4 and 5?</em>
 20.</p>
 
-<blockquote><p>Oh, it&#8217;s just multiplication</p></blockquote>
+<blockquote>
+  <p>Oh, it’s just multiplication</p>
+</blockquote>
 
 <p>Unfortunately, no. Take numbers <code>4</code> and <code>6</code>, multiplication gives us <code>24</code> and it will be evenly divisible by <code>4</code> and <code>6</code>, but
 this number is not the <em>smallest</em>. Snmallest number for this case will be <code>12</code>.</p>
@@ -171,43 +187,39 @@ There are lot of different methods to calculate it, but we will use one that use
 
 <p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
 
-<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid&#8217;s algorithm</a></p>
+<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid’s algorithm</a></p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">gcd</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">a</span> <span class="nv">n</span> <span class="nv">b</span> <span class="nv">k</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">b</span><span class="p">)</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">recur</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">gcd</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">a</span> <span class="nv">n</span> <span class="nv">b</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">b</span><span class="p">)</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">recur</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Using formula above, our <em>lcm</em> function will look like this:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">lcm</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">abs</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">k</span><span class="p">))</span> <span class="p">(</span><span class="nf">gcd</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">lcm</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">abs</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">k</span><span class="p">))</span> <span class="p">(</span><span class="nf">gcd</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>You see, here we need <code>abs</code> function. Nothing hard to implement it, but if we remember
 <a href="/blog/clojure-euler-problem-004">previous problem</a> there are was a reference
 to <code>clojure.contrib.math</code> library. <code>abs</code> there and we can use it, just add to your namespace definition</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.math</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.math</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Oh look, even <code>lcm</code> and <code>gcd</code> functions there. Excellent.</p>
 
 <p>Now we can solve the problem. Remember the <code>reduce</code> function?</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">reduce </span><span class="nv">lcm</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">21</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">lcm</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">21</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Actually, this one-liner is solution. And it gives us correct result.</p>
 
@@ -274,7 +286,7 @@ errors that your <em>new fancy wheel</em>.</p>
         <a class="basic-alignment left" href="/blog/what-is-greater-e-pi-or-pi-e/" title="Previous Post: What is greater: e^π or π^e?">&laquo; What is greater: e^π or π^e?</a>
       
       
-        <a class="basic-alignment right" href="/blog/learn-perl/" title="Next Post: Learn Perl">Learn Perl &raquo;</a>
+        <a class="basic-alignment right" href="/blog/99-clojure-problems/" title="Next Post: 99 Clojure Problems">99 Clojure Problems &raquo;</a>
       
     </p>
   </footer>
@@ -295,6 +307,10 @@ errors that your <em>new fancy wheel</em>.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -308,10 +324,6 @@ errors that your <em>new fancy wheel</em>.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

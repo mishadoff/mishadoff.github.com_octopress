@@ -10,7 +10,7 @@
 
   
   <meta name="description" content="It is so obvious, so I decided to write about it. Heisenberg principle
-came from quantum mechanics and means that you can&#8217;t know exactly
+came from quantum mechanics and means that you can’t know exactly
 both &hellip;">
   
 
@@ -27,9 +27,22 @@ both &hellip;">
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -110,24 +123,25 @@ both &hellip;">
 
 <!-- more -->
 
-
 <p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
 
 <p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
-came from quantum mechanics and means that you can&#8217;t know exactly
+came from quantum mechanics and means that you can’t know exactly
 both coordinates and speed of particle. If you improve accuracy of detecting
 position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
 
 <p>In human-readable form it sounds like</p>
 
-<blockquote><p>Either one or the other</p></blockquote>
+<blockquote>
+  <p>Either one or the other</p>
+</blockquote>
 
 <p>The same in every field, even in software engineering.
 If you implementing something or fixing bugs and your boss
-yelling: &#8220;you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>&#8221;
+yelling: “you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>”
 tell him <em>either one or the other</em>.</p>
 
-<p><strong>P.S.</strong> Actually, you can say &#8220;go fuck yourself&#8221;, but it won&#8217;t be polite.</p>
+<p><strong>P.S.</strong> Actually, you can say “go fuck yourself”, but it won’t be polite.</p>
 </div>
 
 
@@ -178,6 +192,8 @@ tell him <em>either one or the other</em>.</p>
         <a class="basic-alignment left" href="/blog/clojure-euler-problem-015/" title="Previous Post: Clojure Euler: Problem 015">&laquo; Clojure Euler: Problem 015</a>
       
       
+        <a class="basic-alignment right" href="/blog/stirlings-approximation/" title="Next Post: Stirling's Approximation">Stirling's Approximation &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -197,6 +213,10 @@ tell him <em>either one or the other</em>.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -210,10 +230,6 @@ tell him <em>either one or the other</em>.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

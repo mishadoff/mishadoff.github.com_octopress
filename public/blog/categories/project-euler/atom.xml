@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -18,78 +18,70 @@
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
     <updated>2013-02-19T00:38:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
-    <content type="html"><![CDATA[<blockquote><p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
+    <content type="html"><![CDATA[<blockquote>
+  <p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
 (without backtracking) to the bottom right corner.</p>
 
-<p>How many routes are there through a 20 x 20 grid?</p></blockquote>
+  <p>How many routes are there through a 20 x 20 grid?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=15">http://projecteuler.net/problem=15</a></p>
 
 <!-- more -->
 
-
 <p><img src="http://projecteuler.net/project/images/p_015.gif" alt="" /></p>
 
 <p>Picture is always a huge help to find correct the solution.
-Let's see the pattern here, with another picture</p>
+Let’s see the pattern here, with another picture</p>
 
-<p><em>Warning:</em> If you don't understand art, don't look at that picture.</p>
+<p><em>Warning:</em> If you don’t understand art, don’t look at that picture.</p>
 
 <p><img src="http://i.imgur.com/WNEQNxG.png" alt="" /></p>
 
-<p>It's a solution for 3 x 3 grid. We trying to process it by steps:</p>
+<p>It’s a solution for 3 x 3 grid. We trying to process it by steps:</p>
 
 <ul>
-<li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
+  <li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
 to be at the start so we put <code>1</code> to that point.</li>
-<li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
+  <li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
 on the edges of the second diagonal line.</li>
-<li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
+  <li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
 so there are two routes, and so on.</li>
 </ul>
 
+<p>If you just output the numbers from each diagonal line you’ll get:</p>
 
-<p>If you just output the numbers from each diagonal line you'll get:</p>
-
-<p>```</p>
-
-<pre><code>   1
-  1 1
- 1 2 1
-1 3 3 1
-</code></pre>
+<p>```
+       1
+      1 1
+     1 2 1
+    1 3 3 1</p>
 
 <p>```</p>
 
-<p>It's famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle</a>.
+<p>It’s famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal’s triangle</a>.
 Each element in this triangle obtained by sum of two closest elements from the upper row.</p>
 
 <p>To get desired result we need to sum these numbers again, until we get one number.
-But it's also numbers from Pascal's triangle.</p>
+But it’s also numbers from Pascal’s triangle.</p>
 
-<p>```</p>
+<p><code>
+    1   3   3   1
+      4   6   4
+       10  10
+         20
+</code></p>
 
-<pre><code>1   3   3   1
-  4   6   4
-   10  10
-     20
-</code></pre>
-
-<p>```</p>
-
-<p>We can treat Pascal's triangle as a sequence, and each row is an element. Then the
+<p>We can treat Pascal’s triangle as a sequence, and each row is an element. Then the
 following function calculates next row:</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn routes-extend [lst]
-  (let [size (count lst)]</p>
-
-<pre><code>(for [i (range (inc size))]
-  (if (or (= 0 i) (= size i)) 1
-    (+ (nth lst (dec i)) (nth lst i))))))
-</code></pre>
-
-<p>```</p>
+  (let [size (count lst)]
+    (for [i (range (inc size))]
+      (if (or (= 0 i) (= size i)) 1
+        (+ (nth lst (dec i)) (nth lst i))))))
+</code></p>
 
 <p>Usage:</p>
 
@@ -98,7 +90,7 @@ following function calculates next row:</p>
 (routes-extend [1 1]) =&gt; [1 2 1]
 </code></p>
 
-<p>Now we can build infinite sequence of Pascal's triangle rows:</p>
+<p>Now we can build infinite sequence of Pascal’s triangle rows:</p>
 
 <p><code>clojure
 (iterate routes-extend [1])
@@ -108,7 +100,7 @@ following function calculates next row:</p>
 Take a guess. For <code>n x n</code> grid we need to get <code>2 * n + 1</code> row. And take it
 middle element, which, of course, will be with the index <code>n</code>.</p>
 
-<p>That's the final solution:</p>
+<p>That’s the final solution:</p>
 
 <p><code>clojure
 (let [n 20 d (inc (* n 2))]
@@ -134,30 +126,33 @@ solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/B
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
     <updated>2013-02-16T01:08:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
-    <content type="html"><![CDATA[<blockquote><p>Which starting number, under one million, produces the longest Collatz chain?</p></blockquote>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Which starting number, under one million, produces the longest Collatz chain?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
 
 <!-- more -->
 
+<blockquote>
+  <p>The following iterative sequence is defined for the set of positive integers:</p>
 
-<blockquote><p>The following iterative sequence is defined for the set of positive integers:</p>
+  <p>n → n/2 (n is even)</p>
 
-<p>n → n/2 (n is even)</p>
+  <p>n → 3n + 1 (n is odd)</p>
 
-<p>n → 3n + 1 (n is odd)</p>
+  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
 
-<p>Using the rule above and starting with 13, we generate the following sequence:</p>
+  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
 
-<p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-
-<p>It can be seen that this sequence (starting at 13 and finishing at 1)
+  <p>It can be seen that this sequence (starting at 13 and finishing at 1)
 contains 10 terms. Although it has not been proved yet (Collatz Problem),
 it is thought that all starting numbers finish at 1.</p>
 
-<p>Which starting number, under one million, produces the longest chain?</p>
+  <p>Which starting number, under one million, produces the longest chain?</p>
 
-<p>NOTE: Once the chain starts the terms are allowed to go above one million.</p></blockquote>
+  <p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
+</blockquote>
 
 <p>Sequences again.
 So, first of all we need function to detect next collatz number.
@@ -186,30 +181,29 @@ count of collatz chain sequence:</p>
 <p>Now we have almost all code logic and just use it: calculate collatz chain
 for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
 
-<p>``` clojure
-(first (reduce #(if (> (second %1) (second %2)) %1 %2)</p>
-
-<pre><code>           (map #(list % (collatz-chain-length %)) (range 1 1000000))))
-</code></pre>
-
-<p>```</p>
+<p><code>clojure
+(first (reduce #(if (&gt; (second %1) (second %2)) %1 %2)
+               (map #(list % (collatz-chain-length %)) (range 1 1000000))))
+</code></p>
 
 <p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
 
 <p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
 and I have no idea how to solve it another way.</p>
 
-<p>I am sure there is a better algorithm than mine. But I don't know it.
+<p>I am sure there is a better algorithm than mine. But I don’t know it.
 What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
 
-<blockquote><p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p></blockquote>
+<blockquote>
+  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+</blockquote>
 
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,...</p>
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
 
 <p>Got it?</p>
 
 <p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don't need to calculate length
+chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
 for <code>40</code>, <code>20</code> and so on.</p>
 
 <p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
@@ -217,14 +211,11 @@ it to have recursive solution.</p>
 
 <p>Here the first (<em>and final</em>) version:</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn collatz-chain-recursive [n]
-  (if (= n 1) 1</p>
-
-<pre><code>  (inc (collatz-chain-recursive (collatz-next n)))))
-</code></pre>
-
-<p>```</p>
+  (if (= n 1) 1
+      (inc (collatz-chain-recursive (collatz-next n)))))
+</code></p>
 
 <p>Recursion is impressive at the point that its implementation
 almost exactly follows the problem definition. It is easy to understand.</p>
@@ -233,33 +224,30 @@ almost exactly follows the problem definition. It is easy to understand.</p>
 <a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
 have troubles. Do not think about it unless we actually have them.</p>
 
-<p>For the sake of fun let's run this function instead of previous to
+<p>For the sake of fun let’s run this function instead of previous to
 obtain the results.</p>
 
-<p><strong>20 seconds</strong>, it is great. I even don't think that
+<p><strong>20 seconds</strong>, it is great. I even don’t think that
 this simple recursive function gives such boost in performance.</p>
 
 <p>One little tweak in result function:</p>
 
-<p>``` clojure
+<p><code>clojure
 (first
-  (apply max-key second</p>
-
-<pre><code>     (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
-</code></pre>
-
-<p>```</p>
+  (apply max-key second
+         (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
+</code></p>
 
 <p>And we have <strong>~12 seconds</strong>.</p>
 
-<p>Unexpected "The End". Yeah, I love The Doors.</p>
+<p>Unexpected “The End”. Yeah, I love The Doors.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
 
 <p><strong>P.S.</strong> I really wanted to explain technique called
 <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
 simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn't have much sense here because
+but seems that caching result doesn’t have much sense here because
 12 seconds is acceptable. We will have chance to introduce
 memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 ]]></content>
@@ -270,12 +258,13 @@ memoization later, where it will be more useful. By the way, I am <em>lazy</em>.
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-013/"/>
     <updated>2013-01-25T16:33:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-013</id>
-    <content type="html"><![CDATA[<blockquote><p>Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.</p></blockquote>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=13">http://projecteuler.net/problem=13</a></p>
 
 <!-- more -->
-
 
 <p><em>Assume, here is a huge amount of digits. In any case, you can always find them in permalink.</em></p>
 
@@ -292,7 +281,7 @@ to sum all these numbers. <code>int</code>? <code>long</code>? <code>looooong</c
 
 <p>Technique to sum very long numbers called
 <a href="http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">Bignum arithmetic</a>.
-To solve that problem you just need to implement this technique... or use already implemented.</p>
+To solve that problem you just need to implement this technique… or use already implemented.</p>
 
 <p>Java (<em>yeah we talking about it</em>) support long arithmetics with
 <a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">BigInteger</a>.
@@ -302,14 +291,14 @@ And clojure does.</p>
 (reduce + (map bigint numbers))
 </code></p>
 
-<p>With that function you'll get the big number.
+<p>With that function you’ll get the big number.
 Just truncate first 10 digits and you are good.</p>
 
 <p><code>clojure
 (apply str (take 10 (str (reduce + (map bigint numbers)))))
 </code></p>
 
-<p>(for [i "<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>"] i)</p>
+<p>(for [i “<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>”] i)</p>
 
 <p><strong>P.S.</strong> Ideally, last line should be wrapped
 with <code>(read-string ...)</code> to produce number type. But we using
@@ -322,20 +311,23 @@ manual submission, so it is fair.</p>
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-012/"/>
     <updated>2013-01-22T19:45:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-012</id>
-    <content type="html"><![CDATA[<blockquote><p>What is the value of the first triangle number to have over five hundred divisors?</p></blockquote>
+    <content type="html"><![CDATA[<blockquote>
+  <p>What is the value of the first triangle number to have over five hundred divisors?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=12">http://projecteuler.net/problem=12</a></p>
 
 <!-- more -->
 
+<blockquote>
+  <p>The sequence of triangle numbers is generated by adding the natural numbers. So the 7th triangle number would be 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28.</p>
 
-<blockquote><p>The sequence of triangle numbers is generated by adding the natural numbers. So the 7th triangle number would be 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28.</p>
+  <p>The first ten terms would be:</p>
 
-<p>The first ten terms would be:</p>
+  <p>1, 3, 6, 10, 15, 21, 28, 36, 45, 55, …</p>
 
-<p>1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...</p>
-
-<p>Let us list the factors of the first seven triangle numbers:</p></blockquote>
+  <p>Let us list the factors of the first seven triangle numbers:</p>
+</blockquote>
 
 <pre><code> 1: 1
  3: 1,3
@@ -346,9 +338,11 @@ manual submission, so it is fair.</p>
 28: 1,2,4,7,14,28
 </code></pre>
 
-<blockquote><p>We can see that 28 is the first triangle number to have over five divisors.</p>
+<blockquote>
+  <p>We can see that 28 is the first triangle number to have over five divisors.</p>
 
-<p>What is the value of the first triangle number to have over five hundred divisors?</p></blockquote>
+  <p>What is the value of the first triangle number to have over five hundred divisors?</p>
+</blockquote>
 
 <p>When we see infinite sequence of some numbers, first thing that we do is implement it
 with using <em>lazy sequences</em>. Simple explanation and example for Fibonacci numbers
@@ -362,7 +356,7 @@ sum of all integers below:</p>
   (reduce + (range 1 (inc n))))
 </code></p>
 
-<p>Don't miss the possibility reduce complexity from <code>O(n)</code> to <code>O(1)</code>.
+<p>Don’t miss the possibility reduce complexity from <code>O(n)</code> to <code>O(1)</code>.
 Just apply <a href="http://en.wikipedia.org/wiki/Arithmetic_progression">arithmetic progression</a> formula.</p>
 
 <p><code>clojure
@@ -371,7 +365,7 @@ Just apply <a href="http://en.wikipedia.org/wiki/Arithmetic_progression">arithme
 </code></p>
 
 <p>Okey, we did small optimization (<em>not so small</em>) here and we have a function that calculates
-triangle number for <code>n</code>. Let's find all of them!</p>
+triangle number for <code>n</code>. Let’s find all of them!</p>
 
 <p><code>clojure
 (def triangles (map triangle-number (iterate inc 1)))
@@ -379,7 +373,9 @@ triangle number for <code>n</code>. Let's find all of them!</p>
 
 <p><code>triangles</code> refers to lazy sequence of <em>triangle numbers</em>.</p>
 
-<blockquote><p>Do not evaluate lazy seqs!</p></blockquote>
+<blockquote>
+  <p>Do not evaluate lazy seqs!</p>
+</blockquote>
 
 <p>Use limit functions as <code>take</code>, <code>take-while</code>, <code>drop</code>, <code>drop-while</code> to test the
 sequence values, or build other lazy seqs with <code>filter</code>, <code>map</code>, etc.</p>
@@ -394,7 +390,7 @@ sequence values, or build other lazy seqs with <code>filter</code>, <code>map</c
 <p>If we remember <a href="/blog/clojure-euler-problem-003">Clojure Euler: Problem 003</a>
 then we know that using <code>sqrt(n)</code> instead of <code>n</code> as upper bound for divisors
 saves much time.
-Don't forget mutiply that value by two, as you skip number after <code>sqrt(n)</code>.</p>
+Don’t forget mutiply that value by two, as you skip number after <code>sqrt(n)</code>.</p>
 
 <p>Last step: to calculate number over 500 divisors</p>
 
@@ -410,33 +406,32 @@ Don't forget mutiply that value by two, as you skip number after <code>sqrt(n)</
 <a href="http://en.wikipedia.org/wiki/Integer_factorization#Prime_decomposition">Prime Factorization</a>
 states:</p>
 
-<blockquote><p>Every positive integer has a unique prime factorization</p></blockquote>
+<blockquote>
+  <p>Every positive integer has a unique prime factorization</p>
+</blockquote>
 
-<p>For example: 15 = 3<sup>1</sup> * 5<sup>1,</sup> 18 = 2<sup>1</sup> * 3<sup>2</sup> and so on.</p>
+<p>For example: 15 = 3^1 * 5^1, 18 = 2^1 * 3^2 and so on.</p>
 
 <p>Not hard to see that number of divisors from such factorization can be obtained
 by multiplying all prime powers incremented by one.</p>
 
 <p>For example number 18 have 6 divisors (1, 2, 3, 6, 9, 18).
-If we take factorization 18 = 3<sup>1</sup> * 5<sup>1,</sup> then number of divisors is
+If we take factorization 18 = 3^1 * 5^1, then number of divisors is
 equal to (1 + 1) * (2 + 1) = 6. You see, the same.
 Not hard to prove this theorem or
 <a href="http://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic#Proof">read the proof</a>.</p>
 
-<p>Stop math, we need to code, so let's code that.</p>
+<p>Stop math, we need to code, so let’s code that.</p>
 
 <p>First of all, we need factorization method:</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn factorize [n]
-  (loop [x n [p &amp; ps] primes factors []]</p>
-
-<pre><code>(cond (= 1 x) factors
-      (zero? (mod x p)) (recur (/ x p) primes (conj factors p))
-      :else (recur x ps factors))))
-</code></pre>
-
-<p>```</p>
+  (loop [x n [p &amp; ps] primes factors []]
+    (cond (= 1 x) factors
+          (zero? (mod x p)) (recur (/ x p) primes (conj factors p))
+          :else (recur x ps factors))))
+</code></p>
 
 <p>It uses <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.
 This method prints all factors (<em>including duplicates</em>) for <code>n</code>.</p>
@@ -463,8 +458,6 @@ This method prints all factors (<em>including duplicates</em>) for <code>n</code
 <p>Bingo! It gives the correct result in less than 3 seconds.
 Not bad as improvement.</p>
 
-<p>{:code "<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem012.clj">GitHub</a>"}</p>
-
 <p><strong>P.S.</strong> If you test-addicted person, you, probably, point out
 that function <code>num-of-divisors</code> yields incorrect result for input <code>1</code>.
 We can live with that, because our needed number is much greater than 1.</p>
@@ -476,16 +469,19 @@ We can live with that, because our needed number is much greater than 1.</p>
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-011/"/>
     <updated>2013-01-18T13:45:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-011</id>
-    <content type="html"><![CDATA[<blockquote><p>What is the greatest product of four adjacent numbers in the same
-direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p></blockquote>
+    <content type="html"><![CDATA[<blockquote>
+  <p>What is the greatest product of four adjacent numbers in the same
+direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=11">http://projecteuler.net/problem=11</a></p>
 
 <!-- more -->
 
-
-<blockquote><p>In the 20 x 20 grid below, four numbers along a diagonal
-line have been enclosed into square brackets</p></blockquote>
+<blockquote>
+  <p>In the 20 x 20 grid below, four numbers along a diagonal
+line have been enclosed into square brackets</p>
+</blockquote>
 
 <pre><code>08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
@@ -509,25 +505,24 @@ line have been enclosed into square brackets</p></blockquote>
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
 </code></pre>
 
-<blockquote><p>The product of these numbers is 26 * 63 * 78 * 14 = 1788696.</p>
+<blockquote>
+  <p>The product of these numbers is 26 * 63 * 78 * 14 = 1788696.</p>
 
-<p>What is the greatest product of four adjacent numbers in the
-same direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p></blockquote>
+  <p>What is the greatest product of four adjacent numbers in the
+same direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
+</blockquote>
 
 <p>First step is pretty routine, we need to create such grid representation
 in our program from file. For the way how we read files refer
 <a href="/blog/clojure-euler-problem-008">Clojure Euler: Problem 008</a>, we have
 similar problem there.</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn get-matrix []
-  (map #(Integer/parseInt (apply str %))</p>
-
-<pre><code>   (partition 2 2 (remove #(or (= \newline %) (= \ %))
-                          (seq (slurp "res/problem011.txt"))))))
-</code></pre>
-
-<p>```</p>
+  (map #(Integer/parseInt (apply str %))
+       (partition 2 2 (remove #(or (= \newline %) (= \ %))
+                              (seq (slurp "res/problem011.txt"))))))
+</code></p>
 
 <p>Idea is following: read the file, drop the garbage,
 take all two-digit combinations, concat each and transform to the integer.</p>
@@ -553,33 +548,27 @@ is second matrix dimension. Therefore <code>A[1][2] = B[1 * 3 + 2] = B[5] = 7</c
 
 <p>Implementing that in clojure gives one indexing function</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn get-at [i j matrix]
-  (if (and (>= i 0) (&lt; i 20) (>= j 0) (&lt; j 20))</p>
-
-<pre><code>(nth matrix (+ j (* i 20))) 0))
-</code></pre>
-
-<p>```</p>
+  (if (and (&gt;= i 0) (&lt; i 20) (&gt;= j 0) (&lt; j 20))
+    (nth matrix (+ j (* i 20))) 0))
+</code></p>
 
 <p>We check the boundaries of array inside this function, which can be inappropriate
 in many cases, but it is good as we use it in one place.</p>
 
-<p>Ok. We have data, we have methods operate this data, now let's code logic.
+<p>Ok. We have data, we have methods operate this data, now let’s code logic.
 Our good friend - <strong>bruteforce</strong>.</p>
 
-<p>``` clojure
-(let [matrix (get-matrix)</p>
-
-<pre><code>  ways (for [i (range 20) j (range 20)]
-         [(map #(get-at i (+ % j) matrix) (range 4))
-          (map #(get-at (+ % i) j matrix) (range 4))
-          (map #(get-at (+ % i) (+ % j) matrix) (range 4))
-          (map #(get-at (+ % i) (- j %) matrix) (range 4))])]
-(reduce max (map #(reduce * %) (reduce concat ways))))
-</code></pre>
-
-<p>```</p>
+<p><code>clojure
+(let [matrix (get-matrix)
+      ways (for [i (range 20) j (range 20)]
+             [(map #(get-at i (+ % j) matrix) (range 4))
+              (map #(get-at (+ % i) j matrix) (range 4))
+              (map #(get-at (+ % i) (+ % j) matrix) (range 4))
+              (map #(get-at (+ % i) (- j %) matrix) (range 4))])]
+    (reduce max (map #(reduce * %) (reduce concat ways))))
+</code></p>
 
 <p>We iterate on all matrix elements as start of 4-element range.</p>
 
@@ -587,22 +576,18 @@ Our good friend - <strong>bruteforce</strong>.</p>
 All these 4 directions represent all possible direction in grid.</p>
 
 <ol>
-<li>NORTH -> SOUTH (Up &amp; Down covered)</li>
-<li>WEST -> EAST (Left &amp; Right covered)</li>
-<li>NW -> SE (backslash diagonals covered)</li>
-<li>NE -> SW (slash diagonals covered)</li>
+  <li>NORTH -&gt; SOUTH (Up &amp; Down covered)</li>
+  <li>WEST -&gt; EAST (Left &amp; Right covered)</li>
+  <li>NW -&gt; SE (backslash diagonals covered)</li>
+  <li>NE -&gt; SW (slash diagonals covered)</li>
 </ol>
 
-
-<p>```</p>
-
-<pre><code>S      S * * *         S                  S
-*                       *                *
-*                        *              *
-*                         *            *
-</code></pre>
-
-<p>```</p>
+<p><code>
+    S      S * * *         S                  S
+    *                       *                *
+    *                        *              *
+    *                         *            *
+</code></p>
 
 <p><em>S is for start</em></p>
 

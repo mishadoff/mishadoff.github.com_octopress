@@ -27,9 +27,22 @@ Now I pushed back for a little some of my activities, and &hellip;">
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -106,44 +119,44 @@ Now I pushed back for a little some of my activities, and &hellip;">
   </header>
 
 
-<div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="p">(</span><span class="nv">$current_tasks</span><span class="p">,</span> <span class="nv">$perl</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$perl</span><span class="p">,</span> <span class="nv">$current_tasks</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="entry-content"><div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="perl"><span class="line"><span class="p">(</span><span class="nv">$current_tasks</span><span class="p">,</span> <span class="nv">$perl</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$perl</span><span class="p">,</span> <span class="nv">$current_tasks</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Long time learning <a href="http://www.perl.org/">perl</a> was my desire.
 Now I pushed back for a little some of my activities, and started with perl.</p>
 
 <!-- more -->
 
-
 <p>The reason for this was the third launch of <a href="https://class.coursera.org/crypto-004/class/index">Stanford Cryptography</a> class on coursera.</p>
 
 <p>Cryptography is a field that I never know, but would like to. I see a lot of practical applications here,
-but, honestly, for me it&#8217;s more <em>just for fun</em>, than anything else. Isn&#8217;t it interesting to (de)cypher something?</p>
+but, honestly, for me it’s more <em>just for fun</em>, than anything else. Isn’t it interesting to (de)cypher something?</p>
 
 <p>First two launches was marked as lack of time for me, so I postponed it. By the way, other interesting courses was <em>in progress</em>.
 But now I really hope that I get enough time (<em>and patience</em>) to finish the class and get some good knowledge in this field.</p>
 
 <p><img src="http://imgs.xkcd.com/comics/lisp.jpg" alt="" /></p>
 
-<p>I don&#8217;t know why, but I choose perl as primary language for doing programming assignments.</p>
+<p>I don’t know why, but I choose perl as primary language for doing programming assignments.</p>
 
 <p>First of all, I needed some fast scripting language for general-purpose problems. To choose between perl and python, I choose perl.
-Because of <em>&#8220;less number of symbols in the name&#8221;</em>, of course. Second of all, I don&#8217;t know perl and it&#8217;s a good reason to learn it <em>in action</em>.
+Because of <em>“less number of symbols in the name”</em>, of course. Second of all, I don’t know perl and it’s a good reason to learn it <em>in action</em>.
 Also, what is important, I did get only positive reviews from my friends who know perl, but all their stories was like a mistery for me.
 Thought, that only chosen one can learn perl. I want to dispel this myth. To try, at least.</p>
 
-<blockquote><p>There&#8217;s more than one way to do it</p>
+<blockquote>
+  <p>There’s more than one way to do it</p>
 
-<p>&#8211; Perl motto</p></blockquote>
+  <p>– Perl motto</p>
+</blockquote>
 
 <p>The book that I choose for learning is a classic book (<em>read Perl Bible</em>) from the creator of perl, <a href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>.
 There is fresh, 4th edition, available.</p>
 
 <p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
 
-<p>Hope, I won&#8217;t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
+<p>Hope, I won’t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
 </div>
 
 
@@ -191,7 +204,7 @@ There is fresh, 4th edition, available.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/clojure-euler-problem-005/" title="Previous Post: Clojure Euler: Problem 005">&laquo; Clojure Euler: Problem 005</a>
+        <a class="basic-alignment left" href="/blog/99-clojure-problems/" title="Previous Post: 99 Clojure Problems">&laquo; 99 Clojure Problems</a>
       
       
         <a class="basic-alignment right" href="/blog/clojure-euler-problem-006/" title="Next Post: Clojure Euler: Problem 006">Clojure Euler: Problem 006 &raquo;</a>
@@ -215,6 +228,10 @@ There is fresh, 4th edition, available.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -228,10 +245,6 @@ There is fresh, 4th edition, available.</p>
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

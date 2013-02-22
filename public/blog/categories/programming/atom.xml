@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -18,78 +18,70 @@
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
     <updated>2013-02-19T00:38:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
-    <content type="html"><![CDATA[<blockquote><p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
+    <content type="html"><![CDATA[<blockquote>
+  <p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
 (without backtracking) to the bottom right corner.</p>
 
-<p>How many routes are there through a 20 x 20 grid?</p></blockquote>
+  <p>How many routes are there through a 20 x 20 grid?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=15">http://projecteuler.net/problem=15</a></p>
 
 <!-- more -->
 
-
 <p><img src="http://projecteuler.net/project/images/p_015.gif" alt="" /></p>
 
 <p>Picture is always a huge help to find correct the solution.
-Let's see the pattern here, with another picture</p>
+Let’s see the pattern here, with another picture</p>
 
-<p><em>Warning:</em> If you don't understand art, don't look at that picture.</p>
+<p><em>Warning:</em> If you don’t understand art, don’t look at that picture.</p>
 
 <p><img src="http://i.imgur.com/WNEQNxG.png" alt="" /></p>
 
-<p>It's a solution for 3 x 3 grid. We trying to process it by steps:</p>
+<p>It’s a solution for 3 x 3 grid. We trying to process it by steps:</p>
 
 <ul>
-<li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
+  <li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
 to be at the start so we put <code>1</code> to that point.</li>
-<li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
+  <li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
 on the edges of the second diagonal line.</li>
-<li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
+  <li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
 so there are two routes, and so on.</li>
 </ul>
 
+<p>If you just output the numbers from each diagonal line you’ll get:</p>
 
-<p>If you just output the numbers from each diagonal line you'll get:</p>
-
-<p>```</p>
-
-<pre><code>   1
-  1 1
- 1 2 1
-1 3 3 1
-</code></pre>
+<p>```
+       1
+      1 1
+     1 2 1
+    1 3 3 1</p>
 
 <p>```</p>
 
-<p>It's famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle</a>.
+<p>It’s famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal’s triangle</a>.
 Each element in this triangle obtained by sum of two closest elements from the upper row.</p>
 
 <p>To get desired result we need to sum these numbers again, until we get one number.
-But it's also numbers from Pascal's triangle.</p>
+But it’s also numbers from Pascal’s triangle.</p>
 
-<p>```</p>
+<p><code>
+    1   3   3   1
+      4   6   4
+       10  10
+         20
+</code></p>
 
-<pre><code>1   3   3   1
-  4   6   4
-   10  10
-     20
-</code></pre>
-
-<p>```</p>
-
-<p>We can treat Pascal's triangle as a sequence, and each row is an element. Then the
+<p>We can treat Pascal’s triangle as a sequence, and each row is an element. Then the
 following function calculates next row:</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn routes-extend [lst]
-  (let [size (count lst)]</p>
-
-<pre><code>(for [i (range (inc size))]
-  (if (or (= 0 i) (= size i)) 1
-    (+ (nth lst (dec i)) (nth lst i))))))
-</code></pre>
-
-<p>```</p>
+  (let [size (count lst)]
+    (for [i (range (inc size))]
+      (if (or (= 0 i) (= size i)) 1
+        (+ (nth lst (dec i)) (nth lst i))))))
+</code></p>
 
 <p>Usage:</p>
 
@@ -98,7 +90,7 @@ following function calculates next row:</p>
 (routes-extend [1 1]) =&gt; [1 2 1]
 </code></p>
 
-<p>Now we can build infinite sequence of Pascal's triangle rows:</p>
+<p>Now we can build infinite sequence of Pascal’s triangle rows:</p>
 
 <p><code>clojure
 (iterate routes-extend [1])
@@ -108,7 +100,7 @@ following function calculates next row:</p>
 Take a guess. For <code>n x n</code> grid we need to get <code>2 * n + 1</code> row. And take it
 middle element, which, of course, will be with the index <code>n</code>.</p>
 
-<p>That's the final solution:</p>
+<p>That’s the final solution:</p>
 
 <p><code>clojure
 (let [n 20 d (inc (* n 2))]
@@ -138,29 +130,28 @@ solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/B
 
 <!-- more -->
 
-
-<h3>Coursera</h3>
+<h3 id="coursera">Coursera</h3>
 
 <p>There are excellent course on coursera called <a href="https://class.coursera.org/proglang-2012-001/class/index">Programming Languages</a></p>
 
 <p>Currently, the first half is available, that explains basic and advanced functional programming constructions
 with Standard ML as primary language. Later some idioms will be presented using
 <strong>Racket</strong> and <strong>Ruby</strong> (<em>maybe, I will finally understand ruby</em>) so you can treat this course as introduction
-to these languages. In fact, it teaches much more than "<em>how to code in XXX</em>".</p>
+to these languages. In fact, it teaches much more than “<em>how to code in XXX</em>”.</p>
 
-<h3>Tools</h3>
+<h3 id="tools">Tools</h3>
 
 <p>For playing with ML you need <a href="http://www.smlnj.org/">SML/NJ</a> compiler and
 <a href="http://www.smlnj.org/doc/Emacs/sml-mode.html">sml-mode</a> for emacs.</p>
 
-<p><em>If you don't have emacs installed, do it right now!</em></p>
+<p><em>If you don’t have emacs installed, do it right now!</em></p>
 
-<h3>Play</h3>
+<h3 id="play">Play</h3>
 
 <p>Following snippets give you basic understanding of ML or
 refresh your knowledge for syntax.</p>
 
-<p>Print "Hello, world!":</p>
+<p>Print “Hello, world!”:</p>
 
 <p><code>sml
 fun print_hello_world () = print "Hello, world\n";
@@ -198,7 +189,7 @@ fun square x = x * x
 fun sum (x, y, z) = x + y + z
 </code></p>
 
-<p>Actually, it's not three parameters, it's one parameter - tuple:</p>
+<p>Actually, it’s not three parameters, it’s one parameter - tuple:</p>
 
 <p><code>sml
 fun swap (x, y) = (y, x)
@@ -214,14 +205,14 @@ val month1 = get_month(2012, "January", 21);
 <p>You can specify input types and return type, but ML is very clever. Almost always
 it can detect correct type using <em>type inference</em> without explicit definition.</p>
 
-<p><em>I don't understand it! Explain, please</em>. Comments:</p>
+<p><em>I don’t understand it! Explain, please</em>. Comments:</p>
 
 <p><code>sml
 (* Operation '*' defined for int types, so this function has type int -&gt; int *)
 fun cube x = x * x * x
 </code></p>
 
-<p>There is records. It's like named tuples.</p>
+<p>There is records. It’s like named tuples.</p>
 
 <p><code>sml
 fun get_month_real ({year, month, day}) = month
@@ -230,32 +221,26 @@ val month2 = get_month_real({year=2012, month="January", day=21});
 
 <p>Using <code>let</code> form we can define new lexical scope:</p>
 
-<p>``` sml
-fun add3 x =</p>
-
-<pre><code>let
-    val num = 3
-in
-    x + 3
-end
-</code></pre>
-
-<p>```</p>
+<p><code>sml
+fun add3 x =
+    let
+        val num = 3
+    in
+        x + 3
+    end
+</code></p>
 
 <p>This leads to closures (<em>function + context</em>):</p>
 
-<p>``` sml
-fun add3 x =</p>
-
-<pre><code>let
-    val num = 3
-    fun add_to x = x + num
-in
-    add_to x
-end
-</code></pre>
-
-<p>```</p>
+<p><code>sml
+fun add3 x =
+    let
+        val num = 3
+        fun add_to x = x + num
+    in
+        add_to x
+    end
+</code></p>
 
 <p>Function <code>add_to</code> capture <code>num</code> value from context.</p>
 
@@ -279,7 +264,7 @@ fun binary_apply (f, x, y) = f (x, y)
 binary_apply(swap, 1, 2);
 </code></p>
 
-<p>We don't forced to provide function name, we can use lambdas:</p>
+<p>We don’t forced to provide function name, we can use lambdas:</p>
 
 <p><code>sml
 binary_apply(fn (x, y) =&gt; x * y, 23, 46)
@@ -291,29 +276,23 @@ But they are already available in
 
 <p>Another great feature is <em>pattern-matching</em>. Here is factorial function</p>
 
-<p>``` sml
-fun factorial x =</p>
-
-<pre><code>case x of
-    0 =&gt; 1
-  | _ =&gt; x * factorial(x - 1)
-</code></pre>
-
-<p>```</p>
+<p><code>sml
+fun factorial x =
+    case x of
+        0 =&gt; 1
+      | _ =&gt; x * factorial(x - 1)
+</code></p>
 
 <p>or list concatenation</p>
 
-<p>``` sml
-fun concat (x, y) =</p>
+<p><code>sml
+fun concat (x, y) =
+    case x of
+        [] =&gt; y
+      | x::xs =&gt; x::concat(xs, y)
+</code></p>
 
-<pre><code>case x of
-    [] =&gt; y
-  | x::xs =&gt; x::concat(xs, y)
-</code></pre>
-
-<p>```</p>
-
-<p>Honestly, it's just baby examples of pattern matching. In fact, it is much more
+<p>Honestly, it’s just baby examples of pattern matching. In fact, it is much more
 powerful.</p>
 
 <p>And the last thing I wanted to show is datatypes:</p>
@@ -330,7 +309,7 @@ datatype 'a list = EMPTY | CONS of 'a * 'a list
 val list = CONS(1, CONS(2, CONS(3, EMPTY)))
 </code></p>
 
-<p>That's very small part of all that can be done in ML. There are also a lot of useful
+<p>That’s very small part of all that can be done in ML. There are also a lot of useful
 constructs and idioms that not covered: type synonyms, polymorphic types,
 equality types, tail recursion, mutual recursion, function wrapping,
 currying, partial application, advanced pattern matching, signatures,
@@ -341,10 +320,10 @@ modules and lot more.</p>
 <p>Full code is available on
 <a href="https://github.com/mishadoff/prog-experiment/blob/master/sml/play.sml">github</a></p>
 
-<h3>Impressions</h3>
+<h3 id="impressions">Impressions</h3>
 
 <p>ML is a great language. Perhaps, it is not so great as Java in enterprise, and not
-so great as Clojure in rapid prototyping, but it's worth to devote
+so great as Clojure in rapid prototyping, but it’s worth to devote
 few days for ML basics. It really improve your dev skills and maybe made your
 <em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
 ]]></content>
@@ -355,30 +334,33 @@ few days for ML basics. It really improve your dev skills and maybe made your
     <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
     <updated>2013-02-16T01:08:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
-    <content type="html"><![CDATA[<blockquote><p>Which starting number, under one million, produces the longest Collatz chain?</p></blockquote>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Which starting number, under one million, produces the longest Collatz chain?</p>
+</blockquote>
 
 <p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
 
 <!-- more -->
 
+<blockquote>
+  <p>The following iterative sequence is defined for the set of positive integers:</p>
 
-<blockquote><p>The following iterative sequence is defined for the set of positive integers:</p>
+  <p>n → n/2 (n is even)</p>
 
-<p>n → n/2 (n is even)</p>
+  <p>n → 3n + 1 (n is odd)</p>
 
-<p>n → 3n + 1 (n is odd)</p>
+  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
 
-<p>Using the rule above and starting with 13, we generate the following sequence:</p>
+  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
 
-<p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-
-<p>It can be seen that this sequence (starting at 13 and finishing at 1)
+  <p>It can be seen that this sequence (starting at 13 and finishing at 1)
 contains 10 terms. Although it has not been proved yet (Collatz Problem),
 it is thought that all starting numbers finish at 1.</p>
 
-<p>Which starting number, under one million, produces the longest chain?</p>
+  <p>Which starting number, under one million, produces the longest chain?</p>
 
-<p>NOTE: Once the chain starts the terms are allowed to go above one million.</p></blockquote>
+  <p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
+</blockquote>
 
 <p>Sequences again.
 So, first of all we need function to detect next collatz number.
@@ -407,30 +389,29 @@ count of collatz chain sequence:</p>
 <p>Now we have almost all code logic and just use it: calculate collatz chain
 for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
 
-<p>``` clojure
-(first (reduce #(if (> (second %1) (second %2)) %1 %2)</p>
-
-<pre><code>           (map #(list % (collatz-chain-length %)) (range 1 1000000))))
-</code></pre>
-
-<p>```</p>
+<p><code>clojure
+(first (reduce #(if (&gt; (second %1) (second %2)) %1 %2)
+               (map #(list % (collatz-chain-length %)) (range 1 1000000))))
+</code></p>
 
 <p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
 
 <p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
 and I have no idea how to solve it another way.</p>
 
-<p>I am sure there is a better algorithm than mine. But I don't know it.
+<p>I am sure there is a better algorithm than mine. But I don’t know it.
 What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
 
-<blockquote><p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p></blockquote>
+<blockquote>
+  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+</blockquote>
 
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,...</p>
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
 
 <p>Got it?</p>
 
 <p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don't need to calculate length
+chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
 for <code>40</code>, <code>20</code> and so on.</p>
 
 <p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
@@ -438,14 +419,11 @@ it to have recursive solution.</p>
 
 <p>Here the first (<em>and final</em>) version:</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn collatz-chain-recursive [n]
-  (if (= n 1) 1</p>
-
-<pre><code>  (inc (collatz-chain-recursive (collatz-next n)))))
-</code></pre>
-
-<p>```</p>
+  (if (= n 1) 1
+      (inc (collatz-chain-recursive (collatz-next n)))))
+</code></p>
 
 <p>Recursion is impressive at the point that its implementation
 almost exactly follows the problem definition. It is easy to understand.</p>
@@ -454,33 +432,30 @@ almost exactly follows the problem definition. It is easy to understand.</p>
 <a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
 have troubles. Do not think about it unless we actually have them.</p>
 
-<p>For the sake of fun let's run this function instead of previous to
+<p>For the sake of fun let’s run this function instead of previous to
 obtain the results.</p>
 
-<p><strong>20 seconds</strong>, it is great. I even don't think that
+<p><strong>20 seconds</strong>, it is great. I even don’t think that
 this simple recursive function gives such boost in performance.</p>
 
 <p>One little tweak in result function:</p>
 
-<p>``` clojure
+<p><code>clojure
 (first
-  (apply max-key second</p>
-
-<pre><code>     (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
-</code></pre>
-
-<p>```</p>
+  (apply max-key second
+         (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
+</code></p>
 
 <p>And we have <strong>~12 seconds</strong>.</p>
 
-<p>Unexpected "The End". Yeah, I love The Doors.</p>
+<p>Unexpected “The End”. Yeah, I love The Doors.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
 
 <p><strong>P.S.</strong> I really wanted to explain technique called
 <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
 simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn't have much sense here because
+but seems that caching result doesn’t have much sense here because
 12 seconds is acceptable. We will have chance to introduce
 memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 ]]></content>
@@ -496,12 +471,13 @@ what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, 
 
 <!-- more -->
 
+<h3 id="get-that-job-at-googlehttpsteve-yeggeblogspotcom200803get-that-job-at-googlehtml">1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
 
-<h3>1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
-
-<blockquote><p>...it's highly likely that someone on the loop will be unimpressed with you,
-even if you are Alan Turing. Especially if you're Alan Turing,
-in fact, since it means you obviously don't know C++</p></blockquote>
+<blockquote>
+  <p>…it’s highly likely that someone on the loop will be unimpressed with you,
+even if you are Alan Turing. Especially if you’re Alan Turing,
+in fact, since it means you obviously don’t know C++</p>
+</blockquote>
 
 <p>The quote accurately explains what this post about. The author gives great mental and
 technical tips about interviewing process (not only in Google).
@@ -509,23 +485,23 @@ Big portion of motivation guaranteed, perhaps you man feel dumber after reading.
 
 <p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
 graphs, other data structures, math, operating systems and at least one programming language very well.
-Not bad, right? After reading that article I've build long-term learning plan for myself, which is still
+Not bad, right? After reading that article I’ve build long-term learning plan for myself, which is still
 not succesful. Great article.</p>
 
-<h3>2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
+<h3 id="a-gentle-introduction-to-algorithm-complexity-analysishttpdiscretegrcomplexity">2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
 
 <p>This article helps you partially cover first thing from previous article: <em>algorithm complexity</em>.
 By the way, it is written with understandable (<em>for programmers</em>) language, examples, pictures, excerpts - I like
 such style.</p>
 
-<p>After reading, you'll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
+<p>After reading, you’ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
 recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
-skill to classify that complexities on O(n), O(n<sup>2</sup> ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
+skill to classify that complexities on O(n), O(n^2 ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
 with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
 
-<p>If you already know all that, don't skip! It also helpful to fresh you knowledge.</p>
+<p>If you already know all that, don’t skip! It also helpful to fresh you knowledge.</p>
 
-<h3>3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
+<h3 id="on-structural-immutabilityhttpclojurefunwordpresscom20130121on-structural-immutability">3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
 
 <p>What is Structural Immutability?</p>
 
@@ -534,39 +510,51 @@ Structural immutability means that you <em>can</em> change the contents of you d
 It gives better performance than plain immutable objects, but also keep your concurrent programs easier than with
 full mutability. Plain old array is an example. Read it to know more.</p>
 
-<h3>4. <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">PHP: a fractal of bad design</a></h3>
+<h3 id="php-a-fractal-of-bad-designhttpmeveekuncomblog20120409php-a-fractal-of-bad-design">4. <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">PHP: a fractal of bad design</a></h3>
 
-<blockquote><p>Virtually every feature in PHP is broken somehow</p></blockquote>
+<blockquote>
+  <p>Virtually every feature in PHP is broken somehow</p>
+</blockquote>
 
 <p>Whole article is a criticism of bad PHP language design.</p>
 
-<blockquote><p>PHP was originally designed explicitly for non-programmers (and, reading between the lines, non-programs)</p></blockquote>
+<blockquote>
+  <p>PHP was originally designed explicitly for non-programmers (and, reading between the lines, non-programs)</p>
+</blockquote>
 
 <p>Total destroy. I mean it - total.</p>
 
-<blockquote><p>Array... This one datatype acts as a list, ordered hash, ordered set,
+<blockquote>
+  <p>Array… This one datatype acts as a list, ordered hash, ordered set,
 sparse list, and occasionally some strange combination of those.
 How does it perform? What kind of memory use will there be?
-Who knows? Not like I have other options, anyway.</p></blockquote>
+Who knows? Not like I have other options, anyway.</p>
+</blockquote>
 
-<p>As I never know PHP, and hope won't, that article was one of the funniest things I ever read.</p>
+<p>As I never know PHP, and hope won’t, that article was one of the funniest things I ever read.</p>
 
-<blockquote><p>equality operator is not transitive...comparison is not even consistent</p></blockquote>
+<blockquote>
+  <p>equality operator is not transitive…comparison is not even consistent</p>
+</blockquote>
 
-<p>If you PHPist don't go away, just read it. Maybe it will change your life.</p>
+<p>If you PHPist don’t go away, just read it. Maybe it will change your life.</p>
 
-<blockquote><p>Genericism... There is none. If a function might need to do two slightly different things, PHP just has two functions.</p></blockquote>
+<blockquote>
+  <p>Genericism… There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
+</blockquote>
 
 <p>Stop quoting. Just read it.</p>
 
-<h3>5. <a href="http://grimoire.ca/mysql/choose-something-else">Do Not Pass This Way Again</a></h3>
+<h3 id="do-not-pass-this-way-againhttpgrimoirecamysqlchoose-something-else">5. <a href="http://grimoire.ca/mysql/choose-something-else">Do Not Pass This Way Again</a></h3>
 
-<blockquote><p>Considering MySQL? Use something else. Already on MySQL? Migrate.</p></blockquote>
+<blockquote>
+  <p>Considering MySQL? Use something else. Already on MySQL? Migrate.</p>
+</blockquote>
 
 <p>This article logically continues previous one, but for now critisism on MySQL.
 Perhaps, it is not powerful as PHP version, but still worth to read.</p>
 
-<h3>6. <a href="http://www.omsn.de/blog/big-arrays-in-java">Big arrays in Java</a></h3>
+<h3 id="big-arrays-in-javahttpwwwomsndeblogbig-arrays-in-java">6. <a href="http://www.omsn.de/blog/big-arrays-in-java">Big arrays in Java</a></h3>
 
 <p>Two articles of hate in a row, and currently Java? No way.
 How much we hate Java so we love it. By the way, JDK8 is soon.</p>
@@ -575,9 +563,9 @@ How much we hate Java so we love it. By the way, JDK8 is soon.</p>
 How to create array in Java with size greater than <code>Integer.MAX_VALUE</code>. Use the undocumented
 class <code>sun.misc.Unsafe</code>. Just note this only works in SunJDK and OpenJDK.</p>
 
-<h3>7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
+<h3 id="state-of-the-lambdahttpcropenjdkjavanetbriangoetzlambdalambda-state-4html">7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
 
-<p>If we started about JDK8...</p>
+<p>If we started about JDK8…</p>
 
 <p>The most interesting feature set in expected JDK8 is Project Lambda.</p>
 
@@ -587,19 +575,21 @@ parallelism, streams, method references and lot more comming soon.</p>
 
 <p><em>What is the default method implementation in the interface?!</em></p>
 
-<h3>8. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
+<h3 id="fantastic-game-development-tutorials-from-across-the-webhttpgamedevtutspluscomarticlesroundupsfantastic-gamedev-tutorials-from-across-the-web">8. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
 
 <p>Have you ever had the passion to write your own game?</p>
 
 <p>I had. Because I like games and I even tried. Unfortunately, not so succesful as expected, but anyway.</p>
 
-<blockquote><p>We need to go deeper</p></blockquote>
+<blockquote>
+  <p>We need to go deeper</p>
+</blockquote>
 
-<p>Honestly, it's not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
-you really interested in gamedev, you'll find a lot of there including game algorithms,
+<p>Honestly, it’s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
+you really interested in gamedev, you’ll find a lot of there including game algorithms,
 popular engine tutorials, math behind the games, design questions and more useful tips. Great stuff.</p>
 
-<h3>9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
+<h3 id="how-to-pair-socks-from-a-pile-efficientlyhttpstackoverflowcomquestions14415881how-to-pair-socks-from-a-pile-efficiently">9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
 
 <p>Bored to pair your socks every time? Learn how to do it efficiently.</p>
 
@@ -607,11 +597,13 @@ popular engine tutorials, math behind the games, design questions and more usefu
 problem with variety of algorithms can be applied. I think all algorithm courses should be teached
 that way.</p>
 
-<h3>10. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
+<h3 id="what-is-your-best-programming-jokehttpstackoverflowcomquestions234075what-is-your-best-programmer-joke1284458">10. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
 
-<blockquote><p>If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.</p>
+<blockquote>
+  <p>If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.</p>
 
-<p>The rest of them will write Perl programs.</p></blockquote>
+  <p>The rest of them will write Perl programs.</p>
+</blockquote>
 
 <p>If you have an hour or two reserved for laughing, just read this. A <strong>lot</strong> of
 crazy programming jokes. Stackoverflow community is amazing.</p>
@@ -627,13 +619,12 @@ crazy programming jokes. Stackoverflow community is amazing.</p>
 
 <!-- more -->
 
-
 <p>To answer this question we use results from the qualification round
 of <a href="https://www.facebook.com/hackercup">Facebook Hacker Cup 2013</a></p>
 
 <p>If you only interested in statistics, <a href="#stats">skip!</a></p>
 
-<h3>0. Intro</h3>
+<h3 id="intro">0. Intro</h3>
 
 <p>As you may know, Facebook Hacker Cup is a programming contest. You have programming
 problem and you need to solve it, in most cases in efficient way. You get input file
@@ -643,7 +634,7 @@ any of contestants after round.</p>
 
 <p>These sources we use to get programming language statistics.</p>
 
-<h3>1. Data</h3>
+<h3 id="data">1. Data</h3>
 
 <p>Primary resource in statistics is data.</p>
 
@@ -652,19 +643,18 @@ any of contestants after round.</p>
 Open every link manually takes much time, so we will use automated approach
 and will write program. Yes, in clojure.</p>
 
-<h4>Dependencies</h4>
+<h4 id="dependencies">Dependencies</h4>
 
 <p>For facebook authentification we can use:</p>
 
 <ul>
-<li><a href="https://github.com/DerGuteMoritz/clj-oauth2">OAuth authentification</a></li>
-<li><a href="https://developers.facebook.com/">Facebook app</a></li>
-<li><a href="http://seleniumhq.org/">Selenium</a></li>
+  <li><a href="https://github.com/DerGuteMoritz/clj-oauth2">OAuth authentification</a></li>
+  <li><a href="https://developers.facebook.com/">Facebook app</a></li>
+  <li><a href="http://seleniumhq.org/">Selenium</a></li>
 </ul>
 
-
-<p>I didn't think too much about alternatives,
-because I wanted to try selenium in clojure. It's a time!</p>
+<p>I didn’t think too much about alternatives,
+because I wanted to try selenium in clojure. It’s a time!</p>
 
 <p>In few words, selenium provides capability to perform programmatically
 browser events. Often used in automation. To use selenium in clojure program
@@ -682,61 +672,55 @@ additional help <code>[org.clojure/clojure-contrib "1.2.0"]</code>.</p>
 (:require [clojure.contrib.math :as math])
 </code></p>
 
-<h4>Automation</h4>
+<h4 id="automation">Automation</h4>
 
 <p>Before we will automate actions to gather sources we need to decide
 what these actions are?</p>
 
 <ul>
-<li>Run browser</li>
-<li>Open facebook url</li>
-<li>Login to facebook
+  <li>Run browser</li>
+  <li>Open facebook url</li>
+  <li>Login to facebook
+    <ul>
+      <li>Enter login</li>
+      <li>Enter password</li>
+      <li>Press submit</li>
+    </ul>
+  </li>
+  <li>Go to scoreboard page</li>
+  <li>Process each page <code>loop [1..n]</code>
+    <ul>
+      <li>Go to page <code>n</code></li>
+      <li>Get all links</li>
+      <li>Filter links with sources</li>
+      <li>Process each link <code>loop [1..k]</code>
+        <ul>
+          <li>Go to link url <code>k</code></li>
+          <li>Get all page source</li>
+          <li>Filter out source code</li>
+          <li>Generate file name</li>
+          <li>Write source to file</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Pretty clear, right? Let’s code it sequentially.</p>
+
+<h4 id="implementation">Implementation</h4>
 
 <ul>
-<li>Enter login</li>
-<li>Enter password</li>
-<li>Press submit</li>
+  <li><em>Run browser</em> and <em>Open facebook url</em></li>
 </ul>
-</li>
-<li>Go to scoreboard page</li>
-<li>Process each page <code>loop [1..n]</code>
-
-<ul>
-<li>Go to page <code>n</code></li>
-<li>Get all links</li>
-<li>Filter links with sources</li>
-<li>Process each link <code>loop [1..k]</code>
-
-<ul>
-<li>Go to link url <code>k</code></li>
-<li>Get all page source</li>
-<li>Filter out source code</li>
-<li>Generate file name</li>
-<li>Write source to file</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>Pretty clear, right? Let's code it sequentially.</p>
-
-<h4>Implementation</h4>
-
-<ul>
-<li><em>Run browser</em> and <em>Open facebook url</em></li>
-</ul>
-
 
 <p><code>clojure
 (web/set-driver! {:browser :firefox} "http://facebook.com")
 </code></p>
 
 <ul>
-<li><em>Login to facebook</em></li>
+  <li><em>Login to facebook</em></li>
 </ul>
-
 
 <p><code>clojure
 (web/input-text "#email" username)
@@ -745,69 +729,59 @@ what these actions are?</p>
 </code></p>
 
 <ul>
-<li><em>Go to scoreboard page</em></li>
+  <li><em>Go to scoreboard page</em></li>
 </ul>
-
 
 <p><code>clojure
 (web/to "https://www.facebook.com/hackercup/scoreboard?round=185564241586420")
 </code></p>
 
 <ul>
-<li><em>Process each page</em></li>
+  <li><em>Process each page</em></li>
 </ul>
-
 
 <p><code>clojure
 (doseq [page-num (range 1 (inc 114))]
   (process-page page-num))
 </code></p>
 
-<p>Number of pages is hardcoded. It's ok.
+<p>Number of pages is hardcoded. It’s ok.
 What is <code>process-page</code> method?</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn process-page [n]
-  (let [url (str "https://www.facebook.com/hackercup/scoreboard?round=185564241586420&amp;page=" n)]</p>
-
-<pre><code>(web/to url)
-(doseq [e (web/find-elements {:css "a"})
-        :let [url (c/attribute e "href")]
-        :when (and url (.startsWith url "https://fbcdn-dragon-a.akamaihd.net/"))]
-  (process-url url))))
-</code></pre>
-
-<p>```</p>
+  (let [url (str "https://www.facebook.com/hackercup/scoreboard?round=185564241586420&amp;page=" n)]
+    (web/to url)
+    (doseq [e (web/find-elements {:css "a"})
+            :let [url (c/attribute e "href")]
+            :when (and url (.startsWith url "https://fbcdn-dragon-a.akamaihd.net/"))]
+      (process-url url))))
+</code></p>
 
 <p>First of all,  we concat scoreboard link with page number to get actual link to each page.
 Then we go to that page obtain all <code>a</code> elements, get their <code>href</code> values and filter
 to save only ones that contain source code.</p>
 
 <ul>
-<li><em>Process each url</em></li>
+  <li><em>Process each url</em></li>
 </ul>
 
-
-<p>``` clojure
+<p><code>clojure
 (defn process-url [url]
-  (let [source-code (:body (http/get url))</p>
-
-<pre><code>    file-name (generate-filename url)]
-(spit file-name source-code)))
-</code></pre>
-
-<p>```</p>
+  (let [source-code (:body (http/get url))
+        file-name (generate-filename url)]
+    (spit file-name source-code)))
+</code></p>
 
 <p>In this part we obtain html source of url and get its <code>:body</code> tag.
-As all source urls contain just plain text, we don't need additional
+As all source urls contain just plain text, we don’t need additional
 filtering. Just save it to file.</p>
 
 <ul>
-<li><em>Generate file name</em></li>
+  <li><em>Generate file name</em></li>
 </ul>
 
-
-<p>I don't want to name file as url. That's why for naming we use following
+<p>I don’t want to name file as url. That’s why for naming we use following
 function: <code>timestamp + underscore + absolute value of url hashcode</code></p>
 
 <p><code>clojure
@@ -819,13 +793,13 @@ function: <code>timestamp + underscore + absolute value of url hashcode</code></
 
 <p>Whole script source available <a href="https://github.com/mishadoff/clj-statistic-tools/blob/master/src/clj_statistic_tools/fbhackercup2013.clj">here</a></p>
 
-<h4>Execution</h4>
+<h4 id="execution">Execution</h4>
 
 <p>To run that script you need to write in clojure REPL
 <code>(run "username" "password")</code>, with correct values for <em>username</em> and <em>password</em>, obviously.</p>
 
 <p>It works some time. <em>Some time</em> equals to eight hours on my machine. Long enough.
-But it's ideal time for <em>night crawling</em>!</p>
+But it’s ideal time for <em>night crawling</em>!</p>
 
 <p>In the morning I had all work done.</p>
 
@@ -842,7 +816,7 @@ ls -1 | wc -l &amp;&amp; du
 
 <p>Good sign. We have more than 20K of source codes with total size almost 300Mb.</p>
 
-<h3>2. Analysis</h3>
+<h3 id="analysis">2. Analysis</h3>
 
 <p>Data is good. But no one interested in raw data, so we need process it.</p>
 
@@ -862,9 +836,9 @@ detect language in my files. Rvm, gems and modules driving me crazy. I surrender
 
 <p>Another solution to use javascript library <a href="http://softwaremaniacs.org/soft/highlight/en/">Highlight.js</a>.
 It is used in syntax coloring, but have automatic language detection. Again, javascript and
-reading files from filesystem... Don't tell me about Node.js</p>
+reading files from filesystem… Don’t tell me about Node.js</p>
 
-<p>I decided to write my own "classifier". Honestly, it's just regexp matching mechanism
+<p>I decided to write my own “classifier”. Honestly, it’s just regexp matching mechanism
 on common language constructions: keywords, imports, most used functions, etc.</p>
 
 <p>Iterative approach has been used.</p>
@@ -872,7 +846,7 @@ on common language constructions: keywords, imports, most used functions, etc.</
 <p>Select some popular language construction say <code>#include &lt;iostream&gt;</code> and filter it as <code>C</code>. After filtering
 we detect some subset of <code>C</code> language, remove them from all files list and repeat again with another construction.</p>
 
-<p><em>I don't know how <code>C++</code> different from <code>C</code>, so I accept them both as interchangeable languages but call it <code>C/C++</code>.
+<p><em>I don’t know how <code>C++</code> different from <code>C</code>, so I accept them both as interchangeable languages but call it <code>C/C++</code>.
 By the way, <code>C - C++ = 0</code>, so we assume they are equal.</em></p>
 
 <p>I developed some number of patterns (they can be reviewed
@@ -882,15 +856,15 @@ and processed all gathered source files.</p>
 <p>Unfortunately, not all files were processed succesfully. I reviewed approximately 2000 files manually, few
 new languages were detected but big amount of them were the crap: input data, binary files, some text information.</p>
 
-<p>I think we don't lose too much if we say <em>only 99% of files were processed</em>.</p>
+<p>I think we don’t lose too much if we say <em>only 99% of files were processed</em>.</p>
 
-<h3><a id="stats"></a>3. Statistics</h3>
+<h3 id="a-idstatsa3-statistics"><a id="stats"></a>3. Statistics</h3>
 
 <p><img src="http://i.imgur.com/sWyfLqv.png" alt="" /></p>
 
-<p>If you don't like this visualization, you can create your own. Here is data:</p>
+<p>If you don’t like this visualization, you can create your own. Here is data:</p>
 
-<p>```
+<p><code>
 C/C++          10524
 Java            3117
 Python          3102
@@ -918,47 +892,44 @@ awk                1
 Powershell         1
 bash               1
 Kotlin             1
-ActionScript       1</p>
+ActionScript       1
+Dylan              1
+--------------------
+crap             192
+not detected     196
+--------------------
+TOTAL          20348
+</code></p>
 
-<h2>Dylan              1</h2>
-
-<p>crap             192</p>
-
-<h2>not detected     196</h2>
-
-<p>TOTAL          20348
-```</p>
-
-<h3>4. Conclusion</h3>
+<h3 id="conclusion">4. Conclusion</h3>
 
 <ul>
-<li>Top 5 was predicted but it's extremely crazy that C/C++ occur more than 50%</li>
-<li>Python has almost the same amount as Java</li>
-<li>Good occurence of functional languages: Haskell, F#, Scala, Clojure, Ocaml</li>
-<li>29 Clojure files that means there ~10 clojurists.</li>
-<li>Two languages I never heard of:
+  <li>Top 5 was predicted but it’s extremely crazy that C/C++ occur more than 50%</li>
+  <li>Python has almost the same amount as Java</li>
+  <li>Good occurence of functional languages: Haskell, F#, Scala, Clojure, Ocaml</li>
+  <li>29 Clojure files that means there ~10 clojurists.</li>
+  <li>Two languages I never heard of:
 <a href="http://www.dartlang.org/">Dart</a> and
 <a href="http://opendylan.org/">Dylan</a></li>
-<li><em>Parenthesis</em> languages still used: Common Lisp, Scheme and Clojure (of course)</li>
-<li>Respect to matlabists</li>
-<li>Few <em>exotic languages</em> used: awk, powershell, bash</li>
-<li><a href="http://kotlin.jetbrains.org/">Kotlin</a> becomes popular!</li>
+  <li><em>Parenthesis</em> languages still used: Common Lisp, Scheme and Clojure (of course)</li>
+  <li>Respect to matlabists</li>
+  <li>Few <em>exotic languages</em> used: awk, powershell, bash</li>
+  <li><a href="http://kotlin.jetbrains.org/">Kotlin</a> becomes popular!</li>
 </ul>
-
 
 <p><em>Warning:</em> Do not treat this statistics as real-world pattern. It is a programming competition with
 a lot of geeks, they can use all they want. Also do not blame their code for quality. It was created just for
 correctness and speed. Pay attention to code quality in production, but always remember:</p>
 
-<blockquote><p>Your code may be elegant, by mine fucking works.</p>
+<blockquote>
+  <p>Your code may be elegant, by mine fucking works.</p>
 
-<p>-- <a href="http://omniti.com/seeds/your-code-may-be-elegant">Leon Fayer</a></p></blockquote>
-
-<br />
-
+  <p>– <a href="http://omniti.com/seeds/your-code-may-be-elegant">Leon Fayer</a>
+<br /></p>
+</blockquote>
 
 <p><strong>P.S.</strong> First of all, it is not high-accurate statistics. As I am not
-programming guru, I don't know all possible languages' constructions
+programming guru, I don’t know all possible languages’ constructions
 so it is likely that one construction overlapped with another. In that case
 only first one will be checked. Ideally, would be good to have language
 detecting library in clojure for future analysis. <em>Maybe</em>, I will do it.

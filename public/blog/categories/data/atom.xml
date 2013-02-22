@@ -4,7 +4,7 @@
   <title><![CDATA[Category: data | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/data/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -22,13 +22,12 @@
 
 <!-- more -->
 
-
 <p>To answer this question we use results from the qualification round
 of <a href="https://www.facebook.com/hackercup">Facebook Hacker Cup 2013</a></p>
 
 <p>If you only interested in statistics, <a href="#stats">skip!</a></p>
 
-<h3>0. Intro</h3>
+<h3 id="intro">0. Intro</h3>
 
 <p>As you may know, Facebook Hacker Cup is a programming contest. You have programming
 problem and you need to solve it, in most cases in efficient way. You get input file
@@ -38,7 +37,7 @@ any of contestants after round.</p>
 
 <p>These sources we use to get programming language statistics.</p>
 
-<h3>1. Data</h3>
+<h3 id="data">1. Data</h3>
 
 <p>Primary resource in statistics is data.</p>
 
@@ -47,19 +46,18 @@ any of contestants after round.</p>
 Open every link manually takes much time, so we will use automated approach
 and will write program. Yes, in clojure.</p>
 
-<h4>Dependencies</h4>
+<h4 id="dependencies">Dependencies</h4>
 
 <p>For facebook authentification we can use:</p>
 
 <ul>
-<li><a href="https://github.com/DerGuteMoritz/clj-oauth2">OAuth authentification</a></li>
-<li><a href="https://developers.facebook.com/">Facebook app</a></li>
-<li><a href="http://seleniumhq.org/">Selenium</a></li>
+  <li><a href="https://github.com/DerGuteMoritz/clj-oauth2">OAuth authentification</a></li>
+  <li><a href="https://developers.facebook.com/">Facebook app</a></li>
+  <li><a href="http://seleniumhq.org/">Selenium</a></li>
 </ul>
 
-
-<p>I didn't think too much about alternatives,
-because I wanted to try selenium in clojure. It's a time!</p>
+<p>I didn’t think too much about alternatives,
+because I wanted to try selenium in clojure. It’s a time!</p>
 
 <p>In few words, selenium provides capability to perform programmatically
 browser events. Often used in automation. To use selenium in clojure program
@@ -77,61 +75,55 @@ additional help <code>[org.clojure/clojure-contrib "1.2.0"]</code>.</p>
 (:require [clojure.contrib.math :as math])
 </code></p>
 
-<h4>Automation</h4>
+<h4 id="automation">Automation</h4>
 
 <p>Before we will automate actions to gather sources we need to decide
 what these actions are?</p>
 
 <ul>
-<li>Run browser</li>
-<li>Open facebook url</li>
-<li>Login to facebook
+  <li>Run browser</li>
+  <li>Open facebook url</li>
+  <li>Login to facebook
+    <ul>
+      <li>Enter login</li>
+      <li>Enter password</li>
+      <li>Press submit</li>
+    </ul>
+  </li>
+  <li>Go to scoreboard page</li>
+  <li>Process each page <code>loop [1..n]</code>
+    <ul>
+      <li>Go to page <code>n</code></li>
+      <li>Get all links</li>
+      <li>Filter links with sources</li>
+      <li>Process each link <code>loop [1..k]</code>
+        <ul>
+          <li>Go to link url <code>k</code></li>
+          <li>Get all page source</li>
+          <li>Filter out source code</li>
+          <li>Generate file name</li>
+          <li>Write source to file</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Pretty clear, right? Let’s code it sequentially.</p>
+
+<h4 id="implementation">Implementation</h4>
 
 <ul>
-<li>Enter login</li>
-<li>Enter password</li>
-<li>Press submit</li>
+  <li><em>Run browser</em> and <em>Open facebook url</em></li>
 </ul>
-</li>
-<li>Go to scoreboard page</li>
-<li>Process each page <code>loop [1..n]</code>
-
-<ul>
-<li>Go to page <code>n</code></li>
-<li>Get all links</li>
-<li>Filter links with sources</li>
-<li>Process each link <code>loop [1..k]</code>
-
-<ul>
-<li>Go to link url <code>k</code></li>
-<li>Get all page source</li>
-<li>Filter out source code</li>
-<li>Generate file name</li>
-<li>Write source to file</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>Pretty clear, right? Let's code it sequentially.</p>
-
-<h4>Implementation</h4>
-
-<ul>
-<li><em>Run browser</em> and <em>Open facebook url</em></li>
-</ul>
-
 
 <p><code>clojure
 (web/set-driver! {:browser :firefox} "http://facebook.com")
 </code></p>
 
 <ul>
-<li><em>Login to facebook</em></li>
+  <li><em>Login to facebook</em></li>
 </ul>
-
 
 <p><code>clojure
 (web/input-text "#email" username)
@@ -140,69 +132,59 @@ what these actions are?</p>
 </code></p>
 
 <ul>
-<li><em>Go to scoreboard page</em></li>
+  <li><em>Go to scoreboard page</em></li>
 </ul>
-
 
 <p><code>clojure
 (web/to "https://www.facebook.com/hackercup/scoreboard?round=185564241586420")
 </code></p>
 
 <ul>
-<li><em>Process each page</em></li>
+  <li><em>Process each page</em></li>
 </ul>
-
 
 <p><code>clojure
 (doseq [page-num (range 1 (inc 114))]
   (process-page page-num))
 </code></p>
 
-<p>Number of pages is hardcoded. It's ok.
+<p>Number of pages is hardcoded. It’s ok.
 What is <code>process-page</code> method?</p>
 
-<p>``` clojure
+<p><code>clojure
 (defn process-page [n]
-  (let [url (str "https://www.facebook.com/hackercup/scoreboard?round=185564241586420&amp;page=" n)]</p>
-
-<pre><code>(web/to url)
-(doseq [e (web/find-elements {:css "a"})
-        :let [url (c/attribute e "href")]
-        :when (and url (.startsWith url "https://fbcdn-dragon-a.akamaihd.net/"))]
-  (process-url url))))
-</code></pre>
-
-<p>```</p>
+  (let [url (str "https://www.facebook.com/hackercup/scoreboard?round=185564241586420&amp;page=" n)]
+    (web/to url)
+    (doseq [e (web/find-elements {:css "a"})
+            :let [url (c/attribute e "href")]
+            :when (and url (.startsWith url "https://fbcdn-dragon-a.akamaihd.net/"))]
+      (process-url url))))
+</code></p>
 
 <p>First of all,  we concat scoreboard link with page number to get actual link to each page.
 Then we go to that page obtain all <code>a</code> elements, get their <code>href</code> values and filter
 to save only ones that contain source code.</p>
 
 <ul>
-<li><em>Process each url</em></li>
+  <li><em>Process each url</em></li>
 </ul>
 
-
-<p>``` clojure
+<p><code>clojure
 (defn process-url [url]
-  (let [source-code (:body (http/get url))</p>
-
-<pre><code>    file-name (generate-filename url)]
-(spit file-name source-code)))
-</code></pre>
-
-<p>```</p>
+  (let [source-code (:body (http/get url))
+        file-name (generate-filename url)]
+    (spit file-name source-code)))
+</code></p>
 
 <p>In this part we obtain html source of url and get its <code>:body</code> tag.
-As all source urls contain just plain text, we don't need additional
+As all source urls contain just plain text, we don’t need additional
 filtering. Just save it to file.</p>
 
 <ul>
-<li><em>Generate file name</em></li>
+  <li><em>Generate file name</em></li>
 </ul>
 
-
-<p>I don't want to name file as url. That's why for naming we use following
+<p>I don’t want to name file as url. That’s why for naming we use following
 function: <code>timestamp + underscore + absolute value of url hashcode</code></p>
 
 <p><code>clojure
@@ -214,13 +196,13 @@ function: <code>timestamp + underscore + absolute value of url hashcode</code></
 
 <p>Whole script source available <a href="https://github.com/mishadoff/clj-statistic-tools/blob/master/src/clj_statistic_tools/fbhackercup2013.clj">here</a></p>
 
-<h4>Execution</h4>
+<h4 id="execution">Execution</h4>
 
 <p>To run that script you need to write in clojure REPL
 <code>(run "username" "password")</code>, with correct values for <em>username</em> and <em>password</em>, obviously.</p>
 
 <p>It works some time. <em>Some time</em> equals to eight hours on my machine. Long enough.
-But it's ideal time for <em>night crawling</em>!</p>
+But it’s ideal time for <em>night crawling</em>!</p>
 
 <p>In the morning I had all work done.</p>
 
@@ -237,7 +219,7 @@ ls -1 | wc -l &amp;&amp; du
 
 <p>Good sign. We have more than 20K of source codes with total size almost 300Mb.</p>
 
-<h3>2. Analysis</h3>
+<h3 id="analysis">2. Analysis</h3>
 
 <p>Data is good. But no one interested in raw data, so we need process it.</p>
 
@@ -257,9 +239,9 @@ detect language in my files. Rvm, gems and modules driving me crazy. I surrender
 
 <p>Another solution to use javascript library <a href="http://softwaremaniacs.org/soft/highlight/en/">Highlight.js</a>.
 It is used in syntax coloring, but have automatic language detection. Again, javascript and
-reading files from filesystem... Don't tell me about Node.js</p>
+reading files from filesystem… Don’t tell me about Node.js</p>
 
-<p>I decided to write my own "classifier". Honestly, it's just regexp matching mechanism
+<p>I decided to write my own “classifier”. Honestly, it’s just regexp matching mechanism
 on common language constructions: keywords, imports, most used functions, etc.</p>
 
 <p>Iterative approach has been used.</p>
@@ -267,7 +249,7 @@ on common language constructions: keywords, imports, most used functions, etc.</
 <p>Select some popular language construction say <code>#include &lt;iostream&gt;</code> and filter it as <code>C</code>. After filtering
 we detect some subset of <code>C</code> language, remove them from all files list and repeat again with another construction.</p>
 
-<p><em>I don't know how <code>C++</code> different from <code>C</code>, so I accept them both as interchangeable languages but call it <code>C/C++</code>.
+<p><em>I don’t know how <code>C++</code> different from <code>C</code>, so I accept them both as interchangeable languages but call it <code>C/C++</code>.
 By the way, <code>C - C++ = 0</code>, so we assume they are equal.</em></p>
 
 <p>I developed some number of patterns (they can be reviewed
@@ -277,15 +259,15 @@ and processed all gathered source files.</p>
 <p>Unfortunately, not all files were processed succesfully. I reviewed approximately 2000 files manually, few
 new languages were detected but big amount of them were the crap: input data, binary files, some text information.</p>
 
-<p>I think we don't lose too much if we say <em>only 99% of files were processed</em>.</p>
+<p>I think we don’t lose too much if we say <em>only 99% of files were processed</em>.</p>
 
-<h3><a id="stats"></a>3. Statistics</h3>
+<h3 id="a-idstatsa3-statistics"><a id="stats"></a>3. Statistics</h3>
 
 <p><img src="http://i.imgur.com/sWyfLqv.png" alt="" /></p>
 
-<p>If you don't like this visualization, you can create your own. Here is data:</p>
+<p>If you don’t like this visualization, you can create your own. Here is data:</p>
 
-<p>```
+<p><code>
 C/C++          10524
 Java            3117
 Python          3102
@@ -313,47 +295,44 @@ awk                1
 Powershell         1
 bash               1
 Kotlin             1
-ActionScript       1</p>
+ActionScript       1
+Dylan              1
+--------------------
+crap             192
+not detected     196
+--------------------
+TOTAL          20348
+</code></p>
 
-<h2>Dylan              1</h2>
-
-<p>crap             192</p>
-
-<h2>not detected     196</h2>
-
-<p>TOTAL          20348
-```</p>
-
-<h3>4. Conclusion</h3>
+<h3 id="conclusion">4. Conclusion</h3>
 
 <ul>
-<li>Top 5 was predicted but it's extremely crazy that C/C++ occur more than 50%</li>
-<li>Python has almost the same amount as Java</li>
-<li>Good occurence of functional languages: Haskell, F#, Scala, Clojure, Ocaml</li>
-<li>29 Clojure files that means there ~10 clojurists.</li>
-<li>Two languages I never heard of:
+  <li>Top 5 was predicted but it’s extremely crazy that C/C++ occur more than 50%</li>
+  <li>Python has almost the same amount as Java</li>
+  <li>Good occurence of functional languages: Haskell, F#, Scala, Clojure, Ocaml</li>
+  <li>29 Clojure files that means there ~10 clojurists.</li>
+  <li>Two languages I never heard of:
 <a href="http://www.dartlang.org/">Dart</a> and
 <a href="http://opendylan.org/">Dylan</a></li>
-<li><em>Parenthesis</em> languages still used: Common Lisp, Scheme and Clojure (of course)</li>
-<li>Respect to matlabists</li>
-<li>Few <em>exotic languages</em> used: awk, powershell, bash</li>
-<li><a href="http://kotlin.jetbrains.org/">Kotlin</a> becomes popular!</li>
+  <li><em>Parenthesis</em> languages still used: Common Lisp, Scheme and Clojure (of course)</li>
+  <li>Respect to matlabists</li>
+  <li>Few <em>exotic languages</em> used: awk, powershell, bash</li>
+  <li><a href="http://kotlin.jetbrains.org/">Kotlin</a> becomes popular!</li>
 </ul>
-
 
 <p><em>Warning:</em> Do not treat this statistics as real-world pattern. It is a programming competition with
 a lot of geeks, they can use all they want. Also do not blame their code for quality. It was created just for
 correctness and speed. Pay attention to code quality in production, but always remember:</p>
 
-<blockquote><p>Your code may be elegant, by mine fucking works.</p>
+<blockquote>
+  <p>Your code may be elegant, by mine fucking works.</p>
 
-<p>-- <a href="http://omniti.com/seeds/your-code-may-be-elegant">Leon Fayer</a></p></blockquote>
-
-<br />
-
+  <p>– <a href="http://omniti.com/seeds/your-code-may-be-elegant">Leon Fayer</a>
+<br /></p>
+</blockquote>
 
 <p><strong>P.S.</strong> First of all, it is not high-accurate statistics. As I am not
-programming guru, I don't know all possible languages' constructions
+programming guru, I don’t know all possible languages’ constructions
 so it is likely that one construction overlapped with another. In that case
 only first one will be checked. Ideally, would be good to have language
 detecting library in clojure for future analysis. <em>Maybe</em>, I will do it.

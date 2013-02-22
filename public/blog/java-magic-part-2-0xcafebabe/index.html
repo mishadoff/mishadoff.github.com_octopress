@@ -9,7 +9,8 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s CAFEBABE. To make sure, create simple java file, call it Hello.java &hellip;">
+  <meta name="description" content="Did you know that all java classes start with the same 4 bytes. In hex it’s CAFEBABE. To make sure, create simple java file, call it Hello.java: 1
+2 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,9 +26,22 @@
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -104,43 +118,43 @@
   </header>
 
 
-<div class="entry-content"><p>Did you know that all java classes start with the same 4 bytes. In hex it&#8217;s <code>CAFEBABE</code>.</p>
+<div class="entry-content"><p>Did you know that all java classes start with the same 4 bytes. In hex it’s <code>CAFEBABE</code>.</p>
 
 <!-- more -->
 
-
 <p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
 
-<p><img src="/images/cafebabe.png" title="cafebabe" alt="" /></p>
+<p><img src="/images/cafebabe.png" alt="" title="cafebabe" /></p>
 
 <p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
 
-<blockquote><p>We used to go to lunch at a place called St Michael&#8217;s Alley.
+<blockquote>
+  <p>We used to go to lunch at a place called St Michael’s Alley.
 According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
 It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
 When Jerry died, they even put up a little Buddhist-esque shrine.
 When we used to go there, we referred to the place as Cafe Dead.
 Somewhere along the line it was noticed that this was a HEX number.
 I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
-I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after &#8220;CAFE&#8221; (it seemed to be a good theme)
-I hit on BABE and decided to use it. At that time, it didn&#8217;t seem terribly important or destined to go anywhere but the trash-can of history.
+I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after “CAFE” (it seemed to be a good theme)
+I hit on BABE and decided to use it. At that time, it didn’t seem terribly important or destined to go anywhere but the trash-can of history.
 So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
-and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p></blockquote>
+and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p>
+</blockquote>
 
 <p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
 If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
@@ -216,6 +230,10 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/stirlings-approximation/">Stirling's Approximation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/heisenberg-principle/">Heisenberg Principle</a>
       </li>
     
@@ -229,10 +247,6 @@ By the way, <code>43</code> is a prime number. You see, magic everywhere. Even i
     
       <li class="post">
         <a href="/blog/clojure-euler-problem-014/">Clojure Euler: Problem 014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-digest-1/">Programming Digest 1</a>
       </li>
     
   </ul>

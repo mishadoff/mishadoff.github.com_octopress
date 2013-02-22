@@ -4,7 +4,7 @@
   <title><![CDATA[Category: git | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-21T00:24:56+02:00</updated>
+  <updated>2013-02-22T02:08:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -18,13 +18,12 @@
     <link href="http://mishadoff.github.com/blog/what-is-source-code/"/>
     <updated>2012-11-29T23:31:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/what-is-source-code</id>
-    <content type="html"><![CDATA[<p>It's not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
-It's not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
+    <content type="html"><![CDATA[<p>It’s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
+It’s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
 
 <p>I think this term has much wider meaning.</p>
 
 <!-- more -->
-
 
 <p><em>Almost everything you can create is source code.</em></p>
 
