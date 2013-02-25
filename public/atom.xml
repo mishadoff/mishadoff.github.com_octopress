@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-23T02:06:23+02:00</updated>
+  <updated>2013-02-26T01:02:35+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,37 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Elephant-Oriented Programming]]></title>
+    <link href="http://mishadoff.github.com/blog/elephant-oriented-programming/"/>
+    <updated>2013-02-26T00:58:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/elephant-oriented-programming</id>
+    <content type="html"><![CDATA[<p>Have you heard about Elephant-Oriented Programming?</p>
+
+<!-- more -->
+
+<h4 id="read-very-clever-bookhttplearnyouahaskellcom-with-an-elephant-on-cover">1. Read <a href="http://learnyouahaskell.com/">very clever book</a> with an <em>elephant</em> on cover.</h4>
+
+<p><img src="http://i.imgur.com/ndEJc05.png" height="300px" width="240px" /></p>
+
+<h4 id="i-bet-you-didnt-understand-anything-so-choose-easy-programming-languagehttpphpnet-with-an-elephant">2. I bet you didn’t understand anything, so choose <a href="http://php.net/">easy programming language</a> with an <em>elephant</em>.</h4>
+
+<p><img src="http://i.imgur.com/NzWiT2N.jpg" alt="" /></p>
+
+<h4 id="what-is-ide-we-already-have-elephant-text-editorhttpsevernotecom">3. What is IDE? We already have <em>elephant</em> <a href="https://evernote.com/">text editor</a>.</h4>
+
+<p><img src="http://i.imgur.com/7JcFlTu.jpg" alt="" /></p>
+
+<h4 id="for-real-life-programming-tasks-we-need-storage-postgresqlhttpwwwpostgresqlorg-database-is-good-because-of-elephant">4. For real life programming tasks we need storage. <a href="http://www.postgresql.org/">PostgreSQL</a> database is good. Because of <em>elephant</em>.</h4>
+
+<p><img src="http://i.imgur.com/A4FWqXy.png" alt="" /></p>
+
+<h4 id="and-finally-fancy-word-big-datahttphadoopapacheorg-did-you-say-big-elephants-are-big">5. And finally, fancy word <a href="http://hadoop.apache.org/">Big Data</a>. Did you say “big”? <em>Elephants</em> are big.</h4>
+
+<p><img src="http://hadoop.apache.org/images/hadoop-logo.jpg" alt="" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Stirling's Approximation]]></title>
@@ -27,12 +58,9 @@ how get rid of factorials.</p>
 
 <h3 id="tldr">TL;DR</h3>
 
-<script type="math/tex; mode=display">% &lt;![CDATA[
-
-\begin{align*}
-  & ln(n!) = n \cdot ln(n) - n + 1
-\end{align*}
- %]]&gt;</script>
+<script type="math/tex; mode=display">
+ln(n!) = n \cdot ln(n) - n + 1
+</script>
 
 <p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling’s approximation</a>
 or just Stirling’s formula.
@@ -2922,81 +2950,6 @@ because reads all file contents to the memory and can take considerable amount o
 a large file, say 15GB, read it line by line with buffered reader. Also, note
 <a href="http://clojuredocs.org/clojure_core/clojure.core/spit">spit</a> function. It is opposite to <code>slurp</code> -
 writes string to the file.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pigeon Cipher]]></title>
-    <link href="http://mishadoff.github.com/blog/pigeon-cipher/"/>
-    <updated>2012-11-24T14:52:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/pigeon-cipher</id>
-    <content type="html"><![CDATA[<p>The skeleton of the pigeon was found in England.
-There is small red box tied to its leg with the handwritten ciphered message.
-Britain cryptographers failed the attempt to decipher the message and it was released in public.
-It can be a good puzzle for a weekend.</p>
-
-<!-- more -->
-
-<h3 id="input">Input</h3>
-
-<p><img src="http://news.bbcimg.co.uk/media/images/64345000/jpg/_64345866_masons_pigeon_code_07.jpg" alt="" /></p>
-
-<p>The paper consists of some parts <a href="http://i2.cdn.turner.com/cnn/2012/images/11/23/large-pigeon-message-1.pdf">Full PDF scan</a>:</p>
-
-<ul>
-  <li><strong>Title:</strong> “Pigeon Service”</li>
-  <li><strong>TO:</strong> XO2</li>
-  <li><strong>Ciphered Message</strong></li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">AOAKN HVPKD FNFJW YIDDC
-</span><span class="line">RQXSR DJHFP GOVFN MIAPX
-</span><span class="line">PABUZ WYYNP CMPNW HJRZH
-</span><span class="line">NLXKG MEMKK ONOIB AKEEQ
-</span><span class="line">WAOTA RBQRH DJOFM TPZEH
-</span><span class="line">LKXGH RGGHT JRZCQ FNKTQ
-</span><span class="line">KLDTS FQIRW AOAKN 27 1525/6</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li><strong>Pigeon IDs:</strong> <code>NURP 40 TW 194</code> and <code>NURP 37 OK 76</code>.
-There are was two pigeons as we can see from the field <em>Number of copies sent</em>.</li>
-  <li><strong>LIB 1625</strong></li>
-  <li><strong>Time of origin:</strong> 1522</li>
-  <li><strong>Sender’s signature:</strong> W Stit Sjt</li>
-</ul>
-
-<h3 id="output">Output</h3>
-
-<p>The most interesting part of this paper is the ciphered message. It consists of 27 5-letter blocks.
-At the end of the message we can see number 27, probably some sort of control sum of blocks.
-First block <code>AOAKN</code> equals to the last one, so it can be some sort of indicator of the cipher or key used.</p>
-
-<p>From pigeon ids we can know that they were born in <code>1940</code> and <code>1937</code> years respectively, so this cipher from World War II.</p>
-
-<p>Probably, the message was decoded with <a href="http://en.wikipedia.org/wiki/One-time_pad">one time pad</a> cipher, that
-has a perfect secrecy. So, maybe this cipher will never be decrypted.</p>
-
-<p><em>Note:</em> It can be decrypted with bruteforce algorithm, but in that case we can obtain any message.</p>
-
-<p>Anyway, if you interested in this topic, try to spend a couple of hours for breaking the cipher,
-it is a good workout for your brain.</p>
-
-<h3 id="links">Links</h3>
-
-<ol>
-  <li><a href="http://www.bbc.co.uk/news/uk-20458792">BBC</a></li>
-  <li><a href="http://edition.cnn.com/2012/11/23/world/europe/uk-wwii-pigeon-mystery/index.html">CNN</a></li>
-</ol>
-
-<p><strong>P.S.</strong> Don’t be addicted, you have a lot things to do instead of breaking this stupid cipher.
-Very unlikely, but it can be some sort of a joke.</p>
 ]]></content>
   </entry>
   

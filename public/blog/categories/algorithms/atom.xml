@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithms | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-23T02:06:23+02:00</updated>
+  <updated>2013-02-26T01:02:35+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -27,12 +27,9 @@ how get rid of factorials.</p>
 
 <h3 id="tldr">TL;DR</h3>
 
-<script type="math/tex; mode=display">% &lt;![CDATA[
-
-\begin{align*}
-  & ln(n!) = n \cdot ln(n) - n + 1
-\end{align*}
- %]]&gt;</script>
+<script type="math/tex; mode=display">
+ln(n!) = n \cdot ln(n) - n + 1
+</script>
 
 <p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling’s approximation</a>
 or just Stirling’s formula.

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: fun | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/fun/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-23T02:06:23+02:00</updated>
+  <updated>2013-02-26T01:02:35+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,37 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Elephant-Oriented Programming]]></title>
+    <link href="http://mishadoff.github.com/blog/elephant-oriented-programming/"/>
+    <updated>2013-02-26T00:58:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/elephant-oriented-programming</id>
+    <content type="html"><![CDATA[<p>Have you heard about Elephant-Oriented Programming?</p>
+
+<!-- more -->
+
+<h4 id="read-very-clever-bookhttplearnyouahaskellcom-with-an-elephant-on-cover">1. Read <a href="http://learnyouahaskell.com/">very clever book</a> with an <em>elephant</em> on cover.</h4>
+
+<p><img src="http://i.imgur.com/ndEJc05.png" height="300px" width="240px" /></p>
+
+<h4 id="i-bet-you-didnt-understand-anything-so-choose-easy-programming-languagehttpphpnet-with-an-elephant">2. I bet you didn’t understand anything, so choose <a href="http://php.net/">easy programming language</a> with an <em>elephant</em>.</h4>
+
+<p><img src="http://i.imgur.com/NzWiT2N.jpg" alt="" /></p>
+
+<h4 id="what-is-ide-we-already-have-elephant-text-editorhttpsevernotecom">3. What is IDE? We already have <em>elephant</em> <a href="https://evernote.com/">text editor</a>.</h4>
+
+<p><img src="http://i.imgur.com/7JcFlTu.jpg" alt="" /></p>
+
+<h4 id="for-real-life-programming-tasks-we-need-storage-postgresqlhttpwwwpostgresqlorg-database-is-good-because-of-elephant">4. For real life programming tasks we need storage. <a href="http://www.postgresql.org/">PostgreSQL</a> database is good. Because of <em>elephant</em>.</h4>
+
+<p><img src="http://i.imgur.com/A4FWqXy.png" alt="" /></p>
+
+<h4 id="and-finally-fancy-word-big-datahttphadoopapacheorg-did-you-say-big-elephants-are-big">5. And finally, fancy word <a href="http://hadoop.apache.org/">Big Data</a>. Did you say “big”? <em>Elephants</em> are big.</h4>
+
+<p><img src="http://hadoop.apache.org/images/hadoop-logo.jpg" alt="" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[DevOps reactions]]></title>

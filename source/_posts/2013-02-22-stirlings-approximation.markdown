@@ -17,9 +17,7 @@ how get rid of factorials.
 ### TL;DR
 
 $$
-\begin{align*}
-  & ln(n!) = n \cdot ln(n) - n + 1
-\end{align*}
+ln(n!) = n \cdot ln(n) - n + 1
 $$
 
 It is [Stirling's approximation](http://en.wikipedia.org/wiki/Stirling%27s_approximation)
