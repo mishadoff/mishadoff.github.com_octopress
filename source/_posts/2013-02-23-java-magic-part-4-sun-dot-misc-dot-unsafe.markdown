@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Java Magic. Part 4: sun.misc.Unsafe"
-date: 2013-02-25 02:44
+date: 2013-02-26 02:37
 comments: true
 categories: [programming, java]
-published: false
+published: true
 ---
 
 Java is a safe programming language and prevents programmer
@@ -237,16 +237,210 @@ guard.giveAccess(); // true, access granted
 
 Now all clients will get unlimited access.
 
-#### Lock-free hashtables
-
-![TODO]()
+#### Concurrency
 
 `compareAndSwap` methods are atomic and can be used to implement
 high-performance lock-free data structures.
 
+For example, consider the problem to increment value in the shared object
+using lot of threads.
+
+First we define simple interface `Counter`:
+
+``` java
+interface Counter {
+    void increment();
+    long getCounter();
+}
+```
+
+Then we define worker thread `CounterClient`, that uses `Counter`:
+
+``` java
+class CounterClient implements Runnable {
+    private Counter c;
+    private int num;
+
+    public CounterClient(Counter c, int num) {
+        this.c = c;
+        this.num = num;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < num; i++) {
+            c.increment();
+        }
+    }
+}
+```
+
+And this is testing code:
+
+``` java
+int NUM_OF_THREADS = 1000;
+int NUM_OF_INCREMENTS = 100000;
+ExecutorService service = Executors.newFixedThreadPool(NUM_OF_THREADS);
+Counter counter = ... // creating instance of specific counter
+long before = System.currentTimeMillis();
+for (int i = 0; i < NUM_OF_THREADS; i++) {
+    service.submit(new CounterClient(counter, NUM_OF_INCREMENTS));
+}
+service.shutdown();
+service.awaitTermination(1, TimeUnit.MINUTES);
+long after = System.currentTimeMillis();
+System.out.println("Counter result: " + c.getCounter());
+System.out.println("Time passed in ms:" + (after - before));
+```
+
+First implementation is not-synchronized counter:
+
+``` java
+class StupidCounter implements Counter {
+    private long counter = 0;
+
+    @Override
+    public void increment() {
+        counter++;
+    }
+
+    @Override
+    public long getCounter() {
+        return counter;
+    }
+}
+```
+
+Output:
+
+```
+Counter result: 99542945
+Time passed in ms: 679
+```
+
+Working fast, but no threads management at all, so result is inaccurate.
+Second attempt, add easiest java-way synchronization:
+
+``` java
+class SyncCounter implements Counter {
+    private long counter = 0;
+
+    @Override
+    public synchronized void increment() {
+        counter++;
+    }
+
+    @Override
+    public long getCounter() {
+        return counter;
+    }
+}
+```
+
+Output:
+
+```
+Counter result: 100000000
+Time passed in ms: 10136
+```
+
+Radical synchronization always work. But timings is awful.
+Let's try `ReentrantReadWriteLock`:
+
+``` java
+class LockCounter implements Counter {
+    private long counter = 0;
+    private WriteLock lock = new ReentrantReadWriteLock().writeLock();
+
+    @Override
+    public void increment() {
+        lock.lock();
+        counter++;
+        lock.unlock();
+    }
+
+    @Override
+    public long getCounter() {
+        return counter;
+    }
+}
+```
+
+Output:
+
+```
+Counter result: 100000000
+Time passed in ms: 8065
+```
+
+Still correct, and timings are better. What about atomics?
+
+``` java
+class AtomicCounter implements Counter {
+    AtomicLong counter = new AtomicLong(0);
+
+    @Override
+    public void increment() {
+        counter.incrementAndGet();
+    }
+
+    @Override
+    public long getCounter() {
+        return counter.get();
+    }
+}
+```
+
+Output:
+
+```
+Counter result: 100000000
+Time passed in ms: 6552
+```
+
+`AtomicCounter` is even better. Finally, try `Unsafe`
+primitive `compareAndSwapLong` to see if it is really privilegy to use it.
+
+``` java
+class CASCounter implements Counter {
+    private long counter = 0;
+    private Unsafe unsafe;
+    private long offset;
+
+    public CASCounter() throws Exception {
+        unsafe = getUnsafe();
+        offset = unsafe.objectFieldOffset(CASCounter.class.getDeclaredField("counter"));
+    }
+
+    @Override
+    public void increment() {
+        long before = counter;
+        while (!unsafe.compareAndSwapLong(this, offset, before, before + 1)) {
+            before = counter;
+        }
+    }
+
+    @Override
+    public long getCounter() {
+        return counter;
+    }
+```
+
+Output:
+
+```
+Counter result: 100000000
+Time passed in ms: 6454
+```
+
+Hmm, seems equal to atomics. Maybe atomics use `Unsafe`? (*YES*)
+
+In fact this example is easy enough, but it shows real power of `Unsafe`.
+
 ### Bonus
 
-Documentation for `park` method from `Unsafe` class:
+Documentation for `park` method from `Unsafe` class contains
+longest English sentence I've ever seen:
 
 > Block current thread, returning when a balancing
 > unpark occurs, or a balancing unpark has
@@ -260,4 +454,4 @@ Documentation for `park` method from `Unsafe` class:
 
 ### Conclusion
 
-Never use `Unsafe`.
+Although, `Unsafe` has a bunch of useful applications, never use it.

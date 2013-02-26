@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-26T01:02:35+02:00</updated>
+  <updated>2013-02-26T02:36:15+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,471 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
+    <link href="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
+    <updated>2013-02-26T02:37:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
+    <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
+from doing memory corruption mistakes. But, there is a way to
+do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
+
+<p>This article is quick overview of <code>sun.misc.Unsafe</code> <em>public</em> API and few
+interesting cases of its usage.</p>
+
+<!-- more -->
+
+<h3 id="unsafe-instantiation">Unsafe instantiation</h3>
+
+<p>Before usage, we need to create instance of <code>Unsafe</code> object.
+There is no simple way to do it like <code>Unsafe unsafe = new Unsafe()</code>,
+because <code>Unsafe</code> class has private constructor and <code>getUnsafe()</code> method
+available only from trusted code.</p>
+
+<p>We can make our code “trusted”.</p>
+
+<p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
+We can steal that variable via java reflection.</p>
+
+<p><code>java
+Field f = Unsafe.class.getDeclaredField("theUnsafe");
+f.setAccessible(true);
+Unsafe unsafe = (Unsafe) f.get(null);
+</code></p>
+
+<p><em>Note:</em> Ignore your IDE. For example, eclipse show error “Access restriction…”
+but if you run code, all works just fine. If the error is annoying, ignore errors on
+<code>Unsafe</code> usage in:</p>
+
+<pre><code>Preferences -&gt; Java -&gt; Compiler -&gt; Errors/Warnings -&gt;
+Deprecated and restricted API -&gt; Forbidden reference -&gt; Warning
+</code></pre>
+
+<h3 id="unsafe-api">Unsafe API</h3>
+
+<p>Class <a href="http://www.docjar.com/docs/api/sun/misc/Unsafe.html">sun.misc.Unsafe</a>
+consists of <code>105</code> methods. There are, actually,
+few groups of important methods for manipulating with various entities.
+Here is some of them:</p>
+
+<ul>
+  <li><strong>Info</strong>. Just returns some low-level memory information.
+    <ul>
+      <li><code>addressSize</code></li>
+      <li><code>pageSize</code></li>
+    </ul>
+  </li>
+  <li><strong>Objects</strong>. Provides methods for object and its fields manipulation.
+    <ul>
+      <li><code>allocateInstance</code></li>
+      <li><code>objectFieldOffset</code></li>
+    </ul>
+  </li>
+  <li><strong>Classes</strong>. Provides methods for classes and static fields manipulation.
+    <ul>
+      <li><code>staticFieldOffset</code></li>
+      <li><code>defineClass</code></li>
+      <li><code>defineAnonymousClass</code></li>
+      <li><code>ensureClassInitialized</code></li>
+    </ul>
+  </li>
+  <li><strong>Arrays</strong>. Arrays manipulation.
+    <ul>
+      <li><code>arrayBaseOffset</code></li>
+      <li><code>arrayIndexScale</code></li>
+    </ul>
+  </li>
+  <li><strong>Synchronization</strong>. Low level primitives for synchronization.
+    <ul>
+      <li><code>monitorEnter</code></li>
+      <li><code>tryMonitorEnter</code></li>
+      <li><code>monitorExit</code></li>
+      <li><code>compareAndSwapInt</code></li>
+      <li><code>putOrderedInt</code></li>
+    </ul>
+  </li>
+  <li><strong>Memory</strong>. Direct memory access methods.
+    <ul>
+      <li><code>allocateMemory</code></li>
+      <li><code>copyMemory</code></li>
+      <li><code>freeMemory</code></li>
+      <li><code>getAddress</code></li>
+      <li><code>getInt</code></li>
+      <li><code>putInt</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="interesting-use-cases">Interesting use cases</h3>
+
+<h4 id="avoid-initialization">Avoid initialization</h4>
+
+<p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
+or bypass security checks in constructor. Consider following class:</p>
+
+<p>``` java
+class A {
+    private long a; // not initialized value</p>
+
+<pre><code>public A() {
+    this.a = 1; // initialization
+}
+
+public long a() { return this.a; } } ```
+</code></pre>
+
+<p>Instantiating it using constructor, reflection and unsafe gives
+different results.</p>
+
+<p>``` java
+A o1 = new A(); // constructor
+o1.a(); // prints 1</p>
+
+<p>A o2 = A.class.newInstance(); // reflection
+o2.a(); // prints 1</p>
+
+<p>A o3 = (A) unsafe.allocateInstance(A.class); // unsafe
+o3.a(); // prints 0
+```</p>
+
+<h4 id="sizeof"><strong>sizeOf</strong></h4>
+
+<p>Using <code>objectFieldOffset</code> method we can implement C-style <code>sizeof</code> function.
+This implementation returns <em>shallow</em> size of object:</p>
+
+<p>``` java
+public static long sizeOf(Object o) {
+    Unsafe u = getUnsafe();
+    HashSet<field> fields = new HashSet<field>();
+    Class c = o.getClass();
+    while (c != Object.class) {
+        for (Field f : c.getDeclaredFields()) {
+            if ((f.getModifiers() &amp; Modifier.STATIC) == 0) {
+                fields.add(f);
+            }
+        }
+        c = c.getSuperclass();
+    }</field></field></p>
+
+<pre><code>// get offset
+long maxSize = 0;
+for (Field f : fields) {
+    long offset = u.objectFieldOffset(f);
+    if (offset &gt; maxSize) {
+        maxSize = offset;
+    }
+}
+
+return ((maxSize/8) + 1) * 8;   // padding } ```
+</code></pre>
+
+<p>Algorithm is the following: go through all <em>non-static</em> fields including all
+superclases, get offset for each field, find maximum and add padding.
+Probably, I missed something, but idea is clear.</p>
+
+<p>In fact, for good and accurate <code>sizeof</code> function better to use
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html">java.lang.instrument</a> package</p>
+
+<h4 id="big-arrays"><strong>Big Arrays</strong></h4>
+
+<p>As you know <code>Integer.MAX_VALUE</code> constant is a max size of java array.
+Using direct memory allocation we can create arrays with size limited by only heap size.</p>
+
+<p>Here is <code>SuperArray</code> implementation:</p>
+
+<p>``` java
+class SuperArray {
+    private final static int BYTE = 1;</p>
+
+<pre><code>private long size;
+private long address;
+
+public SuperArray(long size) {
+    this.size = size;
+    address = getUnsafe().allocateMemory(size * BYTE);
+}
+
+public void set(long i, byte value) {
+    getUnsafe().putByte(address + i * BYTE, value);
+}
+
+public int get(long idx) {
+    return getUnsafe().getByte(address + idx * BYTE);
+}
+
+public long size() {
+    return size;
+} } ```
+</code></pre>
+
+<p>And sample usage:</p>
+
+<p><code>java
+long SUPER_SIZE = (long)Integer.MAX_VALUE * 2;
+SuperArray array = new SuperArray(SUPER_SIZE);
+System.out.println("Array size:" + array.size()); // 4294967294
+for (int i = 0; i &lt; 100; i++) {
+    array.set((long)Integer.MAX_VALUE + i, (byte)3);
+    sum += array.get((long)Integer.MAX_VALUE + i);
+}
+System.out.println("Sum of 100 elements:" + sum);  // 300
+</code></p>
+
+<h4 id="memory-corruption">Memory corruption</h4>
+
+<p>This one is usual for every C programmer.
+By the way, its common technique for security bypass.</p>
+
+<p>Consider some easy class that check acces rules:</p>
+
+<p>``` java
+class Guard {
+    private int ACCESS_ALLOWED = 1;</p>
+
+<pre><code>public boolean giveAccess() {
+    return 42 == ACCESS_ALLOWED;
+} } ```
+</code></pre>
+
+<p>The client code is <em>very secure</em> and calls
+<code>giveAccess()</code> to check access rules. Unfortunately, for clients,
+it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
+value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
+
+<p>In fact, it’s not true. Here is the code demostrates it:</p>
+
+<p>``` java
+Guard guard = new Guard();
+guard.giveAccess();   // false, no access</p>
+
+<p>// bypass
+Unsafe unsafe = getUnsafe();
+Field f = guard.getClass().getDeclaredField(“ACCESS_ALLOWED”);
+unsafe.putInt(guard, unsafe.objectFieldOffset(f), 42); // memory corruption</p>
+
+<p>guard.giveAccess(); // true, access granted
+```</p>
+
+<p>Now all clients will get unlimited access.</p>
+
+<h4 id="concurrency">Concurrency</h4>
+
+<p><code>compareAndSwap</code> methods are atomic and can be used to implement
+high-performance lock-free data structures.</p>
+
+<p>For example, consider the problem to increment value in the shared object
+using lot of threads.</p>
+
+<p>First we define simple interface <code>Counter</code>:</p>
+
+<p><code>java
+interface Counter {
+    void increment();
+    long getCounter();
+}
+</code></p>
+
+<p>Then we define worker thread <code>CounterClient</code>, that uses <code>Counter</code>:</p>
+
+<p>``` java
+class CounterClient implements Runnable {
+    private Counter c;
+    private int num;</p>
+
+<pre><code>public CounterClient(Counter c, int num) {
+    this.c = c;
+    this.num = num;
+}
+
+@Override
+public void run() {
+    for (int i = 0; i &lt; num; i++) {
+        c.increment();
+    }
+} } ```
+</code></pre>
+
+<p>And this is testing code:</p>
+
+<p><code>java
+int NUM_OF_THREADS = 1000;
+int NUM_OF_INCREMENTS = 100000;
+ExecutorService service = Executors.newFixedThreadPool(NUM_OF_THREADS);
+Counter counter = ... // creating instance of specific counter
+long before = System.currentTimeMillis();
+for (int i = 0; i &lt; NUM_OF_THREADS; i++) {
+    service.submit(new CounterClient(counter, NUM_OF_INCREMENTS));
+}
+service.shutdown();
+service.awaitTermination(1, TimeUnit.MINUTES);
+long after = System.currentTimeMillis();
+System.out.println("Counter result: " + c.getCounter());
+System.out.println("Time passed in ms:" + (after - before));
+</code></p>
+
+<p>First implementation is not-synchronized counter:</p>
+
+<p>``` java
+class StupidCounter implements Counter {
+    private long counter = 0;</p>
+
+<pre><code>@Override
+public void increment() {
+    counter++;
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 99542945
+Time passed in ms: 679
+</code></p>
+
+<p>Working fast, but no threads management at all, so result is inaccurate.
+Second attempt, add easiest java-way synchronization:</p>
+
+<p>``` java
+class SyncCounter implements Counter {
+    private long counter = 0;</p>
+
+<pre><code>@Override
+public synchronized void increment() {
+    counter++;
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 10136
+</code></p>
+
+<p>Radical synchronization always work. But timings is awful.
+Let’s try <code>ReentrantReadWriteLock</code>:</p>
+
+<p>``` java
+class LockCounter implements Counter {
+    private long counter = 0;
+    private WriteLock lock = new ReentrantReadWriteLock().writeLock();</p>
+
+<pre><code>@Override
+public void increment() {
+    lock.lock();
+    counter++;
+    lock.unlock();
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 8065
+</code></p>
+
+<p>Still correct, and timings are better. What about atomics?</p>
+
+<p>``` java
+class AtomicCounter implements Counter {
+    AtomicLong counter = new AtomicLong(0);</p>
+
+<pre><code>@Override
+public void increment() {
+    counter.incrementAndGet();
+}
+
+@Override
+public long getCounter() {
+    return counter.get();
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 6552
+</code></p>
+
+<p><code>AtomicCounter</code> is even better. Finally, try <code>Unsafe</code>
+primitive <code>compareAndSwapLong</code> to see if it is really privilegy to use it.</p>
+
+<p>``` java
+class CASCounter implements Counter {
+    private long counter = 0;
+    private Unsafe unsafe;
+    private long offset;</p>
+
+<pre><code>public CASCounter() throws Exception {
+    unsafe = getUnsafe();
+    offset = unsafe.objectFieldOffset(CASCounter.class.getDeclaredField("counter"));
+}
+
+@Override
+public void increment() {
+    long before = counter;
+    while (!unsafe.compareAndSwapLong(this, offset, before, before + 1)) {
+        before = counter;
+    }
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 6454
+</code></p>
+
+<p>Hmm, seems equal to atomics. Maybe atomics use <code>Unsafe</code>? (<em>YES</em>)</p>
+
+<p>In fact this example is easy enough, but it shows real power of <code>Unsafe</code>.</p>
+
+<h3 id="bonus">Bonus</h3>
+
+<p>Documentation for <code>park</code> method from <code>Unsafe</code> class contains
+longest English sentence I’ve ever seen:</p>
+
+<blockquote>
+  <p>Block current thread, returning when a balancing
+unpark occurs, or a balancing unpark has
+already occurred, or the thread is interrupted, or, if not
+absolute and time is not zero, the given time nanoseconds have
+elapsed, or if absolute, the given deadline in milliseconds
+since Epoch has passed, or spuriously (i.e., returning for no
+“reason”). Note: This operation is in the Unsafe class only
+because unpark is, so it would be strange to place it
+elsewhere.</p>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Although, <code>Unsafe</code> has a bunch of useful applications, never use it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
@@ -843,87 +1308,6 @@ and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.<
 <p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
 If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
 By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Java Magic. Part 1: java.net.URL]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url/"/>
-    <updated>2012-10-11T16:30:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url</id>
-    <content type="html"><![CDATA[<p>Recently, I found on reddit very interesting Java code snippet (slightly modified):</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">HashSet</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">();</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">“</span><span class="nl">http:</span><span class="c1">//google.com”));</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">“</span><span class="nl">http:</span><span class="c1">//google.com”));</span>
-</span><span class='line'><span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">60000</span><span class="o">);</span>
-</span><span class='line'><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">“</span><span class="nl">http:</span><span class="c1">//google.com”));</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>What do you think the output for lines 3 and 5 will be?</p>
-
-<!-- more -->
-
-<p>Definitely not <code>true, true</code> if the question was asked. Think for two minutes.</p>
-
-<p>Ok. In most cases it will be <code>true, false</code> because you have internet connection (<em>How else you can read this?</em>).
-Turn off your network cable or wi-fi, and you’ll get <code>true, true</code>.</p>
-
-<p>The reason is in implementation of <code>hashCode()</code> and <code>equals()</code> methods for <code>URL</code> class.</p>
-
-<p>Let’s see how hashCode calculated:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
-</span><span class='line'>  <span class="n">hashCode</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">hashCode</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>We can see hashCode is an instance variable that calculates once. Makes sense, <code>URL</code> is <a href="http://en.wikipedia.org/wiki/Immutable_object">immutable</a>.
-What is handler? It’s an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
-Just look at <code>URL.hashCode()</code> javadoc:</p>
-
-<blockquote>
-  <p>The hash code is based upon all the URL components relevant for URL comparison. As such, this operation is a blocking operation.</p>
-</blockquote>
-
-<p>Stop! <strong>BLOCKING OPERATION?!</strong></p>
-
-<p><em>- Sorry, I couldn’t check email yesterday due to hashCode calculation.</em></p>
-
-<p>or even better</p>
-
-<p><em>- No, mom, I can’t watch porn, It’s hashCode, you know.</em></p>
-
-<p>Ok, let it be blocking. Another exciting part, that handler <strong>resolves host IP address</strong> for hashCode calculation.
-Tries to resolve, to be honest. If it can not do this, it calculates hashCode based on host, which is <em>google.com</em> for our example.
-Shit happens when IP is dynamic, or host have request balancer that also changes host IP.
-In that case we got different hashCodes for one host name, and will have two (or even more) instances in HashSet. Not good at all.
-By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it’s another topic.</p>
-
-<h3 id="how-to-avoid-this">How to avoid this?</h3>
-
-<ul>
-  <li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It’s not the best choice though, but have deterministic hashCode implementation.</li>
-  <li>Do not use <code>java.net.URL</code> in collections. Good option to maintain collection of String objects (that represent host name) and get URL when needed.</li>
-  <li>Disable your network adapter during hashCode calculation. (<em>It’s a joke, but it helps</em>)</li>
-  <li>Use your own subclass of URLStreamHandler with proper implementation of hashCode.</li>
-</ul>
-
-<p>Finally, I’m pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
 ]]></content>
   </entry>
   

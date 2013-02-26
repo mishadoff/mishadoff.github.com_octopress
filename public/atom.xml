@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-26T01:02:35+02:00</updated>
+  <updated>2013-02-26T02:36:15+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,670 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
+    <link href="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
+    <updated>2013-02-26T02:37:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
+    <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
+from doing memory corruption mistakes. But, there is a way to
+do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
+
+<p>This article is quick overview of <code>sun.misc.Unsafe</code> <em>public</em> API and few
+interesting cases of its usage.</p>
+
+<!-- more -->
+
+<h3 id="unsafe-instantiation">Unsafe instantiation</h3>
+
+<p>Before usage, we need to create instance of <code>Unsafe</code> object.
+There is no simple way to do it like <code>Unsafe unsafe = new Unsafe()</code>,
+because <code>Unsafe</code> class has private constructor and <code>getUnsafe()</code> method
+available only from trusted code.</p>
+
+<p>We can make our code “trusted”.</p>
+
+<p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
+We can steal that variable via java reflection.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Field</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Unsafe</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;theUnsafe&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">f</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class="line"><span class="n">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="o">(</span><span class="n">Unsafe</span><span class="o">)</span> <span class="n">f</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>Note:</em> Ignore your IDE. For example, eclipse show error “Access restriction…”
+but if you run code, all works just fine. If the error is annoying, ignore errors on
+<code>Unsafe</code> usage in:</p>
+
+<pre><code>Preferences -&gt; Java -&gt; Compiler -&gt; Errors/Warnings -&gt;
+Deprecated and restricted API -&gt; Forbidden reference -&gt; Warning
+</code></pre>
+
+<h3 id="unsafe-api">Unsafe API</h3>
+
+<p>Class <a href="http://www.docjar.com/docs/api/sun/misc/Unsafe.html">sun.misc.Unsafe</a>
+consists of <code>105</code> methods. There are, actually,
+few groups of important methods for manipulating with various entities.
+Here is some of them:</p>
+
+<ul>
+  <li><strong>Info</strong>. Just returns some low-level memory information.
+    <ul>
+      <li><code>addressSize</code></li>
+      <li><code>pageSize</code></li>
+    </ul>
+  </li>
+  <li><strong>Objects</strong>. Provides methods for object and its fields manipulation.
+    <ul>
+      <li><code>allocateInstance</code></li>
+      <li><code>objectFieldOffset</code></li>
+    </ul>
+  </li>
+  <li><strong>Classes</strong>. Provides methods for classes and static fields manipulation.
+    <ul>
+      <li><code>staticFieldOffset</code></li>
+      <li><code>defineClass</code></li>
+      <li><code>defineAnonymousClass</code></li>
+      <li><code>ensureClassInitialized</code></li>
+    </ul>
+  </li>
+  <li><strong>Arrays</strong>. Arrays manipulation.
+    <ul>
+      <li><code>arrayBaseOffset</code></li>
+      <li><code>arrayIndexScale</code></li>
+    </ul>
+  </li>
+  <li><strong>Synchronization</strong>. Low level primitives for synchronization.
+    <ul>
+      <li><code>monitorEnter</code></li>
+      <li><code>tryMonitorEnter</code></li>
+      <li><code>monitorExit</code></li>
+      <li><code>compareAndSwapInt</code></li>
+      <li><code>putOrderedInt</code></li>
+    </ul>
+  </li>
+  <li><strong>Memory</strong>. Direct memory access methods.
+    <ul>
+      <li><code>allocateMemory</code></li>
+      <li><code>copyMemory</code></li>
+      <li><code>freeMemory</code></li>
+      <li><code>getAddress</code></li>
+      <li><code>getInt</code></li>
+      <li><code>putInt</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="interesting-use-cases">Interesting use cases</h3>
+
+<h4 id="avoid-initialization">Avoid initialization</h4>
+
+<p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
+or bypass security checks in constructor. Consider following class:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">a</span><span class="o">;</span> <span class="c1">// not initialized value</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">A</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">a</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="c1">// initialization</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">a</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">a</span><span class="o">;</span> <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Instantiating it using constructor, reflection and unsafe gives
+different results.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">A</span> <span class="n">o1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">A</span><span class="o">();</span> <span class="c1">// constructor</span>
+</span><span class="line"><span class="n">o1</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="c1">// prints 1</span>
+</span><span class="line">
+</span><span class="line"><span class="n">A</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span> <span class="c1">// reflection</span>
+</span><span class="line"><span class="n">o2</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="c1">// prints 1</span>
+</span><span class="line">
+</span><span class="line"><span class="n">A</span> <span class="n">o3</span> <span class="o">=</span> <span class="o">(</span><span class="n">A</span><span class="o">)</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">allocateInstance</span><span class="o">(</span><span class="n">A</span><span class="o">.</span><span class="na">class</span><span class="o">);</span> <span class="c1">// unsafe</span>
+</span><span class="line"><span class="n">o3</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="c1">// prints 0</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="sizeof"><strong>sizeOf</strong></h4>
+
+<p>Using <code>objectFieldOffset</code> method we can implement C-style <code>sizeof</code> function.
+This implementation returns <em>shallow</em> size of object:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">sizeOf</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">Unsafe</span> <span class="n">u</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">();</span>
+</span><span class="line">    <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Field</span><span class="o">&gt;</span> <span class="n">fields</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Field</span><span class="o">&gt;();</span>
+</span><span class="line">    <span class="n">Class</span> <span class="n">c</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
+</span><span class="line">    <span class="k">while</span> <span class="o">(</span><span class="n">c</span> <span class="o">!=</span> <span class="n">Object</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">f</span> <span class="o">:</span> <span class="n">c</span><span class="o">.</span><span class="na">getDeclaredFields</span><span class="o">())</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="o">((</span><span class="n">f</span><span class="o">.</span><span class="na">getModifiers</span><span class="o">()</span> <span class="o">&amp;</span> <span class="n">Modifier</span><span class="o">.</span><span class="na">STATIC</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                <span class="n">fields</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">        <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">getSuperclass</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// get offset</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">maxSize</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">f</span> <span class="o">:</span> <span class="n">fields</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="kt">long</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">offset</span> <span class="o">&gt;</span> <span class="n">maxSize</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">maxSize</span> <span class="o">=</span> <span class="n">offset</span><span class="o">;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="o">((</span><span class="n">maxSize</span><span class="o">/</span><span class="mi">8</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="mi">8</span><span class="o">;</span>   <span class="c1">// padding</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Algorithm is the following: go through all <em>non-static</em> fields including all
+superclases, get offset for each field, find maximum and add padding.
+Probably, I missed something, but idea is clear.</p>
+
+<p>In fact, for good and accurate <code>sizeof</code> function better to use
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html">java.lang.instrument</a> package</p>
+
+<h4 id="big-arrays"><strong>Big Arrays</strong></h4>
+
+<p>As you know <code>Integer.MAX_VALUE</code> constant is a max size of java array.
+Using direct memory allocation we can create arrays with size limited by only heap size.</p>
+
+<p>Here is <code>SuperArray</code> implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">SuperArray</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">BYTE</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">size</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">address</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">SuperArray</span><span class="o">(</span><span class="kt">long</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">size</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span>
+</span><span class="line">        <span class="n">address</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">().</span><span class="na">allocateMemory</span><span class="o">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">BYTE</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">set</span><span class="o">(</span><span class="kt">long</span> <span class="n">i</span><span class="o">,</span> <span class="kt">byte</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">getUnsafe</span><span class="o">().</span><span class="na">putByte</span><span class="o">(</span><span class="n">address</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">BYTE</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">get</span><span class="o">(</span><span class="kt">long</span> <span class="n">idx</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nf">getUnsafe</span><span class="o">().</span><span class="na">getByte</span><span class="o">(</span><span class="n">address</span> <span class="o">+</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">BYTE</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">size</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">size</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And sample usage:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">long</span> <span class="n">SUPER_SIZE</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+</span><span class="line"><span class="n">SuperArray</span> <span class="n">array</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SuperArray</span><span class="o">(</span><span class="n">SUPER_SIZE</span><span class="o">);</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Array size:&quot;</span> <span class="o">+</span> <span class="n">array</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 4294967294</span>
+</span><span class="line"><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">array</span><span class="o">.</span><span class="na">set</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span><span class="mi">3</span><span class="o">);</span>
+</span><span class="line">    <span class="n">sum</span> <span class="o">+=</span> <span class="n">array</span><span class="o">.</span><span class="na">get</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">+</span> <span class="n">i</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Sum of 100 elements:&quot;</span> <span class="o">+</span> <span class="n">sum</span><span class="o">);</span>  <span class="c1">// 300</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="memory-corruption">Memory corruption</h4>
+
+<p>This one is usual for every C programmer.
+By the way, its common technique for security bypass.</p>
+
+<p>Consider some easy class that check acces rules:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">Guard</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">ACCESS_ALLOWED</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">giveAccess</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="mi">42</span> <span class="o">==</span> <span class="n">ACCESS_ALLOWED</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The client code is <em>very secure</em> and calls
+<code>giveAccess()</code> to check access rules. Unfortunately, for clients,
+it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
+value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
+
+<p>In fact, it’s not true. Here is the code demostrates it:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Guard</span> <span class="n">guard</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Guard</span><span class="o">();</span>
+</span><span class="line"><span class="n">guard</span><span class="o">.</span><span class="na">giveAccess</span><span class="o">();</span>   <span class="c1">// false, no access</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// bypass</span>
+</span><span class="line"><span class="n">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">();</span>
+</span><span class="line"><span class="n">Field</span> <span class="n">f</span> <span class="o">=</span> <span class="n">guard</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;ACCESS_ALLOWED&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">unsafe</span><span class="o">.</span><span class="na">putInt</span><span class="o">(</span><span class="n">guard</span><span class="o">,</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">),</span> <span class="mi">42</span><span class="o">);</span> <span class="c1">// memory corruption</span>
+</span><span class="line">
+</span><span class="line"><span class="n">guard</span><span class="o">.</span><span class="na">giveAccess</span><span class="o">();</span> <span class="c1">// true, access granted</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now all clients will get unlimited access.</p>
+
+<h4 id="concurrency">Concurrency</h4>
+
+<p><code>compareAndSwap</code> methods are atomic and can be used to implement
+high-performance lock-free data structures.</p>
+
+<p>For example, consider the problem to increment value in the shared object
+using lot of threads.</p>
+
+<p>First we define simple interface <code>Counter</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">interface</span> <span class="nc">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kt">void</span> <span class="nf">increment</span><span class="o">();</span>
+</span><span class="line">    <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">();</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then we define worker thread <code>CounterClient</code>, that uses <code>Counter</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">CounterClient</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">Counter</span> <span class="n">c</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">num</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">CounterClient</span><span class="o">(</span><span class="n">Counter</span> <span class="n">c</span><span class="o">,</span> <span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">num</span> <span class="o">=</span> <span class="n">num</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">c</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And this is testing code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">int</span> <span class="n">NUM_OF_THREADS</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">NUM_OF_INCREMENTS</span> <span class="o">=</span> <span class="mi">100000</span><span class="o">;</span>
+</span><span class="line"><span class="n">ExecutorService</span> <span class="n">service</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="n">NUM_OF_THREADS</span><span class="o">);</span>
+</span><span class="line"><span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">// creating instance of specific counter</span>
+</span><span class="line"><span class="kt">long</span> <span class="n">before</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class="line"><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM_OF_THREADS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">service</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="k">new</span> <span class="n">CounterClient</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="n">NUM_OF_INCREMENTS</span><span class="o">));</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="n">service</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+</span><span class="line"><span class="n">service</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MINUTES</span><span class="o">);</span>
+</span><span class="line"><span class="kt">long</span> <span class="n">after</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Counter result: &quot;</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="na">getCounter</span><span class="o">());</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Time passed in ms:&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="n">after</span> <span class="o">-</span> <span class="n">before</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>First implementation is not-synchronized counter:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">StupidCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">++;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">99542945</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">679</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Working fast, but no threads management at all, so result is inaccurate.
+Second attempt, add easiest java-way synchronization:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">SyncCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">++;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">10136</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Radical synchronization always work. But timings is awful.
+Let’s try <code>ReentrantReadWriteLock</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">LockCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">WriteLock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantReadWriteLock</span><span class="o">().</span><span class="na">writeLock</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">++;</span>
+</span><span class="line">        <span class="n">lock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">8065</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Still correct, and timings are better. What about atomics?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">AtomicCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">AtomicLong</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicLong</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">6552</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>AtomicCounter</code> is even better. Finally, try <code>Unsafe</code>
+primitive <code>compareAndSwapLong</code> to see if it is really privilegy to use it.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">CASCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">Unsafe</span> <span class="n">unsafe</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">offset</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">CASCounter</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">unsafe</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">();</span>
+</span><span class="line">        <span class="n">offset</span> <span class="o">=</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">CASCounter</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;counter&quot;</span><span class="o">));</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="kt">long</span> <span class="n">before</span> <span class="o">=</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">        <span class="k">while</span> <span class="o">(!</span><span class="n">unsafe</span><span class="o">.</span><span class="na">compareAndSwapLong</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">offset</span><span class="o">,</span> <span class="n">before</span><span class="o">,</span> <span class="n">before</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">before</span> <span class="o">=</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">6454</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Hmm, seems equal to atomics. Maybe atomics use <code>Unsafe</code>? (<em>YES</em>)</p>
+
+<p>In fact this example is easy enough, but it shows real power of <code>Unsafe</code>.</p>
+
+<h3 id="bonus">Bonus</h3>
+
+<p>Documentation for <code>park</code> method from <code>Unsafe</code> class contains
+longest English sentence I’ve ever seen:</p>
+
+<blockquote>
+  <p>Block current thread, returning when a balancing
+unpark occurs, or a balancing unpark has
+already occurred, or the thread is interrupted, or, if not
+absolute and time is not zero, the given time nanoseconds have
+elapsed, or if absolute, the given deadline in milliseconds
+since Epoch has passed, or spuriously (i.e., returning for no
+“reason”). Note: This operation is in the Unsafe class only
+because unpark is, so it would be strange to place it
+elsewhere.</p>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Although, <code>Unsafe</code> has a bunch of useful applications, never use it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Elephant-Oriented Programming]]></title>
@@ -2800,156 +3464,6 @@ Good criteria of source code - is something that may be changed and need to be u
 <p>From that point of view, processor is our brain.</p>
 
 <p>And if you really appreciate your <em>source code</em>, choose appropriate control version system for it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 008]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-008/"/>
-    <updated>2012-11-27T22:53:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-008</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Find the greatest product of five consecutive digits in the 1000-digit number.</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=8">http://projecteuler.net/problem=8</a></p>
-
-<p><em>Large number under the cut.</em></p>
-
-<!-- more -->
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">73167176531330624919225119674426574742355349194934
-</span><span class="line">96983520312774506326239578318016984801869478851843
-</span><span class="line">85861560789112949495459501737958331952853208805511
-</span><span class="line">12540698747158523863050715693290963295227443043557
-</span><span class="line">66896648950445244523161731856403098711121722383113
-</span><span class="line">62229893423380308135336276614282806444486645238749
-</span><span class="line">30358907296290491560440772390713810515859307960866
-</span><span class="line">70172427121883998797908792274921901699720888093776
-</span><span class="line">65727333001053367881220235421809751254540594752243
-</span><span class="line">52584907711670556013604839586446706324415722155397
-</span><span class="line">53697817977846174064955149290862569321978468622482
-</span><span class="line">83972241375657056057490261407972968652414535100474
-</span><span class="line">82166370484403199890008895243450658541227588666881
-</span><span class="line">16427171479924442928230863465674813919123162824586
-</span><span class="line">17866458359124566529476545682848912883142607690042
-</span><span class="line">24219022671055626321111109370544217506941658960408
-</span><span class="line">07198403850962455444362981230987879927244284909188
-</span><span class="line">84580156166097919133875499200524063689912560717606
-</span><span class="line">05886116467109405077541002256983155200055935729725
-</span><span class="line">71636269561882670428252483600823257530420752963450</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Idea behind this problem is pretty straightforward:</p>
-
-<ol>
-  <li>Init <code>maximum</code> with some small value, zero would be good.</li>
-  <li>Take first 5 digits, calculate the product.</li>
-  <li>If product is greater than our current <code>maximum</code>, reassign it.</li>
-  <li>Shift, to take other 5 digits, and back to the step 1.</li>
-</ol>
-
-<p>A simple optimization can be applied: if our last element of 5 digit group is zero,
-then skip 5 shifts. But it’s details.</p>
-
-<p>Let’s make our problem little harder to get more from clojure.</p>
-
-<p>Assume that these digits stored in the file. First thing we need: to read the file.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;path/to/the/file&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><a href="http://clojuredocs.org/clojure_core/clojure.core/slurp">slurp</a> is the simplest
-function to read file content (<em>In fact, not only files</em>).
-It just returns string representation of the whole file.</p>
-
-<p>Then we need to break one large string into symbols.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">seq </span><span class="s">&quot;helloyo&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><a href="http://clojuredocs.org/clojure_core/clojure.core/seq">seq</a> return a sequence with linear access
-to collection. If applied to string, return sequence of characters.</p>
-
-<p>But, there are some garbage in the file we don’t want, new lines for example.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\n</span><span class="nv">ewline</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>(<em>slash</em>) + something - represents character in clojure.
-<code>\newline</code> is a new line, known as <code>\n</code> in other languages.</p>
-
-<p>Now we have long sequence with all digits from file.
-Need to get all consecutive groups with 5 letters.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">partition</span> <span class="mi">5</span> <span class="mi">1</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span><span class="p">]</span> <span class="p">[</span><span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\y</span><span class="p">]</span> <span class="nv">...</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><a href="http://clojuredocs.org/clojure_core/clojure.core/partition">partition</a>
-is an excelent function for such tasks. We specify <code>5</code> - size of partition,
-and <code>1</code> shift size. It generates all consecutive groups with 5 elements till the end.</p>
-
-<p>Calulating the product for each group gives us the solution.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce * </span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Not so fast.</p>
-
-<p>You, probably, get <code>ClassCastException</code>.</p>
-
-<p>After reading the file, we just get bunch of characters,
-instead of digits in mathematical sense. And applied mathematical operation <code>*</code> to them.
-So, simply speaking, <code>\1</code> is not <code>1</code>.</p>
-
-<p>That’s why we need to transform every digit character to it’s actual digit value.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="sc">\1</span> <span class="sc">\2</span> <span class="sc">\3</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>This awful implementation do the work.</p>
-
-<ul>
-  <li>Cast each character to int, get the <a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>
-representation for digit.</li>
-  <li>From each ASCII value we subtract <code>48</code> and get digit value.</li>
-</ul>
-
-<p>Applying <code>product</code> of digits defined earlier we get solution to this problem.</p>
-
-<p>Again, full code on <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem008.clj">GitHub</a>.</p>
-
-<p><strong>P.S.</strong> <code>slurp</code> function very powerful and has may applications. You can specify encoding
-for reading as you want or read whole html page by url. But it is also very dangerous function,
-because reads all file contents to the memory and can take considerable amount of time. If you have
-a large file, say 15GB, read it line by line with buffered reader. Also, note
-<a href="http://clojuredocs.org/clojure_core/clojure.core/spit">spit</a> function. It is opposite to <code>slurp</code> -
-writes string to the file.</p>
 ]]></content>
   </entry>
   
