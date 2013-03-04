@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-02-26T02:36:15+02:00</updated>
+  <updated>2013-03-05T01:34:00+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
+    <updated>2013-03-05T01:31:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
+
+  <p>What is the sum of the digits of the number 2^1000 ?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=16">http://projecteuler.net/problem=16</a></p>
+
+<!-- more -->
+
+<p>Are you kidding me?</p>
+
+<ul>
+  <li>Find 1000th <em>power of two</em></li>
+  <li>Sum its digits</li>
+</ul>
+
+<p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
+learned how to sum digits in the number. Just gentle reminder:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of-digits</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">str </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now, let’s create sequence of powers of two:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">powers-of-2</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="nb">partial * </span><span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Unfortunately, this sequence throws <code>integer overflow</code> on the <code>64th</code> element.
+We can fix that using <em>long arithmetics</em>, which known as <code>BigInteger</code> in Java.
+Change <code>1</code> to <code>1N</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="nb">partial * </span><span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="nv">N</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Another way is to use <strong>automatic promotion</strong> operator (<code>+'</code>, <code>*'</code>).
+If result of some operation is not suitable for some type,
+instead of invalid computation and runtime exception, clojure automatically promotes
+the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> <em>works fine and produces
+ correct result with type of</em> <code>BigInteger</code>):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="nb">partial </span><span class="nv">*</span><span class="o">&#39;</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Choose <code>powers-of-2</code> that you prefer and final result will look like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">sum-of-digits</span> <span class="p">(</span><span class="nb">last </span><span class="p">(</span><span class="nb">take </span><span class="mi">1001</span> <span class="p">(</span><span class="nf">powers-of-2</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
+
+<p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
+speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
@@ -3430,40 +3500,6 @@ Also, if you have some useful information, other tips and tricks,  post it in co
 
 <p><strong>P.S.</strong> Unfornunately game at closed beta right now. Only for Android devices.
 Hope it will be released very soon and we will see more people near monuments.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What is source code?]]></title>
-    <link href="http://mishadoff.github.com/blog/what-is-source-code/"/>
-    <updated>2012-11-29T23:31:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/what-is-source-code</id>
-    <content type="html"><![CDATA[<p>It’s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
-It’s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
-
-<p>I think this term has much wider meaning.</p>
-
-<!-- more -->
-
-<p><em>Almost everything you can create is source code.</em></p>
-
-<p>By creation I mean creation in digital world, not building the house.
-Good criteria of source code - is something that may be changed and need to be up-to-date.</p>
-
-<p><a href="https://github.com/WiredEnterprise/Lord-of-the-Files">Article</a> - source code,
-<a href="https://github.com/mishadoff/mishadoff.github.com">Blog</a> - source code,
-<a href="https://github.com/patmorin/ods">Book</a> - source code,
-<a href="https://github.com/magnars/.emacs.d">Configuration</a> - source code,
-<a href="https://github.com/bundestag/gesetze">Laws</a> - source code,
-<a href="https://github.com/norinori2222/boyfriend_require/blob/master/README-en.md">Dating request</a> is also source code.</p>
-
-<p>The word <code>code</code> can be confusing, but it is not.</p>
-
-<p><strong>Code</strong> - is just a set of instructions that can be processed by <em>processor</em>.</p>
-
-<p>From that point of view, processor is our brain.</p>
-
-<p>And if you really appreciate your <em>source code</em>, choose appropriate control version system for it.</p>
 ]]></content>
   </entry>
   

@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Heisenberg Principle - mishadoff thoughts</title>
+  <title>Clojure Euler: Problem 016 - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="It is so obvious, so I decided to write about it. Heisenberg principle
-came from quantum mechanics and means that you can’t know exactly
-both &hellip;">
+  <meta name="description" content="2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26. What is the sum of the digits of the number 2^1000 ? Permalink: http:// &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ both &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/heisenberg-principle/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-016/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -100,7 +98,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">Heisenberg Principle</h1>
+      <h1 class="entry-title">Clojure Euler: Problem 016</h1>
     
     
       <p class="meta">
@@ -116,36 +114,75 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-02-21T00:24:00+02:00" pubdate data-updated="true">Feb 21<span>st</span>, 2013</time>
+<time datetime="2013-03-05T01:31:00+02:00" pubdate data-updated="true">Mar 5<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>It is so obvious, so I decided to write about it.</p>
+<div class="entry-content"><blockquote>
+  <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
+
+  <p>What is the sum of the digits of the number 2^1000 ?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=16">http://projecteuler.net/problem=16</a></p>
 
 <!-- more -->
 
-<p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
+<p>Are you kidding me?</p>
 
-<p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
-came from quantum mechanics and means that you can’t know exactly
-both coordinates and speed of particle. If you improve accuracy of detecting
-position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
+<ul>
+  <li>Find 1000th <em>power of two</em></li>
+  <li>Sum its digits</li>
+</ul>
 
-<p>In human-readable form it sounds like</p>
+<p>In <a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
+learned how to sum digits in the number. Just gentle reminder:</p>
 
-<blockquote>
-  <p>Either one or the other</p>
-</blockquote>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of-digits</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">str </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The same in every field, even in software engineering.
-If you implementing something or fixing bugs and your boss
-yelling: “you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>”
-tell him <em>either one or the other</em>.</p>
+<p>Now, let’s create sequence of powers of two:</p>
 
-<p><strong>P.S.</strong> Actually, you can say “go fuck yourself”, but it won’t be polite.</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">powers-of-2</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="nb">partial * </span><span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Unfortunately, this sequence throws <code>integer overflow</code> on the <code>64th</code> element.
+We can fix that using <em>long arithmetics</em>, which known as <code>BigInteger</code> in Java.
+Change <code>1</code> to <code>1N</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="nb">partial * </span><span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="nv">N</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Another way is to use <strong>automatic promotion</strong> operator (<code>+'</code>, <code>*'</code>).
+If result of some operation is not suitable for some type,
+instead of invalid computation and runtime exception, clojure automatically promotes
+the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> <em>works fine and produces
+ correct result with type of</em> <code>BigInteger</code>):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="nb">partial </span><span class="nv">*</span><span class="o">&#39;</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Choose <code>powers-of-2</code> that you prefer and final result will look like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">sum-of-digits</span> <span class="p">(</span><span class="nb">last </span><span class="p">(</span><span class="nb">take </span><span class="mi">1001</span> <span class="p">(</span><span class="nf">powers-of-2</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
+
+<p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
+speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
 </div>
 
 
@@ -168,12 +205,12 @@ tell him <em>either one or the other</em>.</p>
   
 
 
-<time datetime="2013-02-21T00:24:00+02:00" pubdate data-updated="true">Feb 21<span>st</span>, 2013</time>
+<time datetime="2013-03-05T01:31:00+02:00" pubdate data-updated="true">Mar 5<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/thoughts/'>thoughts</a>
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
   
 </span>
 
@@ -182,7 +219,7 @@ tell him <em>either one or the other</em>.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/heisenberg-principle/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/heisenberg-principle/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-016/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-016/" >Tweet</a>
   
   
   
@@ -193,10 +230,8 @@ tell him <em>either one or the other</em>.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/clojure-euler-problem-015/" title="Previous Post: Clojure Euler: Problem 015">&laquo; Clojure Euler: Problem 015</a>
+        <a class="basic-alignment left" href="/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/" title="Previous Post: Java Magic. Part 4: sun.misc.Unsafe">&laquo; Java Magic. Part 4: sun.misc.Unsafe</a>
       
-      
-        <a class="basic-alignment right" href="/blog/stirlings-approximation/" title="Next Post: Stirling's Approximation">Stirling's Approximation &raquo;</a>
       
     </p>
   </footer>
@@ -287,8 +322,8 @@ tell him <em>either one or the other</em>.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/heisenberg-principle/';
-        var disqus_url = 'http://mishadoff.github.com/blog/heisenberg-principle/';
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-016/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-016/';
         var disqus_script = 'embed.js';
       
     (function () {
