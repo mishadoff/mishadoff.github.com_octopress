@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-03-05T01:34:00+02:00</updated>
+  <updated>2013-03-07T18:00:59+02:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,169 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
+    <link href="http://mishadoff.github.com/blog/code-golf-game-of-life/"/>
+    <updated>2013-03-07T17:59:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/code-golf-game-of-life</id>
+    <content type="html"><![CDATA[<p>Conway’s Game of Life in a tweet.</p>
+
+<!-- more -->
+
+<p>Recently, my friend pointed out me an article <a href="http://trelford.com/blog/post/140.aspx">Life in a tweet</a>
+where <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a> was implemented in one tweet
+(<em>less than 140 characters</em>) in Ruby and F#. I took this challenge.</p>
+
+<h3 id="tweet">Tweet</h3>
+
+<p>Here is the final version in <code>137</code> characters of Clojure:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">fn</span><span class="p">[</span><span class="nv">g</span> <span class="nv">r</span><span class="p">](</span><span class="nf">reduce</span><span class="p">(</span><span class="nf">fn</span><span class="p">[</span><span class="nv">i</span> <span class="nv">j</span><span class="p">](</span><span class="nf">update-in</span> <span class="nv">i</span> <span class="nv">j</span><span class="p">(</span><span class="nf">fn</span><span class="p">[</span><span class="nv">v</span><span class="p">](</span><span class="nf">get</span><span class="p">[</span><span class="nv">v</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class="line"><span class="p">(</span><span class="nf">-</span><span class="p">(</span><span class="nb">apply </span><span class="nv">+</span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-in</span> <span class="nv">g%</span> <span class="mi">0</span><span class="p">)(</span><span class="nf">for</span><span class="p">[</span><span class="nv">a</span><span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span><span class="nv">b</span><span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]]</span>
+</span><span class="line"><span class="p">(</span><span class="nb">map + </span><span class="nv">j</span><span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]))))</span><span class="nv">v</span> <span class="mi">2</span><span class="p">)</span><span class="mi">0</span><span class="p">))))</span><span class="nv">g</span> <span class="nv">r</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="sugared-version">“Sugared” version</h3>
+
+<p>Translate tweet to more readable code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">step-sugar</span> <span class="p">[</span><span class="nv">grid</span> <span class="nv">range</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">count-neighbours</span> <span class="c1">;; determine number of neighbours</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">fn</span><span class="p">[[</span><span class="nv">i</span> <span class="nv">j</span><span class="p">]]</span>
+</span><span class="line">          <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-in</span> <span class="nv">grid</span> <span class="nv">%</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class="line">                         <span class="p">(</span><span class="nf">for</span><span class="p">[</span><span class="nv">a</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span> <span class="nv">b</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]]</span>
+</span><span class="line">                           <span class="p">[(</span><span class="nb">+ </span><span class="nv">i</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">j</span> <span class="nv">b</span><span class="p">)]))))</span>
+</span><span class="line">        <span class="nv">new-value</span>  <span class="c1">;; calculate new value for cell</span>
+</span><span class="line">        <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">v</span> <span class="p">[</span><span class="nv">i</span> <span class="nv">j</span><span class="p">]]</span>
+</span><span class="line">          <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">c</span> <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">count-neighbours</span> <span class="p">[</span><span class="nv">i</span> <span class="nv">j</span><span class="p">])</span> <span class="nv">v</span><span class="p">)]</span>
+</span><span class="line">            <span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nb">= </span><span class="mi">3</span> <span class="nv">c</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">                  <span class="p">(</span><span class="nb">= </span><span class="mi">2</span> <span class="nv">c</span><span class="p">)</span> <span class="nv">v</span>
+</span><span class="line">                  <span class="ss">:else</span> <span class="mi">0</span><span class="p">)))</span>
+</span><span class="line">        <span class="nv">evolve-cell</span> <span class="c1">;; update cell in a grid</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">fn</span><span class="p">[</span><span class="nv">g</span> <span class="nv">i</span><span class="p">]</span> <span class="p">(</span><span class="nf">update-in</span> <span class="nv">g</span> <span class="nv">i</span> <span class="o">#</span><span class="p">(</span><span class="nf">new-value</span> <span class="nv">%</span> <span class="nv">i</span><span class="p">)))]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">reduce </span><span class="nv">evolve-cell</span> <span class="nv">grid</span> <span class="nv">range</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Actually, this version is cheating,
+due to passing one extra-parameter <code>range</code> that contains all indices
+need to be updated in form <code>[[0 1] [1 1]]...</code></p>
+
+<p>On the other side it gives us two features:</p>
+
+<ul>
+  <li><strong>Works for rectangular grid</strong>. Although, initial
+implementation assumes the world is square.</li>
+  <li><strong>Specific part of world can be updated</strong>. It gives possibility
+to update specific area in the world, for example <em>west organisms evolve faster</em>.</li>
+</ul>
+
+<p>To use this function you need:</p>
+
+<ul>
+  <li>World</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">grid</span> <span class="p">[[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">           <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class="line">           <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>Evolution</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">evolution</span> <span class="p">[</span><span class="nv">g</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">p</span> <span class="p">(</span><span class="nb">count </span><span class="nv">g</span><span class="p">)</span> <span class="nv">q</span> <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">get </span><span class="nv">g</span> <span class="mi">0</span><span class="p">))</span>
+</span><span class="line">        <span class="nb">range </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="nv">p</span><span class="p">)</span> <span class="nv">j</span> <span class="p">(</span><span class="nb">range </span><span class="nv">q</span><span class="p">)][</span><span class="nv">i</span> <span class="nv">j</span><span class="p">])]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">iterate </span><span class="o">#</span><span class="p">(</span><span class="nf">step-sugar</span> <span class="nv">%</span> <span class="nv">range</span><span class="p">)</span> <span class="nv">g</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>Visualization</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">print-grid</span> <span class="p">[</span><span class="nv">g</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">s</span> <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">apply str </span><span class="p">(</span><span class="nb">replace </span><span class="p">{</span><span class="mi">0</span> <span class="s">&quot;.&quot;</span> <span class="mi">1</span> <span class="s">&quot;⚫&quot;</span><span class="p">}</span> <span class="nv">%</span><span class="p">))</span> <span class="nv">g</span><span class="p">)]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="nv">s</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="testing">Testing</h3>
+
+<p>To make sure results are correct use the following
+<code>run</code> function and compare results to some common
+<a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns">examples</a>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">run</span> <span class="p">[</span><span class="nv">grid</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">g</span> <span class="p">(</span><span class="nf">evolution</span> <span class="nv">grid</span><span class="p">)]</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">print-grid</span> <span class="nv">g</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">Thread/sleep</span> <span class="mi">1000</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Pattern examples:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">block</span> <span class="p">[[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">            <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">            <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">            <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]])</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">glider</span> <span class="p">[[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">             <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">             <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">             <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">             <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">             <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Full history of implementation and more life patterns
+<a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/life.clj">available here</a></p>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
@@ -3373,133 +3536,6 @@ functions, programming and even problem was not challenging. But you see the way
 we solve it. We tried “bad” approach with knowing about all its disadvantages.
 One more step and we improved it and got right solution. So it is not that bad
 approach to try simple solution, even if it is wrong.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ingress Tricks]]></title>
-    <link href="http://mishadoff.github.com/blog/ingress-tricks/"/>
-    <updated>2012-12-11T12:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/ingress-tricks</id>
-    <content type="html"><![CDATA[<p>Ingress - MMORPG with <a href="http://en.wikipedia.org/wiki/Augmented_reality">augmented reality</a> created by Google.
-This is very impressive game with capability to run over the city with your friends for capturing portals.</p>
-
-<!-- more -->
-
-<p><img src="http://i.imgur.com/vskNt.jpg?1" alt="" /></p>
-
-<p>The game genre positioned as <strong>MMMMOARG</strong> (<em>massively multiplayer map-based mobile online augmented reality game</em>).
-In fact, it’s just MMORPG. You have character, you play online with other people.</p>
-
-<h2 id="brief-game-overview">Brief game overview</h2>
-
-<p><em>skip if you already now what Ingress is</em></p>
-
-<p>There are two fractions in game: <strong>Enlightened</strong> and <strong>Resistance</strong>.
-In few words, Enlightened for a progress and big changes, Resistance for conservative being.
-<strong>Portals</strong> are famous places like monuments, memorials, sculptures, etc.
-Each fraction can capture portals, improve, destroy them, link portals with each other,
-and create control field (<em>by linking three portals in triangle</em>). Area under this control field covers
-some number of <strong>mind units</strong>. Fraction that have more mind units - more succesful to achieve its goal.</p>
-
-<h2 id="some-tricks">Some tricks</h2>
-
-<p>If you already a member of Ingress, check these tricks, probably some you know.</p>
-
-<h2 id="resonators"><strong>Resonators</strong></h2>
-<ul>
-  <li><strong>Deploy resonator on maximum distance betwen portal.</strong> Because it is much harder for your enemy
-to destroy spattered resonators than if they were in one place.</li>
-  <li><strong>Waste resonators.</strong> If you have no time while running near neutral or low-level
-portal, just deploy one resonator of your maximum level. You still can not link it to another portal,
-but enemy need to spend enough effort to destroy it.</li>
-  <li><strong>Upgrade.</strong> Use upgrade menu to improve resonators on portal. If somebody deployed L1 resonator, and you
-can change it to L4, it would be good.</li>
-  <li><strong>Use specific resonators.</strong> By default you deploy only L1 resonators. From upgrade menu you can select
-what resonators you want to deploy.</li>
-</ul>
-
-<h2 id="bursters"><strong>Bursters</strong></h2>
-<ul>
-  <li><strong>Do not waste bursters.</strong> It’s useless to fire couple bursts if they are not destroying resonators/portals. Just save them.
-When you have enough bursters, then you can destroy enemy portal and get XP.</li>
-  <li><strong>Use bursters from optimal point.</strong> It’s opposite from previous. Find place where your bursters’ coverage
-on enemy resonators will be maximum. Use weighted estimate, you need stand closer to higher level resonators.</li>
-  <li><strong>Use specific bursters.</strong> By default you fire with you maximum level bursters. If enemy portal not so hard you can
-select lower-level burster from weapons menu.</li>
-</ul>
-
-<h2 id="mods"><strong>Mods</strong></h2>
-<ul>
-  <li><strong>Deploy portal shields.</strong> For portals that have enough support and high level. Portal shields are relatively rare resources, so don’t waste them.
-Also if you deployed shield on high level portal, much harder for enemy to get resources, and destroy it.</li>
-</ul>
-
-<h2 id="links"><strong>Links</strong></h2>
-<ul>
-  <li><strong>Plan links and fields carefully.</strong> You must not be fast at linking, in case you linking more than 4 portals,
-there are possibilities. And you should choose one that gives you maximum number of fields.
-To make link between A and B, you need portal A with enough distance to B, and portal key from B.</li>
-  <li><strong>Build long links.</strong> Long links can prevent other fraction to link something.
-Because crossed links are restricted. But if you have time to link something better, think about it.</li>
-</ul>
-
-<h2 id="resources"><strong>Resources</strong></h2>
-<ul>
-  <li><strong>Gather resources.</strong> Find place where you can see a lot of high-level portals and hack them. One hour
-spent near them gives you a lot of resources.</li>
-  <li><strong>Share resources.</strong> You can, or better you need to share resources with your friends. It’s cooperative game.</li>
-</ul>
-
-<h2 id="area"><strong>Area</strong></h2>
-<ul>
-  <li><strong>Distribute area locally.</strong> Communicate with players from your city and plan what territory can be supported by whom.</li>
-  <li><strong>Strategic portals.</strong> Don’t plan your strategic portals in common places. They can be simply destroyed. Use for your strategic
-portals some strange places, like portal inside building, mountain portals, island portals, etc.</li>
-  <li><strong>Use Intel Map to plan your trip.</strong> Move only in the way you already know. Don’t practice <em>blind trips</em>.</li>
-</ul>
-
-<h2 id="friends"><strong>Friends</strong></h2>
-<ul>
-  <li><strong>Play with friends.</strong> Preferably, the same level friends. Obviously, you can destroy more, you can capture more.
-Also, it’s more fun to talk with somebody during the moving.</li>
-  <li><strong>Communication.</strong> If you see somebody playing ingress near you, don’t hesitate to meet and make friendship. Even he or she from
-another fraction. Maybe it’s your future spouse.</li>
-</ul>
-
-<h2 id="home-playing"><strong>Home playing</strong></h2>
-<ul>
-  <li><strong>Repair portals.</strong> If you are sitting at office, have enough XM, you still can help your fraction.
-Just open portal keys and you can repair these portals distantly. Keep in mind that resonator XM reduces by 10% each day.
-The trick is also to repair one most valuable resonator.</li>
-  <li><strong>Solve puzzles.</strong> If you solve some puzzle that appeared on niantic site or in your inventory, you
-can help you fraction a lot by posting code in faction channel.</li>
-  <li><strong>Manage the actions.</strong> You can sit at home with opened Intel Map and guide somebody to do right things.</li>
-</ul>
-
-<p>This post planned to be updatable, because all these advices found upon investigation. Check for new updates.
-Also, if you have some useful information, other tips and tricks,  post it in comments.</p>
-
-<h2 id="links-1">Links</h2>
-
-<p>More about game and some useful resources here:</p>
-
-<ul>
-  <li><a href="http://www.ingress.com/">Ingress Official</a></li>
-  <li><a href="http://www.nianticproject.com/">History and Puzzles</a></li>
-  <li><a href="http://ingressfieldguide.com/">Tips &amp; Tricks</a></li>
-  <li><a href="http://www.reddit.com/r/Ingress">Ingress subreddit</a></li>
-  <li><a href="http://www.ingress.com/intel">Intel Map</a></li>
-</ul>
-
-<h2 id="bonus-xkcd">Bonus: xkcd</h2>
-
-<p><img src="http://imgs.xkcd.com/comics/location.png" alt="" /></p>
-
-<p>Viva la Resistance!</p>
-
-<p><strong>P.S.</strong> Unfornunately game at closed beta right now. Only for Android devices.
-Hope it will be released very soon and we will see more people near monuments.</p>
 ]]></content>
   </entry>
   
