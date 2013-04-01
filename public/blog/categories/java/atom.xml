@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-03-07T18:00:59+02:00</updated>
+  <updated>2013-04-01T23:53:32+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -19,10 +19,10 @@
     <updated>2013-02-26T02:37:00+02:00</updated>
     <id>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
     <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
-from doing memory corruption mistakes. But, there is a way to
-do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
+from doing a lot of stupid mistakes, most of which based on memory management.
+But, there is a way to do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
 
-<p>This article is quick overview of <code>sun.misc.Unsafe</code> <em>public</em> API and few
+<p>This article is a quick overview of <code>sun.misc.Unsafe</code> <em>public</em> API and few
 interesting cases of its usage.</p>
 
 <!-- more -->
@@ -31,10 +31,32 @@ interesting cases of its usage.</p>
 
 <p>Before usage, we need to create instance of <code>Unsafe</code> object.
 There is no simple way to do it like <code>Unsafe unsafe = new Unsafe()</code>,
-because <code>Unsafe</code> class has private constructor and <code>getUnsafe()</code> method
-available only from trusted code.</p>
+because <code>Unsafe</code> class has private constructor. It also has static
+<code>getUnsafe()</code> method, but if you naively try to call <code>Unsafe.getUnsafe()</code> you, probably,
+get <code>SecurityException</code>. Using this method available only from trusted code.</p>
 
-<p>We can make our code “trusted”.</p>
+<p><code>java
+public static Unsafe getUnsafe() {
+    Class cc = sun.reflect.Reflection.getCallerClass(2);
+    if (cc.getClassLoader() != null)
+        throw new SecurityException("Unsafe");
+    return theUnsafe;
+}
+</code></p>
+
+<p>This is how java validates if code is trusted.
+It is just checking that our code was loaded with
+primary classloader.</p>
+
+<p>We can make our code “trusted”. Use option <code>bootclasspath</code> when running
+your program and specify
+path to system classes plus your one that will use <code>Unsafe</code>.</p>
+
+<p><code>java
+java -Xbootclasspath:/usr/jdk1.7.0/jre/lib/rt.jar:. com.mishadoff.magic.UnsafeClient
+</code></p>
+
+<p>But it’s too hard.</p>
 
 <p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
 We can steal that variable via java reflection.</p>
@@ -113,7 +135,8 @@ Here is some of them:</p>
 <h4 id="avoid-initialization">Avoid initialization</h4>
 
 <p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
-or bypass security checks in constructor. Consider following class:</p>
+or bypass security checks in constructor or you want instance of that class
+but don’t have any public constructor. Consider following class:</p>
 
 <p>``` java
 class A {
@@ -139,6 +162,60 @@ o2.a(); // prints 1</p>
 <p>A o3 = (A) unsafe.allocateInstance(A.class); // unsafe
 o3.a(); // prints 0
 ```</p>
+
+<p>Just think what happens to all your <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singletons</a>.</p>
+
+<h4 id="memory-corruption">Memory corruption</h4>
+
+<p>This one is usual for every C programmer.
+By the way, its common technique for security bypass.</p>
+
+<p>Consider some simple class that check access rules:</p>
+
+<p>``` java
+class Guard {
+    private int ACCESS_ALLOWED = 1;</p>
+
+<pre><code>public boolean giveAccess() {
+    return 42 == ACCESS_ALLOWED;
+} } ```
+</code></pre>
+
+<p>The client code is <em>very secure</em> and calls
+<code>giveAccess()</code> to check access rules. Unfortunately, for clients,
+it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
+value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
+
+<p>In fact, it’s not true. Here is the code demostrates it:</p>
+
+<p>``` java
+Guard guard = new Guard();
+guard.giveAccess();   // false, no access</p>
+
+<p>// bypass
+Unsafe unsafe = getUnsafe();
+Field f = guard.getClass().getDeclaredField(“ACCESS_ALLOWED”);
+unsafe.putInt(guard, unsafe.objectFieldOffset(f), 42); // memory corruption</p>
+
+<p>guard.giveAccess(); // true, access granted
+```</p>
+
+<p>Now all clients will get unlimited access.</p>
+
+<p>Actually, the same functionality can be achieved by reflection.
+But interesting, that we can modify any object, even ones
+that we do not have references to.</p>
+
+<p>For example, there is another <code>Guard</code> object in memory
+located next to current <code>guard</code> object. We can modify its <code>ACCESS_ALLOWED</code> field with the following code</p>
+
+<p><code>java
+unsafe.putInt(guard, 16 + unsafe.objectFieldOffset(f), 42); // memory corruption
+</code></p>
+
+<p>Note, we didn’t use any reference to this object.
+<code>16</code> is size of <code>Guard</code> object in 32 bit architecture.
+We can calculate it manually or use <code>sizeOf</code> method, that defined… right now.</p>
 
 <h4 id="sizeof"><strong>sizeOf</strong></h4>
 
@@ -175,8 +252,202 @@ return ((maxSize/8) + 1) * 8;   // padding } ```
 superclases, get offset for each field, find maximum and add padding.
 Probably, I missed something, but idea is clear.</p>
 
-<p>In fact, for good and accurate <code>sizeof</code> function better to use
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html">java.lang.instrument</a> package</p>
+<p>Much simpler <code>sizeOf</code> can be achieved if we just read <code>size</code> value from
+the class struct for this object, which located with offset 12 in <code>JVM 1.7 32 bit</code>.</p>
+
+<p><code>java
+public static long sizeOf(Object object){
+    return getUnsafe().getAddress(
+        normalize(getUnsafe().getInt(object, 4L)) + 12L);
+}
+</code></p>
+
+<p><code>normalize</code> is a method for casting signed int to unsigned long, for
+correct address usage.</p>
+
+<p><code>java
+private static long normalize(int value) {
+    if(value &gt;= 0) return value;
+    return (~0L &gt;&gt;&gt; 32) &amp; value;
+}
+</code></p>
+
+<p>Awesome, this method returns the same result as our previous <code>sizeof</code>
+function.</p>
+
+<p>In fact, for good, safe and accurate <code>sizeof</code> function better to use
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html">java.lang.instrument</a> package,
+but it requires specifyng <code>agent</code> option in your JVM.</p>
+
+<h4 id="shallow-copy"><strong>Shallow copy</strong></h4>
+
+<p>Having implementation of calculating shallow object size, we can simply
+add function that copy objects. Standard solution need modify your code with <code>Cloneable</code>,
+or you can implement custom copy function in your object, but it won’t be multipurpose function.</p>
+
+<p>Shallow copy:</p>
+
+<p><code>java
+static Object shallowCopy(Object obj) {
+    long size = sizeOf(obj);
+    long start = toAddress(obj);
+    long address = getUnsafe().allocateMemory(size);
+    getUnsafe().copyMemory(start, address, size);
+    return fromAddress(address);
+}
+</code></p>
+
+<p><code>toAddress</code> and <code>fromAddress</code> convert object to its address in memory and vice versa.</p>
+
+<p>``` java
+static long toAddress(Object obj) {
+    Object[] array = new Object[] {obj};
+    long baseOffset = getUnsafe().arrayBaseOffset(Object[].class);
+    return normalize(getUnsafe().getInt(array, baseOffset));
+}</p>
+
+<p>static Object fromAddress(long address) {
+    Object[] array = new Object[] {null};
+    long baseOffset = getUnsafe().arrayBaseOffset(Object[].class);
+    getUnsafe().putLong(array, baseOffset, address);
+    return array[0];
+}
+```</p>
+
+<p>This copy function can be used to copy object of any type, its size will be calculated
+dynamically. Note that after copying you need to cast object to specific type.</p>
+
+<h4 id="hide-password">Hide Password</h4>
+
+<p>One more interesting usage of direct memory access in <code>Unsafe</code> is removing
+unwanted objects from memory.</p>
+
+<p>Most of the APIs for retrieving user’s password, have signature
+as <code>byte[]</code> or <code>char[]</code>. Why arrays?</p>
+
+<p>It is completely for security reason, because we can nullify array elements after we don’t need them.
+If we retrieve password as <code>String</code> it can be saved like an object in memory and nullifying that
+string just perform dereference operation. This object still in memory by the time GC decide to perform cleanup.</p>
+
+<p>This trick creates fake <code>String</code> object with the same size and replace original one in memory:</p>
+
+<p>``` java
+String password = new String(“l00k@myHor$e”);
+String fake = new String(password.replaceAll(“.”, “?”));
+System.out.println(password); // l00k@myHor$e
+System.out.println(fake); // ????????????</p>
+
+<p>getUnsafe().copyMemory(
+          fake, 0L, null, toAddress(password), sizeOf(password));</p>
+
+<p>System.out.println(password); // ????????????
+System.out.println(fake); // ????????????
+```</p>
+
+<p>Feel safe.</p>
+
+<h4 id="multiple-inheritance"><strong>Multiple Inheritance</strong></h4>
+
+<p>There is no multiple inheritance in java.</p>
+
+<p>Correct, except we can cast every type to every another one, if we want.</p>
+
+<p><code>java
+long intClassAddress = normalize(getUnsafe().getInt(new Integer(0), 4L));
+long strClassAddress = normalize(getUnsafe().getInt("", 4L));
+getUnsafe().putAddress(intClassAddress + 36, strClassAddress);
+</code></p>
+
+<p>This snippet adds <code>String</code> class to <code>Integer</code> superclasses, so we can cast
+without runtime exception.</p>
+
+<p><code>java
+(String) (Object) (new Integer(666))
+</code></p>
+
+<p>One problem that we must do it with pre-casting to object. To cheat compiler.</p>
+
+<h4 id="dynamic-classes">Dynamic classes</h4>
+
+<p>We can create classes in runtime, for example from
+compiled <code>.class</code> file. To perform that read class contents
+to byte array and pass it properly to <code>defineClass</code> method.</p>
+
+<p><code>java
+byte[] classContents = getClassContent();
+Class c = getUnsafe().defineClass(
+              null, classContents, 0, classContents.length);
+    c.getMethod("a").invoke(c.newInstance(), null); // 1
+</code></p>
+
+<p>And reading from file defined as:</p>
+
+<p><code>java
+private static byte[] getClassContent() throws Exception {
+    File f = new File("/home/mishadoff/tmp/A.class");
+    FileInputStream input = new FileInputStream(f);
+    byte[] content = new byte[(int)f.length()];
+    input.read(content);
+    input.close();
+    return content;
+}
+</code></p>
+
+<p>This can be useful, when you must create classes dynamically, some proxies
+or aspects for existing code.</p>
+
+<h4 id="throw-an-exception">Throw an Exception</h4>
+
+<p>Don’t like checked exceptions? Not a problem.</p>
+
+<p><code>java
+getUnsafe().throwException(new IOException());
+</code></p>
+
+<p>This method throws checked exception, but your code not forced to catch or rethrow it.
+Just like runtime exception.</p>
+
+<h4 id="fast-serialization">Fast Serialization</h4>
+
+<p>This one is more practical.</p>
+
+<p>Everyone knows that standard java <code>Serializable</code> capability
+to perform serialization is very slow. It also require class
+to have public non-argument constructor.</p>
+
+<p><code>Externalizable</code> is better, but it needs to define schema for
+class to be serialized.</p>
+
+<p>Popular high-performance libraries, like <a href="http://code.google.com/p/kryo/">kryo</a>
+have dependencies, which can be unacceptable with low-memory requirements.</p>
+
+<p>But full serialization cycle can be easily achieved with unsafe class.</p>
+
+<p>Serialization:</p>
+
+<ul>
+  <li>Build schema for object using reflection. It can be done once for class.</li>
+  <li>Use <code>Unsafe</code> methods <code>getLong</code>, <code>getInt</code>, <code>getObject</code>, etc. to retrieve actual field values.</li>
+  <li>Add <code>class</code> identifier to have capability restore this object.</li>
+  <li>Write them to the file or any output.</li>
+</ul>
+
+<p>You can also add compression to save space.</p>
+
+<p>Deserialization:</p>
+
+<ul>
+  <li>Create instance of serialized class. <code>allocateInstance</code> helps, because does not require any constructor.</li>
+  <li>Build schema. The same as 1 step in serialization.</li>
+  <li>Read all fields from file or any input.</li>
+  <li>Use <code>Unsafe</code> methods <code>putLong</code>, <code>putInt</code>, <code>putObject</code>, etc. to fill the object.</li>
+</ul>
+
+<p>Actually, there are much more details in correct inplementation, but intuition is clear.</p>
+
+<p>This serialization will be really fast.</p>
+
+<p>By the way, there are some attempts in <code>kryo</code> to use <code>Unsafe</code> <a href="http://code.google.com/p/kryo/issues/detail?id=75">http://code.google.com/p/kryo/issues/detail?id=75</a></p>
 
 <h4 id="big-arrays"><strong>Big Arrays</strong></h4>
 
@@ -223,46 +494,21 @@ for (int i = 0; i &lt; 100; i++) {
 System.out.println("Sum of 100 elements:" + sum);  // 300
 </code></p>
 
-<h4 id="memory-corruption">Memory corruption</h4>
+<p>In fact, this technique uses <code>off-heap memory</code> and partially
+available in <code>java.nio</code> package.</p>
 
-<p>This one is usual for every C programmer.
-By the way, its common technique for security bypass.</p>
+<p>Memory allocated this way not located in the heap and not under GC management, so take care of it
+using <code>Unsafe.freeMemory()</code>. It also does not perform any boundary checks, so any
+illegal access may cause JVM crash.</p>
 
-<p>Consider some easy class that check acces rules:</p>
-
-<p>``` java
-class Guard {
-    private int ACCESS_ALLOWED = 1;</p>
-
-<pre><code>public boolean giveAccess() {
-    return 42 == ACCESS_ALLOWED;
-} } ```
-</code></pre>
-
-<p>The client code is <em>very secure</em> and calls
-<code>giveAccess()</code> to check access rules. Unfortunately, for clients,
-it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
-value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
-
-<p>In fact, it’s not true. Here is the code demostrates it:</p>
-
-<p>``` java
-Guard guard = new Guard();
-guard.giveAccess();   // false, no access</p>
-
-<p>// bypass
-Unsafe unsafe = getUnsafe();
-Field f = guard.getClass().getDeclaredField(“ACCESS_ALLOWED”);
-unsafe.putInt(guard, unsafe.objectFieldOffset(f), 42); // memory corruption</p>
-
-<p>guard.giveAccess(); // true, access granted
-```</p>
-
-<p>Now all clients will get unlimited access.</p>
+<p>It can be useful for math computations, where code can operate with large arrays of data.
+Also, it can be interesting for realtime programmers, where GC delays on large arrays can
+break the limits.</p>
 
 <h4 id="concurrency">Concurrency</h4>
 
-<p><code>compareAndSwap</code> methods are atomic and can be used to implement
+<p>And few words about concurrency with <code>Unsafe</code>.
+<code>compareAndSwap</code> methods are atomic and can be used to implement
 high-performance lock-free data structures.</p>
 
 <p>For example, consider the problem to increment value in the shared object
@@ -453,7 +699,23 @@ Time passed in ms: 6454
 
 <p>Hmm, seems equal to atomics. Maybe atomics use <code>Unsafe</code>? (<em>YES</em>)</p>
 
-<p>In fact this example is easy enough, but it shows real power of <code>Unsafe</code>.</p>
+<p>In fact this example is easy enough, but it shows some power of <code>Unsafe</code>.</p>
+
+<p>As I said, <code>CAS</code> primitive can be used to implement lock-free data structures.
+The intuition behind this is simple:</p>
+
+<ul>
+  <li>Have some state</li>
+  <li>Create a copy of it</li>
+  <li>Modify it</li>
+  <li>Perform <code>CAS</code></li>
+  <li>Repeat if it fails</li>
+</ul>
+
+<p>Actually, in real it is more hard than you can imagine. There are a lot of problems like
+<a href="http://en.wikipedia.org/wiki/ABA_problem">ABA Problem</a>, instructions reordering, etc.</p>
+
+<p>If you really interested, you can refer to the awesome presentation about <a href="http://www.azulsystems.com/about_us/presentations/lock-free-hash">lock-free HashMap</a></p>
 
 <h3 id="bonus">Bonus</h3>
 
