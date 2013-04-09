@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-04-01T23:53:32+03:00</updated>
+  <updated>2013-04-10T00:21:12+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,124 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
+    <updated>2013-04-09T21:13:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
+then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
+
+  <p>If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=17">http://projecteuler.net/problem=17</a></p>
+
+<!-- more -->
+
+<p>To solve this problem we need some sort of mapping that defines association
+between number and its string representation, e.g <code>123 = one hundred and twenty three</code>.</p>
+
+<p>This can be done with maps in clojure in form <code>{:1 "one" :2 "two"}</code>.
+But if pay more atention to this map, we see that key is a numeric value.
+Exactly what plain arrays do.</p>
+
+<p>Then we just define all mappings, obtain all arrays string elements, find their lengths and sum them.</p>
+
+<p>One problem that providing mapping for each number between 1 and 1000 is a “bit” routine task, so we
+need some formula to calculate representation instead of hardcoding it. We come to defining groups.</p>
+
+<p>First group is just <em>first 20</em> numbers:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">first20</span> <span class="p">[</span><span class="s">&quot;one&quot;</span> <span class="s">&quot;two&quot;</span> <span class="s">&quot;three&quot;</span> <span class="s">&quot;four&quot;</span> <span class="s">&quot;five&quot;</span>
+</span><span class="line">              <span class="s">&quot;six&quot;</span> <span class="s">&quot;seven&quot;</span> <span class="s">&quot;eight&quot;</span> <span class="s">&quot;nine&quot;</span> <span class="s">&quot;ten&quot;</span>
+</span><span class="line">              <span class="s">&quot;eleven&quot;</span> <span class="s">&quot;twelve&quot;</span> <span class="s">&quot;thirteen&quot;</span> <span class="s">&quot;fourteen&quot;</span> <span class="s">&quot;fifteen&quot;</span>
+</span><span class="line">              <span class="s">&quot;sixteen&quot;</span> <span class="s">&quot;seventeen&quot;</span> <span class="s">&quot;eighteen&quot;</span> <span class="s">&quot;nineteen&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note: there is no “zero” as we don’t use it in spoken language.</p>
+
+<p>Second group is numbers that divides 10:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">decas</span> <span class="p">[</span><span class="s">&quot;&quot;</span> <span class="s">&quot;ten&quot;</span> <span class="s">&quot;twenty&quot;</span> <span class="s">&quot;thirty&quot;</span> <span class="s">&quot;forty&quot;</span> <span class="s">&quot;fifty&quot;</span> <span class="s">&quot;sixty&quot;</span> <span class="s">&quot;seventy&quot;</span> <span class="s">&quot;eighty&quot;</span> <span class="s">&quot;ninety&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note: empty first element here is used to reduce additional check. Its length is 0, that has no effect at all.</p>
+
+<p>And the last ones are three used values:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">h</span> <span class="s">&quot;hundred&quot;</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">t</span> <span class="s">&quot;thousand&quot;</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">a</span> <span class="s">&quot;and&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The basic function will calculate the length string representation of some number.
+Let’s call it <code>word-length</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">word-length</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">1000</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">count </span><span class="nv">t</span><span class="p">)</span> <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">nth </span><span class="nv">first20</span> <span class="mi">1</span><span class="p">)))</span>
+</span><span class="line">        <span class="p">(</span><span class="nb">&lt; </span><span class="nv">n</span> <span class="mi">100</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">q</span> <span class="p">(</span><span class="nb">quot </span><span class="nv">n</span> <span class="mi">10</span><span class="p">)</span> <span class="nv">m</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class="line">              <span class="nv">d</span> <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">nth </span><span class="nv">decas</span> <span class="nv">q</span><span class="p">))]</span>
+</span><span class="line">          <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">m</span><span class="p">)</span> <span class="nv">d</span>
+</span><span class="line">              <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">q</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">nth </span><span class="nv">first20</span> <span class="p">(</span><span class="nb">dec </span><span class="p">(</span><span class="nb">+ </span><span class="nv">m</span> <span class="p">(</span><span class="nb">* </span><span class="mi">10</span> <span class="nv">q</span><span class="p">)))))</span>
+</span><span class="line">                  <span class="p">(</span><span class="nb">+ </span><span class="nv">d</span> <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">nth </span><span class="nv">first20</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">m</span><span class="p">)))))))</span>
+</span><span class="line">        <span class="p">(</span><span class="nb">&lt; </span><span class="nv">n</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">q</span> <span class="p">(</span><span class="nb">quot </span><span class="nv">n</span> <span class="mi">100</span><span class="p">)</span> <span class="nv">m</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="mi">100</span><span class="p">)]</span>
+</span><span class="line">          <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">m</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">word-length</span> <span class="nv">q</span><span class="p">)</span> <span class="p">(</span><span class="nb">count </span><span class="nv">h</span><span class="p">))</span>
+</span><span class="line">              <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">count </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">count </span><span class="nv">h</span><span class="p">)</span> <span class="p">(</span><span class="nf">word-length</span> <span class="nv">q</span><span class="p">)</span> <span class="p">(</span><span class="nf">word-length</span> <span class="nv">m</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Little explanation:</p>
+
+<ul>
+  <li>If number is <code>1000</code> then the length of string “one” + “thousand”, 11.</li>
+  <li>If number is lower than <code>100</code> then extract its decade part. If there is no
+reminder for division by 10, the length is length of that decade part.</li>
+  <li>Otherwise, if number in <code>first20</code>, length taken from array <code>first20</code>.</li>
+  <li>Otherwise the length is decade part plus remainder.</li>
+  <li>If number is lower than <code>1000</code> then extract hundred part. If there is no
+reminder for division by 100, the length is “hundred” plus number of hundreds.</li>
+  <li>Otherwise, the length is “hundred” plus number of hundreds, plus the word “and” and
+recursively calculate the length of remainder, which is lower than <code>100</code>.</li>
+</ul>
+
+<p>Awful word-presentation of algorithm, because of… Reading code is much simpler, I know.</p>
+
+<p>And the last part just sum up all word-lengths:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">word-length</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1001</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Check the code <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem017.clj">here</a>.</p>
+
+<p>P.S. In fact algorithm is very simple, but needs some time to understand few branches.
+By the way, the problem is little boring.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
@@ -3758,95 +3876,6 @@ If you interested, read nice Christophe Grand’s post
 
 <p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
 just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 009]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-009/"/>
-    <updated>2012-12-11T17:41:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-009</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which, a^2 + b^2 = c^2</p>
-
-  <p>For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2</p>
-</blockquote>
-
-<blockquote>
-  <p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-Find the product abc.</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=9">http://projecteuler.net/problem=9</a></p>
-
-<!-- more -->
-
-<p>Thinking about clever way to solve it…</p>
-
-<p>Nothing good came up in your mind? Try bruteforce.</p>
-
-<p>Again, the idea behind bruteforce for this problem to iterate over all possible values
-for <code>a</code>, <code>b</code> and <code>c</code>, that sums to <code>1000</code> and compose Pythagorean triplet.
-That’s why we need predicate to test if three numbers compose triplet:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">is-triplet?</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">]</span>
-</span><span class="line">  <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">b</span> <span class="nv">b</span><span class="p">))</span> <span class="p">(</span><span class="nb">* </span><span class="nv">c</span> <span class="nv">c</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Then our bruteforce solution looks like this:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">c</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span class="line">             <span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="mi">1000</span><span class="p">))]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>It finds the right solution, in ~45 seconds. Bad enough.</p>
-
-<h3 id="trick-1">Trick #1</h3>
-
-<p>Do not iterate on <code>c</code> variable, because knowing <code>a</code> and <code>b</code> we always
-can calculate <code>c = 1000 - a - b</code>.</p>
-
-<p>Problem solution transformed into next one:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span class="line">             <span class="ss">:let</span> <span class="p">[</span><span class="nv">c</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1000</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)]</span>
-</span><span class="line">             <span class="ss">:when</span> <span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="trick-2">Trick #2</h3>
-
-<p>Use rule <code>a &lt; b &lt; c</code> from problem definition. Then our iteration will be:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">range </span><span class="nv">a</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1000</span> <span class="nv">a</span><span class="p">))])</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="trick-3">Trick #3</h3>
-
-<p><code>is-triplet?</code> predicate use 3 multiplications, addition and comparison.
-We can add to <code>:when</code> section, predicate that compare <code>c</code> to <code>b</code>. This is also
-slightly reduce number of <code>is-triplet?</code> execution.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="ss">:when</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">c</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">is-triplet?</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Now solution found in ~45 msecs. 1000 times faster. Not bad.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem009.clj">(apply str (reverse “buHtiG”))</a></p>
-
-<p><strong>P.S.</strong> Unfortunately, there was nothing in this problem about new clojure
-functions, programming and even problem was not challenging. But you see the way how
-we solve it. We tried “bad” approach with knowing about all its disadvantages.
-One more step and we improved it and got right solution. So it is not that bad
-approach to try simple solution, even if it is wrong.</p>
 ]]></content>
   </entry>
   
