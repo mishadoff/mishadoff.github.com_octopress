@@ -9,8 +9,13 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="This is my first post.
-It is always hard to begin something, but I’ll try. ">
+  <meta name="description" content="Recently, I found on reddit very interesting Java code snippet (slightly modified): 1
+2
+3
+4
+5
+HashSet set = new HashSet();
+set.add(new URL(&quot;http &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,6 +107,61 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/java-magic-part-1-java-dot-net-dot-url/">Java Magic. Part 1: java.net.URL</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-11T16:30:00+03:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently, I found on reddit very interesting Java code snippet (slightly modified):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">HashSet</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">();</span>
+</span><span class="line"><span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class="line"><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span><span class="line"><span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">60000</span><span class="o">);</span>
+</span><span class="line"><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;http://google.com&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>What do you think the output for lines 3 and 5 will be?</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/java-magic-part-1-java-dot-net-dot-url/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/hello/">Hello, World!</a></h1>
     
     
@@ -154,6 +214,10 @@ It is always hard to begin something, but I’ll try.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/programming-digest-2/">Programming Digest 2</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/clojure-euler-problem-017/">Clojure Euler: Problem 017</a>
       </li>
     
@@ -167,10 +231,6 @@ It is always hard to begin something, but I’ll try.</p>
     
       <li class="post">
         <a href="/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/">Java Magic. Part 4: sun.misc.Unsafe</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/elephant-oriented-programming/">Elephant-Oriented Programming</a>
       </li>
     
   </ul>

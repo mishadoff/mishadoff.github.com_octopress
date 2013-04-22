@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-04-10T00:21:12+03:00</updated>
+  <updated>2013-04-22T14:44:47+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,189 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 2]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
+    <updated>2013-04-22T14:43:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
+    <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
+developer…in 10 years, “coding it’s just writing” and some practice:
+Naive Bayes Classifier, functional programming and Java 8.</p>
+
+<!-- more -->
+
+<h3 id="math-for-programmershttpsteve-yeggeblogspotcom200603math-for-programmershtml">1. <a href="http://steve-yegge.blogspot.com/2006/03/math-for-programmers.html">Math For Programmers</a></h3>
+
+<p>Another great post by Steve Yegge about math. Math for developers.
+As everyone might to retort, knowing math is not mandatory for software engineering field, but you know:</p>
+
+<blockquote>
+  <p>Math is… ummm, please don’t tell anyone I said this;
+I’ll never get invited to another party as long as I live.
+But math, well… I’d better whisper this, so listen up: (it’s actually kinda fun.)</p>
+</blockquote>
+
+<p>I totally agree. It’s a lot of fun.
+Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don’t understand anything.</p>
+
+<p>Pick your favourite math subject and try to dig more.
+Statistics, Linear Algebra, Discrete Math, Combinatorics, Operation Research, Group Theory
+and more; one of them can be a good start.</p>
+
+<p>Does that really helps? Well, maybe. But it’s definitely improve your problem solving skill.</p>
+
+<p>And believe. Math makes you a <em>better</em> programmer.</p>
+
+<h3 id="how-i-explained-rest-to-my-wifehttptomaykocomwritingsrest-to-my-wife">2. <a href="http://tomayko.com/writings/rest-to-my-wife">How I Explained REST to My Wife</a></h3>
+
+<p>Good article about how web works. I found it very useful for understanding
+some parts I thought I understood. By the way, great examples.</p>
+
+<blockquote>
+  <p>Ryan: I can’t drive a cup and I can’t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
+
+  <p>Wife: You can’t DELETE a cup.</p>
+
+  <p>Ryan: Well, okay, but you can throw it away.</p>
+</blockquote>
+
+<p>Unfortunately, author of this article take it down due to lot of complaints about
+article gender-oriented nature. I don’t think it’s offensive and here is the link with
+<a href="http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife">copy from web archive</a></p>
+
+<h3 id="programmer-competency-matrixhttpwwwindiangeeknetwp-contentuploadsprogrammer20competency20matrixhtm">3. <a href="http://www.indiangeek.net/wp-content/uploads/Programmer%20competency%20matrix.htm">Programmer Competency Matrix</a></h3>
+
+<p>Do you think you are great programmer? Test yourself.</p>
+
+<p><strong>Algorithms</strong></p>
+
+<ul>
+  <li><strong>2^n (Level 0)</strong>. Unable to find the average of numbers in an array
+(It’s hard to believe but I’ve interviewed such candidates)</li>
+  <li><strong>n^2 (Level 1)</strong>. Basic sorting, searching and data structure traversal and retrieval algorithms</li>
+  <li><strong>n (Level 2)</strong>. Tree, Graph, simple greedy and divide and conquer algorithms, is able to understand
+the relevance of the levels of this matrix.</li>
+  <li><strong>log(n) (Level 3)</strong>. Able to recognize and code dynamic programming solutions, good knowledge of graph algorithms,
+good knowledge of numerical computation algorithms, able to identify NP problems etc.</li>
+</ul>
+
+<p>In any case, this <em>test</em> helps you to build plan for programming
+related skills and gives understanding what you need to know to become an expert.</p>
+
+<h3 id="teach-yourself-programming-in-ten-yearshttpnorvigcom21-dayshtml">4. <a href="http://norvig.com/21-days.html">Teach Yourself Programming in Ten Years</a></h3>
+
+<p>Article by Peter Norvig.
+Great guy, I got to know from <a href="https://www.ai-class.com/">Artificial Intelligence</a> course.</p>
+
+<p>His writing is critique of popular books, like “Learn Java in 21 Days”.
+Peter explains that it is impossible to be a great
+engineer in such short period, and to become an expert you need aproximately 10 years.</p>
+
+<p>It reminds me a picture “How to become a C++ Developer in 21 Days”:</p>
+
+<p><img src="http://i.imgur.com/3FckcgF.png" alt="" /></p>
+
+<p>If you totally disagree with his idea, just test yourself in previous article.</p>
+
+<h3 id="on-being-a-senior-engineerhttpwwwkitchensoapcom20121025on-being-a-senior-engineer">5. <a href="http://www.kitchensoap.com/2012/10/25/on-being-a-senior-engineer/">On Being A Senior Engineer</a></h3>
+
+<p>And logically continue. What behaviour differentiate senior engineer from “not senior” one?</p>
+
+<blockquote>
+  <p>Mature engineers seek out constructive criticism of their designs.</p>
+</blockquote>
+
+<p>Actually you could find more useful rules there and list of
+<strong>The Ten Commandments of Egoless Programming</strong>.</p>
+
+<blockquote>
+  <ol>
+    <li>Understand and accept that you will make mistakes.</li>
+    <li>You are not your code.</li>
+    <li>No matter how much “karate” you know, someone else will always know more.</li>
+    <li>Don’t rewrite code without consultation.</li>
+    <li>Treat people who know less than you with respect, deference, and patience.</li>
+    <li>The only constant in the world is change. Be open to it and accept it with a smile.</li>
+    <li>The only true authority stems from knowledge, not from position.</li>
+    <li>Fight for what you believe, but gracefully accept defeat.</li>
+    <li>Don’t be “the coder in the corner.”</li>
+    <li>Critique code instead of people – be kind to the coder, not to the code.</li>
+  </ol>
+</blockquote>
+
+<p>Note, that article touch some psychological aspect of person. So I don’t
+think it can be 100% applied to everyone, but still worth to read.</p>
+
+<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It’s Just Writing</a></h3>
+
+<p>Jeff Atwood explais basic the idea of:</p>
+
+<blockquote>
+  <p>The unexpected relationship between writing code and writing.</p>
+</blockquote>
+
+<p>To write good code, you must write good.</p>
+
+<p>Article contains a reference to the book “The Elements of Style” with some quotes.</p>
+
+<blockquote>
+  <p>Vigorous writing is concise. A sentence should contain no unnecessary words,
+a paragraph no unnecessary sentences, for the same reason that a drawing should
+have no unnecessary lines and a machine no unnecessary parts.
+This requires not that the writer make all his sentences short,
+or that he avoid all detail and treat his subjects only in outline, but that every word tell.</p>
+</blockquote>
+
+<p>Read this book. Perhaps it is boring, it contains some advices to improve you writing skills.</p>
+
+<h3 id="how-to-build-a-naive-bayes-classifierhttpswwwbionicspiritcomblog20120209howto-build-naive-bayes-classifierhtml">7. <a href="https://www.bionicspirit.com/blog/2012/02/09/howto-build-naive-bayes-classifier.html">How To Build a Naive Bayes Classifier</a></h3>
+
+<p>Now some practice.</p>
+
+<p>Article is great explanation of how Naive Bayes Classifier work.
+With pictures, code examples, common pitfalls and good sense of humour.</p>
+
+<p>Although, it’s one of the simplest classification algorithms, but with some tweeks and
+good train set it can give good results.</p>
+
+<p><img src="https://www.bionicspirit.com/assets/img/conditional-prob-9a27ee0e.png" alt="" /></p>
+
+<p>Here is the place where the math is needed. But article is so great,
+that even monkey with banana (and degree in math) can understand how it works.</p>
+
+<h3 id="functors-applicatives-and-monads-in-pictureshttpaditioposts2013-04-17-functorsapplicativesandmonadsinpictureshtml">8. <a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html">Functors, Applicatives, And Monads In Pictures</a></h3>
+
+<p>Number of articles that explain what is monad grow fast. Just another one.</p>
+
+<p>Even if you don’t understand what Haskell and monad is, look at the cool pictures.</p>
+
+<p><img src="http://adit.io/imgs/functors/fmap_just.png" alt="" /></p>
+
+<h3 id="list-out-of-lambdahttpsteveloshcomblog201303list-out-of-lambda">9. <a href="http://stevelosh.com/blog/2013/03/list-out-of-lambda/">List Out Of Lambda</a></h3>
+
+<p>Good introduction to functional programming. Not for beginners, I think.</p>
+
+<blockquote>
+  <p>This blog post is a thought exercise.
+It’s not something you’d ever use for real code.
+But just like a guitarist practices scales that she won’t ever play in a song,
+we programmers should be exercising our brains every so often.</p>
+</blockquote>
+
+<p>How to implement fancy list, map, filter features with just
+first-class functions. Basic operations on numbers included. JavaScript.</p>
+
+<h3 id="everything-about-java-8httpwwwtechempowercomblog20130326everything-about-java-8">10. <a href="http://www.techempower.com/blog/2013/03/26/everything-about-java-8/">Everything about Java 8</a></h3>
+
+<p>Let’s review again what will be in Java 8. Most wanted release ever.</p>
+
+<p>In this overview you will test other important changes, not only lambdas.</p>
+
+<p><em>Sad, that release postponed to early 2014 due to security issues.</em>
+<em>But more time to play with developer preview features.</em></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
@@ -1034,114 +1217,6 @@ elsewhere.</p>
 <h3 id="conclusion">Conclusion</h3>
 
 <p>Although, <code>Unsafe</code> has a bunch of useful applications, never use it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 015]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
-    <updated>2013-02-19T00:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
-(without backtracking) to the bottom right corner.</p>
-
-  <p>How many routes are there through a 20 x 20 grid?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=15">http://projecteuler.net/problem=15</a></p>
-
-<!-- more -->
-
-<p><img src="http://projecteuler.net/project/images/p_015.gif" alt="" /></p>
-
-<p>Picture is always a huge help to find correct the solution.
-Let’s see the pattern here, with another picture</p>
-
-<p><em>Warning:</em> If you don’t understand art, don’t look at that picture.</p>
-
-<p><img src="http://i.imgur.com/WNEQNxG.png" alt="" /></p>
-
-<p>It’s a solution for 3 x 3 grid. We trying to process it by steps:</p>
-
-<ul>
-  <li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
-to be at the start so we put <code>1</code> to that point.</li>
-  <li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
-on the edges of the second diagonal line.</li>
-  <li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
-so there are two routes, and so on.</li>
-</ul>
-
-<p>If you just output the numbers from each diagonal line you’ll get:</p>
-
-<p>```
-       1
-      1 1
-     1 2 1
-    1 3 3 1</p>
-
-<p>```</p>
-
-<p>It’s famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal’s triangle</a>.
-Each element in this triangle obtained by sum of two closest elements from the upper row.</p>
-
-<p>To get desired result we need to sum these numbers again, until we get one number.
-But it’s also numbers from Pascal’s triangle.</p>
-
-<p><code>
-    1   3   3   1
-      4   6   4
-       10  10
-         20
-</code></p>
-
-<p>We can treat Pascal’s triangle as a sequence, and each row is an element. Then the
-following function calculates next row:</p>
-
-<p><code>clojure
-(defn routes-extend [lst]
-  (let [size (count lst)]
-    (for [i (range (inc size))]
-      (if (or (= 0 i) (= size i)) 1
-        (+ (nth lst (dec i)) (nth lst i))))))
-</code></p>
-
-<p>Usage:</p>
-
-<p><code>
-(routes-extend [1]) =&gt; [1 1]
-(routes-extend [1 1]) =&gt; [1 2 1]
-</code></p>
-
-<p>Now we can build infinite sequence of Pascal’s triangle rows:</p>
-
-<p><code>clojure
-(iterate routes-extend [1])
-</code></p>
-
-<p>For <code>3 x 3</code> grid we had 7 diagonals, each of them represented one row.
-Take a guess. For <code>n x n</code> grid we need to get <code>2 * n + 1</code> row. And take it
-middle element, which, of course, will be with the index <code>n</code>.</p>
-
-<p>That’s the final solution:</p>
-
-<p><code>clojure
-(let [n 20 d (inc (* n 2))]
-  (nth (last (take d (iterate routes-extend [1]))) n))
-</code></p>
-
-<p>Problem solved.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem015.clj">Code</a></p>
-
-<p><strong>P.S</strong> Two points I want to admit here. First of all, drawing pictures
-and trying to understand problem with pictures is a powerful technique that must be
-used for every problem.</p>
-
-<p>Second of all, you can see that our algorithm has complexity of <code>O(n^2)</code>. But ideal
-solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/Binomial_coefficient">binomial coefficient</a>
-<code>(2*n, n)</code>.</p>
 ]]></content>
   </entry>
   
