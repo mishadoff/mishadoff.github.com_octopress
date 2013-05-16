@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Clojure Euler: Problem 006 - mishadoff thoughts</title>
+  <title>Clojure Euler: Problem 018 - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="The sum of the squares of the first ten natural numbers is, 1^2 + 2^2 + … + 10^2 = 385 The square of the sum of the first ten natural numbers is, (1 &hellip;">
+  <meta name="description" content="By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23. 1
+2
+3
+4 3 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-006/">
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-018/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -98,7 +101,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">Clojure Euler: Problem 006</h1>
+      <h1 class="entry-title">Clojure Euler: Problem 018</h1>
     
     
       <p class="meta">
@@ -114,7 +117,7 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2012-11-17T14:05:00+02:00" pubdate data-updated="true">Nov 17<span>th</span>, 2012</time>
+<time datetime="2013-05-17T00:26:00+03:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
         
       </p>
     
@@ -122,82 +125,117 @@ MathJax.Hub.Config({
 
 
 <div class="entry-content"><blockquote>
-  <p>The sum of the squares of the first ten natural numbers is,</p>
+  <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
 </blockquote>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   3
+</span><span class="line">  7 4
+</span><span class="line"> 2 4 6
+</span><span class="line">8 5 9 3</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <blockquote>
-  <p>1^2 + 2^2 + … + 10^2 = 385</p>
+  <p>That is, 3 + 7 + 4 + 9 = 23.</p>
+
+  <p>Find the maximum total from top to bottom of the triangle below:</p>
+
+  <p>[Check out big triangle in original link]</p>
+
+  <p>NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route.
+However, Problem 67, is the same challenge with a triangle containing one-hundred rows;
+it cannot be solved by brute force, and requires a clever method! ;o)</p>
 </blockquote>
 
-<blockquote>
-  <p>The square of the sum of the first ten natural numbers is,</p>
-</blockquote>
-
-<blockquote>
-  <p>(1 + 2 + … + 10)^2 = 55^2 = 3025</p>
-</blockquote>
-
-<blockquote>
-  <p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
-</blockquote>
-
-<blockquote>
-  <p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=6">http://projecteuler.net/problem=6</a></p>
+<p>Permalink: <a href="http://projecteuler.net/problem=18">http://projecteuler.net/problem=18</a></p>
 
 <!-- more -->
 
-<p>This problem is very simple, even simpler than previous one, that confirms fact that all Project Euler problems
-are <strong>NOT</strong> in increasing complexity order. Ok, let’s split our problem into two subproblems.</p>
+<p>As note says we can try every route and it will be just good.
+Instead of that, we can behave much better with clever method.</p>
 
-<h3 id="sum-of-the-squares">Sum of the squares</h3>
+<p>(Some time ago, I gave basic explanation on my approach in <a href="http://stackoverflow.com/questions/8002252/euler-project-18-approach">StackOverflow question</a>)</p>
 
-<p>First, we need a square function:</p>
+<p>We have example triangle:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   3
+</span><span class="line">  7 4
+</span><span class="line"> 2 4 6
+</span><span class="line">8 5 9 3</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Instead of testing each route from top to the bottom, we moving from bottom
+to the top and always select the best choice. As we want to find the max sum, we perform addition im place.</p>
+
+<p>Assuming we on the 3rd line (2 4 6).</p>
+
+<p><strong>From 2</strong> we can go either 8 or 5, 8 is better (maximize your sum), then you calculate first
+sum <code>8 + 2 = 10</code>.</p>
+
+<p><strong>From 4</strong> we can go either 5 or 9, 9 is better, <code>4 + 9 = 13</code>.</p>
+
+<p><strong>From 6</strong> we can go either 9 or 3, 9 is better, <code>9 + 6 = 15</code>.</p>
+
+<p>Now, we removing last row, because we processed all routes and selected best ones, and replacing
+3rd row with calculated sums. Current triangle looks like:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">    3
+</span><span class="line">  7  4
+</span><span class="line">10 13 15</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Repeat the same action until we get one number, which will be solution.</p>
+
+<p>Let’s transform this idea to clojure.</p>
+
+<p>First of all we need datastructure to represent triangle.
+List of lists would be good:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sqr</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">))</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">triangle</span> <span class="o">&#39;</span><span class="p">((</span><span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="mi">7</span> <span class="mi">4</span><span class="p">)</span> <span class="p">(</span><span class="mi">2</span> <span class="mi">4</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="mi">8</span> <span class="mi">5</span> <span class="mi">9</span> <span class="mi">3</span><span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Then, sum of squares of the first one hundred natural numbers we calculate with common <code>(reduce + list)</code> idiom:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="square-of-the-sum">Square of the sum</h3>
-
-<p>Just take a sum, and square it:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="bind-all-together">Bind all together</h3>
-
-<p>We splitted our problem into two smaller, now is time to bind all. We can just subtract results obtained
-but you see, that both of smaller solutions uses common piece of code <code>(range 1 101)</code>. Move it to <code>let</code> form.</p>
+<p>Now we want to know, what direction generates the best sum.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">rn</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">101</span><span class="p">)]</span>
-</span><span class="line">  <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">rn</span><span class="p">))</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="nv">rn</span><span class="p">)))))</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">max-row</span> <span class="p">[</span><span class="nv">lst</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">reduce max </span><span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nf">partition</span> <span class="mi">2</span> <span class="mi">1</span> <span class="nv">lst</span><span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>That’ all. I’ve got result in less than millisecond.
-Maybe there are some pitfalls in this problem (<em>e.g. integer overflow for larger ranges</em>)
-but this most straightforward solution works fine.</p>
+<p>It breaks list to pairs, and select max from each pair.
+For example, <code>[8 5 9 3]</code> we split to <code>[[8 5] [5 9] [9 3]]</code>
+and select max from each sublist <code>[8 9 9]</code>.</p>
 
-<p>Congratulations!</p>
+<p>Just add this list to previous one</p>
 
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem006.clj">GitHub</a></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">step-max</span> <span class="p">[</span><span class="nv">lst1</span> <span class="nv">lst2</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">map + </span><span class="p">(</span><span class="nf">max-row</span> <span class="nv">lst1</span><span class="p">)</span> <span class="nv">lst2</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><strong>P.S.</strong> First time I solved this problem and was confused: <em>Where is the trick?</em> Seems nowhere.
-That’s why using most straightforward solution is often the best choice (<em>excluding obvious cases, of course</em>).
-It has fast implementation, and if it fails, it fails fast.</p>
+<p>One iteration of <code>step-max</code> creates smaller triangle with sums on the bottom row.
+But we need only one number.</p>
 
-<p><strong>Fail Fast, Succeed Faster</strong></p>
+<p>Correct, <code>reduce</code> is ideal!</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">step-max</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">triangle</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>That’s it.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
+
+<p><strong>P.S.</strong> Problem 067 can be solved with the same code.</p>
 </div>
 
 
@@ -220,7 +258,7 @@ It has fast implementation, and if it fails, it fails fast.</p>
   
 
 
-<time datetime="2012-11-17T14:05:00+02:00" pubdate data-updated="true">Nov 17<span>th</span>, 2012</time>
+<time datetime="2013-05-17T00:26:00+03:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -234,7 +272,7 @@ It has fast implementation, and if it fails, it fails fast.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-006/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-006/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-018/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-018/" >Tweet</a>
   
   
   
@@ -245,10 +283,8 @@ It has fast implementation, and if it fails, it fails fast.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/learn-perl/" title="Previous Post: Learn Perl">&laquo; Learn Perl</a>
+        <a class="basic-alignment left" href="/blog/programming-digest-2/" title="Previous Post: Programming Digest 2">&laquo; Programming Digest 2</a>
       
-      
-        <a class="basic-alignment right" href="/blog/java-magic-part-3-finally/" title="Next Post: Java Magic. Part 3: Finally">Java Magic. Part 3: Finally &raquo;</a>
       
     </p>
   </footer>
@@ -339,8 +375,8 @@ It has fast implementation, and if it fails, it fails fast.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-006/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-006/';
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-018/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-018/';
         var disqus_script = 'embed.js';
       
     (function () {

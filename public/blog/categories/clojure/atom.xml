@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-04-22T14:44:47+03:00</updated>
+  <updated>2013-05-17T01:36:07+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
+    <updated>2013-05-17T00:26:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
+</blockquote>
+
+<p><code>
+       3
+      7 4
+     2 4 6
+    8 5 9 3
+</code></p>
+
+<blockquote>
+  <p>That is, 3 + 7 + 4 + 9 = 23.</p>
+
+  <p>Find the maximum total from top to bottom of the triangle below:</p>
+
+  <p>[Check out big triangle in original link]</p>
+
+  <p>NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route.
+However, Problem 67, is the same challenge with a triangle containing one-hundred rows;
+it cannot be solved by brute force, and requires a clever method! ;o)</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=18">http://projecteuler.net/problem=18</a></p>
+
+<!-- more -->
+
+<p>As note says we can try every route and it will be just good.
+Instead of that, we can behave much better with clever method.</p>
+
+<p>(Some time ago, I gave basic explanation on my approach in <a href="http://stackoverflow.com/questions/8002252/euler-project-18-approach">StackOverflow question</a>)</p>
+
+<p>We have example triangle:</p>
+
+<p><code>
+       3
+      7 4
+     2 4 6
+    8 5 9 3
+</code></p>
+
+<p>Instead of testing each route from top to the bottom, we moving from bottom
+to the top and always select the best choice. As we want to find the max sum, we perform addition im place.</p>
+
+<p>Assuming we on the 3rd line (2 4 6).</p>
+
+<p><strong>From 2</strong> we can go either 8 or 5, 8 is better (maximize your sum), then you calculate first
+sum <code>8 + 2 = 10</code>.</p>
+
+<p><strong>From 4</strong> we can go either 5 or 9, 9 is better, <code>4 + 9 = 13</code>.</p>
+
+<p><strong>From 6</strong> we can go either 9 or 3, 9 is better, <code>9 + 6 = 15</code>.</p>
+
+<p>Now, we removing last row, because we processed all routes and selected best ones, and replacing
+3rd row with calculated sums. Current triangle looks like:</p>
+
+<p><code>
+        3
+      7  4
+    10 13 15
+</code></p>
+
+<p>Repeat the same action until we get one number, which will be solution.</p>
+
+<p>Let’s transform this idea to clojure.</p>
+
+<p>First of all we need datastructure to represent triangle.
+List of lists would be good:</p>
+
+<p><code>clojure
+(def triangle '((3) (7 4) (2 4 6) (8 5 9 3)))
+</code></p>
+
+<p>Now we want to know, what direction generates the best sum.</p>
+
+<p><code>clojure
+(defn max-row [lst]
+  (map #(reduce max %) (partition 2 1 lst)))
+</code></p>
+
+<p>It breaks list to pairs, and select max from each pair.
+For example, <code>[8 5 9 3]</code> we split to <code>[[8 5] [5 9] [9 3]]</code>
+and select max from each sublist <code>[8 9 9]</code>.</p>
+
+<p>Just add this list to previous one</p>
+
+<p><code>clojure
+(defn step-max [lst1 lst2]
+  (map + (max-row lst1) lst2))
+</code></p>
+
+<p>One iteration of <code>step-max</code> creates smaller triangle with sums on the bottom row.
+But we need only one number.</p>
+
+<p>Correct, <code>reduce</code> is ideal!</p>
+
+<p><code>clojure
+(reduce step-max (reverse triangle))
+</code></p>
+
+<p>That’s it.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
+
+<p><strong>P.S.</strong> Problem 067 can be solved with the same code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
@@ -415,138 +528,6 @@ used for every problem.</p>
 <p>Second of all, you can see that our algorithm has complexity of <code>O(n^2)</code>. But ideal
 solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/Binomial_coefficient">binomial coefficient</a>
 <code>(2*n, n)</code>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
-    <updated>2013-02-16T01:08:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Which starting number, under one million, produces the longest Collatz chain?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
-
-<!-- more -->
-
-<blockquote>
-  <p>The following iterative sequence is defined for the set of positive integers:</p>
-
-  <p>n → n/2 (n is even)</p>
-
-  <p>n → 3n + 1 (n is odd)</p>
-
-  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
-
-  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-
-  <p>It can be seen that this sequence (starting at 13 and finishing at 1)
-contains 10 terms. Although it has not been proved yet (Collatz Problem),
-it is thought that all starting numbers finish at 1.</p>
-
-  <p>Which starting number, under one million, produces the longest chain?</p>
-
-  <p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
-</blockquote>
-
-<p>Sequences again.
-So, first of all we need function to detect next collatz number.
-It is pretty straightforward:</p>
-
-<p><code>clojure
-(defn collatz-next [n]
-  (if (even? n) (/ n 2) (inc (* n 3))))
-</code></p>
-
-<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
-starting from number <code>n</code>:</p>
-
-<p><code>clojure
-(iterate collatz-next n)
-</code></p>
-
-<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
-count of collatz chain sequence:</p>
-
-<p><code>clojure
-(defn collatz-chain-length [n]
-  (inc (count (take-while #(&gt; % 1) (iterate collatz-next n)))))
-</code></p>
-
-<p>Now we have almost all code logic and just use it: calculate collatz chain
-for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
-
-<p><code>clojure
-(first (reduce #(if (&gt; (second %1) (second %2)) %1 %2)
-               (map #(list % (collatz-chain-length %)) (range 1 1000000))))
-</code></p>
-
-<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
-
-<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
-and I have no idea how to solve it another way.</p>
-
-<p>I am sure there is a better algorithm than mine. But I don’t know it.
-What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
-
-<blockquote>
-  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-</blockquote>
-
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
-
-<p>Got it?</p>
-
-<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
-for <code>40</code>, <code>20</code> and so on.</p>
-
-<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
-it to have recursive solution.</p>
-
-<p>Here the first (<em>and final</em>) version:</p>
-
-<p><code>clojure
-(defn collatz-chain-recursive [n]
-  (if (= n 1) 1
-      (inc (collatz-chain-recursive (collatz-next n)))))
-</code></p>
-
-<p>Recursion is impressive at the point that its implementation
-almost exactly follows the problem definition. It is easy to understand.</p>
-
-<p>But, as you may notice our implementation not
-<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
-have troubles. Do not think about it unless we actually have them.</p>
-
-<p>For the sake of fun let’s run this function instead of previous to
-obtain the results.</p>
-
-<p><strong>20 seconds</strong>, it is great. I even don’t think that
-this simple recursive function gives such boost in performance.</p>
-
-<p>One little tweak in result function:</p>
-
-<p><code>clojure
-(first
-  (apply max-key second
-         (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
-</code></p>
-
-<p>And we have <strong>~12 seconds</strong>.</p>
-
-<p>Unexpected “The End”. Yeah, I love The Doors.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
-
-<p><strong>P.S.</strong> I really wanted to explain technique called
-<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
-simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn’t have much sense here because
-12 seconds is acceptable. We will have chance to introduce
-memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 ]]></content>
   </entry>
   

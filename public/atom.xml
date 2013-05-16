@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-04-22T14:44:47+03:00</updated>
+  <updated>2013-05-17T01:36:07+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
+    <updated>2013-05-17T00:26:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
+</blockquote>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   3
+</span><span class="line">  7 4
+</span><span class="line"> 2 4 6
+</span><span class="line">8 5 9 3</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<blockquote>
+  <p>That is, 3 + 7 + 4 + 9 = 23.</p>
+
+  <p>Find the maximum total from top to bottom of the triangle below:</p>
+
+  <p>[Check out big triangle in original link]</p>
+
+  <p>NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route.
+However, Problem 67, is the same challenge with a triangle containing one-hundred rows;
+it cannot be solved by brute force, and requires a clever method! ;o)</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=18">http://projecteuler.net/problem=18</a></p>
+
+<!-- more -->
+
+<p>As note says we can try every route and it will be just good.
+Instead of that, we can behave much better with clever method.</p>
+
+<p>(Some time ago, I gave basic explanation on my approach in <a href="http://stackoverflow.com/questions/8002252/euler-project-18-approach">StackOverflow question</a>)</p>
+
+<p>We have example triangle:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   3
+</span><span class="line">  7 4
+</span><span class="line"> 2 4 6
+</span><span class="line">8 5 9 3</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Instead of testing each route from top to the bottom, we moving from bottom
+to the top and always select the best choice. As we want to find the max sum, we perform addition im place.</p>
+
+<p>Assuming we on the 3rd line (2 4 6).</p>
+
+<p><strong>From 2</strong> we can go either 8 or 5, 8 is better (maximize your sum), then you calculate first
+sum <code>8 + 2 = 10</code>.</p>
+
+<p><strong>From 4</strong> we can go either 5 or 9, 9 is better, <code>4 + 9 = 13</code>.</p>
+
+<p><strong>From 6</strong> we can go either 9 or 3, 9 is better, <code>9 + 6 = 15</code>.</p>
+
+<p>Now, we removing last row, because we processed all routes and selected best ones, and replacing
+3rd row with calculated sums. Current triangle looks like:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">    3
+</span><span class="line">  7  4
+</span><span class="line">10 13 15</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Repeat the same action until we get one number, which will be solution.</p>
+
+<p>Let’s transform this idea to clojure.</p>
+
+<p>First of all we need datastructure to represent triangle.
+List of lists would be good:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">triangle</span> <span class="o">&#39;</span><span class="p">((</span><span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="mi">7</span> <span class="mi">4</span><span class="p">)</span> <span class="p">(</span><span class="mi">2</span> <span class="mi">4</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="mi">8</span> <span class="mi">5</span> <span class="mi">9</span> <span class="mi">3</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now we want to know, what direction generates the best sum.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">max-row</span> <span class="p">[</span><span class="nv">lst</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">reduce max </span><span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nf">partition</span> <span class="mi">2</span> <span class="mi">1</span> <span class="nv">lst</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It breaks list to pairs, and select max from each pair.
+For example, <code>[8 5 9 3]</code> we split to <code>[[8 5] [5 9] [9 3]]</code>
+and select max from each sublist <code>[8 9 9]</code>.</p>
+
+<p>Just add this list to previous one</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">step-max</span> <span class="p">[</span><span class="nv">lst1</span> <span class="nv">lst2</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">map + </span><span class="p">(</span><span class="nf">max-row</span> <span class="nv">lst1</span><span class="p">)</span> <span class="nv">lst2</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>One iteration of <code>step-max</code> creates smaller triangle with sums on the bottom row.
+But we need only one number.</p>
+
+<p>Correct, <code>reduce</code> is ideal!</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">step-max</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">triangle</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>That’s it.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
+
+<p><strong>P.S.</strong> Problem 067 can be solved with the same code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 2]]></title>
@@ -3715,220 +3835,6 @@ I think it just for introducing matrices computation.</p>
 <p><img src="http://i.imgur.com/u9CAo.gif" alt="" /></p>
 
 <p><strong>P.S.</strong> Everyone can submit feeling.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Eclipse Speedup]]></title>
-    <link href="http://mishadoff.github.com/blog/eclipse-speedup/"/>
-    <updated>2012-12-23T18:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/eclipse-speedup</id>
-    <content type="html"><![CDATA[<p>Have you been in situation where most of the time in eclipse you were waiting for
-some operation to be finished?</p>
-
-<!-- more -->
-
-<p><img src="http://upload.wikimedia.org/wikipedia/en/3/34/Eclipse-logo.png" alt="" /></p>
-
-<p>If you here, probably, the answer is yes. You are bored with that slow functionality and want
-to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
-
-<p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
-Add SSD to make filesystem operations faster. We assume you can’t afford all that. All you can is setup your
-eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
-almost everything is identical in other versions for other platforms.</p>
-
-<h3 id="eclipse-tweaks">Eclipse tweaks</h3>
-
-<h4 id="plugins">Plugins</h4>
-
-<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn’t
-work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
-It is not deleting, you always can enable it back.</p>
-
-<pre><code>Window -&gt; Preferences -&gt; General -&gt; Startup and Shutdown
-</code></pre>
-
-<p><img src="http://i.imgur.com/kgavA.png" alt="" /></p>
-
-<p>By the way, some plugins appeared due to your experimenting and not used anymore. <strong>Delete</strong> redundant plugins if they
-not used at all.</p>
-
-<pre><code>Help -&gt; About Eclipse SDK -&gt; Instalation Details -&gt; &lt;Select plugin&gt; -&gt; Uninstall
-</code></pre>
-
-<p><img src="http://i.imgur.com/7wRoR.png" alt="" /></p>
-
-<h4 id="eclipseini">eclipse.ini</h4>
-
-<p>Following tweaks based on editing <code>eclipse.ini</code> file located in root folder
-of your eclipse instalation.</p>
-
-<ul>
-  <li><strong>Use specific JVM to run eclipse.</strong>
-This allows do not take into account system properties which alters your JDK.</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">-vm
-</span><span class="line">/path/to/your/java</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>
-    <p><strong>Use latest JDK to run eclipse.</strong>
-Much better if you point your eclipse to the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">latest JDK</a>.
-<em>Rumors</em> said it has better performance.</p>
-  </li>
-  <li>
-    <p><strong>Use Sun JDK to run eclipse.</strong>
-The reason behind this has the same explanation.</p>
-  </li>
-  <li>
-    <p><strong>Configure VM arguments.</strong>
-You can set your own values for virtual machine if you think
-they are appropriate
-(<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning">Performance related options</a>)
-I use following settings to increase heap size (objects) to <code>768Mb</code> and permgen (classes) to <code>256 Mb</code> on my <code>3Gb</code> RAM machine.</p>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">-vmargs
-</span><span class="line">-Xms768m
-</span><span class="line">-Xmx768m
-</span><span class="line">-XX:PermSize=256m
-</span><span class="line">-XX:MaxPermSize=256m</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
-step of JVM loading you will get performance boost. But it’s very risky change.</p>
-
-<p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
-experimental VM options like (some of these):</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">-server
-</span><span class="line">-XX:+UnlockExperimentalVMOptions
-</span><span class="line">-XX:+UseG1GC
-</span><span class="line">-XX:+UseParallelGC
-</span><span class="line">-XX:+UseFastAccessorMethods
-</span><span class="line">-Xss2m</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Check all <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fruntime-options.html">Eclipse runtime options</a>
-for reference and choose ones that appropriate for you.</p>
-
-<h4 id="disable-animations">Disable animations</h4>
-
-<p>Animations it’s cool. But I always disable animations if it possible in all tools.
-Also, classic theme is most usable for me.</p>
-
-<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
-</code></pre>
-
-<p><img src="http://i.imgur.com/mzLp7.png" alt="" /></p>
-
-<h4 id="disable-label-decorations">Disable label decorations</h4>
-
-<p>Label decorations are small icons on project, file, class levels that helps
-visually indicate some state of file. Like commited it to git or no.
-They are provided by various plugins and rarely useful. Just left ones that you want.</p>
-
-<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Label Decorations
-</code></pre>
-
-<p><img src="http://i.imgur.com/MKZp5.png" alt="" /></p>
-
-<h4 id="autocompletion">Autocompletion</h4>
-
-<p>Sometimes on slow machines or when you have a lot of classes in your classpath autocompletion performance is terrible.
-Small improvement you can get by reducing group of possible proposals. I left only <code>Java Proposals</code> and <code>Template Proposals</code>:</p>
-
-<pre><code>Window -&gt; Preferences -&gt; Java -&gt; Editor -&gt; Content Assist -&gt; Advanced
-</code></pre>
-
-<p><img src="http://i.imgur.com/Aa7MY.png" alt="" /></p>
-
-<h4 id="uncheck-validators">Uncheck validators</h4>
-
-<p>If you are sure in your competence just suspend all validators. If problem appears, you always
-can identify the reason, but you save your development time.</p>
-
-<pre><code>Window -&gt; Preferences -&gt; Validation -&gt; Suspend All Validators
-</code></pre>
-
-<p><img src="http://i.imgur.com/n1XQ2.png" alt="" /></p>
-
-<h4 id="close-unrelated-projects">Close unrelated projects</h4>
-
-<p>If you working in context of few projects, better to have all unrelated projects closed. They won’t appear
-in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
-You can add any number of projects to one working set, and quickly switch between different working sets
-in one workspace.</p>
-
-<pre><code>Right Click on Project -&gt; Assign Working Sets..
-</code></pre>
-
-<h4 id="close-unused-tabs-in-editor">Close unused tabs in editor</h4>
-
-<p>Big number of tabs in editor can greatly slow down your performance. Just limit them.</p>
-
-<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors
-</code></pre>
-
-<p>Check <code>Close editors automatically</code> and set <code>Number of opened tabs</code> to <code>10</code>.</p>
-
-<p><img src="http://i.imgur.com/gjRd8.png" alt="" /></p>
-
-<h4 id="disable-spell-check">Disable spell check</h4>
-
-<p>Are you developer or what? I don’t see any reason to have <code>spell check</code> enabled.</p>
-
-<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
-</code></pre>
-
-<h4 id="disable-autobuild">Disable autobuild</h4>
-
-<p>Probably, you aware about when you want to build your project and when not.</p>
-
-<pre><code>Project -&gt; Uncheck 'Build Automatically'
-Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Scrub output folders when cleaning'
-Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Rebuild class files modified by others'
-</code></pre>
-
-<h4 id="hotkeys">Hotkeys</h4>
-
-<p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
-single operation, your development process won’t be fast. Configure most-often used actions
-to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
-
-<pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys
-</code></pre>
-
-<p>To force myself learn all hotkeys I just disabled toolbar.</p>
-
-<pre><code>Window -&gt; Hide Toolbar
-</code></pre>
-
-<h3 id="useful-links">Useful Links</h3>
-
-<ul>
-  <li><a href="http://wiki.eclipse.org/Eclipse.ini">http://wiki.eclipse.org/Eclipse.ini</a></li>
-  <li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
-  <li><a href="http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/">http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/</a></li>
-  <li><a href="http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/">http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/</a></li>
-  <li><a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590">http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590</a></li>
-</ul>
-
-<p><strong>P.S.</strong> This article planned to be updatable, other tweaks are welcome!</p>
 ]]></content>
   </entry>
   
