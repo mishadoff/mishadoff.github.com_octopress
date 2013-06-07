@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-05-17T01:36:07+03:00</updated>
+  <updated>2013-06-07T17:20:05+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,284 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Fast Factorial]]></title>
+    <link href="http://mishadoff.github.com/blog/fast-factorial/"/>
+    <updated>2013-06-07T01:08:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/fast-factorial</id>
+    <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
+In <a href="http://mishadoff.github.com/blog/stirlings-approximation/">Stirling’s Approximation</a> article
+we’ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
+than “by definition”.</p>
+
+<!-- more -->
+
+<h3 id="factorials">Factorials</h3>
+
+<p>Most of programming languages tutorials shows the following
+approach to calculate factorial (<em>transformed to clojure</em>):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">factorial</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">n</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">      <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="p">(</span><span class="nf">factorial</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Simple recursive solution.</p>
+
+<p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
+
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>…</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">ArithmeticException</span> <span class="nv">integer</span> <span class="nv">overflow</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Oops.</p>
+
+<p>Default clojure integer type is 64 bit (<code>Long</code>).
+It does not fit well for <em>such large input</em>, so we rewrite function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">n</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">      <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">n</span> <span class="p">(</span><span class="nf">!</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Just one character added, <code>*</code> became <code>*'</code>. It is automatic type promotion.
+If type can not hold the value without losing precision, it automatically extends.
+In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
+
+<p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
+<code>(! 30000)</code>…</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">StackOverflowError</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Yet another overflow.</p>
+
+<p>Well, stack size is limited. We don’t need to consume stackframes and
+will use <code>loop/recur</code> approach.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">cur</span> <span class="nv">n</span> <span class="nv">acc</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">cur</span><span class="p">)</span> <span class="nv">acc</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">cur</span><span class="p">)</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">cur</span> <span class="nv">acc</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It is also recursive approach, but instead of saving so far calculated value
+in stack, we pass it to the function as a parameter.
+Clojure optimize tail recursion to iterative version and does not consume stack.
+It succesfully calculates factorial for 30000,
+and for any other value. Great!</p>
+
+<p>If we look at the factorial as a calculation process, not definition, it means
+“product of all numbers between 1 and n”. It is very concise for functional programming:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">&#39;</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Does not consume stack, no number overflow, but works
+~2 times slower than <code>loop/recur</code> version.</p>
+
+<p>I don’t know the reason, but it seems time wasted
+by <code>reduce</code> for creating intermediate results. So we choose
+previous <code>loop/recur</code> function as baseline factorial.</p>
+
+<h3 id="fast-factorial">Fast Factorial</h3>
+
+<p>Here is another way to calculate factorial.</p>
+
+<p>Let’s consider example <code>12!</code>.</p>
+
+<p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
+Perform prime factorization of each number.
+For example, prime factorization of <code>12</code> is <code>2 * 2 * 3</code>.</p>
+
+<p>After that we get a factorization of the <code>12!</code>, which contains only prime numbers.
+To find factorial value we can just multiply them all. But we do clever trick instead.</p>
+
+<p>Group every prime number and its power.
+E.g. if we have factorization <code>2 * 2 * 2 * 3 * 5</code> it becomes vector of pairs <code>[[2 3] [3 1] [5 1]]</code>.</p>
+
+<p>To calculate power we have simple <code>power</code> implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">power</span> <span class="p">[</span><span class="nv">x</span> <span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">&#39;</span> <span class="p">(</span><span class="nb">repeat </span><span class="nv">n</span> <span class="nv">x</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Trick is using exponentiation by squaring, which reduce
+exponentiation complexity from <code>O(n)</code> to <code>O(log n)</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">power</span> <span class="p">[</span><span class="nv">x</span> <span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">        <span class="p">(</span><span class="nb">= </span><span class="mi">1</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">x</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">power*</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">odd?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">x</span> <span class="p">(</span><span class="nf">power*</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">)</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It is not tail-recursive solution and theoretically may cause
+stackoverflow, but its not critical. It works well for large numbers.</p>
+
+<p>Actually, we do not perform factorization. We just know that factorization of <code>n!</code> contains all prime numbers below or equal <code>n</code> and every number have some multiplicity. </p>
+
+<p>The function calculates how many times prime number <code>k</code> occurs in factorial factorization for <code>n</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn- </span><span class="nv">find-power</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">total</span> <span class="nv">n</span> <span class="nv">sum</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">int </span><span class="p">(</span><span class="nb">/ </span><span class="nv">total</span> <span class="nv">k</span><span class="p">))]</span>
+</span><span class="line">      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">i</span><span class="p">)</span> <span class="nv">sum</span>
+</span><span class="line">          <span class="p">(</span><span class="nf">recur</span> <span class="nv">i</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">sum</span> <span class="nv">i</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Binding all together:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[[</span><span class="nv">h</span> <span class="o">&amp;</span> <span class="nv">t</span><span class="p">]</span>
+</span><span class="line">         <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">power</span> <span class="nv">%</span> <span class="p">(</span><span class="nf">find-power</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span>
+</span><span class="line">              <span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt;= </span><span class="nv">%</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)))</span>
+</span><span class="line">         <span class="nv">acc</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="nv">h</span> <span class="p">(</span><span class="nf">recur</span> <span class="nv">t</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">h</span> <span class="nv">acc</span><span class="p">))</span> <span class="nv">acc</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><a href="https://github.com/mishadoff/numberto/blob/master/src/numberto/factorial.clj">Code available here</a></p>
+
+<p><em>Note:</em> <code>primes</code> is a function generates lazy-sequence of prime numbers. It can be taken from <code>clojure.contrib.lazy-seqs</code>.</p>
+
+<h3 id="testing">Testing</h3>
+
+<blockquote>
+  <p>Anyway, why do you think it is faster?
+You performing more calculations than just multiplying numbers.</p>
+</blockquote>
+
+<p>Let’s see.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">do </span><span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 10 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 100 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 1000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">1000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">1000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 10000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">10000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">10000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 100000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">100000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">100000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 1000000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">1000000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">1000000</span><span class="p">))</span> <span class="nv">nil</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">== </span><span class="mi">10</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.051054 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.137587 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">100</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.081365 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.376653 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">1000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 1.59252 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 3.212842 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">10000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 161.856965 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 76.452529 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">100000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 19403.375319 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 6372.35266 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">1000000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 2863893.471718 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 1079632.255919 msecs&quot;</span>
+</span><span class="line"><span class="nv">nil</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For small factorials <code>(&lt; 1000)</code> improved version works ~2 times slower.
+Around the thousand it has the same performance as standard version.
+And, finally, some win (up to 3 times) for larger numbers.</p>
+
+<p>Theoretically, you can implement generalized factorial with these two algorithms
+and switch between them, depending on input. But who really need it? </p>
+
+<blockquote>
+  <p>Question: What the complexity of this algorithm?</p>
+</blockquote>
+
+<p><strong>P.S.</strong> Enterprise lovers would say factorial complexity is <code>O(1)</code>.
+Just precompute all values and save them to database.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
@@ -3774,67 +4052,6 @@ maximum of product.</p>
 
 <p><strong>P.S.</strong> Boring problem.
 I think it just for introducing matrices computation.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[DevOps reactions]]></title>
-    <link href="http://mishadoff.github.com/blog/devops-reactions/"/>
-    <updated>2013-01-13T18:10:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/devops-reactions</id>
-    <content type="html"><![CDATA[<p>Just found blog, that illustrates developer feelings with gif-pictures: <a href="http://devopsreactions.tumblr.com/">DevOps reactions</a></p>
-
-<p>It’s really cool idea.</p>
-
-<!-- more -->
-
-<p>Here are the most liked</p>
-
-<h3 id="when-you-review-undocumented-code">When you review undocumented code</h3>
-
-<p><img src="http://i209.photobucket.com/albums/bb315/DJ_Napps/omg.gif" alt="" /></p>
-
-<h3 id="security-hole-will-not-be-fixed-because-product-wants-a-new-feature">Security hole will not be fixed because Product wants a new feature</h3>
-
-<p><img src="http://i.imgur.com/w3Nbr.gif" alt="" /></p>
-
-<h3 id="an-error-notification-comes-in-that-is-related-to-code-you-worked-on">An error notification comes in that is related to code you worked on</h3>
-
-<p><img src="http://i.imgur.com/An059.gif" alt="" /></p>
-
-<h3 id="code-freeze">Code freeze</h3>
-
-<p><img src="http://media.tumblr.com/c888a5fc6db74ba2ba4f5dcb3d13e95b/tumblr_inline_mfrh8jAexq1raprkq.gif" alt="" /></p>
-
-<h3 id="working-on-the-wrong-server">Working on the wrong server</h3>
-
-<p><img src="http://i.imgur.com/da25D.gif" alt="" /></p>
-
-<h3 id="deciding-whether-to-perform-a-risky-breakfix">Deciding whether to perform a risky break/fix</h3>
-
-<p><img src="http://i.imgur.com/SvaAv.gif" alt="" /></p>
-
-<h3 id="finding-an-interesting-side-issue-while-dealing-with-something-else">Finding an interesting side-issue while dealing with something else</h3>
-
-<p><img src="http://www.ohmagif.com/wp-content/uploads/2012/12/please-wait-i-need-to-play-in-the-puddle.gif" alt="" /></p>
-
-<h3 id="reaction-difference-when-something-breaks-and-one-is-on-vacation">Reaction difference when something breaks and one is on vacation</h3>
-
-<p><img src="http://i.imgur.com/c9X6n.gif" alt="" /></p>
-
-<h3 id="typical-lunch-break">Typical lunch break</h3>
-
-<p><img src="http://media.tumblr.com/tumblr_mekc6kZTap1raprkq.gif" alt="" /></p>
-
-<h3 id="how-time-feels-when-participating-in-a-meeting-with-non-technical-people">How time feels when participating in a meeting with non-technical people</h3>
-
-<p><img src="http://i.imgur.com/7xpOF.gif" alt="" /></p>
-
-<h3 id="bonus-holy-war-java-vs-c">Bonus: Holy War (Java vs C#)</h3>
-
-<p><img src="http://i.imgur.com/u9CAo.gif" alt="" /></p>
-
-<p><strong>P.S.</strong> Everyone can submit feeling.</p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,111 @@
+---
+layout: post
+title: "Fast Factorial"
+date: 2013-06-07 01:08
+comments: true
+categories: [algorithm, clojure]
+published: false
+---
+
+Factorial function is simple enough. But there is still some fun about it.
+In [Stirling's Approximation](/blog/stirlings-approximation/) article
+we've seen how to calculate good factorial approximation faster than *exact* value.
+By the way, there is an algorithm to calculate *exact* value of factorial faster
+than "by definition".
+
+<!-- more -->
+
+### Factorials
+
+Most of programming languages tutorials shows the following
+approach to calculate factorial (*transformed to clojure*):
+
+``` clojure
+(defn factorial [n]
+  (if (zero? n) 1
+      (* n (factorial (dec n)))))
+```
+
+Simple recursive solution.
+
+`(factorial 10)` works, `(factorial 20)` works, `(factorial 30)`...
+
+```
+> ArithmeticException integer overflow
+```
+
+Oops.
+
+Default clojure integer type is 64 bit (`Long`).
+It does not fit well for *such large input*, so we rewrite function.
+
+``` clojure
+(defn factorial [n]
+  (if (zero? n) 1
+      (*' n (factorial (dec n)))))
+```
+
+Just one character added, `*` became `*'`. It is automatic type promotion.
+If type can not hold the value without losing precision, it automatically extends.
+In this case, `Long` becames `BigInteger` and all works fine.
+
+`(factorial 30)` works, `(factorial 300)` works, `(factorial 3000)` works,
+`(factorial 30000)`...
+
+```
+> StackOverflowError
+```
+
+Yet another overflow.
+
+Well, stack size is limited. We don't need to consume stackframes and
+will use `loop/recur` approach.
+
+``` clojure
+(defn factorial [n]
+  (loop [cur n acc 1]
+    (if (zero? cur) acc
+        (recur (dec cur) (*' cur acc)))))
+```
+
+It is also recursive approach, but instead of saving so far calculated value
+in stack, we pass it to the function as a parameter.
+Clojure optimize tail recursion to iterative version and does not consume stack.
+It succesfully calculates factorial for 30000,
+and for any other value. Great!
+
+If we look at the factorial as a calculation process, not definition, it means
+"product of all numbers between 1 and n". It is very concise for functional programming:
+
+``` clojure
+(defn factorial [n]
+  (reduce *' (range 1 (inc n))))
+```
+
+Does not consume stack, no number overflow, but works
+~2 times slower than `loop/recur` version.
+
+I don't know the reason, but it seems time wasted
+by `reduce` for creating intermediate results. So we choose
+previous `loop/recur` function as baseline factorial.
+
+### Fast Factorial
+
+Here is another way to calculate factorial.
+
+Let's consider example `12!`.
+
+Factorial is a product of numbers `12! = 1 * 2 * 3 * ... * 11 * 12`.
+Perform prime factorization of each number.
+For example, prime factorization of `12` is `2 * 2 * 3`.
+
+After that we get a factorization of the `12!`, which contains only prime numbers.
+To find factorial value we can just multiply them all.
+Instead of that we do clever trick: group every prime number and its power.
+E.g. if we have factorization `2 * 2 * 2 * 3 * 5` it becomes vector of pairs `[[2 3] [3 1] [5 1]]`.
+
+;; TODO x to the nth power
+
+;; TODO how to calculate multiplicity
+
+;; And multiple them all
