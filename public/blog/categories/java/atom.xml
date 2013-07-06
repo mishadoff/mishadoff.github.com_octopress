@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-06-07T17:20:05+03:00</updated>
+  <updated>2013-07-06T16:00:21+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[randomorg-0.1]]></title>
+    <link href="http://mishadoff.github.com/blog/randomorg-0-dot-1/"/>
+    <updated>2013-07-06T15:33:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/randomorg-0-dot-1</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
+
+<!-- more -->
+
+<p>If you use random numbers in your software you might be interested in
+better numbers distribution than <code>Random.nextInt()</code>.</p>
+
+<p>Someone solves this problem with hardware generators, few entropy sources and
+even <a href="http://www.amazon.com/Million-Random-Digits-Normal-Deviates/dp/0833030477/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1373114958&amp;sr=1-1&amp;keywords=A+Million+Random+Digits+with+100%2C000+Normal+Deviates">books</a>.</p>
+
+<p>By the way, there is great service <a href="http://random.org">random.org</a>
+which allows to generate random numbers via atmospheric noise.</p>
+
+<p><strong>randomorg</strong> is a small java library for random.org API.</p>
+
+<p>Check project page for usage and documentation!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
@@ -1525,51 +1549,6 @@ responsible for its handling. Unfortunately, perhaps compiler forces you to hand
 
 <p>A lot of programmers are aware about this common mistake. But some are not.
 Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Java Magic. Part 2: 0xCAFEBABE]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/"/>
-    <updated>2012-10-31T19:42:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe</id>
-    <content type="html"><![CDATA[<p>Did you know that all java classes start with the same 4 bytes. In hex it’s <code>CAFEBABE</code>.</p>
-
-<!-- more -->
-
-<p>To make sure, create simple java file, call it <code>Hello.java</code>:</p>
-
-<p><code>java
-public class Hello {
-    public static void main(String[] args) {
-        System.out.println("Hell, O'World!");
-    }
-}
-</code></p>
-
-<p>Compile it by <code>javac Hello.java</code>, and open <code>Hello.class</code> with hex-editor (<code>M-x hexl-mode</code> for emacs)</p>
-
-<p><img src="/images/cafebabe.png" alt="" title="cafebabe" /></p>
-
-<p>James Gosling <a href="http://radio-weblogs.com/0100490/2003/01/28.html">explained</a> this:</p>
-
-<blockquote>
-  <p>We used to go to lunch at a place called St Michael’s Alley.
-According to local legend, in the deep dark past, the Grateful Dead used to perform there before they made it big.
-It was a pretty funky place that was definitely a Grateful Dead Kinda Place.
-When Jerry died, they even put up a little Buddhist-esque shrine.
-When we used to go there, we referred to the place as Cafe Dead.
-Somewhere along the line it was noticed that this was a HEX number.
-I was re-vamping some file format code and needed a couple of magic numbers: one for the persistent object file, and one for classes.
-I used CAFEDEAD for the object file format, and in grepping for 4 character hex words that fit after “CAFE” (it seemed to be a good theme)
-I hit on BABE and decided to use it. At that time, it didn’t seem terribly important or destined to go anywhere but the trash-can of history.
-So CAFEBABE became the class file format, and CAFEDEAD was the persistent object format. But the persistent object facility went away,
-and along with it went the use of CAFEDEAD - it was eventually replaced by RMI.</p>
-</blockquote>
-
-<p><code>0xCAFEBABE</code> is <code>3405691582</code> in decimal.
-If we sum all digits we get <code>43</code>. One more than <code>42</code> - <em>Ultimate Answer to the Life, the Universe, and Everything</em>.
-By the way, <code>43</code> is a prime number. You see, magic everywhere. Even in the last sentence.</p>
 ]]></content>
   </entry>
   

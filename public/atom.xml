@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-06-07T17:20:05+03:00</updated>
+  <updated>2013-07-06T16:00:21+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[randomorg-0.1]]></title>
+    <link href="http://mishadoff.github.com/blog/randomorg-0-dot-1/"/>
+    <updated>2013-07-06T15:33:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/randomorg-0-dot-1</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
+
+<!-- more -->
+
+<p>If you use random numbers in your software you might be interested in
+better numbers distribution than <code>Random.nextInt()</code>.</p>
+
+<p>Someone solves this problem with hardware generators, few entropy sources and
+even <a href="http://www.amazon.com/Million-Random-Digits-Normal-Deviates/dp/0833030477/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1373114958&amp;sr=1-1&amp;keywords=A+Million+Random+Digits+with+100%2C000+Normal+Deviates">books</a>.</p>
+
+<p>By the way, there is great service <a href="http://random.org">random.org</a>
+which allows to generate random numbers via atmospheric noise.</p>
+
+<p><strong>randomorg</strong> is a small java library for random.org API.</p>
+
+<p>Check project page for usage and documentation!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fast Factorial]]></title>
@@ -3899,159 +3923,6 @@ Unit conversion method can be defined either at the <code>enum ForceUnit</code> 
   <li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
   <li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
 </ul>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 011]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-011/"/>
-    <updated>2013-01-18T13:45:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-011</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>What is the greatest product of four adjacent numbers in the same
-direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=11">http://projecteuler.net/problem=11</a></p>
-
-<!-- more -->
-
-<blockquote>
-  <p>In the 20 x 20 grid below, four numbers along a diagonal
-line have been enclosed into square brackets</p>
-</blockquote>
-
-<pre><code>08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
-49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
-81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
-52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
-22 31 16 71 51 67 63 89 41 92 36 54 22 40 40 28 66 33 13 80
-24 47 32 60 99 03 45 02 44 75 33 53 78 36 84 20 35 17 12 50
-32 98 81 28 64 23 67 10[26]38 40 67 59 54 70 66 18 38 64 70
-67 26 20 68 02 62 12 20 95[63]94 39 63 08 40 91 66 49 94 21
-24 55 58 05 66 73 99 26 97 17[78]78 96 83 14 88 34 89 63 72
-21 36 23 09 75 00 76 44 20 45 35[14]00 61 33 97 34 31 33 95
-78 17 53 28 22 75 31 67 15 94 03 80 04 62 16 14 09 53 56 92
-16 39 05 42 96 35 31 47 55 58 88 24 00 17 54 24 36 29 85 57
-86 56 00 48 35 71 89 07 05 44 44 37 44 60 21 58 51 54 17 58
-19 80 81 68 05 94 47 69 28 73 92 13 86 52 17 77 04 89 55 40
-04 52 08 83 97 35 99 16 07 97 57 32 16 26 26 79 33 27 98 66
-88 36 68 87 57 62 20 72 03 46 33 67 46 55 12 32 63 93 53 69
-04 42 16 73 38 25 39 11 24 94 72 18 08 46 29 32 40 62 76 36
-20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
-20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
-01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
-</code></pre>
-
-<blockquote>
-  <p>The product of these numbers is 26 * 63 * 78 * 14 = 1788696.</p>
-
-  <p>What is the greatest product of four adjacent numbers in the
-same direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
-</blockquote>
-
-<p>First step is pretty routine, we need to create such grid representation
-in our program from file. For the way how we read files refer
-<a href="http://mishadoff.github.com/blog/clojure-euler-problem-008">Clojure Euler: Problem 008</a>, we have
-similar problem there.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">get-matrix</span> <span class="p">[]</span>
-</span><span class="line">  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">Integer/parseInt</span> <span class="p">(</span><span class="nb">apply str </span><span class="nv">%</span><span class="p">))</span>
-</span><span class="line">       <span class="p">(</span><span class="nf">partition</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="sc">\ </span><span class="nv">%</span><span class="p">))</span>
-</span><span class="line">                              <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;res/problem011.txt&quot;</span><span class="p">))))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Idea is following: read the file, drop the garbage,
-take all two-digit combinations, concat each and transform to the integer.</p>
-
-<p>To make things simple we reading the numbers in one-dimensional list
-of size 20 x 20 = 400. We always can use formula to represent two dimensional
-indexing for one-dimensional array and vice versa.</p>
-
-<p><em>Example:</em> suppose you need a 3 x 3 matrix <code>A</code></p>
-
-<pre><code>9    2    4
-6    1    7
-5    3    8
-</code></pre>
-
-<p>You can flat it into 1D array <code>B</code></p>
-
-<pre><code>9 2 4 6 1 7 5 3 8
-</code></pre>
-
-<p>Now, when you want <code>A[i][j]</code> use the formula <code>i * size_j + j</code>, where <code>size_j</code>
-is second matrix dimension. Therefore <code>A[1][2] = B[1 * 3 + 2] = B[5] = 7</code>, what is correct.</p>
-
-<p>Implementing that in clojure gives one indexing function</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">get-at</span> <span class="p">[</span><span class="nv">i</span> <span class="nv">j</span> <span class="nv">matrix</span><span class="p">]</span>
-</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">i</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">&lt; </span><span class="nv">i</span> <span class="mi">20</span><span class="p">)</span> <span class="p">(</span><span class="nb">&gt;= </span><span class="nv">j</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">&lt; </span><span class="nv">j</span> <span class="mi">20</span><span class="p">))</span>
-</span><span class="line">    <span class="p">(</span><span class="nb">nth </span><span class="nv">matrix</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">j</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="mi">20</span><span class="p">)))</span> <span class="mi">0</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>We check the boundaries of array inside this function, which can be inappropriate
-in many cases, but it is good as we use it in one place.</p>
-
-<p>Ok. We have data, we have methods operate this data, now let’s code logic.
-Our good friend - <strong>bruteforce</strong>.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">matrix</span> <span class="p">(</span><span class="nf">get-matrix</span><span class="p">)</span>
-</span><span class="line">      <span class="nv">ways</span> <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">20</span><span class="p">)</span> <span class="nv">j</span> <span class="p">(</span><span class="nb">range </span><span class="mi">20</span><span class="p">)]</span>
-</span><span class="line">             <span class="p">[(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="nv">i</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">j</span><span class="p">)</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))</span>
-</span><span class="line">              <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">j</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))</span>
-</span><span class="line">              <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">j</span><span class="p">)</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))</span>
-</span><span class="line">              <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="nv">j</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))])]</span>
-</span><span class="line">    <span class="p">(</span><span class="nb">reduce max </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">reduce * </span><span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce concat </span><span class="nv">ways</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>We iterate on all matrix elements as start of 4-element range.</p>
-
-<p>We have 4 conditions, each of them represents some direction.
-All these 4 directions represent all possible direction in grid.</p>
-
-<ol>
-  <li>NORTH -&gt; SOUTH (Up &amp; Down covered)</li>
-  <li>WEST -&gt; EAST (Left &amp; Right covered)</li>
-  <li>NW -&gt; SE (backslash diagonals covered)</li>
-  <li>NE -&gt; SW (slash diagonals covered)</li>
-</ol>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nv">S</span>      <span class="nv">S</span> <span class="nb">* * * </span>        <span class="nv">S</span>                  <span class="nv">S</span>
-</span><span class="line"><span class="nb">* </span>                      <span class="nb">* </span>               <span class="nv">*</span>
-</span><span class="line"><span class="nb">* </span>                       <span class="nb">* </span>             <span class="nv">*</span>
-</span><span class="line"><span class="nb">* </span>                        <span class="nb">* </span>           <span class="nv">*</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><em>S is for start</em></p>
-
-<p>If we obtain all possible 4-element ranges for matrix, just find
-maximum of product.</p>
-
-<p>Problem solved!</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem011.clj">github</a></p>
-
-<p><strong>P.S.</strong> Boring problem.
-I think it just for introducing matrices computation.</p>
 ]]></content>
   </entry>
   
