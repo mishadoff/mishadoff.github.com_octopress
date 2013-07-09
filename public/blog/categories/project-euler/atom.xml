@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-06T20:56:54+03:00</updated>
+  <updated>2013-07-10T02:49:59+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <updated>2013-07-10T01:59:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>How many Sundays fell on the first of the month
+during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=19">http://projecteuler.net/problem=19</a></p>
+
+<!-- more -->
+
+<p>Project Euler also gives following information:</p>
+
+<ul>
+  <li>1 Jan 1900 was a Monday.</li>
+  <li>
+    <p>A poem</p>
+
+    <p>Thirty days has September,<br />
+April, June and November.<br />
+All the rest have thirty-one,<br />
+Saving February alone,<br />
+Which has twenty-eight, rain or shine.<br />
+And on leap years, twenty-nine.<br /></p>
+  </li>
+  <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
+</ul>
+
+<p>Implementin calendars logic is great, but java interoperability is much better!</p>
+
+<p>First of all, take standard java <code>GregorianCalendar</code> class.
+We can import it <em>almost</em> the same way as we use <code>require</code> </p>
+
+<p><code>clojure
+(import [java.util GregorianCalendar])
+</code></p>
+
+<p>To create an object use function <code>new</code></p>
+
+<p><code>clojure
+(new GregorianCalendar)
+</code></p>
+
+<p>But it is more idiomatic way to create java objects with special syntax:
+<em>period after class name</em> </p>
+
+<p><code>clojure
+(GregorianCalendar.)
+</code></p>
+
+<p>To configure calendar object to specific date we need to set some its
+properties. Setters syntax is following (assuming <code>calendar</code>
+is an object of calendar):</p>
+
+<p>Java</p>
+
+<p><code>java 
+calendar.set(GregorianCalendar.YEAR, 2013);
+</code></p>
+
+<p>Clojure</p>
+
+<p><code>clojure
+(.set calendar GregorianCalendar/YEAR 2013)
+</code></p>
+
+<p>Executing lot of setters is the same boilerplate as in java:</p>
+
+<p><code>clojure
+(do
+  (.set calendar GregorianCalendar/YEAR 2013)
+  (.set calendar GregorianCalendar/MONTH 11)
+  (.set calendar GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>To avoid repetition of object name we can use <code>doto</code> macro:</p>
+
+<p><code>clojure
+(doto (GregorianCalendar.)
+  (.set GregorianCalendar/YEAR 2013)
+  (.set GregorianCalendar/MONTH 11)
+  (.set GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>This macro <em>magically</em> performs the same set of operations as above, but in more readable way.</p>
+
+<p>Now we can create calendar objects for the <em>first of the
+specific month of the specific year</em></p>
+
+<p><code>clojure
+(defn calendar-for [year month]
+  (doto (GregorianCalendar.)
+    (.set GregorianCalendar/YEAR year)
+    (.set GregorianCalendar/MONTH month)
+    (.set GregorianCalendar/DAY_OF_MONTH 1)))
+</code></p>
+
+<p>Just iterate through all such objects in date range given in problem definition
+and count Sundays.</p>
+
+<p><code>clojure
+(reduce +
+  (for [year (range 1901 (inc 2000)) month (range 1 (inc 12))]
+    (let [c (calendar-for year month)]
+          (if (= GregorianCalendar/SUNDAY 
+                 (.get c GregorianCalendar/DAY_OF_WEEK)) 1 0))))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
+
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
@@ -401,138 +518,6 @@ used for every problem.</p>
 <p>Second of all, you can see that our algorithm has complexity of <code>O(n^2)</code>. But ideal
 solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/Binomial_coefficient">binomial coefficient</a>
 <code>(2*n, n)</code>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
-    <updated>2013-02-16T01:08:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Which starting number, under one million, produces the longest Collatz chain?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
-
-<!-- more -->
-
-<blockquote>
-  <p>The following iterative sequence is defined for the set of positive integers:</p>
-
-  <p>n → n/2 (n is even)</p>
-
-  <p>n → 3n + 1 (n is odd)</p>
-
-  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
-
-  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-
-  <p>It can be seen that this sequence (starting at 13 and finishing at 1)
-contains 10 terms. Although it has not been proved yet (Collatz Problem),
-it is thought that all starting numbers finish at 1.</p>
-
-  <p>Which starting number, under one million, produces the longest chain?</p>
-
-  <p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
-</blockquote>
-
-<p>Sequences again.
-So, first of all we need function to detect next collatz number.
-It is pretty straightforward:</p>
-
-<p><code>clojure
-(defn collatz-next [n]
-  (if (even? n) (/ n 2) (inc (* n 3))))
-</code></p>
-
-<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
-starting from number <code>n</code>:</p>
-
-<p><code>clojure
-(iterate collatz-next n)
-</code></p>
-
-<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
-count of collatz chain sequence:</p>
-
-<p><code>clojure
-(defn collatz-chain-length [n]
-  (inc (count (take-while #(&gt; % 1) (iterate collatz-next n)))))
-</code></p>
-
-<p>Now we have almost all code logic and just use it: calculate collatz chain
-for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
-
-<p><code>clojure
-(first (reduce #(if (&gt; (second %1) (second %2)) %1 %2)
-               (map #(list % (collatz-chain-length %)) (range 1 1000000))))
-</code></p>
-
-<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
-
-<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
-and I have no idea how to solve it another way.</p>
-
-<p>I am sure there is a better algorithm than mine. But I don’t know it.
-What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
-
-<blockquote>
-  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-</blockquote>
-
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
-
-<p>Got it?</p>
-
-<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
-for <code>40</code>, <code>20</code> and so on.</p>
-
-<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
-it to have recursive solution.</p>
-
-<p>Here the first (<em>and final</em>) version:</p>
-
-<p><code>clojure
-(defn collatz-chain-recursive [n]
-  (if (= n 1) 1
-      (inc (collatz-chain-recursive (collatz-next n)))))
-</code></p>
-
-<p>Recursion is impressive at the point that its implementation
-almost exactly follows the problem definition. It is easy to understand.</p>
-
-<p>But, as you may notice our implementation not
-<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
-have troubles. Do not think about it unless we actually have them.</p>
-
-<p>For the sake of fun let’s run this function instead of previous to
-obtain the results.</p>
-
-<p><strong>20 seconds</strong>, it is great. I even don’t think that
-this simple recursive function gives such boost in performance.</p>
-
-<p>One little tweak in result function:</p>
-
-<p><code>clojure
-(first
-  (apply max-key second
-         (map #(list % (collatz-chain-recursive %)) (range 1 1000000))))
-</code></p>
-
-<p>And we have <strong>~12 seconds</strong>.</p>
-
-<p>Unexpected “The End”. Yeah, I love The Doors.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
-
-<p><strong>P.S.</strong> I really wanted to explain technique called
-<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
-simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn’t have much sense here because
-12 seconds is acceptable. We will have chance to introduce
-memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-06T20:56:54+03:00</updated>
+  <updated>2013-07-10T02:49:59+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <updated>2013-07-10T01:59:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>How many Sundays fell on the first of the month
+during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=19">http://projecteuler.net/problem=19</a></p>
+
+<!-- more -->
+
+<p>Project Euler also gives following information:</p>
+
+<ul>
+  <li>1 Jan 1900 was a Monday.</li>
+  <li>
+    <p>A poem</p>
+
+    <p>Thirty days has September,<br />
+April, June and November.<br />
+All the rest have thirty-one,<br />
+Saving February alone,<br />
+Which has twenty-eight, rain or shine.<br />
+And on leap years, twenty-nine.<br /></p>
+  </li>
+  <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
+</ul>
+
+<p>Implementin calendars logic is great, but java interoperability is much better!</p>
+
+<p>First of all, take standard java <code>GregorianCalendar</code> class.
+We can import it <em>almost</em> the same way as we use <code>require</code> </p>
+
+<p><code>clojure
+(import [java.util GregorianCalendar])
+</code></p>
+
+<p>To create an object use function <code>new</code></p>
+
+<p><code>clojure
+(new GregorianCalendar)
+</code></p>
+
+<p>But it is more idiomatic way to create java objects with special syntax:
+<em>period after class name</em> </p>
+
+<p><code>clojure
+(GregorianCalendar.)
+</code></p>
+
+<p>To configure calendar object to specific date we need to set some its
+properties. Setters syntax is following (assuming <code>calendar</code>
+is an object of calendar):</p>
+
+<p>Java</p>
+
+<p><code>java 
+calendar.set(GregorianCalendar.YEAR, 2013);
+</code></p>
+
+<p>Clojure</p>
+
+<p><code>clojure
+(.set calendar GregorianCalendar/YEAR 2013)
+</code></p>
+
+<p>Executing lot of setters is the same boilerplate as in java:</p>
+
+<p><code>clojure
+(do
+  (.set calendar GregorianCalendar/YEAR 2013)
+  (.set calendar GregorianCalendar/MONTH 11)
+  (.set calendar GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>To avoid repetition of object name we can use <code>doto</code> macro:</p>
+
+<p><code>clojure
+(doto (GregorianCalendar.)
+  (.set GregorianCalendar/YEAR 2013)
+  (.set GregorianCalendar/MONTH 11)
+  (.set GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>This macro <em>magically</em> performs the same set of operations as above, but in more readable way.</p>
+
+<p>Now we can create calendar objects for the <em>first of the
+specific month of the specific year</em></p>
+
+<p><code>clojure
+(defn calendar-for [year month]
+  (doto (GregorianCalendar.)
+    (.set GregorianCalendar/YEAR year)
+    (.set GregorianCalendar/MONTH month)
+    (.set GregorianCalendar/DAY_OF_MONTH 1)))
+</code></p>
+
+<p>Just iterate through all such objects in date range given in problem definition
+and count Sundays.</p>
+
+<p><code>clojure
+(reduce +
+  (for [year (range 1901 (inc 2000)) month (range 1 (inc 12))]
+    (let [c (calendar-for year month)]
+          (if (= GregorianCalendar/SUNDAY 
+                 (.get c GregorianCalendar/DAY_OF_WEEK)) 1 0))))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
+
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
@@ -535,74 +652,6 @@ to update specific area in the world, for example <em>west organisms evolve fast
 <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/life.clj">available here</a></p>
 
 <p>Enjoy!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
-    <updated>2013-03-05T01:31:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
-
-  <p>What is the sum of the digits of the number 2^1000 ?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=16">http://projecteuler.net/problem=16</a></p>
-
-<!-- more -->
-
-<p>Are you kidding me?</p>
-
-<ul>
-  <li>Find 1000th <em>power of two</em></li>
-  <li>Sum its digits</li>
-</ul>
-
-<p>In <a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
-learned how to sum digits in the number. Just gentle reminder:</p>
-
-<p><code>clojure
-(defn sum-of-digits [n]
-  (reduce + (map #(- (int %) 48) (seq (str n)))))
-</code></p>
-
-<p>Now, let’s create sequence of powers of two:</p>
-
-<p><code>clojure
-(defn powers-of-2 []
-  (iterate (partial * 2) 1))
-</code></p>
-
-<p>Unfortunately, this sequence throws <code>integer overflow</code> on the <code>64th</code> element.
-We can fix that using <em>long arithmetics</em>, which known as <code>BigInteger</code> in Java.
-Change <code>1</code> to <code>1N</code>.</p>
-
-<p><code>clojure
-(iterate (partial * 2) 1N)
-</code></p>
-
-<p>Another way is to use <strong>automatic promotion</strong> operator (<code>+'</code>, <code>*'</code>).
-If result of some operation is not suitable for some type,
-instead of invalid computation and runtime exception, clojure automatically promotes
-the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> <em>works fine and produces
- correct result with type of</em> <code>BigInteger</code>):</p>
-
-<p><code>clojure
-(iterate (partial *' 2) 1)
-</code></p>
-
-<p>Choose <code>powers-of-2</code> that you prefer and final result will look like this:</p>
-
-<p><code>clojure
-(sum-of-digits (last (take 1001 (powers-of-2))))
-</code></p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
-
-<p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
-speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
 ]]></content>
   </entry>
   
