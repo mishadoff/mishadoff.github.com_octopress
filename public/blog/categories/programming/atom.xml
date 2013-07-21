@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-10T02:49:59+03:00</updated>
+  <updated>2013-07-21T14:54:30+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <updated>2013-07-21T13:39:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of the digits in the number 100!</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=20">http://projecteuler.net/problem=20</a></p>
+
+<!-- more -->
+
+<p>First of all we need to calculate factorial.
+Without integer overflows, stack overflows and other caveats.</p>
+
+<p>Previous article <a href="/blog/fast-factorial/">Fast Factorial</a> has working solution
+that we might use.</p>
+
+<p><code>
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Now, calculate the sum of digits, the same function that we used in
+<a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+
+<p><code>
+(defn sum-of-digits [n]
+  (reduce + (map #(- (int %) 48) (seq (str n)))))
+</code></p>
+
+<p>And the final line</p>
+
+<p><code>
+(sum-of-digits (! 100))
+</code></p>
+
+<p>Simple enough, huh?</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem020.clj">Code</a></p>
+
+<p><strong>P.S.</strong> The functions <code>sum-of-digits</code>, <code>count-digits</code> and similar used often
+and look very ugly, so I decided to create a separate set of functions (<em>library?</em>)
+which I can refer. It should be a set of common mathematic functions, including
+different sequences, sums, converters, interesting numbers. You might use it too.
+Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
@@ -126,7 +177,7 @@ and count Sundays.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
 
-<p><strong>P.S.</strong> Java interoperability is ugly but still useful.</p>
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
 ]]></content>
   </entry>
   
@@ -525,133 +576,6 @@ recursively calculate the length of remainder, which is lower than <code>100</co
 
 <p>P.S. In fact algorithm is very simple, but needs some time to understand few branches.
 By the way, the problem is little boring.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
-    <link href="http://mishadoff.github.com/blog/code-golf-game-of-life/"/>
-    <updated>2013-03-07T17:59:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/code-golf-game-of-life</id>
-    <content type="html"><![CDATA[<p>Conway’s Game of Life in a tweet.</p>
-
-<!-- more -->
-
-<p>Recently, my friend pointed out me an article <a href="http://trelford.com/blog/post/140.aspx">Life in a tweet</a>
-where <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a> was implemented in one tweet
-(<em>less than 140 characters</em>) in Ruby and F#. I took this challenge.</p>
-
-<h3 id="tweet">Tweet</h3>
-
-<p>Here is the final version in <code>137</code> characters of Clojure:</p>
-
-<p><code>clojure
-(fn[g r](reduce(fn[i j](update-in i j(fn[v](get[v 1]
-(-(apply +(map #(get-in g% 0)(for[a[-1 0 1]b[-1 0 1]]
-(map + j[a b]))))v 2)0))))g r))
-</code></p>
-
-<h3 id="sugared-version">“Sugared” version</h3>
-
-<p>Translate tweet to more readable code:</p>
-
-<p><code>clojure
-(defn step-sugar [grid range]
-  (let [count-neighbours ;; determine number of neighbours
-        (fn[[i j]]
-          (reduce + (map #(get-in grid % 0)
-                         (for[a [-1 0 1] b [-1 0 1]]
-                           [(+ i a) (+ j b)]))))
-        new-value  ;; calculate new value for cell
-        (fn [v [i j]]
-          (let [c (- (count-neighbours [i j]) v)]
-            (cond (= 3 c) 1
-                  (= 2 c) v
-                  :else 0)))
-        evolve-cell ;; update cell in a grid
-        (fn[g i] (update-in g i #(new-value % i)))]
-    (reduce evolve-cell grid range)))
-</code></p>
-
-<p>Actually, this version is cheating,
-due to passing one extra-parameter <code>range</code> that contains all indices
-need to be updated in form <code>[[0 1] [1 1]]...</code></p>
-
-<p>On the other side it gives us two features:</p>
-
-<ul>
-  <li><strong>Works for rectangular grid</strong>. Although, initial
-implementation assumes the world is square.</li>
-  <li><strong>Specific part of world can be updated</strong>. It gives possibility
-to update specific area in the world, for example <em>west organisms evolve faster</em>.</li>
-</ul>
-
-<p>To use this function you need:</p>
-
-<ul>
-  <li>World</li>
-</ul>
-
-<p><code>clojure
-(def grid [[0 0 0]
-           [1 1 1]
-           [0 0 0]])
-</code></p>
-
-<ul>
-  <li>Evolution</li>
-</ul>
-
-<p><code>clojure
-(defn evolution [g]
-  (let [p (count g) q (count (get g 0))
-        range (for [i (range p) j (range q)][i j])]
-    (iterate #(step-sugar % range) g)))
-</code></p>
-
-<ul>
-  <li>Visualization</li>
-</ul>
-
-<p><code>clojure
-(defn print-grid [g]
-  (doseq [s (map #(apply str (replace {0 "." 1 "⚫"} %)) g)]
-    (println s)))
-</code></p>
-
-<h3 id="testing">Testing</h3>
-
-<p>To make sure results are correct use the following
-<code>run</code> function and compare results to some common
-<a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns">examples</a>.</p>
-
-<p><code>clojure
-(defn run [grid]
-  (doseq [g (evolution grid)]
-    (print-grid g)
-    (Thread/sleep 1000)))
-</code></p>
-
-<p>Pattern examples:</p>
-
-<p>``` clojure
-(def block [[0 0 0 0]
-            [0 1 1 0]
-            [0 1 1 0]
-            [0 0 0 0]])</p>
-
-<p>(def glider [[0 0 1 0 0 0 0 0]
-             [1 0 1 0 0 0 0 0]
-             [0 1 1 0 0 0 0 0]
-             [0 0 0 0 0 0 0 0]
-             [0 0 0 0 0 0 0 0]
-             [0 0 0 0 0 0 0 0]])
-```</p>
-
-<p>Full history of implementation and more life patterns
-<a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/life.clj">available here</a></p>
-
-<p>Enjoy!</p>
 ]]></content>
   </entry>
   

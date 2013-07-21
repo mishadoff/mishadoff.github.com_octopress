@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-10T02:49:59+03:00</updated>
+  <updated>2013-07-21T14:54:30+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <updated>2013-07-21T13:39:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of the digits in the number 100!</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=20">http://projecteuler.net/problem=20</a></p>
+
+<!-- more -->
+
+<p>First of all we need to calculate factorial.
+Without integer overflows, stack overflows and other caveats.</p>
+
+<p>Previous article <a href="/blog/fast-factorial/">Fast Factorial</a> has working solution
+that we might use.</p>
+
+<p><code>
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Now, calculate the sum of digits, the same function that we used in
+<a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+
+<p><code>
+(defn sum-of-digits [n]
+  (reduce + (map #(- (int %) 48) (seq (str n)))))
+</code></p>
+
+<p>And the final line</p>
+
+<p><code>
+(sum-of-digits (! 100))
+</code></p>
+
+<p>Simple enough, huh?</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem020.clj">Code</a></p>
+
+<p><strong>P.S.</strong> The functions <code>sum-of-digits</code>, <code>count-digits</code> and similar used often
+and look very ugly, so I decided to create a separate set of functions (<em>library?</em>)
+which I can refer. It should be a set of common mathematic functions, including
+different sequences, sums, converters, interesting numbers. You might use it too.
+Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
@@ -126,7 +177,7 @@ and count Sundays.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
 
-<p><strong>P.S.</strong> Java interoperability is ugly but still useful.</p>
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
 ]]></content>
   </entry>
   
@@ -410,114 +461,6 @@ the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> 
 
 <p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
 speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 015]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
-    <updated>2013-02-19T00:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
-(without backtracking) to the bottom right corner.</p>
-
-  <p>How many routes are there through a 20 x 20 grid?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=15">http://projecteuler.net/problem=15</a></p>
-
-<!-- more -->
-
-<p><img src="http://projecteuler.net/project/images/p_015.gif" alt="" /></p>
-
-<p>Picture is always a huge help to find correct the solution.
-Let’s see the pattern here, with another picture</p>
-
-<p><em>Warning:</em> If you don’t understand art, don’t look at that picture.</p>
-
-<p><img src="http://i.imgur.com/WNEQNxG.png" alt="" /></p>
-
-<p>It’s a solution for 3 x 3 grid. We trying to process it by steps:</p>
-
-<ul>
-  <li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
-to be at the start so we put <code>1</code> to that point.</li>
-  <li>Then we move either down <code>[1, 0]</code> or right <code>[0, 1]</code>, and we put <code>1</code>
-on the edges of the second diagonal line.</li>
-  <li>Obviously, the point <code>[1, 1]</code> we can reach either from <code>[0, 1]</code> or from <code>[1, 0]</code>,
-so there are two routes, and so on.</li>
-</ul>
-
-<p>If you just output the numbers from each diagonal line you’ll get:</p>
-
-<p>```
-       1
-      1 1
-     1 2 1
-    1 3 3 1</p>
-
-<p>```</p>
-
-<p>It’s famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal’s triangle</a>.
-Each element in this triangle obtained by sum of two closest elements from the upper row.</p>
-
-<p>To get desired result we need to sum these numbers again, until we get one number.
-But it’s also numbers from Pascal’s triangle.</p>
-
-<p><code>
-    1   3   3   1
-      4   6   4
-       10  10
-         20
-</code></p>
-
-<p>We can treat Pascal’s triangle as a sequence, and each row is an element. Then the
-following function calculates next row:</p>
-
-<p><code>clojure
-(defn routes-extend [lst]
-  (let [size (count lst)]
-    (for [i (range (inc size))]
-      (if (or (= 0 i) (= size i)) 1
-        (+ (nth lst (dec i)) (nth lst i))))))
-</code></p>
-
-<p>Usage:</p>
-
-<p><code>
-(routes-extend [1]) =&gt; [1 1]
-(routes-extend [1 1]) =&gt; [1 2 1]
-</code></p>
-
-<p>Now we can build infinite sequence of Pascal’s triangle rows:</p>
-
-<p><code>clojure
-(iterate routes-extend [1])
-</code></p>
-
-<p>For <code>3 x 3</code> grid we had 7 diagonals, each of them represented one row.
-Take a guess. For <code>n x n</code> grid we need to get <code>2 * n + 1</code> row. And take it
-middle element, which, of course, will be with the index <code>n</code>.</p>
-
-<p>That’s the final solution:</p>
-
-<p><code>clojure
-(let [n 20 d (inc (* n 2))]
-  (nth (last (take d (iterate routes-extend [1]))) n))
-</code></p>
-
-<p>Problem solved.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem015.clj">Code</a></p>
-
-<p><strong>P.S</strong> Two points I want to admit here. First of all, drawing pictures
-and trying to understand problem with pictures is a powerful technique that must be
-used for every problem.</p>
-
-<p>Second of all, you can see that our algorithm has complexity of <code>O(n^2)</code>. But ideal
-solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/Binomial_coefficient">binomial coefficient</a>
-<code>(2*n, n)</code>.</p>
 ]]></content>
   </entry>
   

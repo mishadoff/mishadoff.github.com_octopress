@@ -66,7 +66,7 @@
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/pigeon-cipher/</loc>
-        <lastmod>2012-11-29T23:27:30+02:00</lastmod>
+        <lastmod>2013-07-21T14:49:54+03:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/clojure-euler-problem-008/</loc>
@@ -182,7 +182,11 @@
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/clojure-euler-problem-019/</loc>
-        <lastmod>2013-07-10T02:48:51+03:00</lastmod>
+        <lastmod>2013-07-21T14:46:09+03:00</lastmod>
+    </url>
+    <url>
+        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-020/</loc>
+        <lastmod>2013-07-21T14:52:10+03:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/pages/quotes/</loc>
@@ -202,10 +206,10 @@
     </url>
     <url>
         <loc>http://mishadoff.github.com/blog/archives/</loc>
-        <lastmod>2013-07-10T02:48:51+03:00</lastmod>
+        <lastmod>2013-07-21T14:52:10+03:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.com/</loc>
-        <lastmod>2013-07-10T02:48:51+03:00</lastmod>
+        <lastmod>2013-07-21T14:52:10+03:00</lastmod>
     </url>
 </urlset>
