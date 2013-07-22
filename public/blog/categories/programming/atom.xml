@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-21T14:54:30+03:00</updated>
+  <updated>2013-07-22T23:21:04+03:00</updated>
   <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,150 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 3]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <updated>2013-07-22T20:33:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
+    <content type="html"><![CDATA[<p>Why your software sucks and what is the “Secret Weapon”. Also,
+algorithm complexities refresher, functional programming, including
+Scala and Clojure, concurrency and lot of humor.</p>
+
+<!-- more -->
+
+<h3 id="big-ball-of-mudhttpwwwlaputanorgmud">1. <a href="http://www.laputan.org/mud/">Big Ball of Mud</a></h3>
+
+<blockquote>
+  <p>What does your programming day look like? </p>
+</blockquote>
+
+<p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
+
+<p>The article describes problems in software design and explains
+why almost every system nowadays look like “Big Ball of Mud”.</p>
+
+<p>There are seven <em>real</em> patterns in software design:</p>
+
+<ul>
+  <li>BIG BALL OF MUD</li>
+  <li>THROWAWAY CODE</li>
+  <li>PIECEMEAL GROWTH</li>
+  <li>KEEP IT WORKING</li>
+  <li>SHEARING LAYERS</li>
+  <li>SWEEPING IT UNDER THE RUG</li>
+  <li>RECONSTRUCTION </li>
+</ul>
+
+<p><em>caps preserved due to original article</em></p>
+
+<p>And our favorite phrase:</p>
+
+<blockquote>
+  <p>It works, so why fix it?</p>
+</blockquote>
+
+<h3 id="no-silver-bullethttpwwwcsnottacukcahg51issdocumentsnosilverbullethtml">2. <a href="http://www.cs.nott.ac.uk/~cah/G51ISS/Documents/NoSilverBullet.html">No Silver Bullet</a></h3>
+
+<p>Classic article by Frederick Brooks, Jr.</p>
+
+<p>Object-oriented programming? Artificial Intelligence? Expert systems? Time-sharing?
+Graphical or Automated programming?</p>
+
+<p>Nothing helps you.</p>
+
+<blockquote>
+  <p>The most radical possible solution for constructing software is not to construct it at all.</p>
+</blockquote>
+
+<p>Demotivating, but helpful.</p>
+
+<h3 id="beating-the-averageshttpwwwpaulgrahamcomavghtml">3. <a href="http://www.paulgraham.com/avg.html">Beating the Averages</a></h3>
+
+<p>This is inspiring one.</p>
+
+<p>Brooks told “There is no Silver Bullet”, but Paul Graham reveals “The Secret Weapon”.</p>
+
+<p>The article is success story of startup called Viaweb.
+Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
+
+<blockquote>
+  <p>Our secret weapon was similar.
+We wrote our software in a weird AI language, with a bizarre syntax full of parentheses.</p>
+</blockquote>
+
+<p>As you probably understood, it was Lisp.</p>
+
+<h3 id="know-thy-complexitieshttpbigocheatsheetcom">4. <a href="http://bigocheatsheet.com/">Know Thy Complexities!</a></h3>
+
+<p>Plain algorithm complexity cheatsheet. Contains time and space complexities
+for common algorithms and datastructures.</p>
+
+<h3 id="adventures-in-functional-programminghttpvimeocom45140590">5. <a href="http://vimeo.com/45140590">Adventures in Functional Programming</a></h3>
+
+<blockquote>
+  <p>Did you know that recursion is just syntactic sugar over higher-order functions?</p>
+</blockquote>
+
+<p>Awesome screencast by Jim Weirich about Y-Combinator in JavaScript.</p>
+
+<h3 id="scala-problemshttpaperiodicnetphilscalas-99">6. <a href="http://aperiodic.net/phil/scala/s-99/">99 Scala Problems</a></h3>
+
+<p>I am not using Scala and prefer Clojure for rapid protyping, but find such articles
+extremely useful when learning new language. Just exploring the code shows that Scala is
+the powerful and expressive language.</p>
+
+<p><strong>P.S.</strong> I am on half way to publish “99 Clojure Problems”.</p>
+
+<h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
+
+<p>Great pictures. This is nice intro to concurrency and overview of some common cocurrency problems.</p>
+
+<p><img src="http://adit.io/imgs/concurrency/threads_using_mutex.png" alt="" /></p>
+
+<h3 id="understanding-clojure-concurrencyhttpblakesmithme20120515understanding-clojure-concurrency-part-1html">8. <a href="http://blakesmith.me/2012/05/15/understanding-clojure-concurrency-part-1.html">Understanding Clojure Concurrency</a></h3>
+
+<p>Clojure is exciting language with great concurrency capabilities:
+default immutability, atoms, refs, agents, promises, futures and software transactional memory.</p>
+
+<p>This article is an introduction to them. Check out the <a href="http://blakesmith.me/2012/05/25/understanding-clojure-concurrency-part-2.html">2nd part</a></p>
+
+<h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
+
+<p>This is the video screencast of Gary Bernhardt’s talk.
+Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
+
+<blockquote>
+  <p>An object plus an object is actually…. Not A Number!</p>
+</blockquote>
+
+<h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
+
+<p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
+
+<blockquote>
+  <p>Q: What does the “B” in Benoit B. Mandelbrot stand for?</p>
+
+  <p>A: Benoit B. Mandelbrot.</p>
+</blockquote>
+
+<p>In fact, some of the jokes related to programming.</p>
+
+<blockquote>
+  <p>There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.</p>
+</blockquote>
+
+<p>Some of them a bit stupid, but still fun.</p>
+
+<blockquote>
+  <p>How many surrealists does it take to screw in a light bulb?</p>
+
+  <p>A fish.</p>
+</blockquote>
+
+<p>Definitely, worth to read!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
@@ -474,108 +618,6 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
 
 <p><em>Sad, that release postponed to early 2014 due to security issues.</em>
 <em>But more time to play with developer preview features.</em></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
-    <updated>2013-04-09T21:13:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
-then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
-
-  <p>If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=17">http://projecteuler.net/problem=17</a></p>
-
-<!-- more -->
-
-<p>To solve this problem we need some sort of mapping that defines association
-between number and its string representation, e.g <code>123 = one hundred and twenty three</code>.</p>
-
-<p>This can be done with maps in clojure in form <code>{:1 "one" :2 "two"}</code>.
-But if pay more atention to this map, we see that key is a numeric value.
-Exactly what plain arrays do.</p>
-
-<p>Then we just define all mappings, obtain all arrays string elements, find their lengths and sum them.</p>
-
-<p>One problem that providing mapping for each number between 1 and 1000 is a “bit” routine task, so we
-need some formula to calculate representation instead of hardcoding it. We come to defining groups.</p>
-
-<p>First group is just <em>first 20</em> numbers:</p>
-
-<p><code>clojure
-(def first20 ["one" "two" "three" "four" "five"
-              "six" "seven" "eight" "nine" "ten"
-              "eleven" "twelve" "thirteen" "fourteen" "fifteen"
-              "sixteen" "seventeen" "eighteen" "nineteen"])
-</code></p>
-
-<p>Note: there is no “zero” as we don’t use it in spoken language.</p>
-
-<p>Second group is numbers that divides 10:</p>
-
-<p><code>clojure
-(def decas ["" "ten" "twenty" "thirty" "forty" "fifty" "sixty" "seventy" "eighty" "ninety"])
-</code></p>
-
-<p>Note: empty first element here is used to reduce additional check. Its length is 0, that has no effect at all.</p>
-
-<p>And the last ones are three used values:</p>
-
-<p><code>clojure
-(def h "hundred")
-(def t "thousand")
-(def a "and")
-</code></p>
-
-<p>The basic function will calculate the length string representation of some number.
-Let’s call it <code>word-length</code>.</p>
-
-<p><code>clojure
-(defn word-length [n]
-  (cond (= n 1000) (+ (count t) (count (nth first20 1)))
-        (&lt; n 100)
-        (let [q (quot n 10) m (mod n 10)
-              d (count (nth decas q))]
-          (if (zero? m) d
-              (if (&lt; q 2) (count (nth first20 (dec (+ m (* 10 q)))))
-                  (+ d (count (nth first20 (dec m)))))))
-        (&lt; n 1000)
-        (let [q (quot n 100) m (mod n 100)]
-          (if (zero? m) (+ (word-length q) (count h))
-              (+ (count a) (count h) (word-length q) (word-length m))))))
-</code></p>
-
-<p>Little explanation:</p>
-
-<ul>
-  <li>If number is <code>1000</code> then the length of string “one” + “thousand”, 11.</li>
-  <li>If number is lower than <code>100</code> then extract its decade part. If there is no
-reminder for division by 10, the length is length of that decade part.</li>
-  <li>Otherwise, if number in <code>first20</code>, length taken from array <code>first20</code>.</li>
-  <li>Otherwise the length is decade part plus remainder.</li>
-  <li>If number is lower than <code>1000</code> then extract hundred part. If there is no
-reminder for division by 100, the length is “hundred” plus number of hundreds.</li>
-  <li>Otherwise, the length is “hundred” plus number of hundreds, plus the word “and” and
-recursively calculate the length of remainder, which is lower than <code>100</code>.</li>
-</ul>
-
-<p>Awful word-presentation of algorithm, because of… Reading code is much simpler, I know.</p>
-
-<p>And the last part just sum up all word-lengths:</p>
-
-<p><code>clojure
-(reduce + (map word-length (range 1 1001)))
-</code></p>
-
-<p>Check the code <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem017.clj">here</a>.</p>
-
-<p>P.S. In fact algorithm is very simple, but needs some time to understand few branches.
-By the way, the problem is little boring.</p>
 ]]></content>
   </entry>
   
