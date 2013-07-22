@@ -1,219 +1,219 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://mishadoff.github.com/blog/hello/</loc>
+        <loc>http://mishadoff.github.io/blog/hello/</loc>
         <lastmod>2013-06-04T01:55:30+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/java-magic-part-1-java-dot-net-dot-url/</loc>
+        <loc>http://mishadoff.github.io/blog/java-magic-part-1-java-dot-net-dot-url/</loc>
         <lastmod>2012-11-06T16:59:40+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler/</loc>
         <lastmod>2012-11-17T16:20:58+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/lisp-live-coding/</loc>
+        <loc>http://mishadoff.github.io/blog/lisp-live-coding/</loc>
         <lastmod>2012-11-06T17:37:55+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-001/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-001/</loc>
         <lastmod>2012-11-06T19:54:58+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/</loc>
         <lastmod>2012-11-06T19:54:43+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-002/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-002/</loc>
         <lastmod>2012-11-06T19:05:35+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-003/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-003/</loc>
         <lastmod>2012-11-17T14:18:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-004/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-004/</loc>
         <lastmod>2012-12-15T00:22:51+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/java-magic-part-2-0xcafebabe/</loc>
+        <loc>http://mishadoff.github.io/blog/java-magic-part-2-0xcafebabe/</loc>
         <lastmod>2012-11-06T19:58:22+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/</loc>
+        <loc>http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/</loc>
         <lastmod>2012-12-11T19:45:24+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-005/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-005/</loc>
         <lastmod>2012-11-17T15:11:33+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/learn-perl/</loc>
+        <loc>http://mishadoff.github.io/blog/learn-perl/</loc>
         <lastmod>2012-12-11T19:45:02+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-006/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-006/</loc>
         <lastmod>2012-11-17T15:08:50+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/java-magic-part-3-finally/</loc>
+        <loc>http://mishadoff.github.io/blog/java-magic-part-3-finally/</loc>
         <lastmod>2012-11-18T21:36:45+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-007/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-007/</loc>
         <lastmod>2012-11-20T17:21:43+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/pigeon-cipher/</loc>
+        <loc>http://mishadoff.github.io/blog/pigeon-cipher/</loc>
         <lastmod>2013-07-21T14:49:54+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-008/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-008/</loc>
         <lastmod>2012-11-28T00:12:27+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/what-is-source-code/</loc>
+        <loc>http://mishadoff.github.io/blog/what-is-source-code/</loc>
         <lastmod>2012-11-30T00:37:55+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/ingress-tricks/</loc>
+        <loc>http://mishadoff.github.io/blog/ingress-tricks/</loc>
         <lastmod>2012-12-11T14:38:18+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-009/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-009/</loc>
         <lastmod>2012-12-11T19:33:38+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-010/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-010/</loc>
         <lastmod>2012-12-15T19:43:49+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/eclipse-speedup/</loc>
+        <loc>http://mishadoff.github.io/blog/eclipse-speedup/</loc>
         <lastmod>2012-12-23T18:27:07+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/devops-reactions/</loc>
+        <loc>http://mishadoff.github.io/blog/devops-reactions/</loc>
         <lastmod>2013-01-13T18:38:22+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-011/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-011/</loc>
         <lastmod>2013-01-18T14:50:40+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/critical-software-bugs-part-1/</loc>
+        <loc>http://mishadoff.github.io/blog/critical-software-bugs-part-1/</loc>
         <lastmod>2013-01-20T18:48:35+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-012/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-012/</loc>
         <lastmod>2013-01-25T13:38:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-013/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-013/</loc>
         <lastmod>2013-01-25T17:46:34+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/data-analysis-facebook-hacker-cup/</loc>
+        <loc>http://mishadoff.github.io/blog/data-analysis-facebook-hacker-cup/</loc>
         <lastmod>2013-02-04T02:24:47+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/programming-digest-announcement/</loc>
+        <loc>http://mishadoff.github.io/blog/programming-digest-announcement/</loc>
         <lastmod>2013-02-11T23:55:18+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/programming-digest-1/</loc>
+        <loc>http://mishadoff.github.io/blog/programming-digest-1/</loc>
         <lastmod>2013-02-12T02:52:44+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-014/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-014/</loc>
         <lastmod>2013-02-16T01:12:43+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/standard-ml/</loc>
+        <loc>http://mishadoff.github.io/blog/standard-ml/</loc>
         <lastmod>2013-02-16T16:05:40+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-015/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-015/</loc>
         <lastmod>2013-02-19T00:37:32+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/heisenberg-principle/</loc>
+        <loc>http://mishadoff.github.io/blog/heisenberg-principle/</loc>
         <lastmod>2013-02-21T00:24:12+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/stirlings-approximation/</loc>
+        <loc>http://mishadoff.github.io/blog/stirlings-approximation/</loc>
         <lastmod>2013-02-23T02:18:17+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/elephant-oriented-programming/</loc>
+        <loc>http://mishadoff.github.io/blog/elephant-oriented-programming/</loc>
         <lastmod>2013-02-26T00:58:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/</loc>
+        <loc>http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/</loc>
         <lastmod>2013-04-01T23:44:58+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-016/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-016/</loc>
         <lastmod>2013-03-05T01:30:35+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/code-golf-game-of-life/</loc>
+        <loc>http://mishadoff.github.io/blog/code-golf-game-of-life/</loc>
         <lastmod>2013-03-07T17:59:25+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-017/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-017/</loc>
         <lastmod>2013-04-10T00:18:52+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/programming-digest-2/</loc>
+        <loc>http://mishadoff.github.io/blog/programming-digest-2/</loc>
         <lastmod>2013-04-22T14:43:27+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-018/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-018/</loc>
         <lastmod>2013-05-17T01:29:04+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/fast-factorial/</loc>
+        <loc>http://mishadoff.github.io/blog/fast-factorial/</loc>
         <lastmod>2013-06-07T17:18:45+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/randomorg-0-dot-1/</loc>
+        <loc>http://mishadoff.github.io/blog/randomorg-0-dot-1/</loc>
         <lastmod>2013-07-06T15:57:47+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-019/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-019/</loc>
         <lastmod>2013-07-21T14:46:09+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/clojure-euler-problem-020/</loc>
+        <loc>http://mishadoff.github.io/blog/clojure-euler-problem-020/</loc>
         <lastmod>2013-07-21T14:52:10+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/programming-digest-3/</loc>
+        <loc>http://mishadoff.github.io/blog/programming-digest-3/</loc>
         <lastmod>2013-07-22T23:15:52+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/pages/quotes/</loc>
+        <loc>http://mishadoff.github.io/pages/quotes/</loc>
         <lastmod>2013-02-03T21:05:44+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/pages/clojure-links/</loc>
+        <loc>http://mishadoff.github.io/pages/clojure-links/</loc>
         <lastmod>2012-11-10T19:16:17+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/about/</loc>
+        <loc>http://mishadoff.github.io/about/</loc>
         <lastmod>2012-11-10T19:37:17+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/categories/</loc>
+        <loc>http://mishadoff.github.io/blog/categories/</loc>
         <lastmod>2013-01-19T02:27:04+02:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/blog/archives/</loc>
+        <loc>http://mishadoff.github.io/blog/archives/</loc>
         <lastmod>2013-07-22T23:15:52+03:00</lastmod>
     </url>
     <url>
-        <loc>http://mishadoff.github.com/</loc>
+        <loc>http://mishadoff.github.io/</loc>
         <lastmod>2013-07-22T23:15:52+03:00</lastmod>
     </url>
 </urlset>

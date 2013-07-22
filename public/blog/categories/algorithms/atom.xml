@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: algorithms | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/algorithms/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-22T23:21:04+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/algorithms/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-07-23T00:05:33+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Fast Factorial]]></title>
-    <link href="http://mishadoff.github.com/blog/fast-factorial/"/>
+    <link href="http://mishadoff.github.io/blog/fast-factorial/"/>
     <updated>2013-06-07T01:08:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/fast-factorial</id>
+    <id>http://mishadoff.github.io/blog/fast-factorial</id>
     <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
 In <a href="/blog/stirlings-approximation/">Stirling’s Approximation</a> article
 we’ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
@@ -236,9 +236,9 @@ Just precompute all values and save them to database.</p>
   
   <entry>
     <title type="html"><![CDATA[Stirling's Approximation]]></title>
-    <link href="http://mishadoff.github.com/blog/stirlings-approximation/"/>
+    <link href="http://mishadoff.github.io/blog/stirlings-approximation/"/>
     <updated>2013-02-23T01:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/stirlings-approximation</id>
+    <id>http://mishadoff.github.io/blog/stirlings-approximation</id>
     <content type="html"><![CDATA[<p>Do you like factorials?</p>
 
 <p>Probably, you do. If no, whatever, read this post to know

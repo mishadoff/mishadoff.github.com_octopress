@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-22T23:21:04+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-07-23T00:05:33+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 3]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-3/"/>
     <updated>2013-07-22T20:33:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-3</id>
     <content type="html"><![CDATA[<p>Why your software sucks and what is the “Secret Weapon”. Also,
 algorithm complexities refresher, functional programming, including
 Scala and Clojure, concurrency and lot of humor.</p>
@@ -159,9 +159,9 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-020/"/>
     <updated>2013-07-21T13:39:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-020</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Find the sum of the digits in the number 100!</p>
 </blockquote>
@@ -210,9 +210,9 @@ Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-019/"/>
     <updated>2013-07-10T01:59:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-019</id>
     <content type="html"><![CDATA[<blockquote>
   <p>How many Sundays fell on the first of the month
 during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
@@ -327,9 +327,9 @@ and count Sundays.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-018/"/>
     <updated>2013-05-17T00:26:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-018</id>
     <content type="html"><![CDATA[<blockquote>
   <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
 </blockquote>
@@ -440,9 +440,9 @@ But we need only one number.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 2]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-2/"/>
     <updated>2013-04-22T14:43:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-2</id>
     <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
 developer…in 10 years, “coding it’s just writing” and some practice:
 Naive Bayes Classifier, functional programming and Java 8.</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: thoughts | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/thoughts/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-07-22T23:21:04+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/thoughts/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-07-23T00:05:33+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Heisenberg Principle]]></title>
-    <link href="http://mishadoff.github.com/blog/heisenberg-principle/"/>
+    <link href="http://mishadoff.github.io/blog/heisenberg-principle/"/>
     <updated>2013-02-21T00:24:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/heisenberg-principle</id>
+    <id>http://mishadoff.github.io/blog/heisenberg-principle</id>
     <content type="html"><![CDATA[<p>It is so obvious, so I decided to write about it.</p>
 
 <!-- more -->
@@ -46,9 +46,9 @@ tell him <em>either one or the other</em>.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest Announcement]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-announcement/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-announcement/"/>
     <updated>2013-02-11T23:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-announcement</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-announcement</id>
     <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
 on the internet and give basic description for them.</p>
 
@@ -79,9 +79,9 @@ share your favorite <em>programming-related</em> articles with me.</p>
   
   <entry>
     <title type="html"><![CDATA[What is source code?]]></title>
-    <link href="http://mishadoff.github.com/blog/what-is-source-code/"/>
+    <link href="http://mishadoff.github.io/blog/what-is-source-code/"/>
     <updated>2012-11-29T23:31:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/what-is-source-code</id>
+    <id>http://mishadoff.github.io/blog/what-is-source-code</id>
     <content type="html"><![CDATA[<p>It’s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
 It’s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
 
@@ -113,9 +113,9 @@ Good criteria of source code - is something that may be changed and need to be u
   
   <entry>
     <title type="html"><![CDATA[Hello, world!]]></title>
-    <link href="http://mishadoff.github.com/blog/hello/"/>
+    <link href="http://mishadoff.github.io/blog/hello/"/>
     <updated>2012-10-10T16:10:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/hello</id>
+    <id>http://mishadoff.github.io/blog/hello</id>
     <content type="html"><![CDATA[<p>This is my first post.
 It is always hard to begin something, but I’ll try.</p>
 
