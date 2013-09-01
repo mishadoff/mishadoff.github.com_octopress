@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.io/blog/categories/project-euler/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.io/"/>
-  <updated>2013-09-01T18:50:36+03:00</updated>
-  <id>http://mishadoff.github.io/</id>
+  <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-020/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
     <updated>2013-07-21T13:39:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-020</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Find the sum of the digits in the number 100!</p>
 </blockquote>
@@ -66,9 +66,9 @@ Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-019/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
     <updated>2013-07-10T01:59:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-019</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
     <content type="html"><![CDATA[<blockquote>
   <p>How many Sundays fell on the first of the month
 during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
@@ -183,9 +183,9 @@ and count Sundays.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-018/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
     <updated>2013-05-17T00:26:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-018</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
     <content type="html"><![CDATA[<blockquote>
   <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
 </blockquote>
@@ -296,9 +296,9 @@ But we need only one number.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-017/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
     <updated>2013-04-09T21:13:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-017</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
     <content type="html"><![CDATA[<blockquote>
   <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
 then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
@@ -398,9 +398,9 @@ By the way, the problem is little boring.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-016/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
     <updated>2013-03-05T01:31:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-016</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
     <content type="html"><![CDATA[<blockquote>
   <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
 

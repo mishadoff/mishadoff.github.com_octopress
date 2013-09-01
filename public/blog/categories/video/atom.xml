@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: video | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.io/blog/categories/video/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.io/"/>
-  <updated>2013-09-01T18:50:36+03:00</updated>
-  <id>http://mishadoff.github.io/</id>
+  <link href="http://mishadoff.github.com/blog/categories/video/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Lisp live-coding]]></title>
-    <link href="http://mishadoff.github.io/blog/lisp-live-coding/"/>
+    <link href="http://mishadoff.github.com/blog/lisp-live-coding/"/>
     <updated>2012-10-11T17:14:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/lisp-live-coding</id>
+    <id>http://mishadoff.github.com/blog/lisp-live-coding</id>
     <content type="html"><![CDATA[<p>Very inspirational video about live coding with excellent electronic music, written in&hellip; lisp!</p>
 
 <!-- more -->

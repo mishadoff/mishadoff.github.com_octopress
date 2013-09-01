@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.io/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.io/"/>
-  <updated>2013-09-01T18:50:36+03:00</updated>
-  <id>http://mishadoff.github.io/</id>
+  <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Announcing numberto]]></title>
-    <link href="http://mishadoff.github.io/blog/announcing-numberto/"/>
+    <link href="http://mishadoff.github.com/blog/announcing-numberto/"/>
     <updated>2013-09-01T04:23:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/announcing-numberto</id>
+    <id>http://mishadoff.github.com/blog/announcing-numberto</id>
     <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
 
 <!-- more -->
@@ -95,14 +95,14 @@ Pretty print for long numbers</li>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
-    <link href="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/"/>
+    <link href="http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter/"/>
     <updated>2013-08-09T17:44:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter</id>
+    <id>http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter</id>
     <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
 
 <!-- more -->
 
-<p>Previous article <a href="http://mishadoff.github.io/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+<p>Previous article <a href="http://mishadoff.github.com/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
 
 <p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
 
@@ -260,9 +260,9 @@ this version (<em>for the sake of small size!</em>)</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 3]]></title>
-    <link href="http://mishadoff.github.io/blog/programming-digest-3/"/>
+    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
     <updated>2013-07-22T20:33:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/programming-digest-3</id>
+    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
     <content type="html"><![CDATA[<p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
 algorithm complexities refresher, functional programming, including
 Scala and Clojure, concurrency and lot of humor.</p>
@@ -404,9 +404,9 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-020/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
     <updated>2013-07-21T13:39:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-020</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Find the sum of the digits in the number 100!</p>
 </blockquote>
@@ -418,7 +418,7 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
 <p>First of all we need to calculate factorial.
 Without integer overflows, stack overflows and other caveats.</p>
 
-<p>Previous article <a href="http://mishadoff.github.io/blog/fast-factorial/">Fast Factorial</a> has working solution
+<p>Previous article <a href="http://mishadoff.github.com/blog/fast-factorial/">Fast Factorial</a> has working solution
 that we might use.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -427,8 +427,8 @@ that we might use.</p>
 </span><span class="line">  (reduce *' (range 1 (inc n))))</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Now, calculate the sum of digits, the same function that we used in
-<a href="http://mishadoff.github.io/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
-<a href="http://mishadoff.github.io/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+<a href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="http://mishadoff.github.com/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -454,9 +454,9 @@ Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-019/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
     <updated>2013-07-10T01:59:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-019</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
     <content type="html"><![CDATA[<blockquote>
   <p>How many Sundays fell on the first of the month
 during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
@@ -585,9 +585,9 @@ and count Sundays.</p>
   
   <entry>
     <title type="html"><![CDATA[randomorg-0.1]]></title>
-    <link href="http://mishadoff.github.io/blog/randomorg-0-dot-1/"/>
+    <link href="http://mishadoff.github.com/blog/randomorg-0-dot-1/"/>
     <updated>2013-07-06T15:33:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/randomorg-0-dot-1</id>
+    <id>http://mishadoff.github.com/blog/randomorg-0-dot-1</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
 
 <!-- more -->
@@ -609,11 +609,11 @@ which allows to generate random numbers via atmospheric noise.</p>
   
   <entry>
     <title type="html"><![CDATA[Fast Factorial]]></title>
-    <link href="http://mishadoff.github.io/blog/fast-factorial/"/>
+    <link href="http://mishadoff.github.com/blog/fast-factorial/"/>
     <updated>2013-06-07T01:08:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/fast-factorial</id>
+    <id>http://mishadoff.github.com/blog/fast-factorial</id>
     <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
-In <a href="http://mishadoff.github.io/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
+In <a href="http://mishadoff.github.com/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
 we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
 By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
 than &ldquo;by definition&rdquo;.</p>
@@ -887,9 +887,9 @@ Just precompute all values and save them to database.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-018/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
     <updated>2013-05-17T00:26:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-018</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
     <content type="html"><![CDATA[<blockquote>
   <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
 </blockquote>
@@ -1007,9 +1007,9 @@ But we need only one number.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 2]]></title>
-    <link href="http://mishadoff.github.io/blog/programming-digest-2/"/>
+    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
     <updated>2013-04-22T14:43:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/programming-digest-2</id>
+    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
     <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
 developer&hellip;in 10 years, &ldquo;coding it&rsquo;s just writing&rdquo; and some practice:
 Naive Bayes Classifier, functional programming and Java 8.</p>
@@ -1190,9 +1190,9 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-017/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
     <updated>2013-04-09T21:13:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-017</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
     <content type="html"><![CDATA[<blockquote>
   <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
 then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
@@ -1308,9 +1308,9 @@ By the way, the problem is little boring.</p>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
-    <link href="http://mishadoff.github.io/blog/code-golf-game-of-life/"/>
+    <link href="http://mishadoff.github.com/blog/code-golf-game-of-life/"/>
     <updated>2013-03-07T17:59:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/code-golf-game-of-life</id>
+    <id>http://mishadoff.github.com/blog/code-golf-game-of-life</id>
     <content type="html"><![CDATA[<p>Conway&rsquo;s Game of Life in a tweet.</p>
 
 <!-- more -->
@@ -1471,9 +1471,9 @@ to update specific area in the world, for example <em>west organisms evolve fast
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-016/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
     <updated>2013-03-05T01:31:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-016</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
     <content type="html"><![CDATA[<blockquote>
   <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
 
@@ -1491,7 +1491,7 @@ to update specific area in the world, for example <em>west organisms evolve fast
   <li>Sum its digits</li>
 </ul>
 
-<p>In <a href="http://mishadoff.github.io/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
+<p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
 learned how to sum digits in the number. Just gentle reminder:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1541,9 +1541,9 @@ speed of calculations. Also, no way back. If promotion happened, <em>depromotion
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
-    <link href="http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
+    <link href="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
     <updated>2013-02-26T02:37:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
+    <id>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
     <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
 from doing a lot of stupid mistakes, most of which based on memory management.
 But, there is a way to do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
@@ -2516,9 +2516,9 @@ elsewhere.</p>
   
   <entry>
     <title type="html"><![CDATA[Elephant-Oriented Programming]]></title>
-    <link href="http://mishadoff.github.io/blog/elephant-oriented-programming/"/>
+    <link href="http://mishadoff.github.com/blog/elephant-oriented-programming/"/>
     <updated>2013-02-26T00:58:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/elephant-oriented-programming</id>
+    <id>http://mishadoff.github.com/blog/elephant-oriented-programming</id>
     <content type="html"><![CDATA[<p>Have you heard about Elephant-Oriented Programming?</p>
 
 <!-- more -->
@@ -2547,9 +2547,9 @@ elsewhere.</p>
   
   <entry>
     <title type="html"><![CDATA[Stirling's Approximation]]></title>
-    <link href="http://mishadoff.github.io/blog/stirlings-approximation/"/>
+    <link href="http://mishadoff.github.com/blog/stirlings-approximation/"/>
     <updated>2013-02-23T01:38:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/stirlings-approximation</id>
+    <id>http://mishadoff.github.com/blog/stirlings-approximation</id>
     <content type="html"><![CDATA[<p>Do you like factorials?</p>
 
 <p>Probably, you do. If no, whatever, read this post to know
@@ -2704,9 +2704,9 @@ Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirl
   
   <entry>
     <title type="html"><![CDATA[Heisenberg Principle]]></title>
-    <link href="http://mishadoff.github.io/blog/heisenberg-principle/"/>
+    <link href="http://mishadoff.github.com/blog/heisenberg-principle/"/>
     <updated>2013-02-21T00:24:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/heisenberg-principle</id>
+    <id>http://mishadoff.github.com/blog/heisenberg-principle</id>
     <content type="html"><![CDATA[<p>It is so obvious, so I decided to write about it.</p>
 
 <!-- more -->
@@ -2735,9 +2735,9 @@ tell him <em>either one or the other</em>.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 015]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-015/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
     <updated>2013-02-19T00:38:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-015</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
 (without backtracking) to the bottom right corner.</p>
@@ -2853,9 +2853,9 @@ solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/B
   
   <entry>
     <title type="html"><![CDATA[Standard ML]]></title>
-    <link href="http://mishadoff.github.io/blog/standard-ml/"/>
+    <link href="http://mishadoff.github.com/blog/standard-ml/"/>
     <updated>2013-02-16T13:33:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/standard-ml</id>
+    <id>http://mishadoff.github.com/blog/standard-ml</id>
     <content type="html"><![CDATA[<p>Last weekend I was hacking <a href="http://en.wikipedia.org/wiki/Standard_ML">Standard ML</a> a bit.</p>
 
 <!-- more -->
@@ -3084,9 +3084,9 @@ few days for ML basics. It really improve your dev skills and maybe made your
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-014/"/>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
     <updated>2013-02-16T01:08:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-014</id>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Which starting number, under one million, produces the longest Collatz chain?</p>
 </blockquote>
@@ -3223,9 +3223,9 @@ memoization later, where it will be more useful. By the way, I am <em>lazy</em>.
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 1]]></title>
-    <link href="http://mishadoff.github.io/blog/programming-digest-1/"/>
+    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
     <updated>2013-02-12T02:00:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/programming-digest-1</id>
+    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
     <content type="html"><![CDATA[<p>How to get job at Google, estimate complexity of your algorithm,
 what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
 
