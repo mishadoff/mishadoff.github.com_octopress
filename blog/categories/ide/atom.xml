@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ide | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/ide/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Eclipse Speedup]]></title>
+    <link href="http://mishadoff.github.com/blog/eclipse-speedup/"/>
+    <updated>2012-12-23T18:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/eclipse-speedup</id>
+    <content type="html"><![CDATA[<p>Have you been in situation where most of the time in eclipse you were waiting for
+some operation to be finished?</p>
+
+<!-- more -->
+
+<p><img src="http://upload.wikimedia.org/wikipedia/en/3/34/Eclipse-logo.png" alt="" /></p>
+
+<p>If you here, probably, the answer is yes. You are bored with that slow functionality and want
+to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
+
+<p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
+Add SSD to make filesystem operations faster. We assume you can&rsquo;t afford all that. All you can is setup your
+eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
+almost everything is identical in other versions for other platforms.</p>
+
+<h3 id="eclipse-tweaks">Eclipse tweaks</h3>
+
+<h4 id="plugins">Plugins</h4>
+
+<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn&rsquo;t
+work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
+It is not deleting, you always can enable it back.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Startup and Shutdown
+</code></pre>
+
+<p><img src="http://i.imgur.com/kgavA.png" alt="" /></p>
+
+<p>By the way, some plugins appeared due to your experimenting and not used anymore. <strong>Delete</strong> redundant plugins if they
+not used at all.</p>
+
+<pre><code>Help -&gt; About Eclipse SDK -&gt; Instalation Details -&gt; &lt;Select plugin&gt; -&gt; Uninstall
+</code></pre>
+
+<p><img src="http://i.imgur.com/7wRoR.png" alt="" /></p>
+
+<h4 id="eclipseini">eclipse.ini</h4>
+
+<p>Following tweaks based on editing <code>eclipse.ini</code> file located in root folder
+of your eclipse instalation.</p>
+
+<ul>
+  <li><strong>Use specific JVM to run eclipse.</strong>
+This allows do not take into account system properties which alters your JDK.</li>
+</ul>
+
+<p><code>
+-vm
+/path/to/your/java
+</code></p>
+
+<ul>
+  <li>
+    <p><strong>Use latest JDK to run eclipse.</strong>
+Much better if you point your eclipse to the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">latest JDK</a>.
+<em>Rumors</em> said it has better performance.</p>
+  </li>
+  <li>
+    <p><strong>Use Sun JDK to run eclipse.</strong>
+The reason behind this has the same explanation.</p>
+  </li>
+  <li>
+    <p><strong>Configure VM arguments.</strong>
+You can set your own values for virtual machine if you think
+they are appropriate
+(<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning">Performance related options</a>)
+I use following settings to increase heap size (objects) to <code>768Mb</code> and permgen (classes) to <code>256 Mb</code> on my <code>3Gb</code> RAM machine.</p>
+  </li>
+</ul>
+
+<p><code>
+-vmargs
+-Xms768m
+-Xmx768m
+-XX:PermSize=256m
+-XX:MaxPermSize=256m
+</code></p>
+
+<p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
+step of JVM loading you will get performance boost. But it&rsquo;s very risky change.</p>
+
+<p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
+experimental VM options like (some of these):</p>
+
+<p><code>
+-server
+-XX:+UnlockExperimentalVMOptions
+-XX:+UseG1GC
+-XX:+UseParallelGC
+-XX:+UseFastAccessorMethods
+-Xss2m
+</code></p>
+
+<p>Check all <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fruntime-options.html">Eclipse runtime options</a>
+for reference and choose ones that appropriate for you.</p>
+
+<h4 id="disable-animations">Disable animations</h4>
+
+<p>Animations it&rsquo;s cool. But I always disable animations if it possible in all tools.
+Also, classic theme is most usable for me.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
+</code></pre>
+
+<p><img src="http://i.imgur.com/mzLp7.png" alt="" /></p>
+
+<h4 id="disable-label-decorations">Disable label decorations</h4>
+
+<p>Label decorations are small icons on project, file, class levels that helps
+visually indicate some state of file. Like commited it to git or no.
+They are provided by various plugins and rarely useful. Just left ones that you want.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Label Decorations
+</code></pre>
+
+<p><img src="http://i.imgur.com/MKZp5.png" alt="" /></p>
+
+<h4 id="autocompletion">Autocompletion</h4>
+
+<p>Sometimes on slow machines or when you have a lot of classes in your classpath autocompletion performance is terrible.
+Small improvement you can get by reducing group of possible proposals. I left only <code>Java Proposals</code> and <code>Template Proposals</code>:</p>
+
+<pre><code>Window -&gt; Preferences -&gt; Java -&gt; Editor -&gt; Content Assist -&gt; Advanced
+</code></pre>
+
+<p><img src="http://i.imgur.com/Aa7MY.png" alt="" /></p>
+
+<h4 id="uncheck-validators">Uncheck validators</h4>
+
+<p>If you are sure in your competence just suspend all validators. If problem appears, you always
+can identify the reason, but you save your development time.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; Validation -&gt; Suspend All Validators
+</code></pre>
+
+<p><img src="http://i.imgur.com/n1XQ2.png" alt="" /></p>
+
+<h4 id="close-unrelated-projects">Close unrelated projects</h4>
+
+<p>If you working in context of few projects, better to have all unrelated projects closed. They won&rsquo;t appear
+in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
+You can add any number of projects to one working set, and quickly switch between different working sets
+in one workspace.</p>
+
+<pre><code>Right Click on Project -&gt; Assign Working Sets..
+</code></pre>
+
+<h4 id="close-unused-tabs-in-editor">Close unused tabs in editor</h4>
+
+<p>Big number of tabs in editor can greatly slow down your performance. Just limit them.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors
+</code></pre>
+
+<p>Check <code>Close editors automatically</code> and set <code>Number of opened tabs</code> to <code>10</code>.</p>
+
+<p><img src="http://i.imgur.com/gjRd8.png" alt="" /></p>
+
+<h4 id="disable-spell-check">Disable spell check</h4>
+
+<p>Are you developer or what? I don&rsquo;t see any reason to have <code>spell check</code> enabled.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
+</code></pre>
+
+<h4 id="disable-autobuild">Disable autobuild</h4>
+
+<p>Probably, you aware about when you want to build your project and when not.</p>
+
+<pre><code>Project -&gt; Uncheck 'Build Automatically'
+Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Scrub output folders when cleaning'
+Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Rebuild class files modified by others'
+</code></pre>
+
+<h4 id="hotkeys">Hotkeys</h4>
+
+<p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
+single operation, your development process won&rsquo;t be fast. Configure most-often used actions
+to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
+
+<pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys
+</code></pre>
+
+<p>To force myself learn all hotkeys I just disabled toolbar.</p>
+
+<pre><code>Window -&gt; Hide Toolbar
+</code></pre>
+
+<h3 id="useful-links">Useful Links</h3>
+
+<ul>
+  <li><a href="http://wiki.eclipse.org/Eclipse.ini">http://wiki.eclipse.org/Eclipse.ini</a></li>
+  <li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
+  <li><a href="http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/">http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/</a></li>
+  <li><a href="http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/">http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/</a></li>
+  <li><a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590">http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590</a></li>
+</ul>
+
+<p><strong>P.S.</strong> This article planned to be updatable, other tweaks are welcome!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure + Emacs + Leiningen + nREPL]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/"/>
+    <updated>2012-10-13T18:19:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl</id>
+    <content type="html"><![CDATA[<p>This article provides step-by-step instruction how to configure Clojure environment.</p>
+
+<!-- more -->
+
+<h3 id="little-history">Little history</h3>
+
+<p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
+But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it&rsquo;s my fault, this time I&rsquo;ve created configuration on GitHub</em>).
+So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
+<em>&ldquo;This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead&rdquo;</em>.
+Ok, let&rsquo;s see what nrepl is.</p>
+
+<h3 id="why-emacs">Why emacs?</h3>
+
+<p>I don&rsquo;t know. I like lisp, and emacs created in (e)lisp.
+Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
+Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can&rsquo;t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
+
+<p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
+
+<p>By the way, there are lot of IDEs that can be configured much simpler way than described in this article:</p>
+
+<ul>
+  <li><a href="http://clojure.bighugh.com/">Clojure Box</a> - emacs install, preconfigured for clojure. Only for Windows</li>
+  <li><a href="http://code.google.com/p/counterclockwise/">Counter Clockwise</a> - eclipse plugin</li>
+  <li><a href="http://www.enclojure.org/">Enclojure</a> - netbeans plugin</li>
+  <li><a href="http://plugins.intellij.net/plugin/?id=4050">La Clojure</a> - IDEA plugin</li>
+  <li><a href="http://www.vim.org/scripts/script.php?script_id=2501">VimClojure</a> - vim plugin</li>
+  <li><a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> - new generation of IDEs?</li>
+</ul>
+
+<p>So, before reading, ask yourself, Do I really need emacs?</p>
+
+<h3 id="emacs">Emacs</h3>
+
+<p>First of all you need to install emacs, to get your future clojure coding environment. I&rsquo;m using ubuntu, so I just type:</p>
+
+<p><code>sudo apt-get install emacs</code></p>
+
+<p>and it install emacs 23. If you using another OS, or do not trust package manager,
+check <a href="http://www.gnu.org/software/emacs/">GNU Emacs official website</a> for installation instructions.</p>
+
+<p>Also, you need to install emacs package-manager.</p>
+
+<ol>
+  <li>Copy file <a href="http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el">package.el</a>
+to your <code>~/emacs.d/</code> folder.</li>
+  <li>In your <code>~/.emacs</code> file add folowing lines:</li>
+</ol>
+
+<p><code>
+(add-to-list 'load-path "~/.emacs.d/")
+(load "package")
+(require 'package)
+(add-to-list 'package-archives
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
+</code></p>
+
+<p>These lines will be loaded after emacs restarted and install package manager.
+To check if it works, type <code>M-x package-list-packages</code> and this show you list of emacs plugins, hope you will find something useful there.</p>
+
+<h3 id="leiningen">Leiningen</h3>
+
+<p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
+Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
+
+<p>To install lein 2 (it&rsquo;s shorter name for Leiningen) do the following:</p>
+
+<ol>
+  <li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
+  <li>Place it on your <code>$PATH</code></li>
+  <li>Make it executable</li>
+</ol>
+
+<p>On ubuntu this can be performed with the following commands:</p>
+
+<pre><code>cd ~/
+mkdir bin
+</code></pre>
+
+<p>Add line export <code>PATH=~/bin:$PATH</code> to your <code>~/.bashrc</code> file</p>
+
+<pre><code>cd ~/bin
+wget https://raw.github.com/technomancy/leiningen/preview/bin/lein
+chmod +x lein
+</code></pre>
+
+<p>Execute lein, for first time it will download default lein package. To verify installation run <code>lein version</code>.
+On my machine for the post date it prints: <code>Leiningen 2.0.0-preview10 on Java 1.6.0_24 OpenJDK 64-Bit Server VM</code></p>
+
+<h3 id="nrepl">nREPL</h3>
+
+<p>We have already installed emacs package manager, so we can get nrepl from there.
+It also needs emacs major mode <code>clojure-mode</code>, so type the following commands in emacs to install needed packages:</p>
+
+<pre><code>M-x package-install clojure-mode
+M-x package-install nrepl
+</code></pre>
+
+<p>Try <code>M-x nrepl-jack-in</code> to execute REPL, where you can play with clojure commands.</p>
+
+<h3 id="bind-all-together">Bind all together</h3>
+
+<p>We have fully configured environment for clojure and how to use it?</p>
+
+<p>Create new clojure project using lein:</p>
+
+<p><code>lein new helloworld</code></p>
+
+<p>Start nREPL server in emacs:</p>
+
+<p><code>M-x nrepl-jack-in</code></p>
+
+<p>Open core project file in emacs:</p>
+
+<p><code>C-f helloworld/src/helloworld/core.clj</code></p>
+
+<p>Write simple function:</p>
+
+<p><code>clojure
+(ns helloworld.core)
+(defn hello []
+  (println "Hell, O'World!"))
+</code></p>
+
+<p>Compile it:</p>
+
+<p><code>C-c C-k</code></p>
+
+<p>Switch to nREPL buffer, change namespace and run hello function:</p>
+
+<p><code>clojure
+(ns helloworld.core)
+(hello)
+</code></p>
+
+<p>Probably, you&rsquo;ll get output:</p>
+
+<pre><code>Hell, O'World!
+nil
+</code></pre>
+
+<p><strong>Congratulations!</strong> You just created working clojure project.</p>
+
+<p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
+There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
+I&rsquo;ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
+is currently available.</p>
+]]></content>
+  </entry>
+  
+</feed>

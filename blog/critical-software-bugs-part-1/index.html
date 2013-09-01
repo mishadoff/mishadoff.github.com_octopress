@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Critical Software Bugs: Part 1 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Little journey through the history of most critical software bugs
+with some code examples. Do not try to reproduce any of these! Intro Every last bug &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/critical-software-bugs-part-1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Critical Software Bugs: Part 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T18:48:00+02:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Little journey through the history of most critical software bugs
+with some code examples.</p>
+
+<p><em>Do not try to reproduce any of these!</em></p>
+
+<!-- more -->
+
+<h3 id="intro">Intro</h3>
+
+<blockquote>
+  <p>Every last bug is the last but one.</p>
+</blockquote>
+
+<p><strong>Bugs</strong> are bad. Some of them cause uncomfortable work, more actions
+than expected, inconsistency, layout issues, etc.
+Some of them &ldquo;<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>&rdquo; at all.</p>
+
+<p><strong>Bad bugs</strong> much worse. They cause data corruption, invalid data representation,
+unavailability to perform action, losing integrity and so on.</p>
+
+<p>There are <strong>critical bugs</strong> with painful consequences. They can damage the health, nature, people
+break buildings, technics. Theoretically, they
+<a href="http://www.washingtonpost.com/wp-srv/inatl/longterm/coldwar/shatter021099b.htm">can lead to World War III</a>.
+Hope, it&rsquo;s just theoretically.</p>
+
+<p>If you are software engineer, you definitely will commit the bugs. No panacea.
+But if we aware about common mistakes, then less likely we make that mistakes.</p>
+
+<p>This article is review of famous most critical software bugs
+including brief history, consequences, root causes, possible solutions, code examples and some advices.</p>
+
+<h3 id="mariner-1httpenwikipediaorgwikimariner1-1962"><a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a> (1962)</h3>
+
+<p><strong>History:</strong>
+In 1962, spacecraft <em>Mariner 1</em> was guided by computer program with error causes
+racket do not follow its expected trajectory. To prevent tragic consequences, racket
+was destoyed immediately.</p>
+
+<p><strong>Consequences:</strong> Money, $18 million.</p>
+
+<p><strong>Reason:</strong>
+There are tons of versions about what type of error it was, but official version
+is <em>missing hyphen</em> (&lsquo;-&lsquo;) in program. Maybe it&rsquo;s just a myth for publicity,
+but, anyway, if the reason of bug is incorrect handwritten formula transcription
+from paper to computer, it&rsquo;s sad.</p>
+
+<p>Probably, the root cause of that is writer and computer operator were different people.
+It&rsquo;s common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
+an enterprise, as nowadays. That&rsquo;s why scientist, programmer, and operator could be
+different people.</p>
+
+<p>Related story, it&rsquo;s why zero symbol has a period or diagonal line inside - to prevent
+confusing with &ldquo;big O&rdquo; for &ldquo;typer&rdquo; person. Just compare <code>0</code> and <code>O</code>.</p>
+
+<p><strong>Solution:</strong>
+It&rsquo;s hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
+If you type into computer from someone&rsquo;s paper sheet, check, re-check and double re-check
+what you typing. Ask if you have concerns. Especially, if it is the program for spaceship.</p>
+
+<p>In very <em>far-fetched</em> example missing minus sign can result into invalid computation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">double</span> <span class="nf">getDiscountPercent</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="mf">0.25</span><span class="o">;</span> <span class="c1">// instead of return -0.25;</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">double</span> <span class="nf">calculatePrice</span><span class="o">(</span><span class="kt">double</span> <span class="n">initial</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">initial</span> <span class="o">*</span> <span class="o">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">getDiscountPercent</span><span class="o">());</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>That way instead of paying $75, you pay $125.</p>
+
+<p><strong>Lesson:</strong> Always check your manual rewriting actions.</p>
+
+<h3 id="siberian-pipeline-sabotagehttpenwikipediaorgwikisiberianpipelinesabotage-1982"><a href="http://en.wikipedia.org/wiki/Siberian_pipeline_sabotage">Siberian pipeline sabotage</a> (1982)</h3>
+
+<p><strong>History:</strong> Cold war. Soviet Union steal technology for managing gas pipelines from Canada. This
+technology intentionally contained the bug (<a href="http://en.wikipedia.org/wiki/Logic_bomb">Logic Bomb</a>), developed by CIA
+for sabotage purposes. Bomb triggered.</p>
+
+<p><strong>Consequences:</strong> The greatest non-nuclear explosion in the world.</p>
+
+<p><strong>Reason:</strong> Every microship from stolen technology would
+work fine just for 10 million cycles, after that switches to another mode.</p>
+
+<p>They <em>used someone&rsquo;s code</em>.</p>
+
+<p><strong>Solution:</strong></p>
+
+<blockquote>
+  <p>You shall not steal</p>
+
+  <p>&ndash; <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p>
+</blockquote>
+
+<p>Honestly, if someone&rsquo;s technology used for critical areas, like gas
+transportation, it must be reviewed and tested. 100 times.</p>
+
+<p>Story can be translated as:</p>
+
+<p>I found memory card on the city dump.
+Card contained one shell script <code>please-execute-me.sh</code>.
+I <em>executed</em> it. System crashed. Who&rsquo;s guilty? Just me.</p>
+
+<p>Use software from trusted sources.</p>
+
+<p>In modern software world, we often use someone&rsquo;s libraries, frameworks,
+APIs to build our own applications. We <em>expect</em> that code is <em>reviewed</em> and <em>tested</em>.
+If not, we can help to do it. How we can be sure these libs without logic bombs?</p>
+
+<p>Trust or review the sources. That&rsquo;s why I love open source software.</p>
+
+<p>Logic bomb detection is not that hard. Just find the code that causes error
+and see the reason of that error. Again, code review helps <em>to prevent</em> the
+logic bomb instead of <em>fixing it</em>. Build application to production only from
+version control system (<em>which is controlled, right?</em>)</p>
+
+<p>Just for educational purposes: simple example of time-triggered logic bomb</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogicBombRunner</span> <span class="o">{</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                <span class="n">Thread</span> <span class="n">thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">LogicBomb</span><span class="o">());</span>
+</span><span class="line">                <span class="n">thread</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">class</span> <span class="nc">LogicBomb</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="kd">private</span> <span class="kt">long</span> <span class="n">toStop</span><span class="o">;</span>
+</span><span class="line">        <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">TIME_TO_TRIGGER</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">100</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">        <span class="kd">public</span> <span class="nf">LogicBomb</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">                <span class="n">toStop</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="n">TIME_TO_TRIGGER</span><span class="o">;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">        <span class="nd">@Override</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">                <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                        <span class="k">if</span> <span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">toStop</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;System works fine.&quot;</span><span class="o">);</span>
+</span><span class="line">                                <span class="k">try</span> <span class="o">{</span>
+</span><span class="line">                                        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+</span><span class="line">                                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                                        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span><span class="line">                                <span class="o">}</span>
+</span><span class="line">                        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class="line">                                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Logic bomb triggered.&quot;</span><span class="o">);</span>
+</span><span class="line">                                <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">();</span>
+</span><span class="line">                        <span class="o">}</span>
+</span><span class="line">                <span class="o">}</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Yes. It throws <code>RuntimeException</code> after approximately 100 days from <code>LogicBomb</code> object creation.</p>
+
+<p><strong>Lesson:</strong> Do not steal. Trust to very limited circle of people.</p>
+
+<h3 id="therac-25httpenwikipediaorgwikitherac-25-1985---1987"><a href="http://en.wikipedia.org/wiki/Therac-25">Therac-25</a> (1985 - 1987)</h3>
+
+<p><strong>History:</strong> Therac-25 was a medical device for radiation therapy.
+It could deliver either beta-particles or X-rays. Unfortunately,
+operating system for controling the device was written with error,
+that causes sad results.</p>
+
+<p><strong>Consequences:</strong> At least 2 patients died, 4 patients were given overdose,
+approximately 100 times intended dose.</p>
+
+<p><strong>Reason:</strong> Investigation concluded the common reason was a
+<em>bad software design</em>, <em>development practices</em> and a <em>set of bugs</em>
+instead of some particular critical bug.</p>
+
+<p>These bad practices and bugs include:</p>
+
+<ul>
+  <li>No code review</li>
+  <li>Poor exception handling</li>
+  <li>No integration testing until device was assembled in the hospital</li>
+  <li>Poor hardware design</li>
+  <li><em>Bad code</em> reuse</li>
+  <li>Concurrency issues</li>
+</ul>
+
+<p><strong>Solution:</strong> Code review its a must. Even if you working
+alone in the team, show sources to some your friend (programmer).
+Two pair of eyes can spot the mistake two times more.</p>
+
+<p><em>Poor exception handling</em>. If failure occurs, no one knows about that failure.
+Never handle exception like that:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">catch</span> <span class="o">(</span><span class="n">SomeException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In 99% there are must be a proper handling. If you don&rsquo;t know how
+to handle, rethrow it, possible with wrapping:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">catch</span> <span class="o">(</span><span class="n">SomeException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">   <span class="k">throw</span> <span class="k">new</span> <span class="nf">SpecificException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Much better to throw responsibility for handling one level up
+in method signature:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">void</span> <span class="nf">method</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">SomeException</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If your real intention to left catch block empty, say this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">catch</span> <span class="o">(</span><span class="n">SomeExcpetion</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">  <span class="c1">// swallowing this exception is intended</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>Bad code reuse</em>. <a href="http://en.wikipedia.org/wiki/Code_reuse">Code reuse</a> is a good thing.
+Except the case when you reuse something with errors.</p>
+
+<p>For example, I have following method for testing if number is even in some of my
+previous projects (<em>yes, look at your code that was written few years ago</em>):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isEven</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This method returns incorrect result <code>true</code> for all negative odd numbers. Just because
+<code>%</code> operator returns <code>-1</code> except <code>1</code> for negative numbers. Better do <em>NOT</em> reuse such method.
+Just write new. And replace old method immediately.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isEven</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>Concurrency</em>. Software world hardest issues are concurrency issues.</p>
+
+<blockquote>
+  <p>You have a problem and decide to use threads.
+Two now problems have you.</p>
+
+  <p>&ndash; Some guy from internet
+<br /></p>
+</blockquote>
+
+<blockquote>
+  <p>You have a problem and decide to use locks.
+Now you have</p>
+
+  <p>&ndash; Some another guy from internet</p>
+</blockquote>
+
+<p>If you know that some object will be shared between threads, one solution to
+add <code>synchronized</code> (<a href="http://en.wikipedia.org/wiki/Monitor_%28synchronization%29">Monitor object</a>)
+to each read/write state method. It will slow
+your work with that object but prevent a lot of unexpected errors.</p>
+
+<p>Although, there are much flexible synchronization mechanisms in java that
+plain old <code>synchronized</code> as <a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphores</a>,
+<a href="http://en.wikipedia.org/wiki/Mutual_exclusion">mutexes</a>,
+<a href="http://en.wikipedia.org/wiki/Read_write_lock_pattern">read-write locks</a>.</p>
+
+<p>I reccomend to use java package <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>.
+It consists of a lot of concurrency techniques, like <code>Synchronizers</code>, <code>Executors</code>,
+<code>Atomics</code>, <code>Concurrent Collections</code>, <code>Futures</code>, <code>Callbacks</code> etc.</p>
+
+<p><strong>As a bonus:</strong> Good books about concurrency in Java:</p>
+
+<ul>
+  <li><a href="http://www.goodreads.com/book/show/127932.Java_Concurrency_in_Practice">Java Concurrency in Practice</a></li>
+  <li><a href="http://www.goodreads.com/book/show/629608.Concurrent_Programming_in_Java">Concurrent Programming in Java</a></li>
+</ul>
+
+<p><strong>Lesson:</strong> Always handle exceptions. Pay more attention to concurrency issues.</p>
+
+<h3 id="patriot-missilehttpenwikipediaorgwikimim-104patriot-1991"><a href="http://en.wikipedia.org/wiki/MIM-104_Patriot">Patriot Missile</a> (1991)</h3>
+
+<p><strong>History:</strong> In 1991, American battery fired Patriot Missile to intercept Iraq missile.
+Interception failed because of system bug in time step calculation.
+Iraq missile destroyed an American Army barracks.</p>
+
+<p><strong>Consequences:</strong> 28 soldiers died, 100 injured.</p>
+
+<p><strong>Reason:</strong> Floating point rounding error. System&rsquo;s internal clock was calculating
+time by 0.1 seconds step (0.1, 0.2, 0.3, &hellip;). As <code>0.1 = 1/10</code> have infinite binary representation
+<code>0.0001100110011001100110011001100110011001100110011001100..</code>
+and for this calculation 24-bit register was used,
+register hold just <code>0.00011001100110011001100</code> introducing truncating error
+<code>0.00000000000000000000000110011</code> what is approximately <code>0.0000001</code> in decimal.</p>
+
+<p>Small enough, huh?</p>
+
+<p>Not really, Multiplying this number for 100 hours gives:</p>
+
+<pre><code>0.0000001 * 100 * 60 * 60 * 10 = 0.36 sec
+</code></pre>
+
+<p>During that time Iraq missile travels a half kilometer, and was out of tracking radius
+for Patriot Missile. Bad things happen.</p>
+
+<p><strong>Solution:</strong> Floats are very error-prone if we don&rsquo;t handle them correctly.</p>
+
+<p>Predict the output of the following code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">for</span> <span class="o">(</span><span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">0.0</span><span class="o">;</span> <span class="n">d</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="o">;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Iteration&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Infinite loop. The same problem as described above.</p>
+
+<p>One solution is to use float that have exact binary representation.
+<code>0.125</code>, <code>0.25</code>, <code>0.5</code> for example.
+But this greatly reduces the space of allowed values and give less flexibility.</p>
+
+<p>Another solution to use big decimal or ratio types.
+Java, as example, have out-of-the-box <code>BigDecimal</code> class. Loop above rewritten with
+that class works as expected:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">BigDecimal</span> <span class="n">init</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;0.0&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">BigDecimal</span> <span class="n">bound</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;1.0&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">BigDecimal</span> <span class="n">step</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;0.1&quot;</span><span class="o">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">for</span> <span class="o">(</span><span class="n">BigDecimal</span> <span class="n">d</span> <span class="o">=</span> <span class="n">init</span><span class="o">;</span> <span class="o">!</span><span class="n">d</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">bound</span><span class="o">);</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">step</span><span class="o">))</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">d</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>One disadvantage it has slower execution than with floats. Consider trade-off
+between time and accuracy. If human lives on the stake, it&rsquo;s not relevant choice.</p>
+
+<p><code>Ratio</code> class can be defined without any problems and used similar way.</p>
+
+<p><strong>Lesson:</strong> If you need very accurate calculations use big decimals or ratios.</p>
+
+<h3 id="mars-climate-orbiterhttpenwikipediaorgwikimarsclimateorbiter-1998"><a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a> (1998)</h3>
+
+<p><strong>History:</strong> Again about space. In 1998, communication with Mars Climate Orbiter
+was lost, because of changed trajectory. Space probe was crashed near Mars.</p>
+
+<p><strong>Consequences:</strong> Money, $327 million</p>
+
+<p><strong>Reason:</strong> Navigation system design was developed by another team.
+To represent Force they used <a href="http://en.wikipedia.org/wiki/Pound-force">pound-force</a>
+from <a href="http://en.wikipedia.org/wiki/Imperial_units">Imperial units</a>
+instead of <a href="http://en.wikipedia.org/wiki/Newton_%28unit%29">Newton</a>
+from <a href="http://en.wikipedia.org/wiki/Metric_system">metric system</a>.</p>
+
+<pre><code>1 Newton = 0.22 pound-force
+</code></pre>
+
+<p>Without provided conversion between them system failed.</p>
+
+<p>Issue resemble to using dates in different timezones, but much more critical.</p>
+
+<p><strong>Solution:</strong> First of all, at least one science-aware person must perform code review.
+At least for code blocks with formulas and calculations. If there are comments about using pound-force,
+the problem easy spotted. Second of all, received code must be tested on model
+instead of physical machine. This is also, likely, detects the issue.
+Developer who wrote that less guilty, but still guilty.</p>
+
+<p>There are different approaches to implement this in java:</p>
+
+<p>very bad approach, we don&rsquo;t know what units are used:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">new</span> <span class="nf">Force</span><span class="o">(</span><span class="mf">1.533</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>better (still bad) approach to indicate with comment:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="c1">// force in Newtons!</span>
+</span><span class="line"><span class="k">new</span> <span class="nf">Force</span><span class="o">(</span><span class="mf">1.533</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>better (still bad) approach to indicate different constructors for different units:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">new</span> <span class="nf">ForceInNewtons</span><span class="o">(</span><span class="mf">1.533</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>I prefer approach where you specifies a <em>value</em> and <em>unit</em> in the constructor, and
+they converted to something common unit (metric) convenient for use in internal representation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">enum</span> <span class="n">ForceUnit</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">NEWTON</span><span class="o">,</span>
+</span><span class="line">  <span class="n">POUND_FORCE</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="k">new</span> <span class="nf">Force</span><span class="o">(</span><span class="mf">1.533</span><span class="o">,</span> <span class="n">ForceUnit</span><span class="o">.</span><span class="na">NEWTON</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A bit more code, but it is understandable and easy to use for different unit systems.
+Unit conversion method can be defined either at the <code>enum ForceUnit</code> or <code>class Force</code> level.</p>
+
+<p><strong>Lesson:</strong> Always explicitly indicate what units used in your code.</p>
+
+<p><em>To be continued.</em></p>
+
+<h3 id="links">Links</h3>
+
+<ul>
+  <li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
+  <li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
+  <li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History&rsquo;s Worst Software Bugs</a></li>
+  <li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
+  <li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
+  <li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
+  <li><a href="http://courses.cs.vt.edu/cs3604/lib/Therac_25/Therac_1.html">An Investigation of the Therac-25 Accidents</a></li>
+  <li><a href="http://seeri.etsu.edu/SECodeCases/ethicsC/PatriotMissile.htm">An Analysis of the Patriot Missile System</a></li>
+  <li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
+  <li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
+</ul>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T18:48:00+02:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bug/'>bug</a>, <a class='category' href='/blog/categories/history/'>history</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/critical-software-bugs-part-1/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/critical-software-bugs-part-1/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-011/" title="Previous Post: Clojure Euler: Problem 011">&laquo; Clojure Euler: Problem 011</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-012/" title="Next Post: Clojure Euler: Problem 012">Clojure Euler: Problem 012 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/critical-software-bugs-part-1/';
+        var disqus_url = 'http://mishadoff.github.com/blog/critical-software-bugs-part-1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

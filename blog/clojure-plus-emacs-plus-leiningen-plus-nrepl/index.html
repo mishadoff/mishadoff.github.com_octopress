@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure + Emacs + Leiningen + nREPL - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="This article provides step-by-step instruction how to configure Clojure environment. Little history Long time I was using swank-clojure as connector &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure + Emacs + Leiningen + nREPL</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-13T18:19:00+03:00" pubdate data-updated="true">Oct 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This article provides step-by-step instruction how to configure Clojure environment.</p>
+
+<!-- more -->
+
+<h3 id="little-history">Little history</h3>
+
+<p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
+But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it&rsquo;s my fault, this time I&rsquo;ve created configuration on GitHub</em>).
+So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
+<em>&ldquo;This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead&rdquo;</em>.
+Ok, let&rsquo;s see what nrepl is.</p>
+
+<h3 id="why-emacs">Why emacs?</h3>
+
+<p>I don&rsquo;t know. I like lisp, and emacs created in (e)lisp.
+Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
+Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can&rsquo;t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
+
+<p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
+
+<p>By the way, there are lot of IDEs that can be configured much simpler way than described in this article:</p>
+
+<ul>
+  <li><a href="http://clojure.bighugh.com/">Clojure Box</a> - emacs install, preconfigured for clojure. Only for Windows</li>
+  <li><a href="http://code.google.com/p/counterclockwise/">Counter Clockwise</a> - eclipse plugin</li>
+  <li><a href="http://www.enclojure.org/">Enclojure</a> - netbeans plugin</li>
+  <li><a href="http://plugins.intellij.net/plugin/?id=4050">La Clojure</a> - IDEA plugin</li>
+  <li><a href="http://www.vim.org/scripts/script.php?script_id=2501">VimClojure</a> - vim plugin</li>
+  <li><a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a> - new generation of IDEs?</li>
+</ul>
+
+<p>So, before reading, ask yourself, Do I really need emacs?</p>
+
+<h3 id="emacs">Emacs</h3>
+
+<p>First of all you need to install emacs, to get your future clojure coding environment. I&rsquo;m using ubuntu, so I just type:</p>
+
+<p><code>sudo apt-get install emacs</code></p>
+
+<p>and it install emacs 23. If you using another OS, or do not trust package manager,
+check <a href="http://www.gnu.org/software/emacs/">GNU Emacs official website</a> for installation instructions.</p>
+
+<p>Also, you need to install emacs package-manager.</p>
+
+<ol>
+  <li>Copy file <a href="http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el">package.el</a>
+to your <code>~/emacs.d/</code> folder.</li>
+  <li>In your <code>~/.emacs</code> file add folowing lines:</li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">(add-to-list 'load-path "~/.emacs.d/")
+</span><span class="line">(load "package")
+</span><span class="line">(require 'package)
+</span><span class="line">(add-to-list 'package-archives
+</span><span class="line">    '("marmalade" .
+</span><span class="line">      "http://marmalade-repo.org/packages/"))
+</span><span class="line">(package-initialize)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>These lines will be loaded after emacs restarted and install package manager.
+To check if it works, type <code>M-x package-list-packages</code> and this show you list of emacs plugins, hope you will find something useful there.</p>
+
+<h3 id="leiningen">Leiningen</h3>
+
+<p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
+Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
+
+<p>To install lein 2 (it&rsquo;s shorter name for Leiningen) do the following:</p>
+
+<ol>
+  <li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
+  <li>Place it on your <code>$PATH</code></li>
+  <li>Make it executable</li>
+</ol>
+
+<p>On ubuntu this can be performed with the following commands:</p>
+
+<pre><code>cd ~/
+mkdir bin
+</code></pre>
+
+<p>Add line export <code>PATH=~/bin:$PATH</code> to your <code>~/.bashrc</code> file</p>
+
+<pre><code>cd ~/bin
+wget https://raw.github.com/technomancy/leiningen/preview/bin/lein
+chmod +x lein
+</code></pre>
+
+<p>Execute lein, for first time it will download default lein package. To verify installation run <code>lein version</code>.
+On my machine for the post date it prints: <code>Leiningen 2.0.0-preview10 on Java 1.6.0_24 OpenJDK 64-Bit Server VM</code></p>
+
+<h3 id="nrepl">nREPL</h3>
+
+<p>We have already installed emacs package manager, so we can get nrepl from there.
+It also needs emacs major mode <code>clojure-mode</code>, so type the following commands in emacs to install needed packages:</p>
+
+<pre><code>M-x package-install clojure-mode
+M-x package-install nrepl
+</code></pre>
+
+<p>Try <code>M-x nrepl-jack-in</code> to execute REPL, where you can play with clojure commands.</p>
+
+<h3 id="bind-all-together">Bind all together</h3>
+
+<p>We have fully configured environment for clojure and how to use it?</p>
+
+<p>Create new clojure project using lein:</p>
+
+<p><code>lein new helloworld</code></p>
+
+<p>Start nREPL server in emacs:</p>
+
+<p><code>M-x nrepl-jack-in</code></p>
+
+<p>Open core project file in emacs:</p>
+
+<p><code>C-f helloworld/src/helloworld/core.clj</code></p>
+
+<p>Write simple function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">ns </span><span class="nv">helloworld.core</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">hello</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">println </span><span class="s">&quot;Hell, O&#39;World!&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Compile it:</p>
+
+<p><code>C-c C-k</code></p>
+
+<p>Switch to nREPL buffer, change namespace and run hello function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">ns </span><span class="nv">helloworld.core</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nf">hello</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Probably, you&rsquo;ll get output:</p>
+
+<pre><code>Hell, O'World!
+nil
+</code></pre>
+
+<p><strong>Congratulations!</strong> You just created working clojure project.</p>
+
+<p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
+There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
+I&rsquo;ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
+is currently available.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-13T18:19:00+03:00" pubdate data-updated="true">Oct 13<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/emacs/'>emacs</a>, <a class='category' href='/blog/categories/ide/'>ide</a>, <a class='category' href='/blog/categories/lein/'>lein</a>, <a class='category' href='/blog/categories/nrepl/'>nrepl</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-001/" title="Previous Post: Clojure Euler: Problem 001">&laquo; Clojure Euler: Problem 001</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-002/" title="Next Post: Clojure Euler: Problem 002">Clojure Euler: Problem 002 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

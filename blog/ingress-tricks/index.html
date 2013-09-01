@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ingress Tricks - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Ingress - MMORPG with augmented reality created by Google.
+This is very impressive game with capability to run over the city with your friends for &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/ingress-tricks/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ingress Tricks</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T12:00:00+02:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Ingress - MMORPG with <a href="http://en.wikipedia.org/wiki/Augmented_reality">augmented reality</a> created by Google.
+This is very impressive game with capability to run over the city with your friends for capturing portals.</p>
+
+<!-- more -->
+
+<p><img src="http://i.imgur.com/vskNt.jpg?1" alt="" /></p>
+
+<p>The game genre positioned as <strong>MMMMOARG</strong> (<em>massively multiplayer map-based mobile online augmented reality game</em>).
+In fact, it&rsquo;s just MMORPG. You have character, you play online with other people.</p>
+
+<h2 id="brief-game-overview">Brief game overview</h2>
+
+<p><em>skip if you already now what Ingress is</em></p>
+
+<p>There are two fractions in game: <strong>Enlightened</strong> and <strong>Resistance</strong>.
+In few words, Enlightened for a progress and big changes, Resistance for conservative being.
+<strong>Portals</strong> are famous places like monuments, memorials, sculptures, etc.
+Each fraction can capture portals, improve, destroy them, link portals with each other,
+and create control field (<em>by linking three portals in triangle</em>). Area under this control field covers
+some number of <strong>mind units</strong>. Fraction that have more mind units - more succesful to achieve its goal.</p>
+
+<h2 id="some-tricks">Some tricks</h2>
+
+<p>If you already a member of Ingress, check these tricks, probably some you know.</p>
+
+<h2 id="resonators"><strong>Resonators</strong></h2>
+<ul>
+  <li><strong>Deploy resonator on maximum distance betwen portal.</strong> Because it is much harder for your enemy
+to destroy spattered resonators than if they were in one place.</li>
+  <li><strong>Waste resonators.</strong> If you have no time while running near neutral or low-level
+portal, just deploy one resonator of your maximum level. You still can not link it to another portal,
+but enemy need to spend enough effort to destroy it.</li>
+  <li><strong>Upgrade.</strong> Use upgrade menu to improve resonators on portal. If somebody deployed L1 resonator, and you
+can change it to L4, it would be good.</li>
+  <li><strong>Use specific resonators.</strong> By default you deploy only L1 resonators. From upgrade menu you can select
+what resonators you want to deploy.</li>
+</ul>
+
+<h2 id="bursters"><strong>Bursters</strong></h2>
+<ul>
+  <li><strong>Do not waste bursters.</strong> It&rsquo;s useless to fire couple bursts if they are not destroying resonators/portals. Just save them.
+When you have enough bursters, then you can destroy enemy portal and get XP.</li>
+  <li><strong>Use bursters from optimal point.</strong> It&rsquo;s opposite from previous. Find place where your bursters&rsquo; coverage
+on enemy resonators will be maximum. Use weighted estimate, you need stand closer to higher level resonators.</li>
+  <li><strong>Use specific bursters.</strong> By default you fire with you maximum level bursters. If enemy portal not so hard you can
+select lower-level burster from weapons menu.</li>
+</ul>
+
+<h2 id="mods"><strong>Mods</strong></h2>
+<ul>
+  <li><strong>Deploy portal shields.</strong> For portals that have enough support and high level. Portal shields are relatively rare resources, so don&rsquo;t waste them.
+Also if you deployed shield on high level portal, much harder for enemy to get resources, and destroy it.</li>
+</ul>
+
+<h2 id="links"><strong>Links</strong></h2>
+<ul>
+  <li><strong>Plan links and fields carefully.</strong> You must not be fast at linking, in case you linking more than 4 portals,
+there are possibilities. And you should choose one that gives you maximum number of fields.
+To make link between A and B, you need portal A with enough distance to B, and portal key from B.</li>
+  <li><strong>Build long links.</strong> Long links can prevent other fraction to link something.
+Because crossed links are restricted. But if you have time to link something better, think about it.</li>
+</ul>
+
+<h2 id="resources"><strong>Resources</strong></h2>
+<ul>
+  <li><strong>Gather resources.</strong> Find place where you can see a lot of high-level portals and hack them. One hour
+spent near them gives you a lot of resources.</li>
+  <li><strong>Share resources.</strong> You can, or better you need to share resources with your friends. It&rsquo;s cooperative game.</li>
+</ul>
+
+<h2 id="area"><strong>Area</strong></h2>
+<ul>
+  <li><strong>Distribute area locally.</strong> Communicate with players from your city and plan what territory can be supported by whom.</li>
+  <li><strong>Strategic portals.</strong> Don&rsquo;t plan your strategic portals in common places. They can be simply destroyed. Use for your strategic
+portals some strange places, like portal inside building, mountain portals, island portals, etc.</li>
+  <li><strong>Use Intel Map to plan your trip.</strong> Move only in the way you already know. Don&rsquo;t practice <em>blind trips</em>.</li>
+</ul>
+
+<h2 id="friends"><strong>Friends</strong></h2>
+<ul>
+  <li><strong>Play with friends.</strong> Preferably, the same level friends. Obviously, you can destroy more, you can capture more.
+Also, it&rsquo;s more fun to talk with somebody during the moving.</li>
+  <li><strong>Communication.</strong> If you see somebody playing ingress near you, don&rsquo;t hesitate to meet and make friendship. Even he or she from
+another fraction. Maybe it&rsquo;s your future spouse.</li>
+</ul>
+
+<h2 id="home-playing"><strong>Home playing</strong></h2>
+<ul>
+  <li><strong>Repair portals.</strong> If you are sitting at office, have enough XM, you still can help your fraction.
+Just open portal keys and you can repair these portals distantly. Keep in mind that resonator XM reduces by 10% each day.
+The trick is also to repair one most valuable resonator.</li>
+  <li><strong>Solve puzzles.</strong> If you solve some puzzle that appeared on niantic site or in your inventory, you
+can help you fraction a lot by posting code in faction channel.</li>
+  <li><strong>Manage the actions.</strong> You can sit at home with opened Intel Map and guide somebody to do right things.</li>
+</ul>
+
+<p>This post planned to be updatable, because all these advices found upon investigation. Check for new updates.
+Also, if you have some useful information, other tips and tricks,  post it in comments.</p>
+
+<h2 id="links-1">Links</h2>
+
+<p>More about game and some useful resources here:</p>
+
+<ul>
+  <li><a href="http://www.ingress.com/">Ingress Official</a></li>
+  <li><a href="http://www.nianticproject.com/">History and Puzzles</a></li>
+  <li><a href="http://ingressfieldguide.com/">Tips &amp; Tricks</a></li>
+  <li><a href="http://www.reddit.com/r/Ingress">Ingress subreddit</a></li>
+  <li><a href="http://www.ingress.com/intel">Intel Map</a></li>
+</ul>
+
+<h2 id="bonus-xkcd">Bonus: xkcd</h2>
+
+<p><img src="http://imgs.xkcd.com/comics/location.png" alt="" /></p>
+
+<p>Viva la Resistance!</p>
+
+<p><strong>P.S.</strong> Unfornunately game at closed beta right now. Only for Android devices.
+Hope it will be released very soon and we will see more people near monuments.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T12:00:00+02:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fun/'>fun</a>, <a class='category' href='/blog/categories/games/'>games</a>, <a class='category' href='/blog/categories/ingress/'>ingress</a>, <a class='category' href='/blog/categories/xkcd/'>xkcd</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/ingress-tricks/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/ingress-tricks/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/what-is-source-code/" title="Previous Post: What is source code?">&laquo; What is source code?</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-009/" title="Next Post: Clojure Euler: Problem 009">Clojure Euler: Problem 009 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/ingress-tricks/';
+        var disqus_url = 'http://mishadoff.github.com/blog/ingress-tricks/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

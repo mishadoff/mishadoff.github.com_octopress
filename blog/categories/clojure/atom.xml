@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/clojure/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing numberto]]></title>
+    <link href="http://mishadoff.github.com/blog/announcing-numberto/"/>
+    <updated>2013-09-01T04:23:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/announcing-numberto</id>
+    <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
+
+<!-- more -->
+
+<p><a href="https://github.com/mishadoff/numberto">numberto</a>
+- simple clojure library with a bunch of functions operating on numbers.</p>
+
+<p>I created this project for two reasons:</p>
+
+<ol>
+  <li>Solving problems on <a href="http://projecteuler.net">Project Euler</a>, <a href="http://www.4clojure.com/">4Clojure</a> and just playground with numbers needed common functions. I just extracted them to separate util library.</li>
+  <li>Practice to develop clojure project with unit tests, continuos integration, documentation and publishing to clojars.</li>
+</ol>
+
+<h3 id="get-it">Get it</h3>
+
+<p>Current version is <code>0.0.2</code> available to download on
+<a href="https://clojars.org/numberto/versions/0.0.2">Clojars</a> or
+as lein dependency <code>[numberto "0.0.2"]</code></p>
+
+<h3 id="example-usage">Example usage</h3>
+
+<p><code>clojure
+(number-&gt;roman 19) =&gt; "XIX"
+(take 10 fibonacci) =&gt; (1 1 2 3 5 8 13 21 34 55)
+(shift-right 123456789 3) =&gt; 789123456
+(count-digits (! 100000)) =&gt; 456574
+(factorize 234) =&gt; [2 3 3 13]
+</code></p>
+
+<p>Can you read long numbers?</p>
+
+<p><code>clojure 
+(number-name 16532561257523723757234781264) =&gt;
+"sixteen octillion five hundred thirty two septillion five hundred sixty one sextillion
+two hundred fifty seven quintillion five hundred twenty three quadrillion seven hundred
+twenty three trillion seven hundred fifty seven billion two hundred thirty four million
+seven hundred eighty one thousand two hundred sixty four"
+</code></p>
+
+<h3 id="structure">Structure</h3>
+
+<p>Each logical set of functions moved to separate namespace. Here is the list of namespaces:</p>
+
+<ul>
+  <li><strong>Converters</strong>.
+number to digits, char to digit, roman to arabic</li>
+  <li><strong>Math</strong>.
+Often used functions, such as <code>count-digits</code>, <code>shuffle-num</code>, <code>reverse-num</code> and some from common math <code>abs</code>, <code>gcd</code>, <code>lcm</code></li>
+  <li><strong>Seqs</strong>.
+Various lazy sequences: <code>fibonacci</code>, <code>farey</code>, <code>palindromes</code>.</li>
+  <li><strong>Primes</strong>.
+Prime numbers lazy sequence, factorization and totient function</li>
+  <li><strong>Factorial</strong>.
+Standard and Improved version of factorial</li>
+  <li><strong>Generators</strong>.
+Generate random numbers</li>
+  <li><strong>Printers</strong>.
+Pretty print for long numbers</li>
+</ul>
+
+<p>Check out <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">detailed intro</a></p>
+
+<p><strong>P.S.</strong> I still experimenting, so expect a lot of changes between versions until make something stable. Comments and advices are welcome!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
+    <link href="http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter/"/>
+    <updated>2013-08-09T17:44:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter</id>
+    <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
+
+<!-- more -->
+
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
+
+<ul>
+  <li><code>&gt;</code> move to the next cell</li>
+  <li><code>&lt;</code> move to the previous cell</li>
+  <li><code>+</code> increment value in the current cell</li>
+  <li><code>-</code> decrement value in the current cell</li>
+  <li><code>.</code> print char with ascii value of current cell</li>
+  <li><code>,</code> read ascii value for input char to the current cell</li>
+  <li><code>[</code> start loop until value of pointer is not zero </li>
+  <li><code>]</code> finish loop</li>
+</ul>
+
+<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+
+<h3 id="tweet">Tweet</h3>
+
+<p>Final version took <code>280</code> characters in Clojure:</p>
+
+<p><code>clojure
+(fn[a p k c](let[h #(nth %1@%2)e #(h a p)s #(swap! %1%2 1)t
+#(aset a@p(%(e)1))l #(do(s k %)(case(h c k)\]()\[()(recur %)
+))](while(&gt;(count c)@k)(do(case(h c k)\&gt;(s p +)\&lt;(s p -)\+
+(t +)\-(t -)\.(print(char(e)))\,(aset a@p(.read *in*))\[(if
+(=(e)0)(l +))\](if(&gt;(e)0)(l -)))(s k +)))))
+</code></p>
+
+<p>Exactly 2 tweets.</p>
+
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+
+<p>Translating to more readable code:</p>
+
+<p><code>clojure
+(defn parse-internal [a pt pc cs]
+  (letfn [(act []
+            (case (nth cs @pc)
+              \&gt; (swap! pt inc)
+              \&lt; (swap! pt dec)
+              \+ (aset a @pt (inc (nth a @pt))) 
+              \- (aset a @pt (dec (nth a @pt)))
+              \. (print (char (nth a @pt)))
+              \, (aset a @pt (.read *in*))
+              \[ (if (zero? (nth a @pt)) (loop- inc))
+              \] (if-not (zero? (nth a @pt)) (loop- dec))))
+          (loop- [f]
+            (do (swap! pc f)
+                (case (nth cs @pc)
+                  \[ ()
+                  \] () 
+                  (recur f))))]
+    (while (not= (count cs) @pc)
+      (do
+        (act)
+        (swap! pc inc)))))
+</code></p>
+
+<p>So, what&rsquo;s happening there?</p>
+
+<p>Function arguments are parameters of our tape and brainfuck program.</p>
+
+<ul>
+  <li><code>a</code> is an array represents finite tape <code>e.g (int-array 100)</code></li>
+  <li><code>pt</code> is an atom - pointer to the tape</li>
+  <li><code>pc</code> is an atom - pointer to the command list</li>
+  <li><code>cs</code> command list</li>
+</ul>
+
+<p>Function <code>act</code> decides which action to perform depending on current command,
+<code>loop</code> allows us to move command pointer inside a loop,
+and main <code>while-do</code> loop executes commands until they exhausted. Simple enough.</p>
+
+<p>To make our interpreter more friendly we create function <code>parse</code> that accepts
+string - program, written in brainfuck.</p>
+
+<p><code>clojure
+(defn parse [s]
+  (let [a (int-array 100)  ;; Turing Tape
+        p (atom 0)         ;; Pointer to Tape
+        k (atom 0)         ;; Pointer to Command
+        c (vec (seq s))]   ;; Vector of Commands
+    (parse-internal a p k c)))
+</code></p>
+
+<h4 id="testing">Testing</h4>
+
+<p>Print &ldquo;Hello, world&rdquo;</p>
+
+<p><code>clojure
+(parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
+        &gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;
+        .+++.------.--------.&gt;+.&gt;.") =&gt;
+Hello World!
+</code></p>
+
+<p>Input 5 characters and reverse print them</p>
+
+<p><code>clojure
+(parse ",&gt;,&gt;,&gt;,&gt;,.&lt;.&lt;.&lt;.&lt;.") =&gt; &lt;wait input "hello"&gt;
+olleh
+</code></p>
+
+<p>More complex program need nested loops, which is not supported by
+this version (<em>for the sake of small size!</em>)</p>
+
+<p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
+
+<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
+
+<ul>
+  <li>It does not work for inifinite tape</li>
+  <li>Cell datatype is fixed and not assumed to be cyclic. For example, if cell type is unsigned byte <code>[0..255]</code>, then <code>255 + 1 != 0</code> and break interpreter</li>
+  <li>Only unsigned types supported</li>
+  <li>Nested loops are not allowed</li>
+  <li>No error handling</li>
+</ul>
+
+<p>But, you are welcome to improve it!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <updated>2013-07-21T13:39:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of the digits in the number 100!</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=20">http://projecteuler.net/problem=20</a></p>
+
+<!-- more -->
+
+<p>First of all we need to calculate factorial.
+Without integer overflows, stack overflows and other caveats.</p>
+
+<p>Previous article <a href="/blog/fast-factorial/">Fast Factorial</a> has working solution
+that we might use.</p>
+
+<p><code>
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Now, calculate the sum of digits, the same function that we used in
+<a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+
+<p><code>
+(defn sum-of-digits [n]
+  (reduce + (map #(- (int %) 48) (seq (str n)))))
+</code></p>
+
+<p>And the final line</p>
+
+<p><code>
+(sum-of-digits (! 100))
+</code></p>
+
+<p>Simple enough, huh?</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem020.clj">Code</a></p>
+
+<p><strong>P.S.</strong> The functions <code>sum-of-digits</code>, <code>count-digits</code> and similar used often
+and look very ugly, so I decided to create a separate set of functions (<em>library?</em>)
+which I can refer. It should be a set of common mathematic functions, including
+different sequences, sums, converters, interesting numbers. You might use it too.
+Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <updated>2013-07-10T01:59:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>How many Sundays fell on the first of the month
+during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=19">http://projecteuler.net/problem=19</a></p>
+
+<!-- more -->
+
+<p>Project Euler also gives following information:</p>
+
+<ul>
+  <li>1 Jan 1900 was a Monday.</li>
+  <li>
+    <p>A poem</p>
+
+    <p>Thirty days has September,<br />
+April, June and November.<br />
+All the rest have thirty-one,<br />
+Saving February alone,<br />
+Which has twenty-eight, rain or shine.<br />
+And on leap years, twenty-nine.<br /></p>
+  </li>
+  <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
+</ul>
+
+<p>Implementin calendars logic is great, but java interoperability is much better!</p>
+
+<p>First of all, take standard java <code>GregorianCalendar</code> class.
+We can import it <em>almost</em> the same way as we use <code>require</code> </p>
+
+<p><code>clojure
+(import [java.util GregorianCalendar])
+</code></p>
+
+<p>To create an object use function <code>new</code></p>
+
+<p><code>clojure
+(new GregorianCalendar)
+</code></p>
+
+<p>But it is more idiomatic way to create java objects with special syntax:
+<em>period after class name</em> </p>
+
+<p><code>clojure
+(GregorianCalendar.)
+</code></p>
+
+<p>To configure calendar object to specific date we need to set some its
+properties. Setters syntax is following (assuming <code>calendar</code>
+is an object of calendar):</p>
+
+<p>Java</p>
+
+<p><code>java 
+calendar.set(GregorianCalendar.YEAR, 2013);
+</code></p>
+
+<p>Clojure</p>
+
+<p><code>clojure
+(.set calendar GregorianCalendar/YEAR 2013)
+</code></p>
+
+<p>Executing lot of setters is the same boilerplate as in java:</p>
+
+<p><code>clojure
+(do
+  (.set calendar GregorianCalendar/YEAR 2013)
+  (.set calendar GregorianCalendar/MONTH 11)
+  (.set calendar GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>To avoid repetition of object name we can use <code>doto</code> macro:</p>
+
+<p><code>clojure
+(doto (GregorianCalendar.)
+  (.set GregorianCalendar/YEAR 2013)
+  (.set GregorianCalendar/MONTH 11)
+  (.set GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>This macro <em>magically</em> performs the same set of operations as above, but in more readable way.</p>
+
+<p>Now we can create calendar objects for the <em>first of the
+specific month of the specific year</em></p>
+
+<p><code>clojure
+(defn calendar-for [year month]
+  (doto (GregorianCalendar.)
+    (.set GregorianCalendar/YEAR year)
+    (.set GregorianCalendar/MONTH month)
+    (.set GregorianCalendar/DAY_OF_MONTH 1)))
+</code></p>
+
+<p>Just iterate through all such objects in date range given in problem definition
+and count Sundays.</p>
+
+<p><code>clojure
+(reduce +
+  (for [year (range 1901 (inc 2000)) month (range 1 (inc 12))]
+    (let [c (calendar-for year month)]
+          (if (= GregorianCalendar/SUNDAY 
+                 (.get c GregorianCalendar/DAY_OF_WEEK)) 1 0))))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
+
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fast Factorial]]></title>
+    <link href="http://mishadoff.github.com/blog/fast-factorial/"/>
+    <updated>2013-06-07T01:08:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/fast-factorial</id>
+    <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
+In <a href="/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
+we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
+than &ldquo;by definition&rdquo;.</p>
+
+<!-- more -->
+
+<h3 id="factorials">Factorials</h3>
+
+<p>Most of programming languages tutorials shows the following
+approach to calculate factorial (<em>transformed to clojure</em>):</p>
+
+<p><code>clojure
+(defn factorial [n]
+  (if (zero? n) 1
+      (* n (factorial (dec n)))))
+</code></p>
+
+<p>Simple recursive solution.</p>
+
+<p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
+
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>&hellip;</p>
+
+<p><code>
+&gt; ArithmeticException integer overflow
+</code></p>
+
+<p>Oops.</p>
+
+<p>Default clojure integer type is 64 bit (<code>Long</code>).
+It does not fit well for <em>such large input</em>, so we rewrite function.</p>
+
+<p><code>clojure
+(defn ! [n]
+  (if (zero? n) 1
+      (*' n (! (dec n)))))
+</code></p>
+
+<p>Just one character added, <code>*</code> became <code>*'</code>. It is automatic type promotion.
+If type can not hold the value without losing precision, it automatically extends.
+In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
+
+<p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
+<code>(! 30000)</code>&hellip;</p>
+
+<p><code>
+&gt; StackOverflowError
+</code></p>
+
+<p>Yet another overflow.</p>
+
+<p>Well, stack size is limited. We don&rsquo;t need to consume stackframes and
+will use <code>loop/recur</code> approach.</p>
+
+<p><code>clojure
+(defn ! [n]
+  (loop [cur n acc 1]
+    (if (zero? cur) acc
+        (recur (dec cur) (*' cur acc)))))
+</code></p>
+
+<p>It is also recursive approach, but instead of saving so far calculated value
+in stack, we pass it to the function as a parameter.
+Clojure optimize tail recursion to iterative version and does not consume stack.
+It succesfully calculates factorial for 30000,
+and for any other value. Great!</p>
+
+<p>If we look at the factorial as a calculation process, not definition, it means
+&ldquo;product of all numbers between 1 and n&rdquo;. It is very concise for functional programming:</p>
+
+<p><code>clojure
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Does not consume stack, no number overflow, but works
+~2 times slower than <code>loop/recur</code> version.</p>
+
+<p>I don&rsquo;t know the reason, but it seems time wasted
+by <code>reduce</code> for creating intermediate results. So we choose
+previous <code>loop/recur</code> function as baseline factorial.</p>
+
+<h3 id="fast-factorial">Fast Factorial</h3>
+
+<p>Here is another way to calculate factorial.</p>
+
+<p>Let&rsquo;s consider example <code>12!</code>.</p>
+
+<p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
+Perform prime factorization of each number.
+For example, prime factorization of <code>12</code> is <code>2 * 2 * 3</code>.</p>
+
+<p>After that we get a factorization of the <code>12!</code>, which contains only prime numbers.
+To find factorial value we can just multiply them all. But we do clever trick instead.</p>
+
+<p>Group every prime number and its power.
+E.g. if we have factorization <code>2 * 2 * 2 * 3 * 5</code> it becomes vector of pairs <code>[[2 3] [3 1] [5 1]]</code>.</p>
+
+<p>To calculate power we have simple <code>power</code> implementation:</p>
+
+<p><code>clojure
+(defn power [x n]
+  (reduce *' (repeat n x)))
+</code></p>
+
+<p>Trick is using exponentiation by squaring, which reduce
+exponentiation complexity from <code>O(n)</code> to <code>O(log n)</code>.</p>
+
+<p><code>clojure
+(defn power [x n]
+  (cond (= 0 n) 1
+        (= 1 n) x
+        (even? n) (power* (*' x x) (/ n 2))
+        (odd? n) (*' x (power* (*' x x) (/ (dec n) 2)))))
+</code></p>
+
+<p>It is not tail-recursive solution and theoretically may cause
+stackoverflow, but its not critical. It works well for large numbers.</p>
+
+<p>Actually, we do not perform factorization. We just know that factorization of <code>n!</code> contains all prime numbers below or equal <code>n</code> and every number have some multiplicity. </p>
+
+<p>The function calculates how many times prime number <code>k</code> occurs in factorial factorization for <code>n</code></p>
+
+<p><code>clojure
+(defn- find-power [n k]
+  (loop [total n sum 0]
+    (let [i (int (/ total k))]
+      (if (zero? i) sum
+          (recur i (+ sum i))))))
+</code></p>
+
+<p>Binding all together:</p>
+
+<p><code>clojure
+(defn !! [n]
+  (loop [[h &amp; t] 
+         (map #(power % (find-power n %))
+              (take-while #(&lt;= % n) (primes)))
+         acc 1]
+    (if h (recur t (*' h acc)) acc)))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/numberto/blob/master/src/numberto/factorial.clj">Code available here</a></p>
+
+<p><em>Note:</em> <code>primes</code> is a function generates lazy-sequence of prime numbers. It can be taken from <code>clojure.contrib.lazy-seqs</code>.</p>
+
+<h3 id="testing">Testing</h3>
+
+<blockquote>
+  <p>Anyway, why do you think it is faster?
+You performing more calculations than just multiplying numbers.</p>
+</blockquote>
+
+<p>Let&rsquo;s see.</p>
+
+<p><code>clojure
+(do (println "== 10 ==")
+    (time (! 10))
+    (time (!! 10))
+    (println "== 100 ==")
+    (time (! 100))
+    (time (!! 100))
+    (println "== 1000 ==")
+    (time (! 1000))
+    (time (!! 1000))
+    (println "== 10000 ==")
+    (time (! 10000))
+    (time (!! 10000))
+    (println "== 100000 ==")
+    (time (! 100000))
+    (time (!! 100000))
+    (println "== 1000000 ==")
+    (time (! 1000000))
+    (time (!! 1000000)) nil)
+</code></p>
+
+<p><code>
+== 10 ==
+"Elapsed time: 0.051054 msecs"
+"Elapsed time: 0.137587 msecs"
+== 100 ==
+"Elapsed time: 0.081365 msecs"
+"Elapsed time: 0.376653 msecs"
+== 1000 ==
+"Elapsed time: 1.59252 msecs"
+"Elapsed time: 3.212842 msecs"
+== 10000 ==
+"Elapsed time: 161.856965 msecs"
+"Elapsed time: 76.452529 msecs"
+== 100000 ==
+"Elapsed time: 19403.375319 msecs"
+"Elapsed time: 6372.35266 msecs"
+== 1000000 ==
+"Elapsed time: 2863893.471718 msecs"
+"Elapsed time: 1079632.255919 msecs"
+nil
+</code></p>
+
+<p>For small factorials <code>(&lt; 1000)</code> improved version works ~2 times slower.
+Around the thousand it has the same performance as standard version.
+And, finally, some win (up to 3 times) for larger numbers.</p>
+
+<p>Theoretically, you can implement generalized factorial with these two algorithms
+and switch between them, depending on input. But who really need it? </p>
+
+<blockquote>
+  <p>Question: What the complexity of this algorithm?</p>
+</blockquote>
+
+<p><strong>P.S.</strong> Enterprise lovers would say factorial complexity is <code>O(1)</code>.
+Just precompute all values and save them to database.</p>
+]]></content>
+  </entry>
+  
+</feed>

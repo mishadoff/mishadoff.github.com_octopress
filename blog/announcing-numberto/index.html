@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Announcing numberto - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="All you need to play with numbers! numberto
+- simple clojure library with a bunch of functions operating on numbers. I created this project for two &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/announcing-numberto/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Announcing Numberto</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-01T04:23:00+03:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>All you need to play with numbers!</p>
+
+<!-- more -->
+
+<p><a href="https://github.com/mishadoff/numberto">numberto</a>
+- simple clojure library with a bunch of functions operating on numbers.</p>
+
+<p>I created this project for two reasons:</p>
+
+<ol>
+  <li>Solving problems on <a href="http://projecteuler.net">Project Euler</a>, <a href="http://www.4clojure.com/">4Clojure</a> and just playground with numbers needed common functions. I just extracted them to separate util library.</li>
+  <li>Practice to develop clojure project with unit tests, continuos integration, documentation and publishing to clojars.</li>
+</ol>
+
+<h3 id="get-it">Get it</h3>
+
+<p>Current version is <code>0.0.2</code> available to download on
+<a href="https://clojars.org/numberto/versions/0.0.2">Clojars</a> or
+as lein dependency <code>[numberto "0.0.2"]</code></p>
+
+<h3 id="example-usage">Example usage</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">number-&gt;roman</span> <span class="mi">19</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="s">&quot;XIX&quot;</span>
+</span><span class="line"><span class="p">(</span><span class="nb">take </span><span class="mi">10</span> <span class="nv">fibonacci</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">13</span> <span class="mi">21</span> <span class="mi">34</span> <span class="mi">55</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nf">shift-right</span> <span class="mi">123456789</span> <span class="mi">3</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="mi">789123456</span>
+</span><span class="line"><span class="p">(</span><span class="nf">count-digits</span> <span class="p">(</span><span class="nf">!</span> <span class="mi">100000</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="mi">456574</span>
+</span><span class="line"><span class="p">(</span><span class="nf">factorize</span> <span class="mi">234</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">13</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Can you read long numbers?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">number-name</span> <span class="mi">16532561257523723757234781264</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="s">&quot;sixteen octillion five hundred thirty two septillion five hundred sixty one sextillion</span>
+</span><span class="line"><span class="s">two hundred fifty seven quintillion five hundred twenty three quadrillion seven hundred</span>
+</span><span class="line"><span class="s">twenty three trillion seven hundred fifty seven billion two hundred thirty four million</span>
+</span><span class="line"><span class="s">seven hundred eighty one thousand two hundred sixty four&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="structure">Structure</h3>
+
+<p>Each logical set of functions moved to separate namespace. Here is the list of namespaces:</p>
+
+<ul>
+  <li><strong>Converters</strong>.
+number to digits, char to digit, roman to arabic</li>
+  <li><strong>Math</strong>.
+Often used functions, such as <code>count-digits</code>, <code>shuffle-num</code>, <code>reverse-num</code> and some from common math <code>abs</code>, <code>gcd</code>, <code>lcm</code></li>
+  <li><strong>Seqs</strong>.
+Various lazy sequences: <code>fibonacci</code>, <code>farey</code>, <code>palindromes</code>.</li>
+  <li><strong>Primes</strong>.
+Prime numbers lazy sequence, factorization and totient function</li>
+  <li><strong>Factorial</strong>.
+Standard and Improved version of factorial</li>
+  <li><strong>Generators</strong>.
+Generate random numbers</li>
+  <li><strong>Printers</strong>.
+Pretty print for long numbers</li>
+</ul>
+
+<p>Check out <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">detailed intro</a></p>
+
+<p><strong>P.S.</strong> I still experimenting, so expect a lot of changes between versions until make something stable. Comments and advices are welcome!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-01T04:23:00+03:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/announcing-numberto/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/announcing-numberto/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/code-golf-brainfuck-interpreter/" title="Previous Post: Code Golf: Brainfuck Interpreter">&laquo; Code Golf: Brainfuck Interpreter</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/announcing-numberto/';
+        var disqus_url = 'http://mishadoff.github.com/blog/announcing-numberto/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

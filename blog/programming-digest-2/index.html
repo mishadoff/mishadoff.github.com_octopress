@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Programming Digest 2 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Why math is needed for developers, what is REST, how to become experienced
+developer&hellip;in 10 years, &ldquo;coding it&rsquo;s just writing&rdquo &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/programming-digest-2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Programming Digest 2</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-22T14:43:00+03:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Why math is needed for developers, what is REST, how to become experienced
+developer&hellip;in 10 years, &ldquo;coding it&rsquo;s just writing&rdquo; and some practice:
+Naive Bayes Classifier, functional programming and Java 8.</p>
+
+<!-- more -->
+
+<h3 id="math-for-programmershttpsteve-yeggeblogspotcom200603math-for-programmershtml">1. <a href="http://steve-yegge.blogspot.com/2006/03/math-for-programmers.html">Math For Programmers</a></h3>
+
+<p>Another great post by Steve Yegge about math. Math for developers.
+As everyone might to retort, knowing math is not mandatory for software engineering field, but you know:</p>
+
+<blockquote>
+  <p>Math is&hellip; ummm, please don&rsquo;t tell anyone I said this;
+I&rsquo;ll never get invited to another party as long as I live.
+But math, well&hellip; I&rsquo;d better whisper this, so listen up: (it&rsquo;s actually kinda fun.)</p>
+</blockquote>
+
+<p>I totally agree. It&rsquo;s a lot of fun.
+Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don&rsquo;t understand anything.</p>
+
+<p>Pick your favourite math subject and try to dig more.
+Statistics, Linear Algebra, Discrete Math, Combinatorics, Operation Research, Group Theory
+and more; one of them can be a good start.</p>
+
+<p>Does that really helps? Well, maybe. But it&rsquo;s definitely improve your problem solving skill.</p>
+
+<p>And believe. Math makes you a <em>better</em> programmer.</p>
+
+<h3 id="how-i-explained-rest-to-my-wifehttptomaykocomwritingsrest-to-my-wife">2. <a href="http://tomayko.com/writings/rest-to-my-wife">How I Explained REST to My Wife</a></h3>
+
+<p>Good article about how web works. I found it very useful for understanding
+some parts I thought I understood. By the way, great examples.</p>
+
+<blockquote>
+  <p>Ryan: I can&rsquo;t drive a cup and I can&rsquo;t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
+
+  <p>Wife: You can&rsquo;t DELETE a cup.</p>
+
+  <p>Ryan: Well, okay, but you can throw it away.</p>
+</blockquote>
+
+<p>Unfortunately, author of this article take it down due to lot of complaints about
+article gender-oriented nature. I don&rsquo;t think it&rsquo;s offensive and here is the link with
+<a href="http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife">copy from web archive</a></p>
+
+<h3 id="programmer-competency-matrixhttpwwwindiangeeknetwp-contentuploadsprogrammer20competency20matrixhtm">3. <a href="http://www.indiangeek.net/wp-content/uploads/Programmer%20competency%20matrix.htm">Programmer Competency Matrix</a></h3>
+
+<p>Do you think you are great programmer? Test yourself.</p>
+
+<p><strong>Algorithms</strong></p>
+
+<ul>
+  <li><strong>2^n (Level 0)</strong>. Unable to find the average of numbers in an array
+(It&rsquo;s hard to believe but I&rsquo;ve interviewed such candidates)</li>
+  <li><strong>n^2 (Level 1)</strong>. Basic sorting, searching and data structure traversal and retrieval algorithms</li>
+  <li><strong>n (Level 2)</strong>. Tree, Graph, simple greedy and divide and conquer algorithms, is able to understand
+the relevance of the levels of this matrix.</li>
+  <li><strong>log(n) (Level 3)</strong>. Able to recognize and code dynamic programming solutions, good knowledge of graph algorithms,
+good knowledge of numerical computation algorithms, able to identify NP problems etc.</li>
+</ul>
+
+<p>In any case, this <em>test</em> helps you to build plan for programming
+related skills and gives understanding what you need to know to become an expert.</p>
+
+<h3 id="teach-yourself-programming-in-ten-yearshttpnorvigcom21-dayshtml">4. <a href="http://norvig.com/21-days.html">Teach Yourself Programming in Ten Years</a></h3>
+
+<p>Article by Peter Norvig.
+Great guy, I got to know from <a href="https://www.ai-class.com/">Artificial Intelligence</a> course.</p>
+
+<p>His writing is critique of popular books, like &ldquo;Learn Java in 21 Days&rdquo;.
+Peter explains that it is impossible to be a great
+engineer in such short period, and to become an expert you need aproximately 10 years.</p>
+
+<p>It reminds me a picture &ldquo;How to become a C++ Developer in 21 Days&rdquo;:</p>
+
+<p><img src="http://i.imgur.com/3FckcgF.png" alt="" /></p>
+
+<p>If you totally disagree with his idea, just test yourself in previous article.</p>
+
+<h3 id="on-being-a-senior-engineerhttpwwwkitchensoapcom20121025on-being-a-senior-engineer">5. <a href="http://www.kitchensoap.com/2012/10/25/on-being-a-senior-engineer/">On Being A Senior Engineer</a></h3>
+
+<p>And logically continue. What behaviour differentiate senior engineer from &ldquo;not senior&rdquo; one?</p>
+
+<blockquote>
+  <p>Mature engineers seek out constructive criticism of their designs.</p>
+</blockquote>
+
+<p>Actually you could find more useful rules there and list of
+<strong>The Ten Commandments of Egoless Programming</strong>.</p>
+
+<blockquote>
+  <ol>
+    <li>Understand and accept that you will make mistakes.</li>
+    <li>You are not your code.</li>
+    <li>No matter how much “karate” you know, someone else will always know more.</li>
+    <li>Don’t rewrite code without consultation.</li>
+    <li>Treat people who know less than you with respect, deference, and patience.</li>
+    <li>The only constant in the world is change. Be open to it and accept it with a smile.</li>
+    <li>The only true authority stems from knowledge, not from position.</li>
+    <li>Fight for what you believe, but gracefully accept defeat.</li>
+    <li>Don’t be &ldquo;the coder in the corner.&rdquo;</li>
+    <li>Critique code instead of people – be kind to the coder, not to the code.</li>
+  </ol>
+</blockquote>
+
+<p>Note, that article touch some psychological aspect of person. So I don&rsquo;t
+think it can be 100% applied to everyone, but still worth to read.</p>
+
+<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It&rsquo;s Just Writing</a></h3>
+
+<p>Jeff Atwood explais basic the idea of:</p>
+
+<blockquote>
+  <p>The unexpected relationship between writing code and writing.</p>
+</blockquote>
+
+<p>To write good code, you must write good.</p>
+
+<p>Article contains a reference to the book &ldquo;The Elements of Style&rdquo; with some quotes.</p>
+
+<blockquote>
+  <p>Vigorous writing is concise. A sentence should contain no unnecessary words,
+a paragraph no unnecessary sentences, for the same reason that a drawing should
+have no unnecessary lines and a machine no unnecessary parts.
+This requires not that the writer make all his sentences short,
+or that he avoid all detail and treat his subjects only in outline, but that every word tell.</p>
+</blockquote>
+
+<p>Read this book. Perhaps it is boring, it contains some advices to improve you writing skills.</p>
+
+<h3 id="how-to-build-a-naive-bayes-classifierhttpswwwbionicspiritcomblog20120209howto-build-naive-bayes-classifierhtml">7. <a href="https://www.bionicspirit.com/blog/2012/02/09/howto-build-naive-bayes-classifier.html">How To Build a Naive Bayes Classifier</a></h3>
+
+<p>Now some practice.</p>
+
+<p>Article is great explanation of how Naive Bayes Classifier work.
+With pictures, code examples, common pitfalls and good sense of humour.</p>
+
+<p>Although, it&rsquo;s one of the simplest classification algorithms, but with some tweeks and
+good train set it can give good results.</p>
+
+<p><img src="https://www.bionicspirit.com/assets/img/conditional-prob-9a27ee0e.png" alt="" /></p>
+
+<p>Here is the place where the math is needed. But article is so great,
+that even monkey with banana (and degree in math) can understand how it works.</p>
+
+<h3 id="functors-applicatives-and-monads-in-pictureshttpaditioposts2013-04-17-functorsapplicativesandmonadsinpictureshtml">8. <a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html">Functors, Applicatives, And Monads In Pictures</a></h3>
+
+<p>Number of articles that explain what is monad grow fast. Just another one.</p>
+
+<p>Even if you don&rsquo;t understand what Haskell and monad is, look at the cool pictures.</p>
+
+<p><img src="http://adit.io/imgs/functors/fmap_just.png" alt="" /></p>
+
+<h3 id="list-out-of-lambdahttpsteveloshcomblog201303list-out-of-lambda">9. <a href="http://stevelosh.com/blog/2013/03/list-out-of-lambda/">List Out Of Lambda</a></h3>
+
+<p>Good introduction to functional programming. Not for beginners, I think.</p>
+
+<blockquote>
+  <p>This blog post is a thought exercise.
+It’s not something you’d ever use for real code.
+But just like a guitarist practices scales that she won’t ever play in a song,
+we programmers should be exercising our brains every so often.</p>
+</blockquote>
+
+<p>How to implement fancy list, map, filter features with just
+first-class functions. Basic operations on numbers included. JavaScript.</p>
+
+<h3 id="everything-about-java-8httpwwwtechempowercomblog20130326everything-about-java-8">10. <a href="http://www.techempower.com/blog/2013/03/26/everything-about-java-8/">Everything about Java 8</a></h3>
+
+<p>Let&rsquo;s review again what will be in Java 8. Most wanted release ever.</p>
+
+<p>In this overview you will test other important changes, not only lambdas.</p>
+
+<p><em>Sad, that release postponed to early 2014 due to security issues.</em>
+<em>But more time to play with developer preview features.</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-22T14:43:00+03:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digest/'>digest</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/programming-digest-2/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/programming-digest-2/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-017/" title="Previous Post: Clojure Euler: Problem 017">&laquo; Clojure Euler: Problem 017</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-018/" title="Next Post: Clojure Euler: Problem 018">Clojure Euler: Problem 018 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/programming-digest-2/';
+        var disqus_url = 'http://mishadoff.github.com/blog/programming-digest-2/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

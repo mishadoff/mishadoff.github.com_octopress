@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <updated>2013-07-21T13:39:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of the digits in the number 100!</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=20">http://projecteuler.net/problem=20</a></p>
+
+<!-- more -->
+
+<p>First of all we need to calculate factorial.
+Without integer overflows, stack overflows and other caveats.</p>
+
+<p>Previous article <a href="/blog/fast-factorial/">Fast Factorial</a> has working solution
+that we might use.</p>
+
+<p><code>
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Now, calculate the sum of digits, the same function that we used in
+<a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+
+<p><code>
+(defn sum-of-digits [n]
+  (reduce + (map #(- (int %) 48) (seq (str n)))))
+</code></p>
+
+<p>And the final line</p>
+
+<p><code>
+(sum-of-digits (! 100))
+</code></p>
+
+<p>Simple enough, huh?</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem020.clj">Code</a></p>
+
+<p><strong>P.S.</strong> The functions <code>sum-of-digits</code>, <code>count-digits</code> and similar used often
+and look very ugly, so I decided to create a separate set of functions (<em>library?</em>)
+which I can refer. It should be a set of common mathematic functions, including
+different sequences, sums, converters, interesting numbers. You might use it too.
+Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <updated>2013-07-10T01:59:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>How many Sundays fell on the first of the month
+during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=19">http://projecteuler.net/problem=19</a></p>
+
+<!-- more -->
+
+<p>Project Euler also gives following information:</p>
+
+<ul>
+  <li>1 Jan 1900 was a Monday.</li>
+  <li>
+    <p>A poem</p>
+
+    <p>Thirty days has September,<br />
+April, June and November.<br />
+All the rest have thirty-one,<br />
+Saving February alone,<br />
+Which has twenty-eight, rain or shine.<br />
+And on leap years, twenty-nine.<br /></p>
+  </li>
+  <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
+</ul>
+
+<p>Implementin calendars logic is great, but java interoperability is much better!</p>
+
+<p>First of all, take standard java <code>GregorianCalendar</code> class.
+We can import it <em>almost</em> the same way as we use <code>require</code> </p>
+
+<p><code>clojure
+(import [java.util GregorianCalendar])
+</code></p>
+
+<p>To create an object use function <code>new</code></p>
+
+<p><code>clojure
+(new GregorianCalendar)
+</code></p>
+
+<p>But it is more idiomatic way to create java objects with special syntax:
+<em>period after class name</em> </p>
+
+<p><code>clojure
+(GregorianCalendar.)
+</code></p>
+
+<p>To configure calendar object to specific date we need to set some its
+properties. Setters syntax is following (assuming <code>calendar</code>
+is an object of calendar):</p>
+
+<p>Java</p>
+
+<p><code>java 
+calendar.set(GregorianCalendar.YEAR, 2013);
+</code></p>
+
+<p>Clojure</p>
+
+<p><code>clojure
+(.set calendar GregorianCalendar/YEAR 2013)
+</code></p>
+
+<p>Executing lot of setters is the same boilerplate as in java:</p>
+
+<p><code>clojure
+(do
+  (.set calendar GregorianCalendar/YEAR 2013)
+  (.set calendar GregorianCalendar/MONTH 11)
+  (.set calendar GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>To avoid repetition of object name we can use <code>doto</code> macro:</p>
+
+<p><code>clojure
+(doto (GregorianCalendar.)
+  (.set GregorianCalendar/YEAR 2013)
+  (.set GregorianCalendar/MONTH 11)
+  (.set GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>This macro <em>magically</em> performs the same set of operations as above, but in more readable way.</p>
+
+<p>Now we can create calendar objects for the <em>first of the
+specific month of the specific year</em></p>
+
+<p><code>clojure
+(defn calendar-for [year month]
+  (doto (GregorianCalendar.)
+    (.set GregorianCalendar/YEAR year)
+    (.set GregorianCalendar/MONTH month)
+    (.set GregorianCalendar/DAY_OF_MONTH 1)))
+</code></p>
+
+<p>Just iterate through all such objects in date range given in problem definition
+and count Sundays.</p>
+
+<p><code>clojure
+(reduce +
+  (for [year (range 1901 (inc 2000)) month (range 1 (inc 12))]
+    (let [c (calendar-for year month)]
+          (if (= GregorianCalendar/SUNDAY 
+                 (.get c GregorianCalendar/DAY_OF_WEEK)) 1 0))))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
+
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
+    <updated>2013-05-17T00:26:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
+</blockquote>
+
+<p><code>
+       3
+      7 4
+     2 4 6
+    8 5 9 3
+</code></p>
+
+<blockquote>
+  <p>That is, 3 + 7 + 4 + 9 = 23.</p>
+
+  <p>Find the maximum total from top to bottom of the triangle below:</p>
+
+  <p>[Check out big triangle in original link]</p>
+
+  <p>NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route.
+However, Problem 67, is the same challenge with a triangle containing one-hundred rows;
+it cannot be solved by brute force, and requires a clever method! ;o)</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=18">http://projecteuler.net/problem=18</a></p>
+
+<!-- more -->
+
+<p>As note says we can try every route and it will be just good.
+Instead of that, we can behave much better with clever method.</p>
+
+<p>(Some time ago, I gave basic explanation on my approach in <a href="http://stackoverflow.com/questions/8002252/euler-project-18-approach">StackOverflow question</a>)</p>
+
+<p>We have example triangle:</p>
+
+<p><code>
+       3
+      7 4
+     2 4 6
+    8 5 9 3
+</code></p>
+
+<p>Instead of testing each route from top to the bottom, we moving from bottom
+to the top and always select the best choice. As we want to find the max sum, we perform addition im place.</p>
+
+<p>Assuming we on the 3rd line (2 4 6).</p>
+
+<p><strong>From 2</strong> we can go either 8 or 5, 8 is better (maximize your sum), then you calculate first
+sum <code>8 + 2 = 10</code>.</p>
+
+<p><strong>From 4</strong> we can go either 5 or 9, 9 is better, <code>4 + 9 = 13</code>.</p>
+
+<p><strong>From 6</strong> we can go either 9 or 3, 9 is better, <code>9 + 6 = 15</code>.</p>
+
+<p>Now, we removing last row, because we processed all routes and selected best ones, and replacing
+3rd row with calculated sums. Current triangle looks like:</p>
+
+<p><code>
+        3
+      7  4
+    10 13 15
+</code></p>
+
+<p>Repeat the same action until we get one number, which will be solution.</p>
+
+<p>Let&rsquo;s transform this idea to clojure.</p>
+
+<p>First of all we need datastructure to represent triangle.
+List of lists would be good:</p>
+
+<p><code>clojure
+(def triangle '((3) (7 4) (2 4 6) (8 5 9 3)))
+</code></p>
+
+<p>Now we want to know, what direction generates the best sum.</p>
+
+<p><code>clojure
+(defn max-row [lst]
+  (map #(reduce max %) (partition 2 1 lst)))
+</code></p>
+
+<p>It breaks list to pairs, and select max from each pair.
+For example, <code>[8 5 9 3]</code> we split to <code>[[8 5] [5 9] [9 3]]</code>
+and select max from each sublist <code>[8 9 9]</code>.</p>
+
+<p>Just add this list to previous one</p>
+
+<p><code>clojure
+(defn step-max [lst1 lst2]
+  (map + (max-row lst1) lst2))
+</code></p>
+
+<p>One iteration of <code>step-max</code> creates smaller triangle with sums on the bottom row.
+But we need only one number.</p>
+
+<p>Correct, <code>reduce</code> is ideal!</p>
+
+<p><code>clojure
+(reduce step-max (reverse triangle))
+</code></p>
+
+<p>That&rsquo;s it.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
+
+<p><strong>P.S.</strong> Problem 067 can be solved with the same code.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
+    <updated>2013-04-09T21:13:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
+then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
+
+  <p>If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=17">http://projecteuler.net/problem=17</a></p>
+
+<!-- more -->
+
+<p>To solve this problem we need some sort of mapping that defines association
+between number and its string representation, e.g <code>123 = one hundred and twenty three</code>.</p>
+
+<p>This can be done with maps in clojure in form <code>{:1 "one" :2 "two"}</code>.
+But if pay more atention to this map, we see that key is a numeric value.
+Exactly what plain arrays do.</p>
+
+<p>Then we just define all mappings, obtain all arrays string elements, find their lengths and sum them.</p>
+
+<p>One problem that providing mapping for each number between 1 and 1000 is a &ldquo;bit&rdquo; routine task, so we
+need some formula to calculate representation instead of hardcoding it. We come to defining groups.</p>
+
+<p>First group is just <em>first 20</em> numbers:</p>
+
+<p><code>clojure
+(def first20 ["one" "two" "three" "four" "five"
+              "six" "seven" "eight" "nine" "ten"
+              "eleven" "twelve" "thirteen" "fourteen" "fifteen"
+              "sixteen" "seventeen" "eighteen" "nineteen"])
+</code></p>
+
+<p>Note: there is no &ldquo;zero&rdquo; as we don&rsquo;t use it in spoken language.</p>
+
+<p>Second group is numbers that divides 10:</p>
+
+<p><code>clojure
+(def decas ["" "ten" "twenty" "thirty" "forty" "fifty" "sixty" "seventy" "eighty" "ninety"])
+</code></p>
+
+<p>Note: empty first element here is used to reduce additional check. Its length is 0, that has no effect at all.</p>
+
+<p>And the last ones are three used values:</p>
+
+<p><code>clojure
+(def h "hundred")
+(def t "thousand")
+(def a "and")
+</code></p>
+
+<p>The basic function will calculate the length string representation of some number.
+Let&rsquo;s call it <code>word-length</code>.</p>
+
+<p><code>clojure
+(defn word-length [n]
+  (cond (= n 1000) (+ (count t) (count (nth first20 1)))
+        (&lt; n 100)
+        (let [q (quot n 10) m (mod n 10)
+              d (count (nth decas q))]
+          (if (zero? m) d
+              (if (&lt; q 2) (count (nth first20 (dec (+ m (* 10 q)))))
+                  (+ d (count (nth first20 (dec m)))))))
+        (&lt; n 1000)
+        (let [q (quot n 100) m (mod n 100)]
+          (if (zero? m) (+ (word-length q) (count h))
+              (+ (count a) (count h) (word-length q) (word-length m))))))
+</code></p>
+
+<p>Little explanation:</p>
+
+<ul>
+  <li>If number is <code>1000</code> then the length of string &ldquo;one&rdquo; + &ldquo;thousand&rdquo;, 11.</li>
+  <li>If number is lower than <code>100</code> then extract its decade part. If there is no
+reminder for division by 10, the length is length of that decade part.</li>
+  <li>Otherwise, if number in <code>first20</code>, length taken from array <code>first20</code>.</li>
+  <li>Otherwise the length is decade part plus remainder.</li>
+  <li>If number is lower than <code>1000</code> then extract hundred part. If there is no
+reminder for division by 100, the length is &ldquo;hundred&rdquo; plus number of hundreds.</li>
+  <li>Otherwise, the length is &ldquo;hundred&rdquo; plus number of hundreds, plus the word &ldquo;and&rdquo; and
+recursively calculate the length of remainder, which is lower than <code>100</code>.</li>
+</ul>
+
+<p>Awful word-presentation of algorithm, because of&hellip; Reading code is much simpler, I know.</p>
+
+<p>And the last part just sum up all word-lengths:</p>
+
+<p><code>clojure
+(reduce + (map word-length (range 1 1001)))
+</code></p>
+
+<p>Check the code <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem017.clj">here</a>.</p>
+
+<p>P.S. In fact algorithm is very simple, but needs some time to understand few branches.
+By the way, the problem is little boring.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
+    <updated>2013-03-05T01:31:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
+
+  <p>What is the sum of the digits of the number 2^1000 ?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=16">http://projecteuler.net/problem=16</a></p>
+
+<!-- more -->
+
+<p>Are you kidding me?</p>
+
+<ul>
+  <li>Find 1000th <em>power of two</em></li>
+  <li>Sum its digits</li>
+</ul>
+
+<p>In <a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
+learned how to sum digits in the number. Just gentle reminder:</p>
+
+<p><code>clojure
+(defn sum-of-digits [n]
+  (reduce + (map #(- (int %) 48) (seq (str n)))))
+</code></p>
+
+<p>Now, let&rsquo;s create sequence of powers of two:</p>
+
+<p><code>clojure
+(defn powers-of-2 []
+  (iterate (partial * 2) 1))
+</code></p>
+
+<p>Unfortunately, this sequence throws <code>integer overflow</code> on the <code>64th</code> element.
+We can fix that using <em>long arithmetics</em>, which known as <code>BigInteger</code> in Java.
+Change <code>1</code> to <code>1N</code>.</p>
+
+<p><code>clojure
+(iterate (partial * 2) 1N)
+</code></p>
+
+<p>Another way is to use <strong>automatic promotion</strong> operator (<code>+'</code>, <code>*'</code>).
+If result of some operation is not suitable for some type,
+instead of invalid computation and runtime exception, clojure automatically promotes
+the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> <em>works fine and produces
+ correct result with type of</em> <code>BigInteger</code>):</p>
+
+<p><code>clojure
+(iterate (partial *' 2) 1)
+</code></p>
+
+<p>Choose <code>powers-of-2</code> that you prefer and final result will look like this:</p>
+
+<p><code>clojure
+(sum-of-digits (last (take 1001 (powers-of-2))))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
+
+<p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
+speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won&rsquo;t.</p>
+]]></content>
+  </entry>
+  
+</feed>

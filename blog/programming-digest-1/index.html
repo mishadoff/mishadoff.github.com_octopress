@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Programming Digest 1 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="How to get job at Google, estimate complexity of your algorithm,
+what is Structural Immutability, why PHP is awful and Java is awesome, best &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/programming-digest-1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Programming Digest 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-12T02:00:00+02:00" pubdate data-updated="true">Feb 12<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>How to get job at Google, estimate complexity of your algorithm,
+what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
+
+<!-- more -->
+
+<h3 id="get-that-job-at-googlehttpsteve-yeggeblogspotcom200803get-that-job-at-googlehtml">1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
+
+<blockquote>
+  <p>&hellip;it&rsquo;s highly likely that someone on the loop will be unimpressed with you,
+even if you are Alan Turing. Especially if you&rsquo;re Alan Turing,
+in fact, since it means you obviously don&rsquo;t know C++</p>
+</blockquote>
+
+<p>The quote accurately explains what this post about. The author gives great mental and
+technical tips about interviewing process (not only in Google).
+Big portion of motivation guaranteed, perhaps you man feel dumber after reading.</p>
+
+<p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
+graphs, other data structures, math, operating systems and at least one programming language very well.
+Not bad, right? After reading that article I&rsquo;ve build long-term learning plan for myself, which is still
+not succesful. Great article.</p>
+
+<h3 id="a-gentle-introduction-to-algorithm-complexity-analysishttpdiscretegrcomplexity">2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
+
+<p>This article helps you partially cover first thing from previous article: <em>algorithm complexity</em>.
+By the way, it is written with understandable (<em>for programmers</em>) language, examples, pictures, excerpts - I like
+such style.</p>
+
+<p>After reading, you&rsquo;ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
+recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
+skill to classify that complexities on O(n), O(n^2 ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
+with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
+
+<p>If you already know all that, don&rsquo;t skip! It also helpful to fresh you knowledge.</p>
+
+<h3 id="on-structural-immutabilityhttpclojurefunwordpresscom20130121on-structural-immutability">3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
+
+<p>What is Structural Immutability?</p>
+
+<p>We know difference between mutable and immutable data structures and their pros and cons.
+Structural immutability means that you <em>can</em> change the contents of you data, but <em>can not</em> change their structure.
+It gives better performance than plain immutable objects, but also keep your concurrent programs easier than with
+full mutability. Plain old array is an example. Read it to know more.</p>
+
+<h3 id="php-a-fractal-of-bad-designhttpmeveekuncomblog20120409php-a-fractal-of-bad-design">4. <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">PHP: a fractal of bad design</a></h3>
+
+<blockquote>
+  <p>Virtually every feature in PHP is broken somehow</p>
+</blockquote>
+
+<p>Whole article is a criticism of bad PHP language design.</p>
+
+<blockquote>
+  <p>PHP was originally designed explicitly for non-programmers (and, reading between the lines, non-programs)</p>
+</blockquote>
+
+<p>Total destroy. I mean it - total.</p>
+
+<blockquote>
+  <p>Array&hellip; This one datatype acts as a list, ordered hash, ordered set,
+sparse list, and occasionally some strange combination of those.
+How does it perform? What kind of memory use will there be?
+Who knows? Not like I have other options, anyway.</p>
+</blockquote>
+
+<p>As I never know PHP, and hope won&rsquo;t, that article was one of the funniest things I ever read.</p>
+
+<blockquote>
+  <p>equality operator is not transitive&hellip;comparison is not even consistent</p>
+</blockquote>
+
+<p>If you PHPist don&rsquo;t go away, just read it. Maybe it will change your life.</p>
+
+<blockquote>
+  <p>Genericism&hellip; There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
+</blockquote>
+
+<p>Stop quoting. Just read it.</p>
+
+<h3 id="do-not-pass-this-way-againhttpgrimoirecamysqlchoose-something-else">5. <a href="http://grimoire.ca/mysql/choose-something-else">Do Not Pass This Way Again</a></h3>
+
+<blockquote>
+  <p>Considering MySQL? Use something else. Already on MySQL? Migrate.</p>
+</blockquote>
+
+<p>This article logically continues previous one, but for now critisism on MySQL.
+Perhaps, it is not powerful as PHP version, but still worth to read.</p>
+
+<h3 id="big-arrays-in-javahttpwwwomsndeblogbig-arrays-in-java">6. <a href="http://www.omsn.de/blog/big-arrays-in-java">Big arrays in Java</a></h3>
+
+<p>Two articles of hate in a row, and currently Java? No way.
+How much we hate Java so we love it. By the way, JDK8 is soon.</p>
+
+<p>Maybe this post not so expressive as previous ones, but it reveals capability I never knew of.
+How to create array in Java with size greater than <code>Integer.MAX_VALUE</code>. Use the undocumented
+class <code>sun.misc.Unsafe</code>. Just note this only works in SunJDK and OpenJDK.</p>
+
+<h3 id="state-of-the-lambdahttpcropenjdkjavanetbriangoetzlambdalambda-state-4html">7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
+
+<p>If we started about JDK8&hellip;</p>
+
+<p>The most interesting feature set in expected JDK8 is Project Lambda.</p>
+
+<p>Functional interfaces and functions without all that finals in lexical scope and anonymous classes,
+common patterns for list processing like <code>map</code>, <code>reduce</code> and <code>filter</code>,
+parallelism, streams, method references and lot more comming soon.</p>
+
+<p><em>What is the default method implementation in the interface?!</em></p>
+
+<h3 id="fantastic-game-development-tutorials-from-across-the-webhttpgamedevtutspluscomarticlesroundupsfantastic-gamedev-tutorials-from-across-the-web">8. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
+
+<p>Have you ever had the passion to write your own game?</p>
+
+<p>I had. Because I like games and I even tried. Unfortunately, not so succesful as expected, but anyway.</p>
+
+<blockquote>
+  <p>We need to go deeper</p>
+</blockquote>
+
+<p>Honestly, it&rsquo;s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
+you really interested in gamedev, you&rsquo;ll find a lot of there including game algorithms,
+popular engine tutorials, math behind the games, design questions and more useful tips. Great stuff.</p>
+
+<h3 id="how-to-pair-socks-from-a-pile-efficientlyhttpstackoverflowcomquestions14415881how-to-pair-socks-from-a-pile-efficiently">9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
+
+<p>Bored to pair your socks every time? Learn how to do it efficiently.</p>
+
+<p>At first glance it is a humorous question, indeed it is, but also it is an interesting real-world
+problem with variety of algorithms can be applied. I think all algorithm courses should be teached
+that way.</p>
+
+<h3 id="what-is-your-best-programming-jokehttpstackoverflowcomquestions234075what-is-your-best-programmer-joke1284458">10. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
+
+<blockquote>
+  <p>If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.</p>
+
+  <p>The rest of them will write Perl programs.</p>
+</blockquote>
+
+<p>If you have an hour or two reserved for laughing, just read this. A <strong>lot</strong> of
+crazy programming jokes. Stackoverflow community is amazing.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-12T02:00:00+02:00" pubdate data-updated="true">Feb 12<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digest/'>digest</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/programming-digest-1/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/programming-digest-1/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/programming-digest-announcement/" title="Previous Post: Programming Digest Announcement">&laquo; Programming Digest Announcement</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-014/" title="Next Post: Clojure Euler: Problem 014">Clojure Euler: Problem 014 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/programming-digest-1/';
+        var disqus_url = 'http://mishadoff.github.com/blog/programming-digest-1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

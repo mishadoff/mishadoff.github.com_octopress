@@ -1,0 +1,1271 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Java Magic. Part 4: sun.misc.Unsafe - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Java is a safe programming language and prevents programmer
+from doing a lot of stupid mistakes, most of which based on memory management.
+But, there &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Java Magic. Part 4: sun.misc.Unsafe</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-26T02:37:00+02:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Java is a safe programming language and prevents programmer
+from doing a lot of stupid mistakes, most of which based on memory management.
+But, there is a way to do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
+
+<p>This article is a quick overview of <code>sun.misc.Unsafe</code> <em>public</em> API and few
+interesting cases of its usage.</p>
+
+<!-- more -->
+
+<h3 id="unsafe-instantiation">Unsafe instantiation</h3>
+
+<p>Before usage, we need to create instance of <code>Unsafe</code> object.
+There is no simple way to do it like <code>Unsafe unsafe = new Unsafe()</code>,
+because <code>Unsafe</code> class has private constructor. It also has static
+<code>getUnsafe()</code> method, but if you naively try to call <code>Unsafe.getUnsafe()</code> you, probably,
+get <code>SecurityException</code>. Using this method available only from trusted code.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">static</span> <span class="n">Unsafe</span> <span class="nf">getUnsafe</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">Class</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">sun</span><span class="o">.</span><span class="na">reflect</span><span class="o">.</span><span class="na">Reflection</span><span class="o">.</span><span class="na">getCallerClass</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">cc</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class="line">        <span class="k">throw</span> <span class="k">new</span> <span class="nf">SecurityException</span><span class="o">(</span><span class="s">&quot;Unsafe&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">theUnsafe</span><span class="o">;</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This is how java validates if code is trusted.
+It is just checking that our code was loaded with
+primary classloader.</p>
+
+<p>We can make our code &ldquo;trusted&rdquo;. Use option <code>bootclasspath</code> when running
+your program and specify
+path to system classes plus your one that will use <code>Unsafe</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">java</span> <span class="o">-</span><span class="nl">Xbootclasspath:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">jdk1</span><span class="o">.</span><span class="mf">7.0</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">rt</span><span class="o">.</span><span class="na">jar</span><span class="o">:.</span> <span class="n">com</span><span class="o">.</span><span class="na">mishadoff</span><span class="o">.</span><span class="na">magic</span><span class="o">.</span><span class="na">UnsafeClient</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But it&rsquo;s too hard.</p>
+
+<p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
+We can steal that variable via java reflection.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Field</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Unsafe</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;theUnsafe&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">f</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class="line"><span class="n">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="o">(</span><span class="n">Unsafe</span><span class="o">)</span> <span class="n">f</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>Note:</em> Ignore your IDE. For example, eclipse show error &ldquo;Access restriction&hellip;&rdquo;
+but if you run code, all works just fine. If the error is annoying, ignore errors on
+<code>Unsafe</code> usage in:</p>
+
+<pre><code>Preferences -&gt; Java -&gt; Compiler -&gt; Errors/Warnings -&gt;
+Deprecated and restricted API -&gt; Forbidden reference -&gt; Warning
+</code></pre>
+
+<h3 id="unsafe-api">Unsafe API</h3>
+
+<p>Class <a href="http://www.docjar.com/docs/api/sun/misc/Unsafe.html">sun.misc.Unsafe</a>
+consists of <code>105</code> methods. There are, actually,
+few groups of important methods for manipulating with various entities.
+Here is some of them:</p>
+
+<ul>
+  <li><strong>Info</strong>. Just returns some low-level memory information.
+    <ul>
+      <li><code>addressSize</code></li>
+      <li><code>pageSize</code></li>
+    </ul>
+  </li>
+  <li><strong>Objects</strong>. Provides methods for object and its fields manipulation.
+    <ul>
+      <li><code>allocateInstance</code></li>
+      <li><code>objectFieldOffset</code></li>
+    </ul>
+  </li>
+  <li><strong>Classes</strong>. Provides methods for classes and static fields manipulation.
+    <ul>
+      <li><code>staticFieldOffset</code></li>
+      <li><code>defineClass</code></li>
+      <li><code>defineAnonymousClass</code></li>
+      <li><code>ensureClassInitialized</code></li>
+    </ul>
+  </li>
+  <li><strong>Arrays</strong>. Arrays manipulation.
+    <ul>
+      <li><code>arrayBaseOffset</code></li>
+      <li><code>arrayIndexScale</code></li>
+    </ul>
+  </li>
+  <li><strong>Synchronization</strong>. Low level primitives for synchronization.
+    <ul>
+      <li><code>monitorEnter</code></li>
+      <li><code>tryMonitorEnter</code></li>
+      <li><code>monitorExit</code></li>
+      <li><code>compareAndSwapInt</code></li>
+      <li><code>putOrderedInt</code></li>
+    </ul>
+  </li>
+  <li><strong>Memory</strong>. Direct memory access methods.
+    <ul>
+      <li><code>allocateMemory</code></li>
+      <li><code>copyMemory</code></li>
+      <li><code>freeMemory</code></li>
+      <li><code>getAddress</code></li>
+      <li><code>getInt</code></li>
+      <li><code>putInt</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="interesting-use-cases">Interesting use cases</h3>
+
+<h4 id="avoid-initialization">Avoid initialization</h4>
+
+<p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
+or bypass security checks in constructor or you want instance of that class
+but don&rsquo;t have any public constructor. Consider following class:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">a</span><span class="o">;</span> <span class="c1">// not initialized value</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">A</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">a</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="c1">// initialization</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">a</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">a</span><span class="o">;</span> <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Instantiating it using constructor, reflection and unsafe gives
+different results.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">A</span> <span class="n">o1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">A</span><span class="o">();</span> <span class="c1">// constructor</span>
+</span><span class="line"><span class="n">o1</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="c1">// prints 1</span>
+</span><span class="line">
+</span><span class="line"><span class="n">A</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span> <span class="c1">// reflection</span>
+</span><span class="line"><span class="n">o2</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="c1">// prints 1</span>
+</span><span class="line">
+</span><span class="line"><span class="n">A</span> <span class="n">o3</span> <span class="o">=</span> <span class="o">(</span><span class="n">A</span><span class="o">)</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">allocateInstance</span><span class="o">(</span><span class="n">A</span><span class="o">.</span><span class="na">class</span><span class="o">);</span> <span class="c1">// unsafe</span>
+</span><span class="line"><span class="n">o3</span><span class="o">.</span><span class="na">a</span><span class="o">();</span> <span class="c1">// prints 0</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Just think what happens to all your <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singletons</a>.</p>
+
+<h4 id="memory-corruption">Memory corruption</h4>
+
+<p>This one is usual for every C programmer.
+By the way, its common technique for security bypass.</p>
+
+<p>Consider some simple class that check access rules:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">Guard</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">ACCESS_ALLOWED</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">giveAccess</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="mi">42</span> <span class="o">==</span> <span class="n">ACCESS_ALLOWED</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The client code is <em>very secure</em> and calls
+<code>giveAccess()</code> to check access rules. Unfortunately, for clients,
+it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
+value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
+
+<p>In fact, it&rsquo;s not true. Here is the code demostrates it:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Guard</span> <span class="n">guard</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Guard</span><span class="o">();</span>
+</span><span class="line"><span class="n">guard</span><span class="o">.</span><span class="na">giveAccess</span><span class="o">();</span>   <span class="c1">// false, no access</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// bypass</span>
+</span><span class="line"><span class="n">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">();</span>
+</span><span class="line"><span class="n">Field</span> <span class="n">f</span> <span class="o">=</span> <span class="n">guard</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;ACCESS_ALLOWED&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">unsafe</span><span class="o">.</span><span class="na">putInt</span><span class="o">(</span><span class="n">guard</span><span class="o">,</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">),</span> <span class="mi">42</span><span class="o">);</span> <span class="c1">// memory corruption</span>
+</span><span class="line">
+</span><span class="line"><span class="n">guard</span><span class="o">.</span><span class="na">giveAccess</span><span class="o">();</span> <span class="c1">// true, access granted</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now all clients will get unlimited access.</p>
+
+<p>Actually, the same functionality can be achieved by reflection.
+But interesting, that we can modify any object, even ones
+that we do not have references to.</p>
+
+<p>For example, there is another <code>Guard</code> object in memory
+located next to current <code>guard</code> object. We can modify its <code>ACCESS_ALLOWED</code> field with the following code</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">unsafe</span><span class="o">.</span><span class="na">putInt</span><span class="o">(</span><span class="n">guard</span><span class="o">,</span> <span class="mi">16</span> <span class="o">+</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">),</span> <span class="mi">42</span><span class="o">);</span> <span class="c1">// memory corruption</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note, we didn&rsquo;t use any reference to this object.
+<code>16</code> is size of <code>Guard</code> object in 32 bit architecture.
+We can calculate it manually or use <code>sizeOf</code> method, that defined&hellip; right now.</p>
+
+<h4 id="sizeof"><strong>sizeOf</strong></h4>
+
+<p>Using <code>objectFieldOffset</code> method we can implement C-style <code>sizeof</code> function.
+This implementation returns <em>shallow</em> size of object:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">sizeOf</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">Unsafe</span> <span class="n">u</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">();</span>
+</span><span class="line">    <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Field</span><span class="o">&gt;</span> <span class="n">fields</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Field</span><span class="o">&gt;();</span>
+</span><span class="line">    <span class="n">Class</span> <span class="n">c</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
+</span><span class="line">    <span class="k">while</span> <span class="o">(</span><span class="n">c</span> <span class="o">!=</span> <span class="n">Object</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">f</span> <span class="o">:</span> <span class="n">c</span><span class="o">.</span><span class="na">getDeclaredFields</span><span class="o">())</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="o">((</span><span class="n">f</span><span class="o">.</span><span class="na">getModifiers</span><span class="o">()</span> <span class="o">&amp;</span> <span class="n">Modifier</span><span class="o">.</span><span class="na">STATIC</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                <span class="n">fields</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">        <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">getSuperclass</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// get offset</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">maxSize</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">f</span> <span class="o">:</span> <span class="n">fields</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="kt">long</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">offset</span> <span class="o">&gt;</span> <span class="n">maxSize</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">maxSize</span> <span class="o">=</span> <span class="n">offset</span><span class="o">;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">return</span> <span class="o">((</span><span class="n">maxSize</span><span class="o">/</span><span class="mi">8</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="mi">8</span><span class="o">;</span>   <span class="c1">// padding</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Algorithm is the following: go through all <em>non-static</em> fields including all
+superclases, get offset for each field, find maximum and add padding.
+Probably, I missed something, but idea is clear.</p>
+
+<p>Much simpler <code>sizeOf</code> can be achieved if we just read <code>size</code> value from
+the class struct for this object, which located with offset 12 in <code>JVM 1.7 32 bit</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">sizeOf</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">){</span>
+</span><span class="line">    <span class="k">return</span> <span class="nf">getUnsafe</span><span class="o">().</span><span class="na">getAddress</span><span class="o">(</span>
+</span><span class="line">        <span class="n">normalize</span><span class="o">(</span><span class="n">getUnsafe</span><span class="o">().</span><span class="na">getInt</span><span class="o">(</span><span class="n">object</span><span class="o">,</span> <span class="mi">4L</span><span class="o">))</span> <span class="o">+</span> <span class="mi">12L</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>normalize</code> is a method for casting signed int to unsigned long, for
+correct address usage.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">private</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">normalize</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">if</span><span class="o">(</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+</span><span class="line">    <span class="k">return</span> <span class="o">(~</span><span class="mi">0L</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">32</span><span class="o">)</span> <span class="o">&amp;</span> <span class="n">value</span><span class="o">;</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Awesome, this method returns the same result as our previous <code>sizeof</code>
+function.</p>
+
+<p>In fact, for good, safe and accurate <code>sizeof</code> function better to use
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html">java.lang.instrument</a> package,
+but it requires specifyng <code>agent</code> option in your JVM.</p>
+
+<h4 id="shallow-copy"><strong>Shallow copy</strong></h4>
+
+<p>Having implementation of calculating shallow object size, we can simply
+add function that copy objects. Standard solution need modify your code with <code>Cloneable</code>,
+or you can implement custom copy function in your object, but it won&rsquo;t be multipurpose function.</p>
+
+<p>Shallow copy:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">static</span> <span class="n">Object</span> <span class="nf">shallowCopy</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">size</span> <span class="o">=</span> <span class="n">sizeOf</span><span class="o">(</span><span class="n">obj</span><span class="o">);</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="n">toAddress</span><span class="o">(</span><span class="n">obj</span><span class="o">);</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">address</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">().</span><span class="na">allocateMemory</span><span class="o">(</span><span class="n">size</span><span class="o">);</span>
+</span><span class="line">    <span class="n">getUnsafe</span><span class="o">().</span><span class="na">copyMemory</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">address</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+</span><span class="line">    <span class="k">return</span> <span class="nf">fromAddress</span><span class="o">(</span><span class="n">address</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>toAddress</code> and <code>fromAddress</code> convert object to its address in memory and vice versa.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">static</span> <span class="kt">long</span> <span class="nf">toAddress</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">Object</span><span class="o">[]</span> <span class="n">array</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[]</span> <span class="o">{</span><span class="n">obj</span><span class="o">};</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">baseOffset</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">().</span><span class="na">arrayBaseOffset</span><span class="o">(</span><span class="n">Object</span><span class="o">[].</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line">    <span class="k">return</span> <span class="nf">normalize</span><span class="o">(</span><span class="n">getUnsafe</span><span class="o">().</span><span class="na">getInt</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">baseOffset</span><span class="o">));</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">static</span> <span class="n">Object</span> <span class="nf">fromAddress</span><span class="o">(</span><span class="kt">long</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">Object</span><span class="o">[]</span> <span class="n">array</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[]</span> <span class="o">{</span><span class="kc">null</span><span class="o">};</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">baseOffset</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">().</span><span class="na">arrayBaseOffset</span><span class="o">(</span><span class="n">Object</span><span class="o">[].</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line">    <span class="n">getUnsafe</span><span class="o">().</span><span class="na">putLong</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">baseOffset</span><span class="o">,</span> <span class="n">address</span><span class="o">);</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">array</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This copy function can be used to copy object of any type, its size will be calculated
+dynamically. Note that after copying you need to cast object to specific type.</p>
+
+<h4 id="hide-password">Hide Password</h4>
+
+<p>One more interesting usage of direct memory access in <code>Unsafe</code> is removing
+unwanted objects from memory.</p>
+
+<p>Most of the APIs for retrieving user&rsquo;s password, have signature
+as <code>byte[]</code> or <code>char[]</code>. Why arrays?</p>
+
+<p>It is completely for security reason, because we can nullify array elements after we don&rsquo;t need them.
+If we retrieve password as <code>String</code> it can be saved like an object in memory and nullifying that
+string just perform dereference operation. This object still in memory by the time GC decide to perform cleanup.</p>
+
+<p>This trick creates fake <code>String</code> object with the same size and replace original one in memory:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">&quot;l00k@myHor$e&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">String</span> <span class="n">fake</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">password</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">&quot;.&quot;</span><span class="o">,</span> <span class="s">&quot;?&quot;</span><span class="o">));</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">password</span><span class="o">);</span> <span class="c1">// l00k@myHor$e</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">fake</span><span class="o">);</span> <span class="c1">// ????????????</span>
+</span><span class="line">
+</span><span class="line"><span class="n">getUnsafe</span><span class="o">().</span><span class="na">copyMemory</span><span class="o">(</span>
+</span><span class="line">          <span class="n">fake</span><span class="o">,</span> <span class="mi">0L</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">toAddress</span><span class="o">(</span><span class="n">password</span><span class="o">),</span> <span class="n">sizeOf</span><span class="o">(</span><span class="n">password</span><span class="o">));</span>
+</span><span class="line">
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">password</span><span class="o">);</span> <span class="c1">// ????????????</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">fake</span><span class="o">);</span> <span class="c1">// ????????????</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Feel safe.</p>
+
+<h4 id="multiple-inheritance"><strong>Multiple Inheritance</strong></h4>
+
+<p>There is no multiple inheritance in java.</p>
+
+<p>Correct, except we can cast every type to every another one, if we want.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">long</span> <span class="n">intClassAddress</span> <span class="o">=</span> <span class="n">normalize</span><span class="o">(</span><span class="n">getUnsafe</span><span class="o">().</span><span class="na">getInt</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="mi">4L</span><span class="o">));</span>
+</span><span class="line"><span class="kt">long</span> <span class="n">strClassAddress</span> <span class="o">=</span> <span class="n">normalize</span><span class="o">(</span><span class="n">getUnsafe</span><span class="o">().</span><span class="na">getInt</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="mi">4L</span><span class="o">));</span>
+</span><span class="line"><span class="n">getUnsafe</span><span class="o">().</span><span class="na">putAddress</span><span class="o">(</span><span class="n">intClassAddress</span> <span class="o">+</span> <span class="mi">36</span><span class="o">,</span> <span class="n">strClassAddress</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This snippet adds <code>String</code> class to <code>Integer</code> superclasses, so we can cast
+without runtime exception.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="o">(</span><span class="n">Object</span><span class="o">)</span> <span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">(</span><span class="mi">666</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>One problem that we must do it with pre-casting to object. To cheat compiler.</p>
+
+<h4 id="dynamic-classes">Dynamic classes</h4>
+
+<p>We can create classes in runtime, for example from
+compiled <code>.class</code> file. To perform that read class contents
+to byte array and pass it properly to <code>defineClass</code> method.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">byte</span><span class="o">[]</span> <span class="n">classContents</span> <span class="o">=</span> <span class="n">getClassContent</span><span class="o">();</span>
+</span><span class="line"><span class="n">Class</span> <span class="n">c</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">().</span><span class="na">defineClass</span><span class="o">(</span>
+</span><span class="line">              <span class="kc">null</span><span class="o">,</span> <span class="n">classContents</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">classContents</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+</span><span class="line">    <span class="n">c</span><span class="o">.</span><span class="na">getMethod</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">).</span><span class="na">invoke</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(),</span> <span class="kc">null</span><span class="o">);</span> <span class="c1">// 1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And reading from file defined as:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">private</span> <span class="kd">static</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">getClassContent</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">File</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&quot;/home/mishadoff/tmp/A.class&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="n">FileInputStream</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+</span><span class="line">    <span class="kt">byte</span><span class="o">[]</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[(</span><span class="kt">int</span><span class="o">)</span><span class="n">f</span><span class="o">.</span><span class="na">length</span><span class="o">()];</span>
+</span><span class="line">    <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+</span><span class="line">    <span class="n">input</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">content</span><span class="o">;</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This can be useful, when you must create classes dynamically, some proxies
+or aspects for existing code.</p>
+
+<h4 id="throw-an-exception">Throw an Exception</h4>
+
+<p>Don&rsquo;t like checked exceptions? Not a problem.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">getUnsafe</span><span class="o">().</span><span class="na">throwException</span><span class="o">(</span><span class="k">new</span> <span class="n">IOException</span><span class="o">());</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This method throws checked exception, but your code not forced to catch or rethrow it.
+Just like runtime exception.</p>
+
+<h4 id="fast-serialization">Fast Serialization</h4>
+
+<p>This one is more practical.</p>
+
+<p>Everyone knows that standard java <code>Serializable</code> capability
+to perform serialization is very slow. It also require class
+to have public non-argument constructor.</p>
+
+<p><code>Externalizable</code> is better, but it needs to define schema for
+class to be serialized.</p>
+
+<p>Popular high-performance libraries, like <a href="http://code.google.com/p/kryo/">kryo</a>
+have dependencies, which can be unacceptable with low-memory requirements.</p>
+
+<p>But full serialization cycle can be easily achieved with unsafe class.</p>
+
+<p>Serialization:</p>
+
+<ul>
+  <li>Build schema for object using reflection. It can be done once for class.</li>
+  <li>Use <code>Unsafe</code> methods <code>getLong</code>, <code>getInt</code>, <code>getObject</code>, etc. to retrieve actual field values.</li>
+  <li>Add <code>class</code> identifier to have capability restore this object.</li>
+  <li>Write them to the file or any output.</li>
+</ul>
+
+<p>You can also add compression to save space.</p>
+
+<p>Deserialization:</p>
+
+<ul>
+  <li>Create instance of serialized class. <code>allocateInstance</code> helps, because does not require any constructor.</li>
+  <li>Build schema. The same as 1 step in serialization.</li>
+  <li>Read all fields from file or any input.</li>
+  <li>Use <code>Unsafe</code> methods <code>putLong</code>, <code>putInt</code>, <code>putObject</code>, etc. to fill the object.</li>
+</ul>
+
+<p>Actually, there are much more details in correct inplementation, but intuition is clear.</p>
+
+<p>This serialization will be really fast.</p>
+
+<p>By the way, there are some attempts in <code>kryo</code> to use <code>Unsafe</code> <a href="http://code.google.com/p/kryo/issues/detail?id=75">http://code.google.com/p/kryo/issues/detail?id=75</a></p>
+
+<h4 id="big-arrays"><strong>Big Arrays</strong></h4>
+
+<p>As you know <code>Integer.MAX_VALUE</code> constant is a max size of java array.
+Using direct memory allocation we can create arrays with size limited by only heap size.</p>
+
+<p>Here is <code>SuperArray</code> implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">SuperArray</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">BYTE</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">size</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">address</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">SuperArray</span><span class="o">(</span><span class="kt">long</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">size</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span>
+</span><span class="line">        <span class="n">address</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">().</span><span class="na">allocateMemory</span><span class="o">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">BYTE</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">set</span><span class="o">(</span><span class="kt">long</span> <span class="n">i</span><span class="o">,</span> <span class="kt">byte</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">getUnsafe</span><span class="o">().</span><span class="na">putByte</span><span class="o">(</span><span class="n">address</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">BYTE</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">get</span><span class="o">(</span><span class="kt">long</span> <span class="n">idx</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nf">getUnsafe</span><span class="o">().</span><span class="na">getByte</span><span class="o">(</span><span class="n">address</span> <span class="o">+</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">BYTE</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">size</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">size</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And sample usage:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">long</span> <span class="n">SUPER_SIZE</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+</span><span class="line"><span class="n">SuperArray</span> <span class="n">array</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SuperArray</span><span class="o">(</span><span class="n">SUPER_SIZE</span><span class="o">);</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Array size:&quot;</span> <span class="o">+</span> <span class="n">array</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 4294967294</span>
+</span><span class="line"><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">array</span><span class="o">.</span><span class="na">set</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span><span class="mi">3</span><span class="o">);</span>
+</span><span class="line">    <span class="n">sum</span> <span class="o">+=</span> <span class="n">array</span><span class="o">.</span><span class="na">get</span><span class="o">((</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">+</span> <span class="n">i</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Sum of 100 elements:&quot;</span> <span class="o">+</span> <span class="n">sum</span><span class="o">);</span>  <span class="c1">// 300</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In fact, this technique uses <code>off-heap memory</code> and partially
+available in <code>java.nio</code> package.</p>
+
+<p>Memory allocated this way not located in the heap and not under GC management, so take care of it
+using <code>Unsafe.freeMemory()</code>. It also does not perform any boundary checks, so any
+illegal access may cause JVM crash.</p>
+
+<p>It can be useful for math computations, where code can operate with large arrays of data.
+Also, it can be interesting for realtime programmers, where GC delays on large arrays can
+break the limits.</p>
+
+<h4 id="concurrency">Concurrency</h4>
+
+<p>And few words about concurrency with <code>Unsafe</code>.
+<code>compareAndSwap</code> methods are atomic and can be used to implement
+high-performance lock-free data structures.</p>
+
+<p>For example, consider the problem to increment value in the shared object
+using lot of threads.</p>
+
+<p>First we define simple interface <code>Counter</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">interface</span> <span class="nc">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kt">void</span> <span class="nf">increment</span><span class="o">();</span>
+</span><span class="line">    <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">();</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then we define worker thread <code>CounterClient</code>, that uses <code>Counter</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">CounterClient</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">Counter</span> <span class="n">c</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">num</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">CounterClient</span><span class="o">(</span><span class="n">Counter</span> <span class="n">c</span><span class="o">,</span> <span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">num</span> <span class="o">=</span> <span class="n">num</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">c</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And this is testing code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">int</span> <span class="n">NUM_OF_THREADS</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">NUM_OF_INCREMENTS</span> <span class="o">=</span> <span class="mi">100000</span><span class="o">;</span>
+</span><span class="line"><span class="n">ExecutorService</span> <span class="n">service</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="n">NUM_OF_THREADS</span><span class="o">);</span>
+</span><span class="line"><span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">// creating instance of specific counter</span>
+</span><span class="line"><span class="kt">long</span> <span class="n">before</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class="line"><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM_OF_THREADS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">service</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="k">new</span> <span class="n">CounterClient</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="n">NUM_OF_INCREMENTS</span><span class="o">));</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="n">service</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+</span><span class="line"><span class="n">service</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MINUTES</span><span class="o">);</span>
+</span><span class="line"><span class="kt">long</span> <span class="n">after</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Counter result: &quot;</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="na">getCounter</span><span class="o">());</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Time passed in ms:&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="n">after</span> <span class="o">-</span> <span class="n">before</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>First implementation is not-synchronized counter:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">StupidCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">++;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">99542945</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">679</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Working fast, but no threads management at all, so result is inaccurate.
+Second attempt, add easiest java-way synchronization:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">SyncCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">++;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">10136</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Radical synchronization always work. But timings is awful.
+Let&rsquo;s try <code>ReentrantReadWriteLock</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">LockCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">WriteLock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantReadWriteLock</span><span class="o">().</span><span class="na">writeLock</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">++;</span>
+</span><span class="line">        <span class="n">lock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">8065</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Still correct, and timings are better. What about atomics?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">AtomicCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">AtomicLong</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicLong</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">counter</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">6552</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>AtomicCounter</code> is even better. Finally, try <code>Unsafe</code>
+primitive <code>compareAndSwapLong</code> to see if it is really privilegy to use it.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">CASCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">Unsafe</span> <span class="n">unsafe</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">offset</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">CASCounter</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">unsafe</span> <span class="o">=</span> <span class="n">getUnsafe</span><span class="o">();</span>
+</span><span class="line">        <span class="n">offset</span> <span class="o">=</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">CASCounter</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;counter&quot;</span><span class="o">));</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="kt">long</span> <span class="n">before</span> <span class="o">=</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">        <span class="k">while</span> <span class="o">(!</span><span class="n">unsafe</span><span class="o">.</span><span class="na">compareAndSwapLong</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">offset</span><span class="o">,</span> <span class="n">before</span><span class="o">,</span> <span class="n">before</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">before</span> <span class="o">=</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getCounter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">counter</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Output:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Counter</span> <span class="nl">result:</span> <span class="mi">100000000</span>
+</span><span class="line"><span class="n">Time</span> <span class="n">passed</span> <span class="n">in</span> <span class="nl">ms:</span> <span class="mi">6454</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Hmm, seems equal to atomics. Maybe atomics use <code>Unsafe</code>? (<em>YES</em>)</p>
+
+<p>In fact this example is easy enough, but it shows some power of <code>Unsafe</code>.</p>
+
+<p>As I said, <code>CAS</code> primitive can be used to implement lock-free data structures.
+The intuition behind this is simple:</p>
+
+<ul>
+  <li>Have some state</li>
+  <li>Create a copy of it</li>
+  <li>Modify it</li>
+  <li>Perform <code>CAS</code></li>
+  <li>Repeat if it fails</li>
+</ul>
+
+<p>Actually, in real it is more hard than you can imagine. There are a lot of problems like
+<a href="http://en.wikipedia.org/wiki/ABA_problem">ABA Problem</a>, instructions reordering, etc.</p>
+
+<p>If you really interested, you can refer to the awesome presentation about <a href="http://www.azulsystems.com/about_us/presentations/lock-free-hash">lock-free HashMap</a></p>
+
+<h3 id="bonus">Bonus</h3>
+
+<p>Documentation for <code>park</code> method from <code>Unsafe</code> class contains
+longest English sentence I&rsquo;ve ever seen:</p>
+
+<blockquote>
+  <p>Block current thread, returning when a balancing
+unpark occurs, or a balancing unpark has
+already occurred, or the thread is interrupted, or, if not
+absolute and time is not zero, the given time nanoseconds have
+elapsed, or if absolute, the given deadline in milliseconds
+since Epoch has passed, or spuriously (i.e., returning for no
+&ldquo;reason&rdquo;). Note: This operation is in the Unsafe class only
+because unpark is, so it would be strange to place it
+elsewhere.</p>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Although, <code>Unsafe</code> has a bunch of useful applications, never use it.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-26T02:37:00+02:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/elephant-oriented-programming/" title="Previous Post: Elephant-Oriented Programming">&laquo; Elephant-Oriented Programming</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-016/" title="Next Post: Clojure Euler: Problem 016">Clojure Euler: Problem 016 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-3/">Programming Digest 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-020/">Clojure Euler: Problem 020</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-019/">Clojure Euler: Problem 019</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/';
+        var disqus_url = 'http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

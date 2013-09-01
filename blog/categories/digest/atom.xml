@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: digest | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/digest/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 3]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <updated>2013-07-22T20:33:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
+    <content type="html"><![CDATA[<p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
+algorithm complexities refresher, functional programming, including
+Scala and Clojure, concurrency and lot of humor.</p>
+
+<!-- more -->
+
+<h3 id="big-ball-of-mudhttpwwwlaputanorgmud">1. <a href="http://www.laputan.org/mud/">Big Ball of Mud</a></h3>
+
+<blockquote>
+  <p>What does your programming day look like? </p>
+</blockquote>
+
+<p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
+
+<p>The article describes problems in software design and explains
+why almost every system nowadays look like &ldquo;Big Ball of Mud&rdquo;.</p>
+
+<p>There are seven <em>real</em> patterns in software design:</p>
+
+<ul>
+  <li>BIG BALL OF MUD</li>
+  <li>THROWAWAY CODE</li>
+  <li>PIECEMEAL GROWTH</li>
+  <li>KEEP IT WORKING</li>
+  <li>SHEARING LAYERS</li>
+  <li>SWEEPING IT UNDER THE RUG</li>
+  <li>RECONSTRUCTION </li>
+</ul>
+
+<p><em>caps preserved due to original article</em></p>
+
+<p>And our favorite phrase:</p>
+
+<blockquote>
+  <p>It works, so why fix it?</p>
+</blockquote>
+
+<h3 id="no-silver-bullethttpwwwcsnottacukcahg51issdocumentsnosilverbullethtml">2. <a href="http://www.cs.nott.ac.uk/~cah/G51ISS/Documents/NoSilverBullet.html">No Silver Bullet</a></h3>
+
+<p>Classic article by Frederick Brooks, Jr.</p>
+
+<p>Object-oriented programming? Artificial Intelligence? Expert systems? Time-sharing?
+Graphical or Automated programming?</p>
+
+<p>Nothing helps you.</p>
+
+<blockquote>
+  <p>The most radical possible solution for constructing software is not to construct it at all.</p>
+</blockquote>
+
+<p>Demotivating, but helpful.</p>
+
+<h3 id="beating-the-averageshttpwwwpaulgrahamcomavghtml">3. <a href="http://www.paulgraham.com/avg.html">Beating the Averages</a></h3>
+
+<p>This is inspiring one.</p>
+
+<p>Brooks told &ldquo;There is no Silver Bullet&rdquo;, but Paul Graham reveals &ldquo;The Secret Weapon&rdquo;.</p>
+
+<p>The article is success story of startup called Viaweb.
+Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
+
+<blockquote>
+  <p>Our secret weapon was similar.
+We wrote our software in a weird AI language, with a bizarre syntax full of parentheses.</p>
+</blockquote>
+
+<p>As you probably understood, it was Lisp.</p>
+
+<h3 id="know-thy-complexitieshttpbigocheatsheetcom">4. <a href="http://bigocheatsheet.com/">Know Thy Complexities!</a></h3>
+
+<p>Plain algorithm complexity cheatsheet. Contains time and space complexities
+for common algorithms and datastructures.</p>
+
+<h3 id="adventures-in-functional-programminghttpvimeocom45140590">5. <a href="http://vimeo.com/45140590">Adventures in Functional Programming</a></h3>
+
+<blockquote>
+  <p>Did you know that recursion is just syntactic sugar over higher-order functions?</p>
+</blockquote>
+
+<p>Awesome screencast by Jim Weirich about Y-Combinator in JavaScript.</p>
+
+<h3 id="scala-problemshttpaperiodicnetphilscalas-99">6. <a href="http://aperiodic.net/phil/scala/s-99/">99 Scala Problems</a></h3>
+
+<p>I am not using Scala and prefer Clojure for rapid protyping, but find such articles
+extremely useful when learning new language. Just exploring the code shows that Scala is
+the powerful and expressive language.</p>
+
+<p><strong>P.S.</strong> I am on half way to publish &ldquo;99 Clojure Problems&rdquo;.</p>
+
+<h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
+
+<p>Great pictures. This is nice intro to concurrency and overview of some common cocurrency problems.</p>
+
+<p><img src="http://adit.io/imgs/concurrency/threads_using_mutex.png" alt="" /></p>
+
+<h3 id="understanding-clojure-concurrencyhttpblakesmithme20120515understanding-clojure-concurrency-part-1html">8. <a href="http://blakesmith.me/2012/05/15/understanding-clojure-concurrency-part-1.html">Understanding Clojure Concurrency</a></h3>
+
+<p>Clojure is exciting language with great concurrency capabilities:
+default immutability, atoms, refs, agents, promises, futures and software transactional memory.</p>
+
+<p>This article is an introduction to them. Check out the <a href="http://blakesmith.me/2012/05/25/understanding-clojure-concurrency-part-2.html">2nd part</a></p>
+
+<h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
+
+<p>This is the video screencast of Gary Bernhardt&rsquo;s talk.
+Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
+
+<blockquote>
+  <p>An object plus an object is actually&hellip;. Not A Number!</p>
+</blockquote>
+
+<h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
+
+<p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
+
+<blockquote>
+  <p>Q: What does the &ldquo;B&rdquo; in Benoit B. Mandelbrot stand for?</p>
+
+  <p>A: Benoit B. Mandelbrot.</p>
+</blockquote>
+
+<p>In fact, some of the jokes related to programming.</p>
+
+<blockquote>
+  <p>There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.</p>
+</blockquote>
+
+<p>Some of them a bit stupid, but still fun.</p>
+
+<blockquote>
+  <p>How many surrealists does it take to screw in a light bulb?</p>
+
+  <p>A fish.</p>
+</blockquote>
+
+<p>Definitely, worth to read!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 2]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
+    <updated>2013-04-22T14:43:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
+    <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
+developer&hellip;in 10 years, &ldquo;coding it&rsquo;s just writing&rdquo; and some practice:
+Naive Bayes Classifier, functional programming and Java 8.</p>
+
+<!-- more -->
+
+<h3 id="math-for-programmershttpsteve-yeggeblogspotcom200603math-for-programmershtml">1. <a href="http://steve-yegge.blogspot.com/2006/03/math-for-programmers.html">Math For Programmers</a></h3>
+
+<p>Another great post by Steve Yegge about math. Math for developers.
+As everyone might to retort, knowing math is not mandatory for software engineering field, but you know:</p>
+
+<blockquote>
+  <p>Math is&hellip; ummm, please don&rsquo;t tell anyone I said this;
+I&rsquo;ll never get invited to another party as long as I live.
+But math, well&hellip; I&rsquo;d better whisper this, so listen up: (it&rsquo;s actually kinda fun.)</p>
+</blockquote>
+
+<p>I totally agree. It&rsquo;s a lot of fun.
+Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don&rsquo;t understand anything.</p>
+
+<p>Pick your favourite math subject and try to dig more.
+Statistics, Linear Algebra, Discrete Math, Combinatorics, Operation Research, Group Theory
+and more; one of them can be a good start.</p>
+
+<p>Does that really helps? Well, maybe. But it&rsquo;s definitely improve your problem solving skill.</p>
+
+<p>And believe. Math makes you a <em>better</em> programmer.</p>
+
+<h3 id="how-i-explained-rest-to-my-wifehttptomaykocomwritingsrest-to-my-wife">2. <a href="http://tomayko.com/writings/rest-to-my-wife">How I Explained REST to My Wife</a></h3>
+
+<p>Good article about how web works. I found it very useful for understanding
+some parts I thought I understood. By the way, great examples.</p>
+
+<blockquote>
+  <p>Ryan: I can&rsquo;t drive a cup and I can&rsquo;t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
+
+  <p>Wife: You can&rsquo;t DELETE a cup.</p>
+
+  <p>Ryan: Well, okay, but you can throw it away.</p>
+</blockquote>
+
+<p>Unfortunately, author of this article take it down due to lot of complaints about
+article gender-oriented nature. I don&rsquo;t think it&rsquo;s offensive and here is the link with
+<a href="http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife">copy from web archive</a></p>
+
+<h3 id="programmer-competency-matrixhttpwwwindiangeeknetwp-contentuploadsprogrammer20competency20matrixhtm">3. <a href="http://www.indiangeek.net/wp-content/uploads/Programmer%20competency%20matrix.htm">Programmer Competency Matrix</a></h3>
+
+<p>Do you think you are great programmer? Test yourself.</p>
+
+<p><strong>Algorithms</strong></p>
+
+<ul>
+  <li><strong>2^n (Level 0)</strong>. Unable to find the average of numbers in an array
+(It&rsquo;s hard to believe but I&rsquo;ve interviewed such candidates)</li>
+  <li><strong>n^2 (Level 1)</strong>. Basic sorting, searching and data structure traversal and retrieval algorithms</li>
+  <li><strong>n (Level 2)</strong>. Tree, Graph, simple greedy and divide and conquer algorithms, is able to understand
+the relevance of the levels of this matrix.</li>
+  <li><strong>log(n) (Level 3)</strong>. Able to recognize and code dynamic programming solutions, good knowledge of graph algorithms,
+good knowledge of numerical computation algorithms, able to identify NP problems etc.</li>
+</ul>
+
+<p>In any case, this <em>test</em> helps you to build plan for programming
+related skills and gives understanding what you need to know to become an expert.</p>
+
+<h3 id="teach-yourself-programming-in-ten-yearshttpnorvigcom21-dayshtml">4. <a href="http://norvig.com/21-days.html">Teach Yourself Programming in Ten Years</a></h3>
+
+<p>Article by Peter Norvig.
+Great guy, I got to know from <a href="https://www.ai-class.com/">Artificial Intelligence</a> course.</p>
+
+<p>His writing is critique of popular books, like &ldquo;Learn Java in 21 Days&rdquo;.
+Peter explains that it is impossible to be a great
+engineer in such short period, and to become an expert you need aproximately 10 years.</p>
+
+<p>It reminds me a picture &ldquo;How to become a C++ Developer in 21 Days&rdquo;:</p>
+
+<p><img src="http://i.imgur.com/3FckcgF.png" alt="" /></p>
+
+<p>If you totally disagree with his idea, just test yourself in previous article.</p>
+
+<h3 id="on-being-a-senior-engineerhttpwwwkitchensoapcom20121025on-being-a-senior-engineer">5. <a href="http://www.kitchensoap.com/2012/10/25/on-being-a-senior-engineer/">On Being A Senior Engineer</a></h3>
+
+<p>And logically continue. What behaviour differentiate senior engineer from &ldquo;not senior&rdquo; one?</p>
+
+<blockquote>
+  <p>Mature engineers seek out constructive criticism of their designs.</p>
+</blockquote>
+
+<p>Actually you could find more useful rules there and list of
+<strong>The Ten Commandments of Egoless Programming</strong>.</p>
+
+<blockquote>
+  <ol>
+    <li>Understand and accept that you will make mistakes.</li>
+    <li>You are not your code.</li>
+    <li>No matter how much “karate” you know, someone else will always know more.</li>
+    <li>Don’t rewrite code without consultation.</li>
+    <li>Treat people who know less than you with respect, deference, and patience.</li>
+    <li>The only constant in the world is change. Be open to it and accept it with a smile.</li>
+    <li>The only true authority stems from knowledge, not from position.</li>
+    <li>Fight for what you believe, but gracefully accept defeat.</li>
+    <li>Don’t be &ldquo;the coder in the corner.&rdquo;</li>
+    <li>Critique code instead of people – be kind to the coder, not to the code.</li>
+  </ol>
+</blockquote>
+
+<p>Note, that article touch some psychological aspect of person. So I don&rsquo;t
+think it can be 100% applied to everyone, but still worth to read.</p>
+
+<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It&rsquo;s Just Writing</a></h3>
+
+<p>Jeff Atwood explais basic the idea of:</p>
+
+<blockquote>
+  <p>The unexpected relationship between writing code and writing.</p>
+</blockquote>
+
+<p>To write good code, you must write good.</p>
+
+<p>Article contains a reference to the book &ldquo;The Elements of Style&rdquo; with some quotes.</p>
+
+<blockquote>
+  <p>Vigorous writing is concise. A sentence should contain no unnecessary words,
+a paragraph no unnecessary sentences, for the same reason that a drawing should
+have no unnecessary lines and a machine no unnecessary parts.
+This requires not that the writer make all his sentences short,
+or that he avoid all detail and treat his subjects only in outline, but that every word tell.</p>
+</blockquote>
+
+<p>Read this book. Perhaps it is boring, it contains some advices to improve you writing skills.</p>
+
+<h3 id="how-to-build-a-naive-bayes-classifierhttpswwwbionicspiritcomblog20120209howto-build-naive-bayes-classifierhtml">7. <a href="https://www.bionicspirit.com/blog/2012/02/09/howto-build-naive-bayes-classifier.html">How To Build a Naive Bayes Classifier</a></h3>
+
+<p>Now some practice.</p>
+
+<p>Article is great explanation of how Naive Bayes Classifier work.
+With pictures, code examples, common pitfalls and good sense of humour.</p>
+
+<p>Although, it&rsquo;s one of the simplest classification algorithms, but with some tweeks and
+good train set it can give good results.</p>
+
+<p><img src="https://www.bionicspirit.com/assets/img/conditional-prob-9a27ee0e.png" alt="" /></p>
+
+<p>Here is the place where the math is needed. But article is so great,
+that even monkey with banana (and degree in math) can understand how it works.</p>
+
+<h3 id="functors-applicatives-and-monads-in-pictureshttpaditioposts2013-04-17-functorsapplicativesandmonadsinpictureshtml">8. <a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html">Functors, Applicatives, And Monads In Pictures</a></h3>
+
+<p>Number of articles that explain what is monad grow fast. Just another one.</p>
+
+<p>Even if you don&rsquo;t understand what Haskell and monad is, look at the cool pictures.</p>
+
+<p><img src="http://adit.io/imgs/functors/fmap_just.png" alt="" /></p>
+
+<h3 id="list-out-of-lambdahttpsteveloshcomblog201303list-out-of-lambda">9. <a href="http://stevelosh.com/blog/2013/03/list-out-of-lambda/">List Out Of Lambda</a></h3>
+
+<p>Good introduction to functional programming. Not for beginners, I think.</p>
+
+<blockquote>
+  <p>This blog post is a thought exercise.
+It’s not something you’d ever use for real code.
+But just like a guitarist practices scales that she won’t ever play in a song,
+we programmers should be exercising our brains every so often.</p>
+</blockquote>
+
+<p>How to implement fancy list, map, filter features with just
+first-class functions. Basic operations on numbers included. JavaScript.</p>
+
+<h3 id="everything-about-java-8httpwwwtechempowercomblog20130326everything-about-java-8">10. <a href="http://www.techempower.com/blog/2013/03/26/everything-about-java-8/">Everything about Java 8</a></h3>
+
+<p>Let&rsquo;s review again what will be in Java 8. Most wanted release ever.</p>
+
+<p>In this overview you will test other important changes, not only lambdas.</p>
+
+<p><em>Sad, that release postponed to early 2014 due to security issues.</em>
+<em>But more time to play with developer preview features.</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 1]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
+    <updated>2013-02-12T02:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
+    <content type="html"><![CDATA[<p>How to get job at Google, estimate complexity of your algorithm,
+what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
+
+<!-- more -->
+
+<h3 id="get-that-job-at-googlehttpsteve-yeggeblogspotcom200803get-that-job-at-googlehtml">1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
+
+<blockquote>
+  <p>&hellip;it&rsquo;s highly likely that someone on the loop will be unimpressed with you,
+even if you are Alan Turing. Especially if you&rsquo;re Alan Turing,
+in fact, since it means you obviously don&rsquo;t know C++</p>
+</blockquote>
+
+<p>The quote accurately explains what this post about. The author gives great mental and
+technical tips about interviewing process (not only in Google).
+Big portion of motivation guaranteed, perhaps you man feel dumber after reading.</p>
+
+<p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
+graphs, other data structures, math, operating systems and at least one programming language very well.
+Not bad, right? After reading that article I&rsquo;ve build long-term learning plan for myself, which is still
+not succesful. Great article.</p>
+
+<h3 id="a-gentle-introduction-to-algorithm-complexity-analysishttpdiscretegrcomplexity">2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
+
+<p>This article helps you partially cover first thing from previous article: <em>algorithm complexity</em>.
+By the way, it is written with understandable (<em>for programmers</em>) language, examples, pictures, excerpts - I like
+such style.</p>
+
+<p>After reading, you&rsquo;ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
+recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
+skill to classify that complexities on O(n), O(n^2 ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
+with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
+
+<p>If you already know all that, don&rsquo;t skip! It also helpful to fresh you knowledge.</p>
+
+<h3 id="on-structural-immutabilityhttpclojurefunwordpresscom20130121on-structural-immutability">3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
+
+<p>What is Structural Immutability?</p>
+
+<p>We know difference between mutable and immutable data structures and their pros and cons.
+Structural immutability means that you <em>can</em> change the contents of you data, but <em>can not</em> change their structure.
+It gives better performance than plain immutable objects, but also keep your concurrent programs easier than with
+full mutability. Plain old array is an example. Read it to know more.</p>
+
+<h3 id="php-a-fractal-of-bad-designhttpmeveekuncomblog20120409php-a-fractal-of-bad-design">4. <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">PHP: a fractal of bad design</a></h3>
+
+<blockquote>
+  <p>Virtually every feature in PHP is broken somehow</p>
+</blockquote>
+
+<p>Whole article is a criticism of bad PHP language design.</p>
+
+<blockquote>
+  <p>PHP was originally designed explicitly for non-programmers (and, reading between the lines, non-programs)</p>
+</blockquote>
+
+<p>Total destroy. I mean it - total.</p>
+
+<blockquote>
+  <p>Array&hellip; This one datatype acts as a list, ordered hash, ordered set,
+sparse list, and occasionally some strange combination of those.
+How does it perform? What kind of memory use will there be?
+Who knows? Not like I have other options, anyway.</p>
+</blockquote>
+
+<p>As I never know PHP, and hope won&rsquo;t, that article was one of the funniest things I ever read.</p>
+
+<blockquote>
+  <p>equality operator is not transitive&hellip;comparison is not even consistent</p>
+</blockquote>
+
+<p>If you PHPist don&rsquo;t go away, just read it. Maybe it will change your life.</p>
+
+<blockquote>
+  <p>Genericism&hellip; There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
+</blockquote>
+
+<p>Stop quoting. Just read it.</p>
+
+<h3 id="do-not-pass-this-way-againhttpgrimoirecamysqlchoose-something-else">5. <a href="http://grimoire.ca/mysql/choose-something-else">Do Not Pass This Way Again</a></h3>
+
+<blockquote>
+  <p>Considering MySQL? Use something else. Already on MySQL? Migrate.</p>
+</blockquote>
+
+<p>This article logically continues previous one, but for now critisism on MySQL.
+Perhaps, it is not powerful as PHP version, but still worth to read.</p>
+
+<h3 id="big-arrays-in-javahttpwwwomsndeblogbig-arrays-in-java">6. <a href="http://www.omsn.de/blog/big-arrays-in-java">Big arrays in Java</a></h3>
+
+<p>Two articles of hate in a row, and currently Java? No way.
+How much we hate Java so we love it. By the way, JDK8 is soon.</p>
+
+<p>Maybe this post not so expressive as previous ones, but it reveals capability I never knew of.
+How to create array in Java with size greater than <code>Integer.MAX_VALUE</code>. Use the undocumented
+class <code>sun.misc.Unsafe</code>. Just note this only works in SunJDK and OpenJDK.</p>
+
+<h3 id="state-of-the-lambdahttpcropenjdkjavanetbriangoetzlambdalambda-state-4html">7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
+
+<p>If we started about JDK8&hellip;</p>
+
+<p>The most interesting feature set in expected JDK8 is Project Lambda.</p>
+
+<p>Functional interfaces and functions without all that finals in lexical scope and anonymous classes,
+common patterns for list processing like <code>map</code>, <code>reduce</code> and <code>filter</code>,
+parallelism, streams, method references and lot more comming soon.</p>
+
+<p><em>What is the default method implementation in the interface?!</em></p>
+
+<h3 id="fantastic-game-development-tutorials-from-across-the-webhttpgamedevtutspluscomarticlesroundupsfantastic-gamedev-tutorials-from-across-the-web">8. <a href="http://gamedev.tutsplus.com/articles/roundups/fantastic-gamedev-tutorials-from-across-the-web/">40+ Fantastic Game Development Tutorials From Across the Web</a></h3>
+
+<p>Have you ever had the passion to write your own game?</p>
+
+<p>I had. Because I like games and I even tried. Unfortunately, not so succesful as expected, but anyway.</p>
+
+<blockquote>
+  <p>We need to go deeper</p>
+</blockquote>
+
+<p>Honestly, it&rsquo;s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
+you really interested in gamedev, you&rsquo;ll find a lot of there including game algorithms,
+popular engine tutorials, math behind the games, design questions and more useful tips. Great stuff.</p>
+
+<h3 id="how-to-pair-socks-from-a-pile-efficientlyhttpstackoverflowcomquestions14415881how-to-pair-socks-from-a-pile-efficiently">9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
+
+<p>Bored to pair your socks every time? Learn how to do it efficiently.</p>
+
+<p>At first glance it is a humorous question, indeed it is, but also it is an interesting real-world
+problem with variety of algorithms can be applied. I think all algorithm courses should be teached
+that way.</p>
+
+<h3 id="what-is-your-best-programming-jokehttpstackoverflowcomquestions234075what-is-your-best-programmer-joke1284458">10. <a href="http://stackoverflow.com/questions/234075/what-is-your-best-programmer-joke/1284458">What is your best programming joke</a></h3>
+
+<blockquote>
+  <p>If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.</p>
+
+  <p>The rest of them will write Perl programs.</p>
+</blockquote>
+
+<p>If you have an hour or two reserved for laughing, just read this. A <strong>lot</strong> of
+crazy programming jokes. Stackoverflow community is amazing.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest Announcement]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-announcement/"/>
+    <updated>2013-02-11T23:00:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-announcement</id>
+    <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
+on the internet and give basic description for them.</p>
+
+<!-- more -->
+
+<p>I do not plan this <em>digest</em> as periodical thing,
+so the first pattern I found appropriate is to publish this as soon
+as I have ten articles marked as <em>favorite</em> somewhere.</p>
+
+<p>That&rsquo;s the rule: <strong>each post - 10 articles</strong>.</p>
+
+<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I&rsquo;ve read.</p>
+
+<p>Hard to say what topics will be covered.
+I call it <em>programming digest</em> because most of articles will be somehow
+related to programming, but do not blame me if you see articles with another
+topic (math or humour), believe me they can be interesting also.</p>
+
+<p>By the way, a lot of articles may be old, even very old (<em>don&rsquo;t call me Necromancer</em>)
+but if they appear here, I found them somehow relevant and important to post.</p>
+
+<p>Hope, you&rsquo;ll find such sort of digest is interesting for reading and I like if you
+share your favorite <em>programming-related</em> articles with me.</p>
+
+<p>Have fun!</p>
+]]></content>
+  </entry>
+  
+</feed>

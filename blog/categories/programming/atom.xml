@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2013-09-01T19:16:55+03:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing numberto]]></title>
+    <link href="http://mishadoff.github.com/blog/announcing-numberto/"/>
+    <updated>2013-09-01T04:23:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/announcing-numberto</id>
+    <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
+
+<!-- more -->
+
+<p><a href="https://github.com/mishadoff/numberto">numberto</a>
+- simple clojure library with a bunch of functions operating on numbers.</p>
+
+<p>I created this project for two reasons:</p>
+
+<ol>
+  <li>Solving problems on <a href="http://projecteuler.net">Project Euler</a>, <a href="http://www.4clojure.com/">4Clojure</a> and just playground with numbers needed common functions. I just extracted them to separate util library.</li>
+  <li>Practice to develop clojure project with unit tests, continuos integration, documentation and publishing to clojars.</li>
+</ol>
+
+<h3 id="get-it">Get it</h3>
+
+<p>Current version is <code>0.0.2</code> available to download on
+<a href="https://clojars.org/numberto/versions/0.0.2">Clojars</a> or
+as lein dependency <code>[numberto "0.0.2"]</code></p>
+
+<h3 id="example-usage">Example usage</h3>
+
+<p><code>clojure
+(number-&gt;roman 19) =&gt; "XIX"
+(take 10 fibonacci) =&gt; (1 1 2 3 5 8 13 21 34 55)
+(shift-right 123456789 3) =&gt; 789123456
+(count-digits (! 100000)) =&gt; 456574
+(factorize 234) =&gt; [2 3 3 13]
+</code></p>
+
+<p>Can you read long numbers?</p>
+
+<p><code>clojure 
+(number-name 16532561257523723757234781264) =&gt;
+"sixteen octillion five hundred thirty two septillion five hundred sixty one sextillion
+two hundred fifty seven quintillion five hundred twenty three quadrillion seven hundred
+twenty three trillion seven hundred fifty seven billion two hundred thirty four million
+seven hundred eighty one thousand two hundred sixty four"
+</code></p>
+
+<h3 id="structure">Structure</h3>
+
+<p>Each logical set of functions moved to separate namespace. Here is the list of namespaces:</p>
+
+<ul>
+  <li><strong>Converters</strong>.
+number to digits, char to digit, roman to arabic</li>
+  <li><strong>Math</strong>.
+Often used functions, such as <code>count-digits</code>, <code>shuffle-num</code>, <code>reverse-num</code> and some from common math <code>abs</code>, <code>gcd</code>, <code>lcm</code></li>
+  <li><strong>Seqs</strong>.
+Various lazy sequences: <code>fibonacci</code>, <code>farey</code>, <code>palindromes</code>.</li>
+  <li><strong>Primes</strong>.
+Prime numbers lazy sequence, factorization and totient function</li>
+  <li><strong>Factorial</strong>.
+Standard and Improved version of factorial</li>
+  <li><strong>Generators</strong>.
+Generate random numbers</li>
+  <li><strong>Printers</strong>.
+Pretty print for long numbers</li>
+</ul>
+
+<p>Check out <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">detailed intro</a></p>
+
+<p><strong>P.S.</strong> I still experimenting, so expect a lot of changes between versions until make something stable. Comments and advices are welcome!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
+    <link href="http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter/"/>
+    <updated>2013-08-09T17:44:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter</id>
+    <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
+
+<!-- more -->
+
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
+
+<ul>
+  <li><code>&gt;</code> move to the next cell</li>
+  <li><code>&lt;</code> move to the previous cell</li>
+  <li><code>+</code> increment value in the current cell</li>
+  <li><code>-</code> decrement value in the current cell</li>
+  <li><code>.</code> print char with ascii value of current cell</li>
+  <li><code>,</code> read ascii value for input char to the current cell</li>
+  <li><code>[</code> start loop until value of pointer is not zero </li>
+  <li><code>]</code> finish loop</li>
+</ul>
+
+<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+
+<h3 id="tweet">Tweet</h3>
+
+<p>Final version took <code>280</code> characters in Clojure:</p>
+
+<p><code>clojure
+(fn[a p k c](let[h #(nth %1@%2)e #(h a p)s #(swap! %1%2 1)t
+#(aset a@p(%(e)1))l #(do(s k %)(case(h c k)\]()\[()(recur %)
+))](while(&gt;(count c)@k)(do(case(h c k)\&gt;(s p +)\&lt;(s p -)\+
+(t +)\-(t -)\.(print(char(e)))\,(aset a@p(.read *in*))\[(if
+(=(e)0)(l +))\](if(&gt;(e)0)(l -)))(s k +)))))
+</code></p>
+
+<p>Exactly 2 tweets.</p>
+
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+
+<p>Translating to more readable code:</p>
+
+<p><code>clojure
+(defn parse-internal [a pt pc cs]
+  (letfn [(act []
+            (case (nth cs @pc)
+              \&gt; (swap! pt inc)
+              \&lt; (swap! pt dec)
+              \+ (aset a @pt (inc (nth a @pt))) 
+              \- (aset a @pt (dec (nth a @pt)))
+              \. (print (char (nth a @pt)))
+              \, (aset a @pt (.read *in*))
+              \[ (if (zero? (nth a @pt)) (loop- inc))
+              \] (if-not (zero? (nth a @pt)) (loop- dec))))
+          (loop- [f]
+            (do (swap! pc f)
+                (case (nth cs @pc)
+                  \[ ()
+                  \] () 
+                  (recur f))))]
+    (while (not= (count cs) @pc)
+      (do
+        (act)
+        (swap! pc inc)))))
+</code></p>
+
+<p>So, what&rsquo;s happening there?</p>
+
+<p>Function arguments are parameters of our tape and brainfuck program.</p>
+
+<ul>
+  <li><code>a</code> is an array represents finite tape <code>e.g (int-array 100)</code></li>
+  <li><code>pt</code> is an atom - pointer to the tape</li>
+  <li><code>pc</code> is an atom - pointer to the command list</li>
+  <li><code>cs</code> command list</li>
+</ul>
+
+<p>Function <code>act</code> decides which action to perform depending on current command,
+<code>loop</code> allows us to move command pointer inside a loop,
+and main <code>while-do</code> loop executes commands until they exhausted. Simple enough.</p>
+
+<p>To make our interpreter more friendly we create function <code>parse</code> that accepts
+string - program, written in brainfuck.</p>
+
+<p><code>clojure
+(defn parse [s]
+  (let [a (int-array 100)  ;; Turing Tape
+        p (atom 0)         ;; Pointer to Tape
+        k (atom 0)         ;; Pointer to Command
+        c (vec (seq s))]   ;; Vector of Commands
+    (parse-internal a p k c)))
+</code></p>
+
+<h4 id="testing">Testing</h4>
+
+<p>Print &ldquo;Hello, world&rdquo;</p>
+
+<p><code>clojure
+(parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
+        &gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;
+        .+++.------.--------.&gt;+.&gt;.") =&gt;
+Hello World!
+</code></p>
+
+<p>Input 5 characters and reverse print them</p>
+
+<p><code>clojure
+(parse ",&gt;,&gt;,&gt;,&gt;,.&lt;.&lt;.&lt;.&lt;.") =&gt; &lt;wait input "hello"&gt;
+olleh
+</code></p>
+
+<p>More complex program need nested loops, which is not supported by
+this version (<em>for the sake of small size!</em>)</p>
+
+<p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
+
+<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
+
+<ul>
+  <li>It does not work for inifinite tape</li>
+  <li>Cell datatype is fixed and not assumed to be cyclic. For example, if cell type is unsigned byte <code>[0..255]</code>, then <code>255 + 1 != 0</code> and break interpreter</li>
+  <li>Only unsigned types supported</li>
+  <li>Nested loops are not allowed</li>
+  <li>No error handling</li>
+</ul>
+
+<p>But, you are welcome to improve it!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 3]]></title>
+    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <updated>2013-07-22T20:33:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
+    <content type="html"><![CDATA[<p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
+algorithm complexities refresher, functional programming, including
+Scala and Clojure, concurrency and lot of humor.</p>
+
+<!-- more -->
+
+<h3 id="big-ball-of-mudhttpwwwlaputanorgmud">1. <a href="http://www.laputan.org/mud/">Big Ball of Mud</a></h3>
+
+<blockquote>
+  <p>What does your programming day look like? </p>
+</blockquote>
+
+<p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
+
+<p>The article describes problems in software design and explains
+why almost every system nowadays look like &ldquo;Big Ball of Mud&rdquo;.</p>
+
+<p>There are seven <em>real</em> patterns in software design:</p>
+
+<ul>
+  <li>BIG BALL OF MUD</li>
+  <li>THROWAWAY CODE</li>
+  <li>PIECEMEAL GROWTH</li>
+  <li>KEEP IT WORKING</li>
+  <li>SHEARING LAYERS</li>
+  <li>SWEEPING IT UNDER THE RUG</li>
+  <li>RECONSTRUCTION </li>
+</ul>
+
+<p><em>caps preserved due to original article</em></p>
+
+<p>And our favorite phrase:</p>
+
+<blockquote>
+  <p>It works, so why fix it?</p>
+</blockquote>
+
+<h3 id="no-silver-bullethttpwwwcsnottacukcahg51issdocumentsnosilverbullethtml">2. <a href="http://www.cs.nott.ac.uk/~cah/G51ISS/Documents/NoSilverBullet.html">No Silver Bullet</a></h3>
+
+<p>Classic article by Frederick Brooks, Jr.</p>
+
+<p>Object-oriented programming? Artificial Intelligence? Expert systems? Time-sharing?
+Graphical or Automated programming?</p>
+
+<p>Nothing helps you.</p>
+
+<blockquote>
+  <p>The most radical possible solution for constructing software is not to construct it at all.</p>
+</blockquote>
+
+<p>Demotivating, but helpful.</p>
+
+<h3 id="beating-the-averageshttpwwwpaulgrahamcomavghtml">3. <a href="http://www.paulgraham.com/avg.html">Beating the Averages</a></h3>
+
+<p>This is inspiring one.</p>
+
+<p>Brooks told &ldquo;There is no Silver Bullet&rdquo;, but Paul Graham reveals &ldquo;The Secret Weapon&rdquo;.</p>
+
+<p>The article is success story of startup called Viaweb.
+Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
+
+<blockquote>
+  <p>Our secret weapon was similar.
+We wrote our software in a weird AI language, with a bizarre syntax full of parentheses.</p>
+</blockquote>
+
+<p>As you probably understood, it was Lisp.</p>
+
+<h3 id="know-thy-complexitieshttpbigocheatsheetcom">4. <a href="http://bigocheatsheet.com/">Know Thy Complexities!</a></h3>
+
+<p>Plain algorithm complexity cheatsheet. Contains time and space complexities
+for common algorithms and datastructures.</p>
+
+<h3 id="adventures-in-functional-programminghttpvimeocom45140590">5. <a href="http://vimeo.com/45140590">Adventures in Functional Programming</a></h3>
+
+<blockquote>
+  <p>Did you know that recursion is just syntactic sugar over higher-order functions?</p>
+</blockquote>
+
+<p>Awesome screencast by Jim Weirich about Y-Combinator in JavaScript.</p>
+
+<h3 id="scala-problemshttpaperiodicnetphilscalas-99">6. <a href="http://aperiodic.net/phil/scala/s-99/">99 Scala Problems</a></h3>
+
+<p>I am not using Scala and prefer Clojure for rapid protyping, but find such articles
+extremely useful when learning new language. Just exploring the code shows that Scala is
+the powerful and expressive language.</p>
+
+<p><strong>P.S.</strong> I am on half way to publish &ldquo;99 Clojure Problems&rdquo;.</p>
+
+<h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
+
+<p>Great pictures. This is nice intro to concurrency and overview of some common cocurrency problems.</p>
+
+<p><img src="http://adit.io/imgs/concurrency/threads_using_mutex.png" alt="" /></p>
+
+<h3 id="understanding-clojure-concurrencyhttpblakesmithme20120515understanding-clojure-concurrency-part-1html">8. <a href="http://blakesmith.me/2012/05/15/understanding-clojure-concurrency-part-1.html">Understanding Clojure Concurrency</a></h3>
+
+<p>Clojure is exciting language with great concurrency capabilities:
+default immutability, atoms, refs, agents, promises, futures and software transactional memory.</p>
+
+<p>This article is an introduction to them. Check out the <a href="http://blakesmith.me/2012/05/25/understanding-clojure-concurrency-part-2.html">2nd part</a></p>
+
+<h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
+
+<p>This is the video screencast of Gary Bernhardt&rsquo;s talk.
+Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
+
+<blockquote>
+  <p>An object plus an object is actually&hellip;. Not A Number!</p>
+</blockquote>
+
+<h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
+
+<p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
+
+<blockquote>
+  <p>Q: What does the &ldquo;B&rdquo; in Benoit B. Mandelbrot stand for?</p>
+
+  <p>A: Benoit B. Mandelbrot.</p>
+</blockquote>
+
+<p>In fact, some of the jokes related to programming.</p>
+
+<blockquote>
+  <p>There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.</p>
+</blockquote>
+
+<p>Some of them a bit stupid, but still fun.</p>
+
+<blockquote>
+  <p>How many surrealists does it take to screw in a light bulb?</p>
+
+  <p>A fish.</p>
+</blockquote>
+
+<p>Definitely, worth to read!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <updated>2013-07-21T13:39:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of the digits in the number 100!</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=20">http://projecteuler.net/problem=20</a></p>
+
+<!-- more -->
+
+<p>First of all we need to calculate factorial.
+Without integer overflows, stack overflows and other caveats.</p>
+
+<p>Previous article <a href="/blog/fast-factorial/">Fast Factorial</a> has working solution
+that we might use.</p>
+
+<p><code>
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Now, calculate the sum of digits, the same function that we used in
+<a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+
+<p><code>
+(defn sum-of-digits [n]
+  (reduce + (map #(- (int %) 48) (seq (str n)))))
+</code></p>
+
+<p>And the final line</p>
+
+<p><code>
+(sum-of-digits (! 100))
+</code></p>
+
+<p>Simple enough, huh?</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem020.clj">Code</a></p>
+
+<p><strong>P.S.</strong> The functions <code>sum-of-digits</code>, <code>count-digits</code> and similar used often
+and look very ugly, so I decided to create a separate set of functions (<em>library?</em>)
+which I can refer. It should be a set of common mathematic functions, including
+different sequences, sums, converters, interesting numbers. You might use it too.
+Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
+    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <updated>2013-07-10T01:59:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>How many Sundays fell on the first of the month
+during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=19">http://projecteuler.net/problem=19</a></p>
+
+<!-- more -->
+
+<p>Project Euler also gives following information:</p>
+
+<ul>
+  <li>1 Jan 1900 was a Monday.</li>
+  <li>
+    <p>A poem</p>
+
+    <p>Thirty days has September,<br />
+April, June and November.<br />
+All the rest have thirty-one,<br />
+Saving February alone,<br />
+Which has twenty-eight, rain or shine.<br />
+And on leap years, twenty-nine.<br /></p>
+  </li>
+  <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
+</ul>
+
+<p>Implementin calendars logic is great, but java interoperability is much better!</p>
+
+<p>First of all, take standard java <code>GregorianCalendar</code> class.
+We can import it <em>almost</em> the same way as we use <code>require</code> </p>
+
+<p><code>clojure
+(import [java.util GregorianCalendar])
+</code></p>
+
+<p>To create an object use function <code>new</code></p>
+
+<p><code>clojure
+(new GregorianCalendar)
+</code></p>
+
+<p>But it is more idiomatic way to create java objects with special syntax:
+<em>period after class name</em> </p>
+
+<p><code>clojure
+(GregorianCalendar.)
+</code></p>
+
+<p>To configure calendar object to specific date we need to set some its
+properties. Setters syntax is following (assuming <code>calendar</code>
+is an object of calendar):</p>
+
+<p>Java</p>
+
+<p><code>java 
+calendar.set(GregorianCalendar.YEAR, 2013);
+</code></p>
+
+<p>Clojure</p>
+
+<p><code>clojure
+(.set calendar GregorianCalendar/YEAR 2013)
+</code></p>
+
+<p>Executing lot of setters is the same boilerplate as in java:</p>
+
+<p><code>clojure
+(do
+  (.set calendar GregorianCalendar/YEAR 2013)
+  (.set calendar GregorianCalendar/MONTH 11)
+  (.set calendar GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>To avoid repetition of object name we can use <code>doto</code> macro:</p>
+
+<p><code>clojure
+(doto (GregorianCalendar.)
+  (.set GregorianCalendar/YEAR 2013)
+  (.set GregorianCalendar/MONTH 11)
+  (.set GregorianCalendar/DAY_OF_MONTH 1))
+</code></p>
+
+<p>This macro <em>magically</em> performs the same set of operations as above, but in more readable way.</p>
+
+<p>Now we can create calendar objects for the <em>first of the
+specific month of the specific year</em></p>
+
+<p><code>clojure
+(defn calendar-for [year month]
+  (doto (GregorianCalendar.)
+    (.set GregorianCalendar/YEAR year)
+    (.set GregorianCalendar/MONTH month)
+    (.set GregorianCalendar/DAY_OF_MONTH 1)))
+</code></p>
+
+<p>Just iterate through all such objects in date range given in problem definition
+and count Sundays.</p>
+
+<p><code>clojure
+(reduce +
+  (for [year (range 1901 (inc 2000)) month (range 1 (inc 12))]
+    (let [c (calendar-for year month)]
+          (if (= GregorianCalendar/SUNDAY 
+                 (.get c GregorianCalendar/DAY_OF_WEEK)) 1 0))))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
+
+<p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
+]]></content>
+  </entry>
+  
+</feed>
