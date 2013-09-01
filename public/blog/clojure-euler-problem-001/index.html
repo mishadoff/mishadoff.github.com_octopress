@@ -145,8 +145,8 @@ MathJax.Hub.Config({
 </span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>We get result immediately. But loop that changes value of some variable it’s not a functional approach.
-Let’s rewrite this solution in <a href="http://en.wikipedia.org/wiki/Recursion">recursive</a> way in clojure:</p>
+<p>We get result immediately. But loop that changes value of some variable it&rsquo;s not a functional approach.
+Let&rsquo;s rewrite this solution in <a href="http://en.wikipedia.org/wiki/Recursion">recursive</a> way in clojure:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -179,7 +179,7 @@ Recursion call performed by <a href="http://clojure.org/special_forms#recur">rec
 
 <ol>
   <li>There are no variables. There are values and names bound to that values.
-That means that we can’t change one value to another inside loop. That’s why we recursively call this function with changed values.
+That means that we can&rsquo;t change one value to another inside loop. That&rsquo;s why we recursively call this function with changed values.
 Such trick helps to avoid hard-to-spot error-prone situations where iteration counter changed inside the loop.</li>
   <li>This is more flexible way than iteration. We can pass as much arguments as we want, move forward-backward,
 select dynamic iterative step and even select any stop condition.</li>
@@ -187,7 +187,7 @@ select dynamic iterative step and even select any stop condition.</li>
 All garbage he left was cleared after returning value (<em>Ecologists are very happy!</em>)</li>
 </ol>
 
-<p><strong>Congratulations!</strong> Problem solved, but let’s find more elegant way.</p>
+<p><strong>Congratulations!</strong> Problem solved, but let&rsquo;s find more elegant way.</p>
 
 <p>We can split our problem into two simpler problems:</p>
 
@@ -198,7 +198,7 @@ All garbage he left was cleared after returning value (<em>Ecologists are very h
 </ol>
 
 <p>Stop, stop! What about numbers that multiples of <code>3</code> and multiples of <code>5</code>, like <code>15, 30, 45,...</code>? We add them twice.
-Good catch. Let’s just subtract them once from total sum:</p>
+Good catch. Let&rsquo;s just subtract them once from total sum:</p>
 
 <ol>
   <li>Find sum of all multiples of <code>3</code> below <code>1000</code></li>
@@ -207,7 +207,7 @@ Good catch. Let’s just subtract them once from total sum:</p>
   <li>Add sum 1 to sum 2 and subtract sum 3.</li>
 </ol>
 
-<p>You see the repeated <em>“Find sum of all…”</em>. It’s clear definition of function. Let’s implement it.</p>
+<p>You see the repeated <em>&ldquo;Find sum of all&hellip;&rdquo;</em>. It&rsquo;s clear definition of function. Let&rsquo;s implement it.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of</span> <span class="p">[</span><span class="nv">d</span><span class="p">]</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">0</span> <span class="mi">1000</span> <span class="nv">d</span><span class="p">)))</span>
@@ -220,7 +220,7 @@ Brief description, what we wrote:</p>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/defn">defn</a> indicates function definition.
 We called function <code>sum-of</code>, it accepts one argument <code>d</code> (multiple of what?).
 As you, probably notice, we do not enforced to specify type of function argument, as well as function returning type.
-All it’s because clojure is <a href="http://en.wikipedia.org/wiki/Dynamic_programming_language">dynamic</a> language.
+All it&rsquo;s because clojure is <a href="http://en.wikipedia.org/wiki/Dynamic_programming_language">dynamic</a> language.
 Dynamic languages have pros and cons over static, but we omit their differences. For now.</li>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/reduce">reduce</a> takes two parameters: function of two arguments and collection,
 and applies that function to first two values, than to result and next value, again, again, until the end of collection.
@@ -230,7 +230,7 @@ but there are overloaded versions that takes 2, 1 or even 0 values. <code>(range
 next value will be <code>previous plus d</code>, until we exceed <code>1000</code>. Exclusively. So, <code>(range 0 10 3)</code> returns <code>(0 3 6 9)</code>.</li>
 </ol>
 
-<p>Ok. We have function <em>“Find sum of all…”</em> and almost all work is done. Just call this function with proper arguments and you’ll get the result:</p>
+<p>Ok. We have function <em>&ldquo;Find sum of all&hellip;&rdquo;</em> and almost all work is done. Just call this function with proper arguments and you&rsquo;ll get the result:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">sum-of</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nf">sum-of</span> <span class="mi">5</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">sum-of</span> <span class="mi">15</span><span class="p">)))</span>
@@ -240,7 +240,7 @@ next value will be <code>previous plus d</code>, until we exceed <code>1000</cod
 
 <p><strong>Note:</strong> our <a href="http://en.wikipedia.org/wiki/Big_O_notation">algorithm complexity</a> is <code>O(n)</code>.
 If we remember school course of math, we realize that all our sequences are <a href="http://en.wikipedia.org/wiki/Arithmetic_progression">arithmetic progressions</a>.
-That means for caluclating sum of sequence we don’t need count sum in usual way, we just can use formula:</p>
+That means for caluclating sum of sequence we don&rsquo;t need count sum in usual way, we just can use formula:</p>
 
 <p><img src="http://upload.wikimedia.org/math/a/f/e/afe20f89d7bfdbd0a191168d80eb8077.png" /></p>
 
@@ -259,16 +259,16 @@ Now we can reimplement our <code>sum-of</code> function next way:</p>
 </span><span class="line">    <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">* </span><span class="nv">cnt</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a1</span> <span class="nv">an</span><span class="p">))</span> <span class="mi">2</span><span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>More harder to understand, but doable. New language syntax appears (999 used as we have <em>“below 1000”</em> in problem description):</p>
+<p>More harder to understand, but doable. New language syntax appears (999 used as we have <em>&ldquo;below 1000&rdquo;</em> in problem description):</p>
 
 <ol>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/let">let</a> - creates a lexical context for expression.
-In fact, it’s just separate block of code, with names, that exist only in scope of that block.
+In fact, it&rsquo;s just separate block of code, with names, that exist only in scope of that block.
 After let we evaluates some expression and gives some values to the result.</li>
   <li><code>a1</code> - first element of sequence, just step value <code>d</code>.</li>
-  <li><code>an</code> - last element of sequence. We don’t know last element, so we need to calculate it.
+  <li><code>an</code> - last element of sequence. We don&rsquo;t know last element, so we need to calculate it.
 Little trick: find the remainder of division 999 by d, and subtract it from 999.</li>
-  <li><code>n</code> - count of numbers in a sequence. We also don’t know this value. It just will be integer number of division 999 by d.
+  <li><code>n</code> - count of numbers in a sequence. We also don&rsquo;t know this value. It just will be integer number of division 999 by d.
 Exactly what <a href="http://clojuredocs.org/clojure_core/clojure.core/quot">quot</a> function does.</li>
   <li>And finally, the expression - formula for sum of arithmetic progression.</li>
 </ol>
@@ -279,8 +279,8 @@ Exactly what <a href="http://clojuredocs.org/clojure_core/clojure.core/quot">quo
 
 <p><a href="http://tryclj.com/">Try clojure online!</a></p>
 
-<p><strong>P.S.</strong> Programming not tied to some problem is nothing. That’s why, in first problem I prefer <code>O(n)</code> solution.
-It still solves problem in appropriate time and have more readable code. If <code>n</code> grow, I’ll think about switching to <code>O(1)</code> strategy, but not for now.</p>
+<p><strong>P.S.</strong> Programming not tied to some problem is nothing. That&rsquo;s why, in first problem I prefer <code>O(n)</code> solution.
+It still solves problem in appropriate time and have more readable code. If <code>n</code> grow, I&rsquo;ll think about switching to <code>O(1)</code> strategy, but not for now.</p>
 
 <p>Have fun!</p>
 </div>

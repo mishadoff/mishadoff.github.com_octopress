@@ -10,8 +10,8 @@
 
   
   <meta name="description" content="Factorial function is simple enough. But there is still some fun about it.
-In Stirling’s Approximation article
-we’ve seen how to calculate good &hellip;">
+In Stirling&rsquo;s Approximation article
+we&rsquo;ve seen how to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -124,10 +124,10 @@ MathJax.Hub.Config({
 
 
 <div class="entry-content"><p>Factorial function is simple enough. But there is still some fun about it.
-In <a href="/blog/stirlings-approximation/">Stirling’s Approximation</a> article
-we’ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+In <a href="/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
+we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
 By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
-than “by definition”.</p>
+than &ldquo;by definition&rdquo;.</p>
 
 <!-- more -->
 
@@ -148,7 +148,7 @@ approach to calculate factorial (<em>transformed to clojure</em>):</p>
 
 <p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
 
-<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>…</p>
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>&hellip;</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">ArithmeticException</span> <span class="nv">integer</span> <span class="nv">overflow</span>
@@ -172,7 +172,7 @@ If type can not hold the value without losing precision, it automatically extend
 In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
 
 <p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
-<code>(! 30000)</code>…</p>
+<code>(! 30000)</code>&hellip;</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">StackOverflowError</span>
@@ -180,7 +180,7 @@ In this case, <code>Long</code> becames <code>BigInteger</code> and all works fi
 
 <p>Yet another overflow.</p>
 
-<p>Well, stack size is limited. We don’t need to consume stackframes and
+<p>Well, stack size is limited. We don&rsquo;t need to consume stackframes and
 will use <code>loop/recur</code> approach.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -200,7 +200,7 @@ It succesfully calculates factorial for 30000,
 and for any other value. Great!</p>
 
 <p>If we look at the factorial as a calculation process, not definition, it means
-“product of all numbers between 1 and n”. It is very concise for functional programming:</p>
+&ldquo;product of all numbers between 1 and n&rdquo;. It is very concise for functional programming:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -211,7 +211,7 @@ and for any other value. Great!</p>
 <p>Does not consume stack, no number overflow, but works
 ~2 times slower than <code>loop/recur</code> version.</p>
 
-<p>I don’t know the reason, but it seems time wasted
+<p>I don&rsquo;t know the reason, but it seems time wasted
 by <code>reduce</code> for creating intermediate results. So we choose
 previous <code>loop/recur</code> function as baseline factorial.</p>
 
@@ -219,7 +219,7 @@ previous <code>loop/recur</code> function as baseline factorial.</p>
 
 <p>Here is another way to calculate factorial.</p>
 
-<p>Let’s consider example <code>12!</code>.</p>
+<p>Let&rsquo;s consider example <code>12!</code>.</p>
 
 <p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
 Perform prime factorization of each number.
@@ -300,7 +300,7 @@ stackoverflow, but its not critical. It works well for large numbers.</p>
 You performing more calculations than just multiplying numbers.</p>
 </blockquote>
 
-<p>Let’s see.</p>
+<p>Let&rsquo;s see.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>

@@ -135,8 +135,8 @@ how get rid of factorials.</p>
 ln(n!) = n \cdot ln(n) - n + 1
 </script>
 
-<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling’s approximation</a>
-or just Stirling’s formula.
+<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling&rsquo;s approximation</a>
+or just Stirling&rsquo;s formula.
 It allows to replace factorials with their approximation.
 If you not interested in math, skip to <a href="#usage">formula usage</a></p>
 
@@ -240,16 +240,16 @@ is very good property of algorithm. By the way, do not scare people with factori
 </ul>
 
 <p>If you try to calculate <code>ln(n!)</code> with most straightforward implementation
-without suitable datatype, you’ll likely get the number overflow exception, in spite
+without suitable datatype, you&rsquo;ll likely get the number overflow exception, in spite
 of result value is not very large. For example for <code>n=100</code> overall result is
-approximately <code>363</code> (<em>Stirling’s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
+approximately <code>363</code> (<em>Stirling&rsquo;s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
 
 <ul>
   <li><strong>Speedup</strong></li>
 </ul>
 
 <p>As far as I know, calculating factorial is <code>O(n)</code> complexity algorithm,
-because we need <code>n</code> multiplications. Using Stirling’s approximation we need to calculate $n^n$ term, that can
+because we need <code>n</code> multiplications. Using Stirling&rsquo;s approximation we need to calculate $n^n$ term, that can
 be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wiki/Exponentiation_by_squaring">clever trick</a></p>
 
 <ul>
@@ -259,16 +259,16 @@ be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wik
 <p>It can be surprising, but factorials defined not only for positive integers.
 So, for example <code>2.5!</code> is completely valid expression. <code>-6!</code> also. They can be calculated
 using <a href="http://en.wikipedia.org/wiki/Gamma_function">Gamma-functions</a> for real numbers. Unfortunately, they are
-pretty complicated, so people use Stirling’s formula instead.</p>
+pretty complicated, so people use Stirling&rsquo;s formula instead.</p>
 
 <ul>
   <li><strong>Partial applications</strong></li>
 </ul>
 
-<p>Almost everything that using factorials can use Stirling’s approximation. Permutations,
-binomial coefficients, fractals, number theory and a huge amount of topics I’m not aware of.</p>
+<p>Almost everything that using factorials can use Stirling&rsquo;s approximation. Permutations,
+binomial coefficients, fractals, number theory and a huge amount of topics I&rsquo;m not aware of.</p>
 
-<p><strong>P.S.</strong> Stirling’s formula presented here is rough enough. More accurate formula is
+<p><strong>P.S.</strong> Stirling&rsquo;s formula presented here is rough enough. More accurate formula is
 $n! = \sqrt{2\pi} n^{n + 0.5}e^{-n}$.
 Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirling.html">here</a>.</p>
 </div>

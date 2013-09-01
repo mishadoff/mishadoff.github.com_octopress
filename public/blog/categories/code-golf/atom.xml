@@ -4,7 +4,7 @@
   <title><![CDATA[Category: code golf | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/code-golf/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-09-01T05:09:52+03:00</updated>
+  <updated>2013-09-01T18:50:36+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -22,7 +22,7 @@
 
 <!-- more -->
 
-<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today’s problem is a Brainfuck Interpreter.</p>
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
 
 <p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
 
@@ -37,7 +37,7 @@
   <li><code>]</code> finish loop</li>
 </ul>
 
-<p>That’s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
 
 <h3 id="tweet">Tweet</h3>
 
@@ -53,7 +53,7 @@
 
 <p>Exactly 2 tweets.</p>
 
-<h3 id="sugared-version">“Sugared” version</h3>
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
 
 <p>Translating to more readable code:</p>
 
@@ -81,7 +81,7 @@
         (swap! pc inc)))))
 </code></p>
 
-<p>So, what’s happening there?</p>
+<p>So, what&rsquo;s happening there?</p>
 
 <p>Function arguments are parameters of our tape and brainfuck program.</p>
 
@@ -110,7 +110,7 @@ string - program, written in brainfuck.</p>
 
 <h4 id="testing">Testing</h4>
 
-<p>Print “Hello, world”</p>
+<p>Print &ldquo;Hello, world&rdquo;</p>
 
 <p><code>clojure
 (parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
@@ -131,7 +131,7 @@ this version (<em>for the sake of small size!</em>)</p>
 
 <p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
 
-<p><strong>P.S.</strong> This version is not “fully-featured” brainfuck interpreter.</p>
+<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
 
 <ul>
   <li>It does not work for inifinite tape</li>
@@ -150,7 +150,7 @@ this version (<em>for the sake of small size!</em>)</p>
     <link href="http://mishadoff.github.io/blog/code-golf-game-of-life/"/>
     <updated>2013-03-07T17:59:00+02:00</updated>
     <id>http://mishadoff.github.io/blog/code-golf-game-of-life</id>
-    <content type="html"><![CDATA[<p>Conway’s Game of Life in a tweet.</p>
+    <content type="html"><![CDATA[<p>Conway&rsquo;s Game of Life in a tweet.</p>
 
 <!-- more -->
 
@@ -168,7 +168,7 @@ where <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Lif
 (map + j[a b]))))v 2)0))))g r))
 </code></p>
 
-<h3 id="sugared-version">“Sugared” version</h3>
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
 
 <p>Translate tweet to more readable code:</p>
 

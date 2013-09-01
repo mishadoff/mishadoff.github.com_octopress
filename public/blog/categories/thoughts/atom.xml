@@ -4,7 +4,7 @@
   <title><![CDATA[Category: thoughts | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/thoughts/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-09-01T05:09:52+03:00</updated>
+  <updated>2013-09-01T18:50:36+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -25,7 +25,7 @@
 <p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
 
 <p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
-came from quantum mechanics and means that you can’t know exactly
+came from quantum mechanics and means that you can&rsquo;t know exactly
 both coordinates and speed of particle. If you improve accuracy of detecting
 position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
 
@@ -37,10 +37,10 @@ position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em
 
 <p>The same in every field, even in software engineering.
 If you implementing something or fixing bugs and your boss
-yelling: “you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>”
+yelling: &ldquo;you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>&rdquo;
 tell him <em>either one or the other</em>.</p>
 
-<p><strong>P.S.</strong> Actually, you can say “go fuck yourself”, but it won’t be polite.</p>
+<p><strong>P.S.</strong> Actually, you can say &ldquo;go fuck yourself&rdquo;, but it won&rsquo;t be polite.</p>
 ]]></content>
   </entry>
   
@@ -58,19 +58,19 @@ on the internet and give basic description for them.</p>
 so the first pattern I found appropriate is to publish this as soon
 as I have ten articles marked as <em>favorite</em> somewhere.</p>
 
-<p>That’s the rule: <strong>each post - 10 articles</strong>.</p>
+<p>That&rsquo;s the rule: <strong>each post - 10 articles</strong>.</p>
 
-<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I’ve read.</p>
+<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I&rsquo;ve read.</p>
 
 <p>Hard to say what topics will be covered.
 I call it <em>programming digest</em> because most of articles will be somehow
 related to programming, but do not blame me if you see articles with another
 topic (math or humour), believe me they can be interesting also.</p>
 
-<p>By the way, a lot of articles may be old, even very old (<em>don’t call me Necromancer</em>)
+<p>By the way, a lot of articles may be old, even very old (<em>don&rsquo;t call me Necromancer</em>)
 but if they appear here, I found them somehow relevant and important to post.</p>
 
-<p>Hope, you’ll find such sort of digest is interesting for reading and I like if you
+<p>Hope, you&rsquo;ll find such sort of digest is interesting for reading and I like if you
 share your favorite <em>programming-related</em> articles with me.</p>
 
 <p>Have fun!</p>
@@ -82,8 +82,8 @@ share your favorite <em>programming-related</em> articles with me.</p>
     <link href="http://mishadoff.github.io/blog/what-is-source-code/"/>
     <updated>2012-11-29T23:31:00+02:00</updated>
     <id>http://mishadoff.github.io/blog/what-is-source-code</id>
-    <content type="html"><![CDATA[<p>It’s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
-It’s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
+    <content type="html"><![CDATA[<p>It&rsquo;s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
+It&rsquo;s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
 
 <p>I think this term has much wider meaning.</p>
 
@@ -117,7 +117,7 @@ Good criteria of source code - is something that may be changed and need to be u
     <updated>2012-10-10T16:10:00+03:00</updated>
     <id>http://mishadoff.github.io/blog/hello</id>
     <content type="html"><![CDATA[<p>This is my first post.
-It is always hard to begin something, but I’ll try.</p>
+It is always hard to begin something, but I&rsquo;ll try.</p>
 
 <!-- more -->
 
@@ -131,11 +131,11 @@ Excellent proof is my failed attempt to share and explain Clojure solutions on <
 Everything can be a reason: lack of readers, lack of feedback, not interesting topic, very specific topic,
 bad writing style, terrible livejournal layout and so on. Probably, these are all my excuses or maybe I just lazy.</p>
 
-<p>Now I’ve got something in my mind and have passion to share it.
+<p>Now I&rsquo;ve got something in my mind and have passion to share it.
 No matter if somebody like it or not.
 I really believe that if you share something for this world,
-sooner or later somebody point you on your mistakes. And it’s a win.
-You got knowledge that didn’t know earlier and can share it to someone else. Simple loop.</p>
+sooner or later somebody point you on your mistakes. And it&rsquo;s a win.
+You got knowledge that didn&rsquo;t know earlier and can share it to someone else. Simple loop.</p>
 
 <h3 id="what">What?</h3>
 
@@ -143,18 +143,18 @@ You got knowledge that didn’t know earlier and can share it to someone else. S
 I also love puzzles and stupid self-made pictures (O_o) and they have reserved place in my blog.
 Time to time can appear posts with reference to some clever people, if they have clever thoughts, of course.
 Event reports, some critic, books, movies, music, games, humour.
-Only God knows what else can appear in my mind and therefore in this blog, but I’ll try to be specific as much as possible.
+Only God knows what else can appear in my mind and therefore in this blog, but I&rsquo;ll try to be specific as much as possible.
 Really.</p>
 
 <h3 id="english">English?</h3>
 
-<p>As you already understand I’m not native English speaker or writer or whatever. How many mistakes did you count?</p>
+<p>As you already understand I&rsquo;m not native English speaker or writer or whatever. How many mistakes did you count?</p>
 
 <p>I need some effort even for writing simple sentence in English (<em>Kiev is the capital of Ukraine - not this one</em>).
 And no matter how long I check my grammar or spelling I will have some mistakes. Big deal.
-Improve English is one of my goals, so it’s ok. <em>adding english in todo list</em></p>
+Improve English is one of my goals, so it&rsquo;s ok. <em>adding english in todo list</em></p>
 
-<p>I also don’t exclude option, that some posts will be in Ukrainian or even in Russian.</p>
+<p>I also don&rsquo;t exclude option, that some posts will be in Ukrainian or even in Russian.</p>
 
 <h3 id="what-else">What else?</h3>
 

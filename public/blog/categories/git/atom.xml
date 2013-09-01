@@ -4,7 +4,7 @@
   <title><![CDATA[Category: git | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-09-01T05:09:52+03:00</updated>
+  <updated>2013-09-01T18:50:36+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -18,8 +18,8 @@
     <link href="http://mishadoff.github.io/blog/what-is-source-code/"/>
     <updated>2012-11-29T23:31:00+02:00</updated>
     <id>http://mishadoff.github.io/blog/what-is-source-code</id>
-    <content type="html"><![CDATA[<p>It’s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
-It’s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
+    <content type="html"><![CDATA[<p>It&rsquo;s not just a bunch of <code>ifs</code> and <code>fors</code> you mastering every day.
+It&rsquo;s not even <code>Factories</code>, <code>Builders</code> and <code>Proxies</code> you learn from <a href="http://en.wikipedia.org/wiki/Design_Patterns">GoF</a>.</p>
 
 <p>I think this term has much wider meaning.</p>
 
