@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-08-15T00:32:30+03:00</updated>
+  <updated>2013-09-01T05:09:52+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing numberto]]></title>
+    <link href="http://mishadoff.github.io/blog/announcing-numberto/"/>
+    <updated>2013-09-01T04:23:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/announcing-numberto</id>
+    <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
+
+<!-- more -->
+
+<p><a href="https://github.com/mishadoff/numberto">numberto</a>
+- simple clojure library with a bunch of functions operating on numbers.</p>
+
+<p>I created this project for two reasons:</p>
+
+<ol>
+  <li>Solving problems on <a href="http://projecteuler.net">Project Euler</a>, <a href="http://www.4clojure.com/">4Clojure</a> and just playground with numbers needed common functions. I just extracted them to separate util library.</li>
+  <li>Practice to develop clojure project with unit tests, continuos integration, documentation and publishing to clojars.</li>
+</ol>
+
+<h3 id="get-it">Get it</h3>
+
+<p>Current version is <code>0.0.2</code> available to download on
+<a href="https://clojars.org/numberto/versions/0.0.2">Clojars</a> or
+as lein dependency <code>[numberto "0.0.2"]</code></p>
+
+<h3 id="example-usage">Example usage</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">number-&gt;roman</span> <span class="mi">19</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="s">&quot;XIX&quot;</span>
+</span><span class="line"><span class="p">(</span><span class="nb">take </span><span class="mi">10</span> <span class="nv">fibonacci</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">13</span> <span class="mi">21</span> <span class="mi">34</span> <span class="mi">55</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nf">shift-right</span> <span class="mi">123456789</span> <span class="mi">3</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="mi">789123456</span>
+</span><span class="line"><span class="p">(</span><span class="nf">count-digits</span> <span class="p">(</span><span class="nf">!</span> <span class="mi">100000</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="mi">456574</span>
+</span><span class="line"><span class="p">(</span><span class="nf">factorize</span> <span class="mi">234</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">13</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Can you read long numbers?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">number-name</span> <span class="mi">16532561257523723757234781264</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="s">&quot;sixteen octillion five hundred thirty two septillion five hundred sixty one sextillion</span>
+</span><span class="line"><span class="s">two hundred fifty seven quintillion five hundred twenty three quadrillion seven hundred</span>
+</span><span class="line"><span class="s">twenty three trillion seven hundred fifty seven billion two hundred thirty four million</span>
+</span><span class="line"><span class="s">seven hundred eighty one thousand two hundred sixty four&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="structure">Structure</h3>
+
+<p>Each logical set of functions moved to separate namespace. Here is the list of namespaces:</p>
+
+<ul>
+  <li><strong>Converters</strong>.
+number to digits, char to digit, roman to arabic</li>
+  <li><strong>Math</strong>.
+Often used functions, such as <code>count-digits</code>, <code>shuffle-num</code>, <code>reverse-num</code> and some from common math <code>abs</code>, <code>gcd</code>, <code>lcm</code></li>
+  <li><strong>Seqs</strong>.
+Various lazy sequences: <code>fibonacci</code>, <code>farey</code>, <code>palindromes</code>.</li>
+  <li><strong>Primes</strong>.
+Prime numbers lazy sequence, factorization and totient function</li>
+  <li><strong>Factorial</strong>.
+Standard and Improved version of factorial</li>
+  <li><strong>Generators</strong>.
+Generate random numbers</li>
+  <li><strong>Printers</strong>.
+Pretty print for long numbers</li>
+</ul>
+
+<p>Check out <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">detailed intro</a></p>
+
+<p><strong>P.S.</strong> I still experimenting, so expect a lot of changes between versions until make something stable. Comments and advices are welcome!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
@@ -3287,39 +3367,6 @@ that way.</p>
 
 <p>If you have an hour or two reserved for laughing, just read this. A <strong>lot</strong> of
 crazy programming jokes. Stackoverflow community is amazing.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Programming Digest Announcement]]></title>
-    <link href="http://mishadoff.github.io/blog/programming-digest-announcement/"/>
-    <updated>2013-02-11T23:00:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/programming-digest-announcement</id>
-    <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
-on the internet and give basic description for them.</p>
-
-<!-- more -->
-
-<p>I do not plan this <em>digest</em> as periodical thing,
-so the first pattern I found appropriate is to publish this as soon
-as I have ten articles marked as <em>favorite</em> somewhere.</p>
-
-<p>That’s the rule: <strong>each post - 10 articles</strong>.</p>
-
-<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I’ve read.</p>
-
-<p>Hard to say what topics will be covered.
-I call it <em>programming digest</em> because most of articles will be somehow
-related to programming, but do not blame me if you see articles with another
-topic (math or humour), believe me they can be interesting also.</p>
-
-<p>By the way, a lot of articles may be old, even very old (<em>don’t call me Necromancer</em>)
-but if they appear here, I found them somehow relevant and important to post.</p>
-
-<p>Hope, you’ll find such sort of digest is interesting for reading and I like if you
-share your favorite <em>programming-related</em> articles with me.</p>
-
-<p>Have fun!</p>
 ]]></content>
   </entry>
   
