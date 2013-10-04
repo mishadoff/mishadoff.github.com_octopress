@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-008/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -182,9 +182,9 @@ MathJax.Hub.Config({
 </ol>
 
 <p>A simple optimization can be applied: if our last element of 5 digit group is zero,
-then skip 5 shifts. But it&rsquo;s details.</p>
+then skip 5 shifts. But it’s details.</p>
 
-<p>Let&rsquo;s make our problem little harder to get more from clojure.</p>
+<p>Let’s make our problem little harder to get more from clojure.</p>
 
 <p>Assume that these digits stored in the file. First thing we need: to read the file.</p>
 
@@ -205,7 +205,7 @@ It just returns string representation of the whole file.</p>
 <p><a href="http://clojuredocs.org/clojure_core/clojure.core/seq">seq</a> return a sequence with linear access
 to collection. If applied to string, return sequence of characters.</p>
 
-<p>But, there are some garbage in the file we don&rsquo;t want, new lines for example.</p>
+<p>But, there are some garbage in the file we don’t want, new lines for example.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">[</span><span class="sc">\h</span> <span class="sc">\e</span> <span class="sc">\l</span> <span class="sc">\l</span> <span class="sc">\o</span> <span class="sc">\n</span><span class="nv">ewline</span> <span class="sc">\y</span> <span class="sc">\o</span><span class="p">])</span>
@@ -239,7 +239,7 @@ and <code>1</code> shift size. It generates all consecutive groups with 5 elemen
 instead of digits in mathematical sense. And applied mathematical operation <code>*</code> to them.
 So, simply speaking, <code>\1</code> is not <code>1</code>.</p>
 
-<p>That&rsquo;s why we need to transform every digit character to it&rsquo;s actual digit value.</p>
+<p>That’s why we need to transform every digit character to it’s actual digit value.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="sc">\1</span> <span class="sc">\2</span> <span class="sc">\3</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
@@ -299,7 +299,7 @@ writes string to the file.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-008/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-008/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-008/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-008/" >Tweet</a>
   
   
   
@@ -400,8 +400,8 @@ writes string to the file.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-008/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-008/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-008/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-008/';
         var disqus_script = 'embed.js';
       
     (function () {

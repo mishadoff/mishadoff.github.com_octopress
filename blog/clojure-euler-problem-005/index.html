@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-005/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-005/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -133,11 +133,11 @@ MathJax.Hub.Config({
 
 <!-- more -->
 
-<p>It&rsquo;s a tricky problem. First look gives us straightforward solution:
+<p>It’s a tricky problem. First look gives us straightforward solution:
 Take a number, test if it evenly divisible by all of needed numbers, if yes - we good,
-otherwise increment number and test again, and again, and again&hellip;</p>
+otherwise increment number and test again, and again, and again…</p>
 
-<p>No, really, assume it&rsquo;s our function to test divisibility by all 20 numbers:</p>
+<p>No, really, assume it’s our function to test divisibility by all 20 numbers:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -162,11 +162,11 @@ Now, using this function we write naive implementation:</p>
 <p>Note, function <a href="http://clojuredocs.org/clojure_core/clojure.core/drop-while">drop-while</a>
 similar to take-while, but skips values until they meet predicate condition.</p>
 
-<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more&hellip;</p>
+<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more…</p>
 
 <p>I did not post exact answer here, but result greater than 100 millions.
 And obviously this linear algorithm will work considerable amount of time.
-So, stop the execution and let&rsquo;s see at the problem from the other end.</p>
+So, stop the execution and let’s see at the problem from the other end.</p>
 
 <p><em>What is the smallest number that evenly divisible by 1 and 2?</em>
 Obviously 2.</p>
@@ -178,7 +178,7 @@ A bit harder, but answer is 6.</p>
 20.</p>
 
 <blockquote>
-  <p>Oh, it&rsquo;s just multiplication</p>
+  <p>Oh, it’s just multiplication</p>
 </blockquote>
 
 <p>Unfortunately, no. Take numbers <code>4</code> and <code>6</code>, multiplication gives us <code>24</code> and it will be evenly divisible by <code>4</code> and <code>6</code>, but
@@ -191,7 +191,7 @@ There are lot of different methods to calculate it, but we will use one that use
 
 <p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
 
-<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid&rsquo;s algorithm</a></p>
+<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid’s algorithm</a></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -276,7 +276,7 @@ errors that your <em>new fancy wheel</em>.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-005/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-005/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-005/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-005/" >Tweet</a>
   
   
   
@@ -287,7 +287,7 @@ errors that your <em>new fancy wheel</em>.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/what-is-greater-e-pi-or-pi-e/" title="Previous Post: What is greater: e^π or π^e?">&laquo; What is greater: e^π or π^e?</a>
+        <a class="basic-alignment left" href="/blog/what-is-greater-e-pi-or-pi-e/" title="Previous Post: What is greater: e^pi or pi^e?">&laquo; What is greater: e^pi or pi^e?</a>
       
       
         <a class="basic-alignment right" href="/blog/learn-perl/" title="Next Post: Learn Perl">Learn Perl &raquo;</a>
@@ -377,8 +377,8 @@ errors that your <em>new fancy wheel</em>.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-005/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-005/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-005/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-005/';
         var disqus_script = 'embed.js';
       
     (function () {

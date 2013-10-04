@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-010/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-010/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -149,7 +149,7 @@ from <code>clojure.contrib.lazy-seqs</code>.</p>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">%</span> <span class="mi">2000000</span><span class="p">)</span> <span class="nv">primes</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Again, one-line solution. Let&rsquo;s run it.</p>
+<p>Again, one-line solution. Let’s run it.</p>
 
 <p>Finding result on my nachine takes ~12 seconds. Small enough, but maybe somehow it can be improved?</p>
 
@@ -192,7 +192,7 @@ numbers if we crossed greater than square root of maximum. Problem evolves.</p>
 
 <p>~21 seconds. Still worse.</p>
 
-<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don&rsquo;t need
+<p>Why we increment by 1 on recursion call? If we starting our <code>n</code> value from <code>3</code> we don’t need
 to go over even numbers.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -205,9 +205,9 @@ to go over even numbers.</p>
 </span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">)))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>~13 seconds. Much better&hellip; than previous, still worse than first version.</p>
+<p>~13 seconds. Much better… than previous, still worse than first version.</p>
 
-<p>If you looked at <code>difference</code> documentation, take a look at its implementation under &ldquo;Source&rdquo;.
+<p>If you looked at <code>difference</code> documentation, take a look at its implementation under “Source”.
 Nothing prevent us to pass sequence as second argument instead of set. Just removing casting to set.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -220,14 +220,14 @@ Nothing prevent us to pass sequence as second argument instead of set. Just remo
 </span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">nums</span> <span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2000000</span> <span class="nv">n</span><span class="p">))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>~6 seconds. Wow! It&rsquo;s better than original solution. That means our efforts were not wasteful.</p>
+<p>~6 seconds. Wow! It’s better than original solution. That means our efforts were not wasteful.</p>
 
 <p>Unfortuantely, we stopped improve our function. But if you want more, other major improvements
 can be done in the following areas:</p>
 
 <ul>
   <li>Use non-persistent set to save prime numbers. It prevent overhead on new objects.</li>
-  <li>Use &ldquo;wheel trick&rdquo; that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
+  <li>Use “wheel trick” that can be found in the sources of <code>primes</code> from <code>clojure.contrib.lazy-seqs</code>.</li>
   <li>Use dynamic step of iteration. We changed <code>(inc n)</code> to <code>(+ n 2)</code>, but probably there is smarter solution.</li>
   <li>Do not use <code>(reduce +)</code> because it is linear algorithm. We init <code>nums</code> sequence with some arithmetic progression.
 Its sum can be calculated in O(1) by formula. When we compose another sequence (second argument for <code>difference</code>)
@@ -236,10 +236,10 @@ from first sum, and it will be current <code>nums</code> sum.</li>
 </ul>
 
 <p>There are much more optimisations can be done to improve prime numbers performace.
-If you interested, read nice Christophe Grand&rsquo;s post
+If you interested, read nice Christophe Grand’s post
 <a href="http://clj-me.cgrand.net/2009/07/30/everybody-loves-the-sieve-of-eratosthenes/">Everybody Loves The Sieve Of Erathosthenes</a></p>
 
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str &ldquo;Git&rdquo; &ldquo;Hub&rdquo;)</a></p>
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem010.clj">(str “Git” “Hub”)</a></p>
 
 <p><strong>P.S</strong> Honestly, I am OK with 12 seconds. But 6 seconds is better. We performed improvements
 just to show the point <strong>if you want to improve something, probably, you can do it</strong>.</p>
@@ -279,7 +279,7 @@ just to show the point <strong>if you want to improve something, probably, you c
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-010/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-010/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-010/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-010/" >Tweet</a>
   
   
   
@@ -380,8 +380,8 @@ just to show the point <strong>if you want to improve something, probably, you c
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-010/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-010/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-010/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-010/';
         var disqus_script = 'embed.js';
       
     (function () {

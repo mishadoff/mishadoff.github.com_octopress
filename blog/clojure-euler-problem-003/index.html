@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-003/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-003/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -159,17 +159,17 @@ Than we calculate sum of this list, which represents number of divisors. If coun
 This is simplest algorithm for testing prime number, built from prime number definition.</p>
 
 <p>Performing small optimization you can see that in lists above, first and last elements are always equals to 1.
-We can just drop them. Another optimization is we don&rsquo;t need go on when we found at least one remainder.
-And I&rsquo;m pretty sure you can find lot of flaws in this implementation.</p>
+We can just drop them. Another optimization is we don’t need go on when we found at least one remainder.
+And I’m pretty sure you can find lot of flaws in this implementation.</p>
 
-<p>But the most useful optimization is assumption that we don&rsquo;t need iterate to <code>n</code>, we can iterate to <code>sqrt(n)</code>.
+<p>But the most useful optimization is assumption that we don’t need iterate to <code>n</code>, we can iterate to <code>sqrt(n)</code>.
 This is based on fact that if we found some number <code>a</code> that is divisor of <code>n</code>, then there is another number <code>b = n / a</code>.
-And <code>b</code> is also divisior of <code>n</code>. Little transformation gives us <code>a * b = n</code>. Assume <code>a &lt; b</code>, so if we found <code>a</code> we don&rsquo;t need to seek for <code>b</code>.
+And <code>b</code> is also divisior of <code>n</code>. Little transformation gives us <code>a * b = n</code>. Assume <code>a &lt; b</code>, so if we found <code>a</code> we don’t need to seek for <code>b</code>.
 Number <code>n</code> is not prime. Maximum value of a achieved when <code>a</code> equals to <code>b</code>, <code>a^2 = n</code>, <code>a = sqrt(n)</code>.
 This is reduce complexity of algorithm from <code>O(n)</code> to <code>O(sqrt(n))</code>.</p>
 
 <p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-002/">previous problem</a> we mentioned <code>clojure.contrib.lazy-seqs</code> package,
-where we have primes lazy sequence. Let&rsquo;s use it!</p>
+where we have primes lazy sequence. Let’s use it!</p>
 
 <p>Algorithm for solving our problem is following:</p>
 
@@ -209,7 +209,7 @@ The same as <code>#(= 0 %)</code>.</li>
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem003.clj">GitHub</a> for lazy!</p>
 
 <p><strong>P.S.</strong> Instead of using <code>clojure.contrib.math</code> for square root we could just write <code>(Math/sqrt n)</code> and got rid of dependency.
-But for me is better to reuse something that was implemented in library. It&rsquo;s tested and worked, where your implementation can miss some point.
+But for me is better to reuse something that was implemented in library. It’s tested and worked, where your implementation can miss some point.
 If you have time, dig more into <code>clojure.contrib.math</code>. It needs about 9 minutes. There are only 9 functions,
 but you will probably reinvent them all the time:
 <a href="http://clojuredocs.org/clojure_contrib/clojure.contrib.math/expt">expt</a>,
@@ -252,7 +252,7 @@ but you will probably reinvent them all the time:
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-003/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-003/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-003/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-003/" >Tweet</a>
   
   
   
@@ -353,8 +353,8 @@ but you will probably reinvent them all the time:
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-003/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-003/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-003/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-003/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/project-euler/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-09-01T19:16:55+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/project-euler/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-10-05T02:19:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-020/"/>
     <updated>2013-07-21T13:39:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-020</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Find the sum of the digits in the number 100!</p>
 </blockquote>
@@ -66,9 +66,9 @@ Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-019/"/>
     <updated>2013-07-10T01:59:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-019</id>
     <content type="html"><![CDATA[<blockquote>
   <p>How many Sundays fell on the first of the month
 during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
@@ -183,9 +183,9 @@ and count Sundays.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-018/"/>
     <updated>2013-05-17T00:26:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-018</id>
     <content type="html"><![CDATA[<blockquote>
   <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
 </blockquote>
@@ -250,7 +250,7 @@ sum <code>8 + 2 = 10</code>.</p>
 
 <p>Repeat the same action until we get one number, which will be solution.</p>
 
-<p>Let&rsquo;s transform this idea to clojure.</p>
+<p>Let’s transform this idea to clojure.</p>
 
 <p>First of all we need datastructure to represent triangle.
 List of lists would be good:</p>
@@ -286,7 +286,7 @@ But we need only one number.</p>
 (reduce step-max (reverse triangle))
 </code></p>
 
-<p>That&rsquo;s it.</p>
+<p>That’s it.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
 
@@ -296,9 +296,9 @@ But we need only one number.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-017/"/>
     <updated>2013-04-09T21:13:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-017</id>
     <content type="html"><![CDATA[<blockquote>
   <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
 then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
@@ -319,7 +319,7 @@ Exactly what plain arrays do.</p>
 
 <p>Then we just define all mappings, obtain all arrays string elements, find their lengths and sum them.</p>
 
-<p>One problem that providing mapping for each number between 1 and 1000 is a &ldquo;bit&rdquo; routine task, so we
+<p>One problem that providing mapping for each number between 1 and 1000 is a “bit” routine task, so we
 need some formula to calculate representation instead of hardcoding it. We come to defining groups.</p>
 
 <p>First group is just <em>first 20</em> numbers:</p>
@@ -331,7 +331,7 @@ need some formula to calculate representation instead of hardcoding it. We come 
               "sixteen" "seventeen" "eighteen" "nineteen"])
 </code></p>
 
-<p>Note: there is no &ldquo;zero&rdquo; as we don&rsquo;t use it in spoken language.</p>
+<p>Note: there is no “zero” as we don’t use it in spoken language.</p>
 
 <p>Second group is numbers that divides 10:</p>
 
@@ -350,7 +350,7 @@ need some formula to calculate representation instead of hardcoding it. We come 
 </code></p>
 
 <p>The basic function will calculate the length string representation of some number.
-Let&rsquo;s call it <code>word-length</code>.</p>
+Let’s call it <code>word-length</code>.</p>
 
 <p><code>clojure
 (defn word-length [n]
@@ -370,18 +370,18 @@ Let&rsquo;s call it <code>word-length</code>.</p>
 <p>Little explanation:</p>
 
 <ul>
-  <li>If number is <code>1000</code> then the length of string &ldquo;one&rdquo; + &ldquo;thousand&rdquo;, 11.</li>
+  <li>If number is <code>1000</code> then the length of string “one” + “thousand”, 11.</li>
   <li>If number is lower than <code>100</code> then extract its decade part. If there is no
 reminder for division by 10, the length is length of that decade part.</li>
   <li>Otherwise, if number in <code>first20</code>, length taken from array <code>first20</code>.</li>
   <li>Otherwise the length is decade part plus remainder.</li>
   <li>If number is lower than <code>1000</code> then extract hundred part. If there is no
-reminder for division by 100, the length is &ldquo;hundred&rdquo; plus number of hundreds.</li>
-  <li>Otherwise, the length is &ldquo;hundred&rdquo; plus number of hundreds, plus the word &ldquo;and&rdquo; and
+reminder for division by 100, the length is “hundred” plus number of hundreds.</li>
+  <li>Otherwise, the length is “hundred” plus number of hundreds, plus the word “and” and
 recursively calculate the length of remainder, which is lower than <code>100</code>.</li>
 </ul>
 
-<p>Awful word-presentation of algorithm, because of&hellip; Reading code is much simpler, I know.</p>
+<p>Awful word-presentation of algorithm, because of… Reading code is much simpler, I know.</p>
 
 <p>And the last part just sum up all word-lengths:</p>
 
@@ -398,9 +398,9 @@ By the way, the problem is little boring.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-016/"/>
     <updated>2013-03-05T01:31:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-016</id>
     <content type="html"><![CDATA[<blockquote>
   <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
 
@@ -426,7 +426,7 @@ learned how to sum digits in the number. Just gentle reminder:</p>
   (reduce + (map #(- (int %) 48) (seq (str n)))))
 </code></p>
 
-<p>Now, let&rsquo;s create sequence of powers of two:</p>
+<p>Now, let’s create sequence of powers of two:</p>
 
 <p><code>clojure
 (defn powers-of-2 []
@@ -460,7 +460,7 @@ the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
 
 <p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
-speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won&rsquo;t.</p>
+speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
 ]]></content>
   </entry>
   

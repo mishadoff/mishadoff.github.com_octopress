@@ -19,7 +19,7 @@ then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total. If all the &hellip;
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-017/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-017/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +79,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -142,7 +142,7 @@ Exactly what plain arrays do.</p>
 
 <p>Then we just define all mappings, obtain all arrays string elements, find their lengths and sum them.</p>
 
-<p>One problem that providing mapping for each number between 1 and 1000 is a &ldquo;bit&rdquo; routine task, so we
+<p>One problem that providing mapping for each number between 1 and 1000 is a “bit” routine task, so we
 need some formula to calculate representation instead of hardcoding it. We come to defining groups.</p>
 
 <p>First group is just <em>first 20</em> numbers:</p>
@@ -157,7 +157,7 @@ need some formula to calculate representation instead of hardcoding it. We come 
 </span><span class="line">              <span class="s">&quot;sixteen&quot;</span> <span class="s">&quot;seventeen&quot;</span> <span class="s">&quot;eighteen&quot;</span> <span class="s">&quot;nineteen&quot;</span><span class="p">])</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Note: there is no &ldquo;zero&rdquo; as we don&rsquo;t use it in spoken language.</p>
+<p>Note: there is no “zero” as we don’t use it in spoken language.</p>
 
 <p>Second group is numbers that divides 10:</p>
 
@@ -178,7 +178,7 @@ need some formula to calculate representation instead of hardcoding it. We come 
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The basic function will calculate the length string representation of some number.
-Let&rsquo;s call it <code>word-length</code>.</p>
+Let’s call it <code>word-length</code>.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -209,18 +209,18 @@ Let&rsquo;s call it <code>word-length</code>.</p>
 <p>Little explanation:</p>
 
 <ul>
-  <li>If number is <code>1000</code> then the length of string &ldquo;one&rdquo; + &ldquo;thousand&rdquo;, 11.</li>
+  <li>If number is <code>1000</code> then the length of string “one” + “thousand”, 11.</li>
   <li>If number is lower than <code>100</code> then extract its decade part. If there is no
 reminder for division by 10, the length is length of that decade part.</li>
   <li>Otherwise, if number in <code>first20</code>, length taken from array <code>first20</code>.</li>
   <li>Otherwise the length is decade part plus remainder.</li>
   <li>If number is lower than <code>1000</code> then extract hundred part. If there is no
-reminder for division by 100, the length is &ldquo;hundred&rdquo; plus number of hundreds.</li>
-  <li>Otherwise, the length is &ldquo;hundred&rdquo; plus number of hundreds, plus the word &ldquo;and&rdquo; and
+reminder for division by 100, the length is “hundred” plus number of hundreds.</li>
+  <li>Otherwise, the length is “hundred” plus number of hundreds, plus the word “and” and
 recursively calculate the length of remainder, which is lower than <code>100</code>.</li>
 </ul>
 
-<p>Awful word-presentation of algorithm, because of&hellip; Reading code is much simpler, I know.</p>
+<p>Awful word-presentation of algorithm, because of… Reading code is much simpler, I know.</p>
 
 <p>And the last part just sum up all word-lengths:</p>
 
@@ -268,7 +268,7 @@ By the way, the problem is little boring.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-017/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-017/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-017/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-017/" >Tweet</a>
   
   
   
@@ -369,8 +369,8 @@ By the way, the problem is little boring.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-017/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-017/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-017/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-017/';
         var disqus_script = 'embed.js';
       
     (function () {

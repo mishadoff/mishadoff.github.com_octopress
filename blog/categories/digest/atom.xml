@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: digest | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/digest/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-09-01T19:16:55+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/digest/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-10-05T02:19:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,10 +15,10 @@
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 3]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-3/"/>
     <updated>2013-07-22T20:33:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
-    <content type="html"><![CDATA[<p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
+    <id>http://mishadoff.github.io/blog/programming-digest-3</id>
+    <content type="html"><![CDATA[<p>Why your software sucks and what is the “Secret Weapon”. Also,
 algorithm complexities refresher, functional programming, including
 Scala and Clojure, concurrency and lot of humor.</p>
 
@@ -33,7 +33,7 @@ Scala and Clojure, concurrency and lot of humor.</p>
 <p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
 
 <p>The article describes problems in software design and explains
-why almost every system nowadays look like &ldquo;Big Ball of Mud&rdquo;.</p>
+why almost every system nowadays look like “Big Ball of Mud”.</p>
 
 <p>There are seven <em>real</em> patterns in software design:</p>
 
@@ -74,7 +74,7 @@ Graphical or Automated programming?</p>
 
 <p>This is inspiring one.</p>
 
-<p>Brooks told &ldquo;There is no Silver Bullet&rdquo;, but Paul Graham reveals &ldquo;The Secret Weapon&rdquo;.</p>
+<p>Brooks told “There is no Silver Bullet”, but Paul Graham reveals “The Secret Weapon”.</p>
 
 <p>The article is success story of startup called Viaweb.
 Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
@@ -105,7 +105,7 @@ for common algorithms and datastructures.</p>
 extremely useful when learning new language. Just exploring the code shows that Scala is
 the powerful and expressive language.</p>
 
-<p><strong>P.S.</strong> I am on half way to publish &ldquo;99 Clojure Problems&rdquo;.</p>
+<p><strong>P.S.</strong> I am on half way to publish “99 Clojure Problems”.</p>
 
 <h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
 
@@ -122,11 +122,11 @@ default immutability, atoms, refs, agents, promises, futures and software transa
 
 <h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
 
-<p>This is the video screencast of Gary Bernhardt&rsquo;s talk.
+<p>This is the video screencast of Gary Bernhardt’s talk.
 Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
 
 <blockquote>
-  <p>An object plus an object is actually&hellip;. Not A Number!</p>
+  <p>An object plus an object is actually…. Not A Number!</p>
 </blockquote>
 
 <h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
@@ -134,7 +134,7 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
 <p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
 
 <blockquote>
-  <p>Q: What does the &ldquo;B&rdquo; in Benoit B. Mandelbrot stand for?</p>
+  <p>Q: What does the “B” in Benoit B. Mandelbrot stand for?</p>
 
   <p>A: Benoit B. Mandelbrot.</p>
 </blockquote>
@@ -159,11 +159,11 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 2]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-2/"/>
     <updated>2013-04-22T14:43:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-2</id>
     <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
-developer&hellip;in 10 years, &ldquo;coding it&rsquo;s just writing&rdquo; and some practice:
+developer…in 10 years, “coding it’s just writing” and some practice:
 Naive Bayes Classifier, functional programming and Java 8.</p>
 
 <!-- more -->
@@ -174,19 +174,19 @@ Naive Bayes Classifier, functional programming and Java 8.</p>
 As everyone might to retort, knowing math is not mandatory for software engineering field, but you know:</p>
 
 <blockquote>
-  <p>Math is&hellip; ummm, please don&rsquo;t tell anyone I said this;
-I&rsquo;ll never get invited to another party as long as I live.
-But math, well&hellip; I&rsquo;d better whisper this, so listen up: (it&rsquo;s actually kinda fun.)</p>
+  <p>Math is… ummm, please don’t tell anyone I said this;
+I’ll never get invited to another party as long as I live.
+But math, well… I’d better whisper this, so listen up: (it’s actually kinda fun.)</p>
 </blockquote>
 
-<p>I totally agree. It&rsquo;s a lot of fun.
-Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don&rsquo;t understand anything.</p>
+<p>I totally agree. It’s a lot of fun.
+Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don’t understand anything.</p>
 
 <p>Pick your favourite math subject and try to dig more.
 Statistics, Linear Algebra, Discrete Math, Combinatorics, Operation Research, Group Theory
 and more; one of them can be a good start.</p>
 
-<p>Does that really helps? Well, maybe. But it&rsquo;s definitely improve your problem solving skill.</p>
+<p>Does that really helps? Well, maybe. But it’s definitely improve your problem solving skill.</p>
 
 <p>And believe. Math makes you a <em>better</em> programmer.</p>
 
@@ -196,15 +196,15 @@ and more; one of them can be a good start.</p>
 some parts I thought I understood. By the way, great examples.</p>
 
 <blockquote>
-  <p>Ryan: I can&rsquo;t drive a cup and I can&rsquo;t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
+  <p>Ryan: I can’t drive a cup and I can’t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
 
-  <p>Wife: You can&rsquo;t DELETE a cup.</p>
+  <p>Wife: You can’t DELETE a cup.</p>
 
   <p>Ryan: Well, okay, but you can throw it away.</p>
 </blockquote>
 
 <p>Unfortunately, author of this article take it down due to lot of complaints about
-article gender-oriented nature. I don&rsquo;t think it&rsquo;s offensive and here is the link with
+article gender-oriented nature. I don’t think it’s offensive and here is the link with
 <a href="http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife">copy from web archive</a></p>
 
 <h3 id="programmer-competency-matrixhttpwwwindiangeeknetwp-contentuploadsprogrammer20competency20matrixhtm">3. <a href="http://www.indiangeek.net/wp-content/uploads/Programmer%20competency%20matrix.htm">Programmer Competency Matrix</a></h3>
@@ -215,7 +215,7 @@ article gender-oriented nature. I don&rsquo;t think it&rsquo;s offensive and her
 
 <ul>
   <li><strong>2^n (Level 0)</strong>. Unable to find the average of numbers in an array
-(It&rsquo;s hard to believe but I&rsquo;ve interviewed such candidates)</li>
+(It’s hard to believe but I’ve interviewed such candidates)</li>
   <li><strong>n^2 (Level 1)</strong>. Basic sorting, searching and data structure traversal and retrieval algorithms</li>
   <li><strong>n (Level 2)</strong>. Tree, Graph, simple greedy and divide and conquer algorithms, is able to understand
 the relevance of the levels of this matrix.</li>
@@ -231,11 +231,11 @@ related skills and gives understanding what you need to know to become an expert
 <p>Article by Peter Norvig.
 Great guy, I got to know from <a href="https://www.ai-class.com/">Artificial Intelligence</a> course.</p>
 
-<p>His writing is critique of popular books, like &ldquo;Learn Java in 21 Days&rdquo;.
+<p>His writing is critique of popular books, like “Learn Java in 21 Days”.
 Peter explains that it is impossible to be a great
 engineer in such short period, and to become an expert you need aproximately 10 years.</p>
 
-<p>It reminds me a picture &ldquo;How to become a C++ Developer in 21 Days&rdquo;:</p>
+<p>It reminds me a picture “How to become a C++ Developer in 21 Days”:</p>
 
 <p><img src="http://i.imgur.com/3FckcgF.png" alt="" /></p>
 
@@ -243,7 +243,7 @@ engineer in such short period, and to become an expert you need aproximately 10 
 
 <h3 id="on-being-a-senior-engineerhttpwwwkitchensoapcom20121025on-being-a-senior-engineer">5. <a href="http://www.kitchensoap.com/2012/10/25/on-being-a-senior-engineer/">On Being A Senior Engineer</a></h3>
 
-<p>And logically continue. What behaviour differentiate senior engineer from &ldquo;not senior&rdquo; one?</p>
+<p>And logically continue. What behaviour differentiate senior engineer from “not senior” one?</p>
 
 <blockquote>
   <p>Mature engineers seek out constructive criticism of their designs.</p>
@@ -262,15 +262,15 @@ engineer in such short period, and to become an expert you need aproximately 10 
     <li>The only constant in the world is change. Be open to it and accept it with a smile.</li>
     <li>The only true authority stems from knowledge, not from position.</li>
     <li>Fight for what you believe, but gracefully accept defeat.</li>
-    <li>Don’t be &ldquo;the coder in the corner.&rdquo;</li>
+    <li>Don’t be “the coder in the corner.”</li>
     <li>Critique code instead of people – be kind to the coder, not to the code.</li>
   </ol>
 </blockquote>
 
-<p>Note, that article touch some psychological aspect of person. So I don&rsquo;t
+<p>Note, that article touch some psychological aspect of person. So I don’t
 think it can be 100% applied to everyone, but still worth to read.</p>
 
-<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It&rsquo;s Just Writing</a></h3>
+<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It’s Just Writing</a></h3>
 
 <p>Jeff Atwood explais basic the idea of:</p>
 
@@ -280,7 +280,7 @@ think it can be 100% applied to everyone, but still worth to read.</p>
 
 <p>To write good code, you must write good.</p>
 
-<p>Article contains a reference to the book &ldquo;The Elements of Style&rdquo; with some quotes.</p>
+<p>Article contains a reference to the book “The Elements of Style” with some quotes.</p>
 
 <blockquote>
   <p>Vigorous writing is concise. A sentence should contain no unnecessary words,
@@ -299,7 +299,7 @@ or that he avoid all detail and treat his subjects only in outline, but that eve
 <p>Article is great explanation of how Naive Bayes Classifier work.
 With pictures, code examples, common pitfalls and good sense of humour.</p>
 
-<p>Although, it&rsquo;s one of the simplest classification algorithms, but with some tweeks and
+<p>Although, it’s one of the simplest classification algorithms, but with some tweeks and
 good train set it can give good results.</p>
 
 <p><img src="https://www.bionicspirit.com/assets/img/conditional-prob-9a27ee0e.png" alt="" /></p>
@@ -311,7 +311,7 @@ that even monkey with banana (and degree in math) can understand how it works.</
 
 <p>Number of articles that explain what is monad grow fast. Just another one.</p>
 
-<p>Even if you don&rsquo;t understand what Haskell and monad is, look at the cool pictures.</p>
+<p>Even if you don’t understand what Haskell and monad is, look at the cool pictures.</p>
 
 <p><img src="http://adit.io/imgs/functors/fmap_just.png" alt="" /></p>
 
@@ -331,7 +331,7 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
 
 <h3 id="everything-about-java-8httpwwwtechempowercomblog20130326everything-about-java-8">10. <a href="http://www.techempower.com/blog/2013/03/26/everything-about-java-8/">Everything about Java 8</a></h3>
 
-<p>Let&rsquo;s review again what will be in Java 8. Most wanted release ever.</p>
+<p>Let’s review again what will be in Java 8. Most wanted release ever.</p>
 
 <p>In this overview you will test other important changes, not only lambdas.</p>
 
@@ -342,9 +342,9 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 1]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-1/"/>
     <updated>2013-02-12T02:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-1</id>
     <content type="html"><![CDATA[<p>How to get job at Google, estimate complexity of your algorithm,
 what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
 
@@ -353,9 +353,9 @@ what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, 
 <h3 id="get-that-job-at-googlehttpsteve-yeggeblogspotcom200803get-that-job-at-googlehtml">1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
 
 <blockquote>
-  <p>&hellip;it&rsquo;s highly likely that someone on the loop will be unimpressed with you,
-even if you are Alan Turing. Especially if you&rsquo;re Alan Turing,
-in fact, since it means you obviously don&rsquo;t know C++</p>
+  <p>…it’s highly likely that someone on the loop will be unimpressed with you,
+even if you are Alan Turing. Especially if you’re Alan Turing,
+in fact, since it means you obviously don’t know C++</p>
 </blockquote>
 
 <p>The quote accurately explains what this post about. The author gives great mental and
@@ -364,7 +364,7 @@ Big portion of motivation guaranteed, perhaps you man feel dumber after reading.
 
 <p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
 graphs, other data structures, math, operating systems and at least one programming language very well.
-Not bad, right? After reading that article I&rsquo;ve build long-term learning plan for myself, which is still
+Not bad, right? After reading that article I’ve build long-term learning plan for myself, which is still
 not succesful. Great article.</p>
 
 <h3 id="a-gentle-introduction-to-algorithm-complexity-analysishttpdiscretegrcomplexity">2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
@@ -373,12 +373,12 @@ not succesful. Great article.</p>
 By the way, it is written with understandable (<em>for programmers</em>) language, examples, pictures, excerpts - I like
 such style.</p>
 
-<p>After reading, you&rsquo;ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
+<p>After reading, you’ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
 recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
 skill to classify that complexities on O(n), O(n^2 ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
 with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
 
-<p>If you already know all that, don&rsquo;t skip! It also helpful to fresh you knowledge.</p>
+<p>If you already know all that, don’t skip! It also helpful to fresh you knowledge.</p>
 
 <h3 id="on-structural-immutabilityhttpclojurefunwordpresscom20130121on-structural-immutability">3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
 
@@ -404,22 +404,22 @@ full mutability. Plain old array is an example. Read it to know more.</p>
 <p>Total destroy. I mean it - total.</p>
 
 <blockquote>
-  <p>Array&hellip; This one datatype acts as a list, ordered hash, ordered set,
+  <p>Array… This one datatype acts as a list, ordered hash, ordered set,
 sparse list, and occasionally some strange combination of those.
 How does it perform? What kind of memory use will there be?
 Who knows? Not like I have other options, anyway.</p>
 </blockquote>
 
-<p>As I never know PHP, and hope won&rsquo;t, that article was one of the funniest things I ever read.</p>
+<p>As I never know PHP, and hope won’t, that article was one of the funniest things I ever read.</p>
 
 <blockquote>
-  <p>equality operator is not transitive&hellip;comparison is not even consistent</p>
+  <p>equality operator is not transitive…comparison is not even consistent</p>
 </blockquote>
 
-<p>If you PHPist don&rsquo;t go away, just read it. Maybe it will change your life.</p>
+<p>If you PHPist don’t go away, just read it. Maybe it will change your life.</p>
 
 <blockquote>
-  <p>Genericism&hellip; There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
+  <p>Genericism… There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
 </blockquote>
 
 <p>Stop quoting. Just read it.</p>
@@ -444,7 +444,7 @@ class <code>sun.misc.Unsafe</code>. Just note this only works in SunJDK and Open
 
 <h3 id="state-of-the-lambdahttpcropenjdkjavanetbriangoetzlambdalambda-state-4html">7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
 
-<p>If we started about JDK8&hellip;</p>
+<p>If we started about JDK8…</p>
 
 <p>The most interesting feature set in expected JDK8 is Project Lambda.</p>
 
@@ -464,8 +464,8 @@ parallelism, streams, method references and lot more comming soon.</p>
   <p>We need to go deeper</p>
 </blockquote>
 
-<p>Honestly, it&rsquo;s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
-you really interested in gamedev, you&rsquo;ll find a lot of there including game algorithms,
+<p>Honestly, it’s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
+you really interested in gamedev, you’ll find a lot of there including game algorithms,
 popular engine tutorials, math behind the games, design questions and more useful tips. Great stuff.</p>
 
 <h3 id="how-to-pair-socks-from-a-pile-efficientlyhttpstackoverflowcomquestions14415881how-to-pair-socks-from-a-pile-efficiently">9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
@@ -491,9 +491,9 @@ crazy programming jokes. Stackoverflow community is amazing.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest Announcement]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-announcement/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-announcement/"/>
     <updated>2013-02-11T23:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-announcement</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-announcement</id>
     <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
 on the internet and give basic description for them.</p>
 
@@ -503,19 +503,19 @@ on the internet and give basic description for them.</p>
 so the first pattern I found appropriate is to publish this as soon
 as I have ten articles marked as <em>favorite</em> somewhere.</p>
 
-<p>That&rsquo;s the rule: <strong>each post - 10 articles</strong>.</p>
+<p>That’s the rule: <strong>each post - 10 articles</strong>.</p>
 
-<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I&rsquo;ve read.</p>
+<p><em>Favorite</em> means <em>really favorite</em>, so I do not crosspost every article I’ve read.</p>
 
 <p>Hard to say what topics will be covered.
 I call it <em>programming digest</em> because most of articles will be somehow
 related to programming, but do not blame me if you see articles with another
 topic (math or humour), believe me they can be interesting also.</p>
 
-<p>By the way, a lot of articles may be old, even very old (<em>don&rsquo;t call me Necromancer</em>)
+<p>By the way, a lot of articles may be old, even very old (<em>don’t call me Necromancer</em>)
 but if they appear here, I found them somehow relevant and important to post.</p>
 
-<p>Hope, you&rsquo;ll find such sort of digest is interesting for reading and I like if you
+<p>Hope, you’ll find such sort of digest is interesting for reading and I like if you
 share your favorite <em>programming-related</em> articles with me.</p>
 
 <p>Have fun!</p>

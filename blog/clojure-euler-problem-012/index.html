@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-012/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-012/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -134,7 +134,7 @@ MathJax.Hub.Config({
 
   <p>The first ten terms would be:</p>
 
-  <p>1, 3, 6, 10, 15, 21, 28, 36, 45, 55, &hellip;</p>
+  <p>1, 3, 6, 10, 15, 21, 28, 36, 45, 55, …</p>
 
   <p>Let us list the factors of the first seven triangle numbers:</p>
 </blockquote>
@@ -167,7 +167,7 @@ sum of all integers below:</p>
 </span><span class="line">  <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Don&rsquo;t miss the possibility reduce complexity from <code>O(n)</code> to <code>O(1)</code>.
+<p>Don’t miss the possibility reduce complexity from <code>O(n)</code> to <code>O(1)</code>.
 Just apply <a href="http://en.wikipedia.org/wiki/Arithmetic_progression">arithmetic progression</a> formula.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -177,7 +177,7 @@ Just apply <a href="http://en.wikipedia.org/wiki/Arithmetic_progression">arithme
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Okey, we did small optimization (<em>not so small</em>) here and we have a function that calculates
-triangle number for <code>n</code>. Let&rsquo;s find all of them!</p>
+triangle number for <code>n</code>. Let’s find all of them!</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">triangles</span> <span class="p">(</span><span class="nb">map </span><span class="nv">triangle-number</span> <span class="p">(</span><span class="nb">iterate inc </span><span class="mi">1</span><span class="p">)))</span>
@@ -203,7 +203,7 @@ sequence values, or build other lazy seqs with <code>filter</code>, <code>map</c
 <p>If we remember <a href="/blog/clojure-euler-problem-003">Clojure Euler: Problem 003</a>
 then we know that using <code>sqrt(n)</code> instead of <code>n</code> as upper bound for divisors
 saves much time.
-Don&rsquo;t forget mutiply that value by two, as you skip number after <code>sqrt(n)</code>.</p>
+Don’t forget mutiply that value by two, as you skip number after <code>sqrt(n)</code>.</p>
 
 <p>Last step: to calculate number over 500 divisors</p>
 
@@ -234,7 +234,7 @@ equal to (1 + 1) * (2 + 1) = 6. You see, the same.
 Not hard to prove this theorem or
 <a href="http://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic#Proof">read the proof</a>.</p>
 
-<p>Stop math, we need to code, so let&rsquo;s code that.</p>
+<p>Stop math, we need to code, so let’s code that.</p>
 
 <p>First of all, we need factorization method:</p>
 
@@ -315,7 +315,7 @@ We can live with that, because our needed number is much greater than 1.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-012/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-012/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-012/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-012/" >Tweet</a>
   
   
   
@@ -416,8 +416,8 @@ We can live with that, because our needed number is much greater than 1.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-012/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-012/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-012/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-012/';
         var disqus_script = 'embed.js';
       
     (function () {

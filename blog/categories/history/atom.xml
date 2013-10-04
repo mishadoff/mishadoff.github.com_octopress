@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: history | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/history/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-09-01T19:16:55+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/history/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-10-05T02:19:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
-    <link href="http://mishadoff.github.com/blog/critical-software-bugs-part-1/"/>
+    <link href="http://mishadoff.github.io/blog/critical-software-bugs-part-1/"/>
     <updated>2013-01-20T18:48:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/critical-software-bugs-part-1</id>
+    <id>http://mishadoff.github.io/blog/critical-software-bugs-part-1</id>
     <content type="html"><![CDATA[<p>Little journey through the history of most critical software bugs
 with some code examples.</p>
 
@@ -33,7 +33,7 @@ with some code examples.</p>
 
 <p><strong>Bugs</strong> are bad. Some of them cause uncomfortable work, more actions
 than expected, inconsistency, layout issues, etc.
-Some of them &ldquo;<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>&rdquo; at all.</p>
+Some of them “<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>” at all.</p>
 
 <p><strong>Bad bugs</strong> much worse. They cause data corruption, invalid data representation,
 unavailability to perform action, losing integrity and so on.</p>
@@ -41,7 +41,7 @@ unavailability to perform action, losing integrity and so on.</p>
 <p>There are <strong>critical bugs</strong> with painful consequences. They can damage the health, nature, people
 break buildings, technics. Theoretically, they
 <a href="http://www.washingtonpost.com/wp-srv/inatl/longterm/coldwar/shatter021099b.htm">can lead to World War III</a>.
-Hope, it&rsquo;s just theoretically.</p>
+Hope, it’s just theoretically.</p>
 
 <p>If you are software engineer, you definitely will commit the bugs. No panacea.
 But if we aware about common mistakes, then less likely we make that mistakes.</p>
@@ -60,21 +60,21 @@ was destoyed immediately.</p>
 
 <p><strong>Reason:</strong>
 There are tons of versions about what type of error it was, but official version
-is <em>missing hyphen</em> (&lsquo;-&lsquo;) in program. Maybe it&rsquo;s just a myth for publicity,
+is <em>missing hyphen</em> (‘-‘) in program. Maybe it’s just a myth for publicity,
 but, anyway, if the reason of bug is incorrect handwritten formula transcription
-from paper to computer, it&rsquo;s sad.</p>
+from paper to computer, it’s sad.</p>
 
 <p>Probably, the root cause of that is writer and computer operator were different people.
-It&rsquo;s common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
-an enterprise, as nowadays. That&rsquo;s why scientist, programmer, and operator could be
+It’s common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
+an enterprise, as nowadays. That’s why scientist, programmer, and operator could be
 different people.</p>
 
-<p>Related story, it&rsquo;s why zero symbol has a period or diagonal line inside - to prevent
-confusing with &ldquo;big O&rdquo; for &ldquo;typer&rdquo; person. Just compare <code>0</code> and <code>O</code>.</p>
+<p>Related story, it’s why zero symbol has a period or diagonal line inside - to prevent
+confusing with “big O” for “typer” person. Just compare <code>0</code> and <code>O</code>.</p>
 
 <p><strong>Solution:</strong>
-It&rsquo;s hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
-If you type into computer from someone&rsquo;s paper sheet, check, re-check and double re-check
+It’s hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
+If you type into computer from someone’s paper sheet, check, re-check and double re-check
 what you typing. Ask if you have concerns. Especially, if it is the program for spaceship.</p>
 
 <p>In very <em>far-fetched</em> example missing minus sign can result into invalid computation:</p>
@@ -104,32 +104,32 @@ for sabotage purposes. Bomb triggered.</p>
 <p><strong>Reason:</strong> Every microship from stolen technology would
 work fine just for 10 million cycles, after that switches to another mode.</p>
 
-<p>They <em>used someone&rsquo;s code</em>.</p>
+<p>They <em>used someone’s code</em>.</p>
 
 <p><strong>Solution:</strong></p>
 
 <blockquote>
   <p>You shall not steal</p>
 
-  <p>&ndash; <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p>
+  <p>– <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p>
 </blockquote>
 
-<p>Honestly, if someone&rsquo;s technology used for critical areas, like gas
+<p>Honestly, if someone’s technology used for critical areas, like gas
 transportation, it must be reviewed and tested. 100 times.</p>
 
 <p>Story can be translated as:</p>
 
 <p>I found memory card on the city dump.
 Card contained one shell script <code>please-execute-me.sh</code>.
-I <em>executed</em> it. System crashed. Who&rsquo;s guilty? Just me.</p>
+I <em>executed</em> it. System crashed. Who’s guilty? Just me.</p>
 
 <p>Use software from trusted sources.</p>
 
-<p>In modern software world, we often use someone&rsquo;s libraries, frameworks,
+<p>In modern software world, we often use someone’s libraries, frameworks,
 APIs to build our own applications. We <em>expect</em> that code is <em>reviewed</em> and <em>tested</em>.
 If not, we can help to do it. How we can be sure these libs without logic bombs?</p>
 
-<p>Trust or review the sources. That&rsquo;s why I love open source software.</p>
+<p>Trust or review the sources. That’s why I love open source software.</p>
 
 <p>Logic bomb detection is not that hard. Just find the code that causes error
 and see the reason of that error. Again, code review helps <em>to prevent</em> the
@@ -217,7 +217,7 @@ catch (SomeException e) {</p>
 <p>}
 ```</p>
 
-<p>In 99% there are must be a proper handling. If you don&rsquo;t know how
+<p>In 99% there are must be a proper handling. If you don’t know how
 to handle, rethrow it, possible with wrapping:</p>
 
 <p><code>java
@@ -269,7 +269,7 @@ static boolean isEven(int num) {
   <p>You have a problem and decide to use threads.
 Two now problems have you.</p>
 
-  <p>&ndash; Some guy from internet
+  <p>– Some guy from internet
 <br /></p>
 </blockquote>
 
@@ -277,7 +277,7 @@ Two now problems have you.</p>
   <p>You have a problem and decide to use locks.
 Now you have</p>
 
-  <p>&ndash; Some another guy from internet</p>
+  <p>– Some another guy from internet</p>
 </blockquote>
 
 <p>If you know that some object will be shared between threads, one solution to
@@ -311,8 +311,8 @@ Iraq missile destroyed an American Army barracks.</p>
 
 <p><strong>Consequences:</strong> 28 soldiers died, 100 injured.</p>
 
-<p><strong>Reason:</strong> Floating point rounding error. System&rsquo;s internal clock was calculating
-time by 0.1 seconds step (0.1, 0.2, 0.3, &hellip;). As <code>0.1 = 1/10</code> have infinite binary representation
+<p><strong>Reason:</strong> Floating point rounding error. System’s internal clock was calculating
+time by 0.1 seconds step (0.1, 0.2, 0.3, …). As <code>0.1 = 1/10</code> have infinite binary representation
 <code>0.0001100110011001100110011001100110011001100110011001100..</code>
 and for this calculation 24-bit register was used,
 register hold just <code>0.00011001100110011001100</code> introducing truncating error
@@ -328,7 +328,7 @@ register hold just <code>0.00011001100110011001100</code> introducing truncating
 <p>During that time Iraq missile travels a half kilometer, and was out of tracking radius
 for Patriot Missile. Bad things happen.</p>
 
-<p><strong>Solution:</strong> Floats are very error-prone if we don&rsquo;t handle them correctly.</p>
+<p><strong>Solution:</strong> Floats are very error-prone if we don’t handle them correctly.</p>
 
 <p>Predict the output of the following code:</p>
 
@@ -349,9 +349,9 @@ Java, as example, have out-of-the-box <code>BigDecimal</code> class. Loop above 
 that class works as expected:</p>
 
 <p>``` java
-BigDecimal init = new BigDecimal(&ldquo;0.0&rdquo;);
-BigDecimal bound = new BigDecimal(&ldquo;1.0&rdquo;);
-BigDecimal step = new BigDecimal(&ldquo;0.1&rdquo;)</p>
+BigDecimal init = new BigDecimal(“0.0”);
+BigDecimal bound = new BigDecimal(“1.0”);
+BigDecimal step = new BigDecimal(“0.1”)</p>
 
 <p>for (BigDecimal d = init; !d.equals(bound); d = d.add(step)) {
         System.out.println(d);
@@ -359,7 +359,7 @@ BigDecimal step = new BigDecimal(&ldquo;0.1&rdquo;)</p>
 ```</p>
 
 <p>One disadvantage it has slower execution than with floats. Consider trade-off
-between time and accuracy. If human lives on the stake, it&rsquo;s not relevant choice.</p>
+between time and accuracy. If human lives on the stake, it’s not relevant choice.</p>
 
 <p><code>Ratio</code> class can be defined without any problems and used similar way.</p>
 
@@ -393,7 +393,7 @@ Developer who wrote that less guilty, but still guilty.</p>
 
 <p>There are different approaches to implement this in java:</p>
 
-<p>very bad approach, we don&rsquo;t know what units are used:</p>
+<p>very bad approach, we don’t know what units are used:</p>
 
 <p><code>java
 new Force(1.533);
@@ -436,7 +436,7 @@ Unit conversion method can be defined either at the <code>enum ForceUnit</code> 
 <ul>
   <li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
   <li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
-  <li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History&rsquo;s Worst Software Bugs</a></li>
+  <li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History’s Worst Software Bugs</a></li>
   <li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
   <li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
   <li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
