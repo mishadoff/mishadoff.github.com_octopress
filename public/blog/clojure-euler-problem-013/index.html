@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-013/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-013/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -144,7 +144,7 @@ to sum all these numbers. <code>int</code>? <code>long</code>? <code>looooong</c
 
 <p>Technique to sum very long numbers called
 <a href="http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">Bignum arithmetic</a>.
-To solve that problem you just need to implement this technique&hellip; or use already implemented.</p>
+To solve that problem you just need to implement this technique… or use already implemented.</p>
 
 <p>Java (<em>yeah we talking about it</em>) support long arithmetics with
 <a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">BigInteger</a>.
@@ -154,14 +154,14 @@ And clojure does.</p>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>With that function you&rsquo;ll get the big number.
+<p>With that function you’ll get the big number.
 Just truncate first 10 digits and you are good.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">apply str </span><span class="p">(</span><span class="nb">take </span><span class="mi">10</span> <span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>(for [i &ldquo;<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>&rdquo;] i)</p>
+<p>(for [i “<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>”] i)</p>
 
 <p><strong>P.S.</strong> Ideally, last line should be wrapped
 with <code>(read-string ...)</code> to produce number type. But we using
@@ -202,7 +202,7 @@ manual submission, so it is fair.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-013/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-013/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-013/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-013/" >Tweet</a>
   
   
   
@@ -303,8 +303,8 @@ manual submission, so it is fair.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-013/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-013/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-013/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-013/';
         var disqus_script = 'embed.js';
       
     (function () {

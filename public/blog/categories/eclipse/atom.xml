@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: eclipse | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/eclipse/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-09-01T19:16:55+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/eclipse/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-10-05T02:19:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Eclipse Speedup]]></title>
-    <link href="http://mishadoff.github.com/blog/eclipse-speedup/"/>
+    <link href="http://mishadoff.github.io/blog/eclipse-speedup/"/>
     <updated>2012-12-23T18:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/eclipse-speedup</id>
+    <id>http://mishadoff.github.io/blog/eclipse-speedup</id>
     <content type="html"><![CDATA[<p>Have you been in situation where most of the time in eclipse you were waiting for
 some operation to be finished?</p>
 
@@ -29,7 +29,7 @@ some operation to be finished?</p>
 to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
 
 <p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
-Add SSD to make filesystem operations faster. We assume you can&rsquo;t afford all that. All you can is setup your
+Add SSD to make filesystem operations faster. We assume you can’t afford all that. All you can is setup your
 eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
 almost everything is identical in other versions for other platforms.</p>
 
@@ -37,7 +37,7 @@ almost everything is identical in other versions for other platforms.</p>
 
 <h4 id="plugins">Plugins</h4>
 
-<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn&rsquo;t
+<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn’t
 work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
 It is not deleting, you always can enable it back.</p>
 
@@ -97,7 +97,7 @@ I use following settings to increase heap size (objects) to <code>768Mb</code> a
 </code></p>
 
 <p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
-step of JVM loading you will get performance boost. But it&rsquo;s very risky change.</p>
+step of JVM loading you will get performance boost. But it’s very risky change.</p>
 
 <p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
 experimental VM options like (some of these):</p>
@@ -116,7 +116,7 @@ for reference and choose ones that appropriate for you.</p>
 
 <h4 id="disable-animations">Disable animations</h4>
 
-<p>Animations it&rsquo;s cool. But I always disable animations if it possible in all tools.
+<p>Animations it’s cool. But I always disable animations if it possible in all tools.
 Also, classic theme is most usable for me.</p>
 
 <pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
@@ -157,7 +157,7 @@ can identify the reason, but you save your development time.</p>
 
 <h4 id="close-unrelated-projects">Close unrelated projects</h4>
 
-<p>If you working in context of few projects, better to have all unrelated projects closed. They won&rsquo;t appear
+<p>If you working in context of few projects, better to have all unrelated projects closed. They won’t appear
 in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
 You can add any number of projects to one working set, and quickly switch between different working sets
 in one workspace.</p>
@@ -178,7 +178,7 @@ in one workspace.</p>
 
 <h4 id="disable-spell-check">Disable spell check</h4>
 
-<p>Are you developer or what? I don&rsquo;t see any reason to have <code>spell check</code> enabled.</p>
+<p>Are you developer or what? I don’t see any reason to have <code>spell check</code> enabled.</p>
 
 <pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
 </code></pre>
@@ -195,7 +195,7 @@ Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 
 <h4 id="hotkeys">Hotkeys</h4>
 
 <p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
-single operation, your development process won&rsquo;t be fast. Configure most-often used actions
+single operation, your development process won’t be fast. Configure most-often used actions
 to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
 
 <pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys

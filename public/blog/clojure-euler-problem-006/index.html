@@ -9,7 +9,7 @@
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="The sum of the squares of the first ten natural numbers is, 1^2 + 2^2 + &hellip; + 10^2 = 385 The square of the sum of the first ten natural numbers &hellip;">
+  <meta name="description" content="The sum of the squares of the first ten natural numbers is, 1^2 + 2^2 + … + 10^2 = 385 The square of the sum of the first ten natural numbers is, (1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-006/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-006/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,7 +78,7 @@ MathJax.Hub.Config({
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -126,7 +126,7 @@ MathJax.Hub.Config({
 </blockquote>
 
 <blockquote>
-  <p>1^2 + 2^2 + &hellip; + 10^2 = 385</p>
+  <p>1^2 + 2^2 + … + 10^2 = 385</p>
 </blockquote>
 
 <blockquote>
@@ -134,7 +134,7 @@ MathJax.Hub.Config({
 </blockquote>
 
 <blockquote>
-  <p>(1 + 2 + &hellip; + 10)^2 = 55^2 = 3025</p>
+  <p>(1 + 2 + … + 10)^2 = 55^2 = 3025</p>
 </blockquote>
 
 <blockquote>
@@ -150,7 +150,7 @@ MathJax.Hub.Config({
 <!-- more -->
 
 <p>This problem is very simple, even simpler than previous one, that confirms fact that all Project Euler problems
-are <strong>NOT</strong> in increasing complexity order. Ok, let&rsquo;s split our problem into two subproblems.</p>
+are <strong>NOT</strong> in increasing complexity order. Ok, let’s split our problem into two subproblems.</p>
 
 <h3 id="sum-of-the-squares">Sum of the squares</h3>
 
@@ -185,7 +185,7 @@ but you see, that both of smaller solutions uses common piece of code <code>(ran
 </span><span class="line">  <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">sqr</span> <span class="p">(</span><span class="nb">reduce + </span><span class="nv">rn</span><span class="p">))</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">sqr</span> <span class="nv">rn</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>That&rsquo; all. I&rsquo;ve got result in less than millisecond.
+<p>That’ all. I’ve got result in less than millisecond.
 Maybe there are some pitfalls in this problem (<em>e.g. integer overflow for larger ranges</em>)
 but this most straightforward solution works fine.</p>
 
@@ -194,7 +194,7 @@ but this most straightforward solution works fine.</p>
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem006.clj">GitHub</a></p>
 
 <p><strong>P.S.</strong> First time I solved this problem and was confused: <em>Where is the trick?</em> Seems nowhere.
-That&rsquo;s why using most straightforward solution is often the best choice (<em>excluding obvious cases, of course</em>).
+That’s why using most straightforward solution is often the best choice (<em>excluding obvious cases, of course</em>).
 It has fast implementation, and if it fails, it fails fast.</p>
 
 <p><strong>Fail Fast, Succeed Faster</strong></p>
@@ -234,7 +234,7 @@ It has fast implementation, and if it fails, it fails fast.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-006/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-006/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-006/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-006/" >Tweet</a>
   
   
   
@@ -335,8 +335,8 @@ It has fast implementation, and if it fails, it fails fast.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-006/';
-        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-006/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-006/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-006/';
         var disqus_script = 'embed.js';
       
     (function () {

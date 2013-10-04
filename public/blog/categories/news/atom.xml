@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: news | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/news/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-09-01T19:16:55+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/news/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-10-05T02:19:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Pigeon Cipher]]></title>
-    <link href="http://mishadoff.github.com/blog/pigeon-cipher/"/>
+    <link href="http://mishadoff.github.io/blog/pigeon-cipher/"/>
     <updated>2012-11-24T14:52:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/pigeon-cipher</id>
+    <id>http://mishadoff.github.io/blog/pigeon-cipher</id>
     <content type="html"><![CDATA[<p>The skeleton of the pigeon was found in England.
 There is small red box tied to its leg with the handwritten ciphered message.
 Britain cryptographers failed the attempt to decipher the message and it was released in public.
@@ -32,7 +32,7 @@ It can be a good puzzle for a weekend.</p>
 <p>The paper consists of some parts <a href="http://i2.cdn.turner.com/cnn/2012/images/11/23/large-pigeon-message-1.pdf">Full PDF scan</a>:</p>
 
 <ul>
-  <li><strong>Title:</strong> &ldquo;Pigeon Service&rdquo;</li>
+  <li><strong>Title:</strong> “Pigeon Service”</li>
   <li><strong>TO:</strong> XO2</li>
   <li><strong>Ciphered Message</strong></li>
 </ul>
@@ -52,7 +52,7 @@ It can be a good puzzle for a weekend.</p>
 There are was two pigeons as we can see from the field <em>Number of copies sent</em>.</li>
   <li><strong>LIB 1625</strong></li>
   <li><strong>Time of origin:</strong> 1522</li>
-  <li><strong>Sender&rsquo;s signature:</strong> W Stit Sjt</li>
+  <li><strong>Sender’s signature:</strong> W Stit Sjt</li>
 </ul>
 
 <h3 id="output">Output</h3>
@@ -78,7 +78,7 @@ it is a good workout for your brain.</p>
   <li><a href="http://edition.cnn.com/2012/11/23/world/europe/uk-wwii-pigeon-mystery/index.html">CNN</a></li>
 </ol>
 
-<p><strong>P.S.</strong> Don&rsquo;t be addicted, you have a lot things to do instead of breaking this stupid cipher.
+<p><strong>P.S.</strong> Don’t be addicted, you have a lot things to do instead of breaking this stupid cipher.
 Very unlikely, but it can be some sort of a joke.</p>
 ]]></content>
   </entry>

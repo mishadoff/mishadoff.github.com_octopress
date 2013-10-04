@@ -322,6 +322,20 @@ System.out.println(fake); // ????????????
 
 Feel safe.
 
+**UPDATE:** That way is not really safe. For real safety we need to nullify
+backed char array via reflection:
+
+``` java
+Field stringValue = String.class.getDeclaredField("value");
+stringValue.setAccessible(true);
+char[] mem = (char[]) stringValue.get(password);
+for (int i=0; i < mem.length; i++) {
+  mem[i] = '?';
+}
+```
+
+Thanks to *Peter Verhas* for pointing out that.
+
 #### **Multiple Inheritance**
 
 There is no multiple inheritance in java.

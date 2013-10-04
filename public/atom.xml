@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2013-09-01T19:16:55+03:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-10-05T02:19:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Announcing numberto]]></title>
-    <link href="http://mishadoff.github.com/blog/announcing-numberto/"/>
+    <link href="http://mishadoff.github.io/blog/announcing-numberto/"/>
     <updated>2013-09-01T04:23:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/announcing-numberto</id>
+    <id>http://mishadoff.github.io/blog/announcing-numberto</id>
     <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
 
 <!-- more -->
@@ -95,14 +95,14 @@ Pretty print for long numbers</li>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
-    <link href="http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter/"/>
+    <link href="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/"/>
     <updated>2013-08-09T17:44:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter</id>
+    <id>http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter</id>
     <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
 
 <!-- more -->
 
-<p>Previous article <a href="http://mishadoff.github.com/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+<p>Previous article <a href="http://mishadoff.github.io/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today’s problem is a Brainfuck Interpreter.</p>
 
 <p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
 
@@ -117,7 +117,7 @@ Pretty print for long numbers</li>
   <li><code>]</code> finish loop</li>
 </ul>
 
-<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+<p>That’s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
 
 <h3 id="tweet">Tweet</h3>
 
@@ -137,7 +137,7 @@ Pretty print for long numbers</li>
 
 <p>Exactly 2 tweets.</p>
 
-<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+<h3 id="sugared-version">“Sugared” version</h3>
 
 <p>Translating to more readable code:</p>
 
@@ -185,7 +185,7 @@ Pretty print for long numbers</li>
 </span><span class="line">        <span class="p">(</span><span class="nf">swap!</span> <span class="nv">pc</span> <span class="nv">inc</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>So, what&rsquo;s happening there?</p>
+<p>So, what’s happening there?</p>
 
 <p>Function arguments are parameters of our tape and brainfuck program.</p>
 
@@ -219,7 +219,7 @@ string - program, written in brainfuck.</p>
 
 <h4 id="testing">Testing</h4>
 
-<p>Print &ldquo;Hello, world&rdquo;</p>
+<p>Print “Hello, world”</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -244,7 +244,7 @@ this version (<em>for the sake of small size!</em>)</p>
 
 <p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
 
-<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
+<p><strong>P.S.</strong> This version is not “fully-featured” brainfuck interpreter.</p>
 
 <ul>
   <li>It does not work for inifinite tape</li>
@@ -260,10 +260,10 @@ this version (<em>for the sake of small size!</em>)</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 3]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-3/"/>
     <updated>2013-07-22T20:33:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
-    <content type="html"><![CDATA[<p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
+    <id>http://mishadoff.github.io/blog/programming-digest-3</id>
+    <content type="html"><![CDATA[<p>Why your software sucks and what is the “Secret Weapon”. Also,
 algorithm complexities refresher, functional programming, including
 Scala and Clojure, concurrency and lot of humor.</p>
 
@@ -278,7 +278,7 @@ Scala and Clojure, concurrency and lot of humor.</p>
 <p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
 
 <p>The article describes problems in software design and explains
-why almost every system nowadays look like &ldquo;Big Ball of Mud&rdquo;.</p>
+why almost every system nowadays look like “Big Ball of Mud”.</p>
 
 <p>There are seven <em>real</em> patterns in software design:</p>
 
@@ -319,7 +319,7 @@ Graphical or Automated programming?</p>
 
 <p>This is inspiring one.</p>
 
-<p>Brooks told &ldquo;There is no Silver Bullet&rdquo;, but Paul Graham reveals &ldquo;The Secret Weapon&rdquo;.</p>
+<p>Brooks told “There is no Silver Bullet”, but Paul Graham reveals “The Secret Weapon”.</p>
 
 <p>The article is success story of startup called Viaweb.
 Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
@@ -350,7 +350,7 @@ for common algorithms and datastructures.</p>
 extremely useful when learning new language. Just exploring the code shows that Scala is
 the powerful and expressive language.</p>
 
-<p><strong>P.S.</strong> I am on half way to publish &ldquo;99 Clojure Problems&rdquo;.</p>
+<p><strong>P.S.</strong> I am on half way to publish “99 Clojure Problems”.</p>
 
 <h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
 
@@ -367,11 +367,11 @@ default immutability, atoms, refs, agents, promises, futures and software transa
 
 <h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
 
-<p>This is the video screencast of Gary Bernhardt&rsquo;s talk.
+<p>This is the video screencast of Gary Bernhardt’s talk.
 Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
 
 <blockquote>
-  <p>An object plus an object is actually&hellip;. Not A Number!</p>
+  <p>An object plus an object is actually…. Not A Number!</p>
 </blockquote>
 
 <h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
@@ -379,7 +379,7 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
 <p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
 
 <blockquote>
-  <p>Q: What does the &ldquo;B&rdquo; in Benoit B. Mandelbrot stand for?</p>
+  <p>Q: What does the “B” in Benoit B. Mandelbrot stand for?</p>
 
   <p>A: Benoit B. Mandelbrot.</p>
 </blockquote>
@@ -404,9 +404,9 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-020/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-020/"/>
     <updated>2013-07-21T13:39:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-020</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-020</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Find the sum of the digits in the number 100!</p>
 </blockquote>
@@ -418,7 +418,7 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
 <p>First of all we need to calculate factorial.
 Without integer overflows, stack overflows and other caveats.</p>
 
-<p>Previous article <a href="http://mishadoff.github.com/blog/fast-factorial/">Fast Factorial</a> has working solution
+<p>Previous article <a href="http://mishadoff.github.io/blog/fast-factorial/">Fast Factorial</a> has working solution
 that we might use.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -427,8 +427,8 @@ that we might use.</p>
 </span><span class="line">  (reduce *' (range 1 (inc n))))</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Now, calculate the sum of digits, the same function that we used in
-<a href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
-<a href="http://mishadoff.github.com/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
+<a href="http://mishadoff.github.io/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
+<a href="http://mishadoff.github.io/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -454,9 +454,9 @@ Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-019/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-019/"/>
     <updated>2013-07-10T01:59:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-019</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-019</id>
     <content type="html"><![CDATA[<blockquote>
   <p>How many Sundays fell on the first of the month
 during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
@@ -585,9 +585,9 @@ and count Sundays.</p>
   
   <entry>
     <title type="html"><![CDATA[randomorg-0.1]]></title>
-    <link href="http://mishadoff.github.com/blog/randomorg-0-dot-1/"/>
+    <link href="http://mishadoff.github.io/blog/randomorg-0-dot-1/"/>
     <updated>2013-07-06T15:33:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/randomorg-0-dot-1</id>
+    <id>http://mishadoff.github.io/blog/randomorg-0-dot-1</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
 
 <!-- more -->
@@ -609,14 +609,14 @@ which allows to generate random numbers via atmospheric noise.</p>
   
   <entry>
     <title type="html"><![CDATA[Fast Factorial]]></title>
-    <link href="http://mishadoff.github.com/blog/fast-factorial/"/>
+    <link href="http://mishadoff.github.io/blog/fast-factorial/"/>
     <updated>2013-06-07T01:08:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/fast-factorial</id>
+    <id>http://mishadoff.github.io/blog/fast-factorial</id>
     <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
-In <a href="http://mishadoff.github.com/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
-we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+In <a href="http://mishadoff.github.io/blog/stirlings-approximation/">Stirling’s Approximation</a> article
+we’ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
 By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
-than &ldquo;by definition&rdquo;.</p>
+than “by definition”.</p>
 
 <!-- more -->
 
@@ -637,7 +637,7 @@ approach to calculate factorial (<em>transformed to clojure</em>):</p>
 
 <p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
 
-<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>&hellip;</p>
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>…</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">ArithmeticException</span> <span class="nv">integer</span> <span class="nv">overflow</span>
@@ -661,7 +661,7 @@ If type can not hold the value without losing precision, it automatically extend
 In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
 
 <p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
-<code>(! 30000)</code>&hellip;</p>
+<code>(! 30000)</code>…</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">StackOverflowError</span>
@@ -669,7 +669,7 @@ In this case, <code>Long</code> becames <code>BigInteger</code> and all works fi
 
 <p>Yet another overflow.</p>
 
-<p>Well, stack size is limited. We don&rsquo;t need to consume stackframes and
+<p>Well, stack size is limited. We don’t need to consume stackframes and
 will use <code>loop/recur</code> approach.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -689,7 +689,7 @@ It succesfully calculates factorial for 30000,
 and for any other value. Great!</p>
 
 <p>If we look at the factorial as a calculation process, not definition, it means
-&ldquo;product of all numbers between 1 and n&rdquo;. It is very concise for functional programming:</p>
+“product of all numbers between 1 and n”. It is very concise for functional programming:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -700,7 +700,7 @@ and for any other value. Great!</p>
 <p>Does not consume stack, no number overflow, but works
 ~2 times slower than <code>loop/recur</code> version.</p>
 
-<p>I don&rsquo;t know the reason, but it seems time wasted
+<p>I don’t know the reason, but it seems time wasted
 by <code>reduce</code> for creating intermediate results. So we choose
 previous <code>loop/recur</code> function as baseline factorial.</p>
 
@@ -708,7 +708,7 @@ previous <code>loop/recur</code> function as baseline factorial.</p>
 
 <p>Here is another way to calculate factorial.</p>
 
-<p>Let&rsquo;s consider example <code>12!</code>.</p>
+<p>Let’s consider example <code>12!</code>.</p>
 
 <p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
 Perform prime factorization of each number.
@@ -789,7 +789,7 @@ stackoverflow, but its not critical. It works well for large numbers.</p>
 You performing more calculations than just multiplying numbers.</p>
 </blockquote>
 
-<p>Let&rsquo;s see.</p>
+<p>Let’s see.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -887,9 +887,9 @@ Just precompute all values and save them to database.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-018/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-018/"/>
     <updated>2013-05-17T00:26:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-018</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-018</id>
     <content type="html"><![CDATA[<blockquote>
   <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
 </blockquote>
@@ -959,7 +959,7 @@ sum <code>8 + 2 = 10</code>.</p>
 
 <p>Repeat the same action until we get one number, which will be solution.</p>
 
-<p>Let&rsquo;s transform this idea to clojure.</p>
+<p>Let’s transform this idea to clojure.</p>
 
 <p>First of all we need datastructure to represent triangle.
 List of lists would be good:</p>
@@ -997,7 +997,7 @@ But we need only one number.</p>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">step-max</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">triangle</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>That&rsquo;s it.</p>
+<p>That’s it.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
 
@@ -1007,11 +1007,11 @@ But we need only one number.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 2]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-2/"/>
     <updated>2013-04-22T14:43:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-2</id>
     <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
-developer&hellip;in 10 years, &ldquo;coding it&rsquo;s just writing&rdquo; and some practice:
+developer…in 10 years, “coding it’s just writing” and some practice:
 Naive Bayes Classifier, functional programming and Java 8.</p>
 
 <!-- more -->
@@ -1022,19 +1022,19 @@ Naive Bayes Classifier, functional programming and Java 8.</p>
 As everyone might to retort, knowing math is not mandatory for software engineering field, but you know:</p>
 
 <blockquote>
-  <p>Math is&hellip; ummm, please don&rsquo;t tell anyone I said this;
-I&rsquo;ll never get invited to another party as long as I live.
-But math, well&hellip; I&rsquo;d better whisper this, so listen up: (it&rsquo;s actually kinda fun.)</p>
+  <p>Math is… ummm, please don’t tell anyone I said this;
+I’ll never get invited to another party as long as I live.
+But math, well… I’d better whisper this, so listen up: (it’s actually kinda fun.)</p>
 </blockquote>
 
-<p>I totally agree. It&rsquo;s a lot of fun.
-Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don&rsquo;t understand anything.</p>
+<p>I totally agree. It’s a lot of fun.
+Just read subreddit <a href="http://www.reddit.com/r/math/">math</a>, even if you don’t understand anything.</p>
 
 <p>Pick your favourite math subject and try to dig more.
 Statistics, Linear Algebra, Discrete Math, Combinatorics, Operation Research, Group Theory
 and more; one of them can be a good start.</p>
 
-<p>Does that really helps? Well, maybe. But it&rsquo;s definitely improve your problem solving skill.</p>
+<p>Does that really helps? Well, maybe. But it’s definitely improve your problem solving skill.</p>
 
 <p>And believe. Math makes you a <em>better</em> programmer.</p>
 
@@ -1044,15 +1044,15 @@ and more; one of them can be a good start.</p>
 some parts I thought I understood. By the way, great examples.</p>
 
 <blockquote>
-  <p>Ryan: I can&rsquo;t drive a cup and I can&rsquo;t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
+  <p>Ryan: I can’t drive a cup and I can’t drink a car. But some verbs are almost universal like GET, PUT, and DELETE.</p>
 
-  <p>Wife: You can&rsquo;t DELETE a cup.</p>
+  <p>Wife: You can’t DELETE a cup.</p>
 
   <p>Ryan: Well, okay, but you can throw it away.</p>
 </blockquote>
 
 <p>Unfortunately, author of this article take it down due to lot of complaints about
-article gender-oriented nature. I don&rsquo;t think it&rsquo;s offensive and here is the link with
+article gender-oriented nature. I don’t think it’s offensive and here is the link with
 <a href="http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife">copy from web archive</a></p>
 
 <h3 id="programmer-competency-matrixhttpwwwindiangeeknetwp-contentuploadsprogrammer20competency20matrixhtm">3. <a href="http://www.indiangeek.net/wp-content/uploads/Programmer%20competency%20matrix.htm">Programmer Competency Matrix</a></h3>
@@ -1063,7 +1063,7 @@ article gender-oriented nature. I don&rsquo;t think it&rsquo;s offensive and her
 
 <ul>
   <li><strong>2^n (Level 0)</strong>. Unable to find the average of numbers in an array
-(It&rsquo;s hard to believe but I&rsquo;ve interviewed such candidates)</li>
+(It’s hard to believe but I’ve interviewed such candidates)</li>
   <li><strong>n^2 (Level 1)</strong>. Basic sorting, searching and data structure traversal and retrieval algorithms</li>
   <li><strong>n (Level 2)</strong>. Tree, Graph, simple greedy and divide and conquer algorithms, is able to understand
 the relevance of the levels of this matrix.</li>
@@ -1079,11 +1079,11 @@ related skills and gives understanding what you need to know to become an expert
 <p>Article by Peter Norvig.
 Great guy, I got to know from <a href="https://www.ai-class.com/">Artificial Intelligence</a> course.</p>
 
-<p>His writing is critique of popular books, like &ldquo;Learn Java in 21 Days&rdquo;.
+<p>His writing is critique of popular books, like “Learn Java in 21 Days”.
 Peter explains that it is impossible to be a great
 engineer in such short period, and to become an expert you need aproximately 10 years.</p>
 
-<p>It reminds me a picture &ldquo;How to become a C++ Developer in 21 Days&rdquo;:</p>
+<p>It reminds me a picture “How to become a C++ Developer in 21 Days”:</p>
 
 <p><img src="http://i.imgur.com/3FckcgF.png" alt="" /></p>
 
@@ -1091,7 +1091,7 @@ engineer in such short period, and to become an expert you need aproximately 10 
 
 <h3 id="on-being-a-senior-engineerhttpwwwkitchensoapcom20121025on-being-a-senior-engineer">5. <a href="http://www.kitchensoap.com/2012/10/25/on-being-a-senior-engineer/">On Being A Senior Engineer</a></h3>
 
-<p>And logically continue. What behaviour differentiate senior engineer from &ldquo;not senior&rdquo; one?</p>
+<p>And logically continue. What behaviour differentiate senior engineer from “not senior” one?</p>
 
 <blockquote>
   <p>Mature engineers seek out constructive criticism of their designs.</p>
@@ -1110,15 +1110,15 @@ engineer in such short period, and to become an expert you need aproximately 10 
     <li>The only constant in the world is change. Be open to it and accept it with a smile.</li>
     <li>The only true authority stems from knowledge, not from position.</li>
     <li>Fight for what you believe, but gracefully accept defeat.</li>
-    <li>Don’t be &ldquo;the coder in the corner.&rdquo;</li>
+    <li>Don’t be “the coder in the corner.”</li>
     <li>Critique code instead of people – be kind to the coder, not to the code.</li>
   </ol>
 </blockquote>
 
-<p>Note, that article touch some psychological aspect of person. So I don&rsquo;t
+<p>Note, that article touch some psychological aspect of person. So I don’t
 think it can be 100% applied to everyone, but still worth to read.</p>
 
-<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It&rsquo;s Just Writing</a></h3>
+<h3 id="coding-its-just-writinghttpwwwcodinghorrorcomblog200811coding-its-just-writinghtml">6. <a href="http://www.codinghorror.com/blog/2008/11/coding-its-just-writing.html">Coding: It’s Just Writing</a></h3>
 
 <p>Jeff Atwood explais basic the idea of:</p>
 
@@ -1128,7 +1128,7 @@ think it can be 100% applied to everyone, but still worth to read.</p>
 
 <p>To write good code, you must write good.</p>
 
-<p>Article contains a reference to the book &ldquo;The Elements of Style&rdquo; with some quotes.</p>
+<p>Article contains a reference to the book “The Elements of Style” with some quotes.</p>
 
 <blockquote>
   <p>Vigorous writing is concise. A sentence should contain no unnecessary words,
@@ -1147,7 +1147,7 @@ or that he avoid all detail and treat his subjects only in outline, but that eve
 <p>Article is great explanation of how Naive Bayes Classifier work.
 With pictures, code examples, common pitfalls and good sense of humour.</p>
 
-<p>Although, it&rsquo;s one of the simplest classification algorithms, but with some tweeks and
+<p>Although, it’s one of the simplest classification algorithms, but with some tweeks and
 good train set it can give good results.</p>
 
 <p><img src="https://www.bionicspirit.com/assets/img/conditional-prob-9a27ee0e.png" alt="" /></p>
@@ -1159,7 +1159,7 @@ that even monkey with banana (and degree in math) can understand how it works.</
 
 <p>Number of articles that explain what is monad grow fast. Just another one.</p>
 
-<p>Even if you don&rsquo;t understand what Haskell and monad is, look at the cool pictures.</p>
+<p>Even if you don’t understand what Haskell and monad is, look at the cool pictures.</p>
 
 <p><img src="http://adit.io/imgs/functors/fmap_just.png" alt="" /></p>
 
@@ -1179,7 +1179,7 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
 
 <h3 id="everything-about-java-8httpwwwtechempowercomblog20130326everything-about-java-8">10. <a href="http://www.techempower.com/blog/2013/03/26/everything-about-java-8/">Everything about Java 8</a></h3>
 
-<p>Let&rsquo;s review again what will be in Java 8. Most wanted release ever.</p>
+<p>Let’s review again what will be in Java 8. Most wanted release ever.</p>
 
 <p>In this overview you will test other important changes, not only lambdas.</p>
 
@@ -1190,9 +1190,9 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 017]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-017/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-017/"/>
     <updated>2013-04-09T21:13:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-017</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-017</id>
     <content type="html"><![CDATA[<blockquote>
   <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five,
 then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
@@ -1213,7 +1213,7 @@ Exactly what plain arrays do.</p>
 
 <p>Then we just define all mappings, obtain all arrays string elements, find their lengths and sum them.</p>
 
-<p>One problem that providing mapping for each number between 1 and 1000 is a &ldquo;bit&rdquo; routine task, so we
+<p>One problem that providing mapping for each number between 1 and 1000 is a “bit” routine task, so we
 need some formula to calculate representation instead of hardcoding it. We come to defining groups.</p>
 
 <p>First group is just <em>first 20</em> numbers:</p>
@@ -1228,7 +1228,7 @@ need some formula to calculate representation instead of hardcoding it. We come 
 </span><span class="line">              <span class="s">&quot;sixteen&quot;</span> <span class="s">&quot;seventeen&quot;</span> <span class="s">&quot;eighteen&quot;</span> <span class="s">&quot;nineteen&quot;</span><span class="p">])</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Note: there is no &ldquo;zero&rdquo; as we don&rsquo;t use it in spoken language.</p>
+<p>Note: there is no “zero” as we don’t use it in spoken language.</p>
 
 <p>Second group is numbers that divides 10:</p>
 
@@ -1249,7 +1249,7 @@ need some formula to calculate representation instead of hardcoding it. We come 
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The basic function will calculate the length string representation of some number.
-Let&rsquo;s call it <code>word-length</code>.</p>
+Let’s call it <code>word-length</code>.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -1280,18 +1280,18 @@ Let&rsquo;s call it <code>word-length</code>.</p>
 <p>Little explanation:</p>
 
 <ul>
-  <li>If number is <code>1000</code> then the length of string &ldquo;one&rdquo; + &ldquo;thousand&rdquo;, 11.</li>
+  <li>If number is <code>1000</code> then the length of string “one” + “thousand”, 11.</li>
   <li>If number is lower than <code>100</code> then extract its decade part. If there is no
 reminder for division by 10, the length is length of that decade part.</li>
   <li>Otherwise, if number in <code>first20</code>, length taken from array <code>first20</code>.</li>
   <li>Otherwise the length is decade part plus remainder.</li>
   <li>If number is lower than <code>1000</code> then extract hundred part. If there is no
-reminder for division by 100, the length is &ldquo;hundred&rdquo; plus number of hundreds.</li>
-  <li>Otherwise, the length is &ldquo;hundred&rdquo; plus number of hundreds, plus the word &ldquo;and&rdquo; and
+reminder for division by 100, the length is “hundred” plus number of hundreds.</li>
+  <li>Otherwise, the length is “hundred” plus number of hundreds, plus the word “and” and
 recursively calculate the length of remainder, which is lower than <code>100</code>.</li>
 </ul>
 
-<p>Awful word-presentation of algorithm, because of&hellip; Reading code is much simpler, I know.</p>
+<p>Awful word-presentation of algorithm, because of… Reading code is much simpler, I know.</p>
 
 <p>And the last part just sum up all word-lengths:</p>
 
@@ -1308,10 +1308,10 @@ By the way, the problem is little boring.</p>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
-    <link href="http://mishadoff.github.com/blog/code-golf-game-of-life/"/>
+    <link href="http://mishadoff.github.io/blog/code-golf-game-of-life/"/>
     <updated>2013-03-07T17:59:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/code-golf-game-of-life</id>
-    <content type="html"><![CDATA[<p>Conway&rsquo;s Game of Life in a tweet.</p>
+    <id>http://mishadoff.github.io/blog/code-golf-game-of-life</id>
+    <content type="html"><![CDATA[<p>Conway’s Game of Life in a tweet.</p>
 
 <!-- more -->
 
@@ -1331,7 +1331,7 @@ where <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Lif
 </span><span class="line"><span class="p">(</span><span class="nb">map + </span><span class="nv">j</span><span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]))))</span><span class="nv">v</span> <span class="mi">2</span><span class="p">)</span><span class="mi">0</span><span class="p">))))</span><span class="nv">g</span> <span class="nv">r</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+<h3 id="sugared-version">“Sugared” version</h3>
 
 <p>Translate tweet to more readable code:</p>
 
@@ -1471,9 +1471,9 @@ to update specific area in the world, for example <em>west organisms evolve fast
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-016/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-016/"/>
     <updated>2013-03-05T01:31:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-016</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-016</id>
     <content type="html"><![CDATA[<blockquote>
   <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
 
@@ -1491,7 +1491,7 @@ to update specific area in the world, for example <em>west organisms evolve fast
   <li>Sum its digits</li>
 </ul>
 
-<p>In <a href="http://mishadoff.github.com/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
+<p>In <a href="http://mishadoff.github.io/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
 learned how to sum digits in the number. Just gentle reminder:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1500,7 +1500,7 @@ learned how to sum digits in the number. Just gentle reminder:</p>
 </span><span class="line">  <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">48</span><span class="p">)</span> <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">str </span><span class="nv">n</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Now, let&rsquo;s create sequence of powers of two:</p>
+<p>Now, let’s create sequence of powers of two:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -1535,15 +1535,15 @@ the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
 
 <p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
-speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won&rsquo;t.</p>
+speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
+    <link href="http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
     <updated>2013-02-26T02:37:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
+    <id>http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
     <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
 from doing a lot of stupid mistakes, most of which based on memory management.
 But, there is a way to do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
@@ -1579,7 +1579,7 @@ get <code>SecurityException</code>. Using this method available only from truste
 It is just checking that our code was loaded with
 primary classloader.</p>
 
-<p>We can make our code &ldquo;trusted&rdquo;. Use option <code>bootclasspath</code> when running
+<p>We can make our code “trusted”. Use option <code>bootclasspath</code> when running
 your program and specify
 path to system classes plus your one that will use <code>Unsafe</code>.</p>
 
@@ -1587,7 +1587,7 @@ path to system classes plus your one that will use <code>Unsafe</code>.</p>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">java</span> <span class="o">-</span><span class="nl">Xbootclasspath:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">jdk1</span><span class="o">.</span><span class="mf">7.0</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">rt</span><span class="o">.</span><span class="na">jar</span><span class="o">:.</span> <span class="n">com</span><span class="o">.</span><span class="na">mishadoff</span><span class="o">.</span><span class="na">magic</span><span class="o">.</span><span class="na">UnsafeClient</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>But it&rsquo;s too hard.</p>
+<p>But it’s too hard.</p>
 
 <p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
 We can steal that variable via java reflection.</p>
@@ -1600,7 +1600,7 @@ We can steal that variable via java reflection.</p>
 </span><span class="line"><span class="n">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="o">(</span><span class="n">Unsafe</span><span class="o">)</span> <span class="n">f</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><em>Note:</em> Ignore your IDE. For example, eclipse show error &ldquo;Access restriction&hellip;&rdquo;
+<p><em>Note:</em> Ignore your IDE. For example, eclipse show error “Access restriction…”
 but if you run code, all works just fine. If the error is annoying, ignore errors on
 <code>Unsafe</code> usage in:</p>
 
@@ -1669,7 +1669,7 @@ Here is some of them:</p>
 
 <p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
 or bypass security checks in constructor or you want instance of that class
-but don&rsquo;t have any public constructor. Consider following class:</p>
+but don’t have any public constructor. Consider following class:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -1742,7 +1742,7 @@ By the way, its common technique for security bypass.</p>
 it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
 value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
 
-<p>In fact, it&rsquo;s not true. Here is the code demostrates it:</p>
+<p>In fact, it’s not true. Here is the code demostrates it:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -1777,9 +1777,9 @@ located next to current <code>guard</code> object. We can modify its <code>ACCES
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">unsafe</span><span class="o">.</span><span class="na">putInt</span><span class="o">(</span><span class="n">guard</span><span class="o">,</span> <span class="mi">16</span> <span class="o">+</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">),</span> <span class="mi">42</span><span class="o">);</span> <span class="c1">// memory corruption</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Note, we didn&rsquo;t use any reference to this object.
+<p>Note, we didn’t use any reference to this object.
 <code>16</code> is size of <code>Guard</code> object in 32 bit architecture.
-We can calculate it manually or use <code>sizeOf</code> method, that defined&hellip; right now.</p>
+We can calculate it manually or use <code>sizeOf</code> method, that defined… right now.</p>
 
 <h4 id="sizeof"><strong>sizeOf</strong></h4>
 
@@ -1877,7 +1877,7 @@ but it requires specifyng <code>agent</code> option in your JVM.</p>
 
 <p>Having implementation of calculating shallow object size, we can simply
 add function that copy objects. Standard solution need modify your code with <code>Cloneable</code>,
-or you can implement custom copy function in your object, but it won&rsquo;t be multipurpose function.</p>
+or you can implement custom copy function in your object, but it won’t be multipurpose function.</p>
 
 <p>Shallow copy:</p>
 
@@ -1933,10 +1933,10 @@ dynamically. Note that after copying you need to cast object to specific type.</
 <p>One more interesting usage of direct memory access in <code>Unsafe</code> is removing
 unwanted objects from memory.</p>
 
-<p>Most of the APIs for retrieving user&rsquo;s password, have signature
+<p>Most of the APIs for retrieving user’s password, have signature
 as <code>byte[]</code> or <code>char[]</code>. Why arrays?</p>
 
-<p>It is completely for security reason, because we can nullify array elements after we don&rsquo;t need them.
+<p>It is completely for security reason, because we can nullify array elements after we don’t need them.
 If we retrieve password as <code>String</code> it can be saved like an object in memory and nullifying that
 string just perform dereference operation. This object still in memory by the time GC decide to perform cleanup.</p>
 
@@ -1965,6 +1965,25 @@ string just perform dereference operation. This object still in memory by the ti
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Feel safe.</p>
+
+<p><strong>UPDATE:</strong> That way is not really safe. For real safety we need to nullify
+backed char array via reflection:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Field</span> <span class="n">stringValue</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">stringValue</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class="line"><span class="kt">char</span><span class="o">[]</span> <span class="n">mem</span> <span class="o">=</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">stringValue</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">password</span><span class="o">);</span>
+</span><span class="line"><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mem</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">mem</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="sc">&#39;?&#39;</span><span class="o">;</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Thanks to <em>Peter Verhas</em> for pointing out that.</p>
 
 <h4 id="multiple-inheritance"><strong>Multiple Inheritance</strong></h4>
 
@@ -2030,7 +2049,7 @@ or aspects for existing code.</p>
 
 <h4 id="throw-an-exception">Throw an Exception</h4>
 
-<p>Don&rsquo;t like checked exceptions? Not a problem.</p>
+<p>Don’t like checked exceptions? Not a problem.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">getUnsafe</span><span class="o">().</span><span class="na">throwException</span><span class="o">(</span><span class="k">new</span> <span class="n">IOException</span><span class="o">());</span>
@@ -2332,7 +2351,7 @@ Second attempt, add easiest java-way synchronization:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Radical synchronization always work. But timings is awful.
-Let&rsquo;s try <code>ReentrantReadWriteLock</code>:</p>
+Let’s try <code>ReentrantReadWriteLock</code>:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -2494,7 +2513,7 @@ The intuition behind this is simple:</p>
 <h3 id="bonus">Bonus</h3>
 
 <p>Documentation for <code>park</code> method from <code>Unsafe</code> class contains
-longest English sentence I&rsquo;ve ever seen:</p>
+longest English sentence I’ve ever seen:</p>
 
 <blockquote>
   <p>Block current thread, returning when a balancing
@@ -2503,7 +2522,7 @@ already occurred, or the thread is interrupted, or, if not
 absolute and time is not zero, the given time nanoseconds have
 elapsed, or if absolute, the given deadline in milliseconds
 since Epoch has passed, or spuriously (i.e., returning for no
-&ldquo;reason&rdquo;). Note: This operation is in the Unsafe class only
+“reason”). Note: This operation is in the Unsafe class only
 because unpark is, so it would be strange to place it
 elsewhere.</p>
 </blockquote>
@@ -2516,9 +2535,9 @@ elsewhere.</p>
   
   <entry>
     <title type="html"><![CDATA[Elephant-Oriented Programming]]></title>
-    <link href="http://mishadoff.github.com/blog/elephant-oriented-programming/"/>
+    <link href="http://mishadoff.github.io/blog/elephant-oriented-programming/"/>
     <updated>2013-02-26T00:58:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/elephant-oriented-programming</id>
+    <id>http://mishadoff.github.io/blog/elephant-oriented-programming</id>
     <content type="html"><![CDATA[<p>Have you heard about Elephant-Oriented Programming?</p>
 
 <!-- more -->
@@ -2527,7 +2546,7 @@ elsewhere.</p>
 
 <p><img src="http://i.imgur.com/ndEJc05.png" height="300px" width="240px" /></p>
 
-<h4 id="i-bet-you-didnt-understand-anything-so-choose-easy-programming-languagehttpphpnet-with-an-elephant">2. I bet you didn&rsquo;t understand anything, so choose <a href="http://php.net/">easy programming language</a> with an <em>elephant</em>.</h4>
+<h4 id="i-bet-you-didnt-understand-anything-so-choose-easy-programming-languagehttpphpnet-with-an-elephant">2. I bet you didn’t understand anything, so choose <a href="http://php.net/">easy programming language</a> with an <em>elephant</em>.</h4>
 
 <p><img src="http://i.imgur.com/NzWiT2N.jpg" alt="" /></p>
 
@@ -2539,7 +2558,7 @@ elsewhere.</p>
 
 <p><img src="http://i.imgur.com/A4FWqXy.png" alt="" /></p>
 
-<h4 id="and-finally-fancy-word-big-datahttphadoopapacheorg-did-you-say-big-elephants-are-big">5. And finally, fancy word <a href="http://hadoop.apache.org/">Big Data</a>. Did you say &ldquo;big&rdquo;? <em>Elephants</em> are big.</h4>
+<h4 id="and-finally-fancy-word-big-datahttphadoopapacheorg-did-you-say-big-elephants-are-big">5. And finally, fancy word <a href="http://hadoop.apache.org/">Big Data</a>. Did you say “big”? <em>Elephants</em> are big.</h4>
 
 <p><img src="http://hadoop.apache.org/images/hadoop-logo.jpg" alt="" /></p>
 ]]></content>
@@ -2547,9 +2566,9 @@ elsewhere.</p>
   
   <entry>
     <title type="html"><![CDATA[Stirling's Approximation]]></title>
-    <link href="http://mishadoff.github.com/blog/stirlings-approximation/"/>
+    <link href="http://mishadoff.github.io/blog/stirlings-approximation/"/>
     <updated>2013-02-23T01:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/stirlings-approximation</id>
+    <id>http://mishadoff.github.io/blog/stirlings-approximation</id>
     <content type="html"><![CDATA[<p>Do you like factorials?</p>
 
 <p>Probably, you do. If no, whatever, read this post to know
@@ -2563,8 +2582,8 @@ how get rid of factorials.</p>
 ln(n!) = n \cdot ln(n) - n + 1
 </script>
 
-<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling&rsquo;s approximation</a>
-or just Stirling&rsquo;s formula.
+<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling’s approximation</a>
+or just Stirling’s formula.
 It allows to replace factorials with their approximation.
 If you not interested in math, skip to <a href="#usage">formula usage</a></p>
 
@@ -2668,16 +2687,16 @@ is very good property of algorithm. By the way, do not scare people with factori
 </ul>
 
 <p>If you try to calculate <code>ln(n!)</code> with most straightforward implementation
-without suitable datatype, you&rsquo;ll likely get the number overflow exception, in spite
+without suitable datatype, you’ll likely get the number overflow exception, in spite
 of result value is not very large. For example for <code>n=100</code> overall result is
-approximately <code>363</code> (<em>Stirling&rsquo;s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
+approximately <code>363</code> (<em>Stirling’s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
 
 <ul>
   <li><strong>Speedup</strong></li>
 </ul>
 
 <p>As far as I know, calculating factorial is <code>O(n)</code> complexity algorithm,
-because we need <code>n</code> multiplications. Using Stirling&rsquo;s approximation we need to calculate $n^n$ term, that can
+because we need <code>n</code> multiplications. Using Stirling’s approximation we need to calculate $n^n$ term, that can
 be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wiki/Exponentiation_by_squaring">clever trick</a></p>
 
 <ul>
@@ -2687,16 +2706,16 @@ be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wik
 <p>It can be surprising, but factorials defined not only for positive integers.
 So, for example <code>2.5!</code> is completely valid expression. <code>-6!</code> also. They can be calculated
 using <a href="http://en.wikipedia.org/wiki/Gamma_function">Gamma-functions</a> for real numbers. Unfortunately, they are
-pretty complicated, so people use Stirling&rsquo;s formula instead.</p>
+pretty complicated, so people use Stirling’s formula instead.</p>
 
 <ul>
   <li><strong>Partial applications</strong></li>
 </ul>
 
-<p>Almost everything that using factorials can use Stirling&rsquo;s approximation. Permutations,
-binomial coefficients, fractals, number theory and a huge amount of topics I&rsquo;m not aware of.</p>
+<p>Almost everything that using factorials can use Stirling’s approximation. Permutations,
+binomial coefficients, fractals, number theory and a huge amount of topics I’m not aware of.</p>
 
-<p><strong>P.S.</strong> Stirling&rsquo;s formula presented here is rough enough. More accurate formula is
+<p><strong>P.S.</strong> Stirling’s formula presented here is rough enough. More accurate formula is
 $n! = \sqrt{2\pi} n^{n + 0.5}e^{-n}$.
 Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirling.html">here</a>.</p>
 ]]></content>
@@ -2704,9 +2723,9 @@ Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirl
   
   <entry>
     <title type="html"><![CDATA[Heisenberg Principle]]></title>
-    <link href="http://mishadoff.github.com/blog/heisenberg-principle/"/>
+    <link href="http://mishadoff.github.io/blog/heisenberg-principle/"/>
     <updated>2013-02-21T00:24:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/heisenberg-principle</id>
+    <id>http://mishadoff.github.io/blog/heisenberg-principle</id>
     <content type="html"><![CDATA[<p>It is so obvious, so I decided to write about it.</p>
 
 <!-- more -->
@@ -2714,7 +2733,7 @@ Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirl
 <p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
 
 <p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
-came from quantum mechanics and means that you can&rsquo;t know exactly
+came from quantum mechanics and means that you can’t know exactly
 both coordinates and speed of particle. If you improve accuracy of detecting
 position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
 
@@ -2726,18 +2745,18 @@ position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em
 
 <p>The same in every field, even in software engineering.
 If you implementing something or fixing bugs and your boss
-yelling: &ldquo;you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>&rdquo;
+yelling: “you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>”
 tell him <em>either one or the other</em>.</p>
 
-<p><strong>P.S.</strong> Actually, you can say &ldquo;go fuck yourself&rdquo;, but it won&rsquo;t be polite.</p>
+<p><strong>P.S.</strong> Actually, you can say “go fuck yourself”, but it won’t be polite.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 015]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-015/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-015/"/>
     <updated>2013-02-19T00:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-015</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-015</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Starting in the top left corner of a 2 x 2 grid, there are 6 routes
 (without backtracking) to the bottom right corner.</p>
@@ -2752,13 +2771,13 @@ tell him <em>either one or the other</em>.</p>
 <p><img src="http://projecteuler.net/project/images/p_015.gif" alt="" /></p>
 
 <p>Picture is always a huge help to find correct the solution.
-Let&rsquo;s see the pattern here, with another picture</p>
+Let’s see the pattern here, with another picture</p>
 
-<p><em>Warning:</em> If you don&rsquo;t understand art, don&rsquo;t look at that picture.</p>
+<p><em>Warning:</em> If you don’t understand art, don’t look at that picture.</p>
 
 <p><img src="http://i.imgur.com/WNEQNxG.png" alt="" /></p>
 
-<p>It&rsquo;s a solution for 3 x 3 grid. We trying to process it by steps:</p>
+<p>It’s a solution for 3 x 3 grid. We trying to process it by steps:</p>
 
 <ul>
   <li>At the start we located at the top left corner <code>[0, 0]</code>. There is just one case
@@ -2769,7 +2788,7 @@ on the edges of the second diagonal line.</li>
 so there are two routes, and so on.</li>
 </ul>
 
-<p>If you just output the numbers from each diagonal line you&rsquo;ll get:</p>
+<p>If you just output the numbers from each diagonal line you’ll get:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -2781,11 +2800,11 @@ so there are two routes, and so on.</li>
 </span><span class="line">1 3 3 1
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>It&rsquo;s famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal&rsquo;s triangle</a>.
+<p>It’s famous <a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal’s triangle</a>.
 Each element in this triangle obtained by sum of two closest elements from the upper row.</p>
 
 <p>To get desired result we need to sum these numbers again, until we get one number.
-But it&rsquo;s also numbers from Pascal&rsquo;s triangle.</p>
+But it’s also numbers from Pascal’s triangle.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -2796,7 +2815,7 @@ But it&rsquo;s also numbers from Pascal&rsquo;s triangle.</p>
 </span><span class="line">   10  10
 </span><span class="line">     20</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>We can treat Pascal&rsquo;s triangle as a sequence, and each row is an element. Then the
+<p>We can treat Pascal’s triangle as a sequence, and each row is an element. Then the
 following function calculates next row:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -2819,7 +2838,7 @@ following function calculates next row:</p>
 </span><span class="line"><span class="p">(</span><span class="nf">routes-extend</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Now we can build infinite sequence of Pascal&rsquo;s triangle rows:</p>
+<p>Now we can build infinite sequence of Pascal’s triangle rows:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="nv">routes-extend</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -2829,7 +2848,7 @@ following function calculates next row:</p>
 Take a guess. For <code>n x n</code> grid we need to get <code>2 * n + 1</code> row. And take it
 middle element, which, of course, will be with the index <code>n</code>.</p>
 
-<p>That&rsquo;s the final solution:</p>
+<p>That’s the final solution:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -2853,9 +2872,9 @@ solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/B
   
   <entry>
     <title type="html"><![CDATA[Standard ML]]></title>
-    <link href="http://mishadoff.github.com/blog/standard-ml/"/>
+    <link href="http://mishadoff.github.io/blog/standard-ml/"/>
     <updated>2013-02-16T13:33:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/standard-ml</id>
+    <id>http://mishadoff.github.io/blog/standard-ml</id>
     <content type="html"><![CDATA[<p>Last weekend I was hacking <a href="http://en.wikipedia.org/wiki/Standard_ML">Standard ML</a> a bit.</p>
 
 <!-- more -->
@@ -2867,21 +2886,21 @@ solution is <code>O(1)</code> with usage <a href="http://en.wikipedia.org/wiki/B
 <p>Currently, the first half is available, that explains basic and advanced functional programming constructions
 with Standard ML as primary language. Later some idioms will be presented using
 <strong>Racket</strong> and <strong>Ruby</strong> (<em>maybe, I will finally understand ruby</em>) so you can treat this course as introduction
-to these languages. In fact, it teaches much more than &ldquo;<em>how to code in XXX</em>&rdquo;.</p>
+to these languages. In fact, it teaches much more than “<em>how to code in XXX</em>”.</p>
 
 <h3 id="tools">Tools</h3>
 
 <p>For playing with ML you need <a href="http://www.smlnj.org/">SML/NJ</a> compiler and
 <a href="http://www.smlnj.org/doc/Emacs/sml-mode.html">sml-mode</a> for emacs.</p>
 
-<p><em>If you don&rsquo;t have emacs installed, do it right now!</em></p>
+<p><em>If you don’t have emacs installed, do it right now!</em></p>
 
 <h3 id="play">Play</h3>
 
 <p>Following snippets give you basic understanding of ML or
 refresh your knowledge for syntax.</p>
 
-<p>Print &ldquo;Hello, world!&rdquo;:</p>
+<p>Print “Hello, world!”:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">print_hello_world</span> <span class="p">()</span> <span class="p">=</span> <span class="n">print</span> <span class="s2">&quot;Hello, world</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
@@ -2921,7 +2940,7 @@ refresh your knowledge for syntax.</p>
 </pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">sum</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="n">+</span> <span class="n">y</span> <span class="n">+</span> <span class="n">z</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Actually, it&rsquo;s not three parameters, it&rsquo;s one parameter - tuple:</p>
+<p>Actually, it’s not three parameters, it’s one parameter - tuple:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">fun</span> <span class="nf">swap</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
@@ -2938,7 +2957,7 @@ refresh your knowledge for syntax.</p>
 <p>You can specify input types and return type, but ML is very clever. Almost always
 it can detect correct type using <em>type inference</em> without explicit definition.</p>
 
-<p><em>I don&rsquo;t understand it! Explain, please</em>. Comments:</p>
+<p><em>I don’t understand it! Explain, please</em>. Comments:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -2946,7 +2965,7 @@ it can detect correct type using <em>type inference</em> without explicit defini
 </span><span class="line"><span class="kr">fun</span> <span class="nf">cube</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span> <span class="n">*</span> <span class="n">x</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>There is records. It&rsquo;s like named tuples.</p>
+<p>There is records. It’s like named tuples.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -3011,7 +3030,7 @@ so we can assign one function to another:</p>
 </span><span class="line"><span class="n">binary_apply</span><span class="p">(</span><span class="n">swap</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>We don&rsquo;t forced to provide function name, we can use lambdas:</p>
+<p>We don’t forced to provide function name, we can use lambdas:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="n">binary_apply</span><span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">x</span> <span class="n">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">46</span><span class="p">)</span>
@@ -3045,7 +3064,7 @@ But they are already available in
 </span><span class="line">      <span class="n">|</span> <span class="n">x::xs</span> <span class="p">=&gt;</span> <span class="n">x::concat</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Honestly, it&rsquo;s just baby examples of pattern matching. In fact, it is much more
+<p>Honestly, it’s just baby examples of pattern matching. In fact, it is much more
 powerful.</p>
 
 <p>And the last thing I wanted to show is datatypes:</p>
@@ -3062,7 +3081,7 @@ powerful.</p>
 </pre></td><td class="code"><pre><code class="sml"><span class="line"><span class="kr">val</span> <span class="nv">list</span> <span class="p">=</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">CONS</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">EMPTY</span><span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>That&rsquo;s very small part of all that can be done in ML. There are also a lot of useful
+<p>That’s very small part of all that can be done in ML. There are also a lot of useful
 constructs and idioms that not covered: type synonyms, polymorphic types,
 equality types, tail recursion, mutual recursion, function wrapping,
 currying, partial application, advanced pattern matching, signatures,
@@ -3076,7 +3095,7 @@ modules and lot more.</p>
 <h3 id="impressions">Impressions</h3>
 
 <p>ML is a great language. Perhaps, it is not so great as Java in enterprise, and not
-so great as Clojure in rapid prototyping, but it&rsquo;s worth to devote
+so great as Clojure in rapid prototyping, but it’s worth to devote
 few days for ML basics. It really improve your dev skills and maybe made your
 <em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
 ]]></content>
@@ -3084,9 +3103,9 @@ few days for ML basics. It really improve your dev skills and maybe made your
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-014/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-014/"/>
     <updated>2013-02-16T01:08:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-014</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-014</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Which starting number, under one million, produces the longest Collatz chain?</p>
 </blockquote>
@@ -3155,19 +3174,19 @@ for all numbers in range <code>[1..1000000]</code>, find maximum and output its 
 <p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
 and I have no idea how to solve it another way.</p>
 
-<p>I am sure there is a better algorithm than mine. But I don&rsquo;t know it.
+<p>I am sure there is a better algorithm than mine. But I don’t know it.
 What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
 
 <blockquote>
   <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
 </blockquote>
 
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,&hellip;</p>
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
 
 <p>Got it?</p>
 
 <p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don&rsquo;t need to calculate length
+chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
 for <code>40</code>, <code>20</code> and so on.</p>
 
 <p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
@@ -3190,10 +3209,10 @@ almost exactly follows the problem definition. It is easy to understand.</p>
 <a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
 have troubles. Do not think about it unless we actually have them.</p>
 
-<p>For the sake of fun let&rsquo;s run this function instead of previous to
+<p>For the sake of fun let’s run this function instead of previous to
 obtain the results.</p>
 
-<p><strong>20 seconds</strong>, it is great. I even don&rsquo;t think that
+<p><strong>20 seconds</strong>, it is great. I even don’t think that
 this simple recursive function gives such boost in performance.</p>
 
 <p>One little tweak in result function:</p>
@@ -3208,14 +3227,14 @@ this simple recursive function gives such boost in performance.</p>
 
 <p>And we have <strong>~12 seconds</strong>.</p>
 
-<p>Unexpected &ldquo;The End&rdquo;. Yeah, I love The Doors.</p>
+<p>Unexpected “The End”. Yeah, I love The Doors.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
 
 <p><strong>P.S.</strong> I really wanted to explain technique called
 <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
 simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn&rsquo;t have much sense here because
+but seems that caching result doesn’t have much sense here because
 12 seconds is acceptable. We will have chance to introduce
 memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 ]]></content>
@@ -3223,9 +3242,9 @@ memoization later, where it will be more useful. By the way, I am <em>lazy</em>.
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 1]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-1/"/>
     <updated>2013-02-12T02:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-1</id>
     <content type="html"><![CDATA[<p>How to get job at Google, estimate complexity of your algorithm,
 what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
 
@@ -3234,9 +3253,9 @@ what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, 
 <h3 id="get-that-job-at-googlehttpsteve-yeggeblogspotcom200803get-that-job-at-googlehtml">1. <a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Get that job at Google</a></h3>
 
 <blockquote>
-  <p>&hellip;it&rsquo;s highly likely that someone on the loop will be unimpressed with you,
-even if you are Alan Turing. Especially if you&rsquo;re Alan Turing,
-in fact, since it means you obviously don&rsquo;t know C++</p>
+  <p>…it’s highly likely that someone on the loop will be unimpressed with you,
+even if you are Alan Turing. Especially if you’re Alan Turing,
+in fact, since it means you obviously don’t know C++</p>
 </blockquote>
 
 <p>The quote accurately explains what this post about. The author gives great mental and
@@ -3245,7 +3264,7 @@ Big portion of motivation guaranteed, perhaps you man feel dumber after reading.
 
 <p>In few words, you must know: algorithm complexity, sorting, hashtables, trees,
 graphs, other data structures, math, operating systems and at least one programming language very well.
-Not bad, right? After reading that article I&rsquo;ve build long-term learning plan for myself, which is still
+Not bad, right? After reading that article I’ve build long-term learning plan for myself, which is still
 not succesful. Great article.</p>
 
 <h3 id="a-gentle-introduction-to-algorithm-complexity-analysishttpdiscretegrcomplexity">2. <a href="http://discrete.gr/complexity/">A Gentle Introduction to Algorithm Complexity Analysis</a></h3>
@@ -3254,12 +3273,12 @@ not succesful. Great article.</p>
 By the way, it is written with understandable (<em>for programmers</em>) language, examples, pictures, excerpts - I like
 such style.</p>
 
-<p>After reading, you&rsquo;ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
+<p>After reading, you’ll understand what time/space complexity is, difference between <em>Theta</em> and <em>Big-O</em> notations,
 recursive functions complexity and lot more. By the way, you will learn basic classes of time complexities, and get
 skill to classify that complexities on O(n), O(n^2 ), O(n*logn), etc. Note, the articles consists of some excercises, which immediately followed
 with solutions. It is more productive to solve this exercises by yourselves and then compare to solutions.</p>
 
-<p>If you already know all that, don&rsquo;t skip! It also helpful to fresh you knowledge.</p>
+<p>If you already know all that, don’t skip! It also helpful to fresh you knowledge.</p>
 
 <h3 id="on-structural-immutabilityhttpclojurefunwordpresscom20130121on-structural-immutability">3. <a href="http://clojurefun.wordpress.com/2013/01/21/on-structural-immutability/">On Structural Immutability</a></h3>
 
@@ -3285,22 +3304,22 @@ full mutability. Plain old array is an example. Read it to know more.</p>
 <p>Total destroy. I mean it - total.</p>
 
 <blockquote>
-  <p>Array&hellip; This one datatype acts as a list, ordered hash, ordered set,
+  <p>Array… This one datatype acts as a list, ordered hash, ordered set,
 sparse list, and occasionally some strange combination of those.
 How does it perform? What kind of memory use will there be?
 Who knows? Not like I have other options, anyway.</p>
 </blockquote>
 
-<p>As I never know PHP, and hope won&rsquo;t, that article was one of the funniest things I ever read.</p>
+<p>As I never know PHP, and hope won’t, that article was one of the funniest things I ever read.</p>
 
 <blockquote>
-  <p>equality operator is not transitive&hellip;comparison is not even consistent</p>
+  <p>equality operator is not transitive…comparison is not even consistent</p>
 </blockquote>
 
-<p>If you PHPist don&rsquo;t go away, just read it. Maybe it will change your life.</p>
+<p>If you PHPist don’t go away, just read it. Maybe it will change your life.</p>
 
 <blockquote>
-  <p>Genericism&hellip; There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
+  <p>Genericism… There is none. If a function might need to do two slightly different things, PHP just has two functions.</p>
 </blockquote>
 
 <p>Stop quoting. Just read it.</p>
@@ -3325,7 +3344,7 @@ class <code>sun.misc.Unsafe</code>. Just note this only works in SunJDK and Open
 
 <h3 id="state-of-the-lambdahttpcropenjdkjavanetbriangoetzlambdalambda-state-4html">7. <a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html">State of the Lambda</a></h3>
 
-<p>If we started about JDK8&hellip;</p>
+<p>If we started about JDK8…</p>
 
 <p>The most interesting feature set in expected JDK8 is Project Lambda.</p>
 
@@ -3345,8 +3364,8 @@ parallelism, streams, method references and lot more comming soon.</p>
   <p>We need to go deeper</p>
 </blockquote>
 
-<p>Honestly, it&rsquo;s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
-you really interested in gamedev, you&rsquo;ll find a lot of there including game algorithms,
+<p>Honestly, it’s not a joke that I post link to another digest. It gathers a lot of gamedev tutorials and if
+you really interested in gamedev, you’ll find a lot of there including game algorithms,
 popular engine tutorials, math behind the games, design questions and more useful tips. Great stuff.</p>
 
 <h3 id="how-to-pair-socks-from-a-pile-efficientlyhttpstackoverflowcomquestions14415881how-to-pair-socks-from-a-pile-efficiently">9. <a href="http://stackoverflow.com/questions/14415881/how-to-pair-socks-from-a-pile-efficiently">How to pair socks from a pile efficiently?</a></h3>
