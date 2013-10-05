@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-05T02:24:52+03:00</updated>
+  <updated>2013-10-05T16:11:30+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-021/"/>
+    <updated>2013-10-05T15:24:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-021</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Evaluate the sum of all the amicable numbers under 10000.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=21">http://projecteuler.net/problem=21</a></p>
+
+<!-- more -->
+
+<blockquote>
+  <p>Let d(n) be defined as the sum of proper divisors of n
+(numbers less than n which divide evenly into n).</p>
+
+  <p>If d(a) = b and d(b) = a, where a != b, then a and b are an
+amicable pair and each of a and b are called amicable numbers.</p>
+
+  <p>For example, the proper divisors of 220 are
+1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284.
+The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
+</blockquote>
+
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
+
+<p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [base (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (concat (map #(/ n %) base) base))))
+</code></p>
+
+<p>Bad approach to find all divisors: to iterate on all numbers from 1 to <code>n</code>
+and check if it is divisor or not.
+Instead, we iterate from 1 to <code>sqrt(n)</code>, find one divisor and
+calculate another symmetric divisor.</p>
+
+<p>For example, take number <code>10</code>.
+We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code> is divisor, so we divide <code>(/ 10 2)</code>, get <code>5</code> which is also divisor. And so on.</p>
+
+<p>This is predicate checks where two numbers amicable or not:</p>
+
+<p><code>clojure
+(defn amicable? [a b]
+  (and (not (= a b))
+       (= a (sum-of-proper-divisors b))
+       (= b (sum-of-proper-divisors a))))
+</code></p>
+
+<p>Obvious enough, just consider that we skip case where <code>(= a b)</code>.</p>
+
+<p>The last part is to use our functions to obtain result.</p>
+
+<p><code>clojure
+(reduce +
+  (let [sums (vec (map sum-of-proper-divisors (range 1 10000)))]
+    (for [i (range 1 10000)]
+      (if (amicable? i (nth sums (dec i))) i 0))))
+</code></p>
+
+<p>Just generate all sums, and check if another number <code>i</code> produce the amicable pair. Done!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem021.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Take a look at the last snippet. <code>vec</code> is really important there.</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Announcing numberto]]></title>
@@ -409,123 +481,6 @@ and look very ugly, so I decided to create a separate set of functions (<em>libr
 which I can refer. It should be a set of common mathematic functions, including
 different sequences, sums, converters, interesting numbers. You might use it too.
 Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 019]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-019/"/>
-    <updated>2013-07-10T01:59:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-019</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>How many Sundays fell on the first of the month
-during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=19">http://projecteuler.net/problem=19</a></p>
-
-<!-- more -->
-
-<p>Project Euler also gives following information:</p>
-
-<ul>
-  <li>1 Jan 1900 was a Monday.</li>
-  <li>
-    <p>A poem</p>
-
-    <p>Thirty days has September,<br />
-April, June and November.<br />
-All the rest have thirty-one,<br />
-Saving February alone,<br />
-Which has twenty-eight, rain or shine.<br />
-And on leap years, twenty-nine.<br /></p>
-  </li>
-  <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
-</ul>
-
-<p>Implementin calendars logic is great, but java interoperability is much better!</p>
-
-<p>First of all, take standard java <code>GregorianCalendar</code> class.
-We can import it <em>almost</em> the same way as we use <code>require</code> </p>
-
-<p><code>clojure
-(import [java.util GregorianCalendar])
-</code></p>
-
-<p>To create an object use function <code>new</code></p>
-
-<p><code>clojure
-(new GregorianCalendar)
-</code></p>
-
-<p>But it is more idiomatic way to create java objects with special syntax:
-<em>period after class name</em> </p>
-
-<p><code>clojure
-(GregorianCalendar.)
-</code></p>
-
-<p>To configure calendar object to specific date we need to set some its
-properties. Setters syntax is following (assuming <code>calendar</code>
-is an object of calendar):</p>
-
-<p>Java</p>
-
-<p><code>java 
-calendar.set(GregorianCalendar.YEAR, 2013);
-</code></p>
-
-<p>Clojure</p>
-
-<p><code>clojure
-(.set calendar GregorianCalendar/YEAR 2013)
-</code></p>
-
-<p>Executing lot of setters is the same boilerplate as in java:</p>
-
-<p><code>clojure
-(do
-  (.set calendar GregorianCalendar/YEAR 2013)
-  (.set calendar GregorianCalendar/MONTH 11)
-  (.set calendar GregorianCalendar/DAY_OF_MONTH 1))
-</code></p>
-
-<p>To avoid repetition of object name we can use <code>doto</code> macro:</p>
-
-<p><code>clojure
-(doto (GregorianCalendar.)
-  (.set GregorianCalendar/YEAR 2013)
-  (.set GregorianCalendar/MONTH 11)
-  (.set GregorianCalendar/DAY_OF_MONTH 1))
-</code></p>
-
-<p>This macro <em>magically</em> performs the same set of operations as above, but in more readable way.</p>
-
-<p>Now we can create calendar objects for the <em>first of the
-specific month of the specific year</em></p>
-
-<p><code>clojure
-(defn calendar-for [year month]
-  (doto (GregorianCalendar.)
-    (.set GregorianCalendar/YEAR year)
-    (.set GregorianCalendar/MONTH month)
-    (.set GregorianCalendar/DAY_OF_MONTH 1)))
-</code></p>
-
-<p>Just iterate through all such objects in date range given in problem definition
-and count Sundays.</p>
-
-<p><code>clojure
-(reduce +
-  (for [year (range 1901 (inc 2000)) month (range 1 (inc 12))]
-    (let [c (calendar-for year month)]
-          (if (= GregorianCalendar/SUNDAY 
-                 (.get c GregorianCalendar/DAY_OF_WEEK)) 1 0))))
-</code></p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
-
-<p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
 ]]></content>
   </entry>
   
