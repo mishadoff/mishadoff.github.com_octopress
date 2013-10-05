@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-05T02:19:42+03:00</updated>
+  <updated>2013-10-05T16:11:30+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-021/"/>
+    <updated>2013-10-05T15:24:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-021</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Evaluate the sum of all the amicable numbers under 10000.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=21">http://projecteuler.net/problem=21</a></p>
+
+<!-- more -->
+
+<blockquote>
+  <p>Let d(n) be defined as the sum of proper divisors of n
+(numbers less than n which divide evenly into n).</p>
+
+  <p>If d(a) = b and d(b) = a, where a != b, then a and b are an
+amicable pair and each of a and b are called amicable numbers.</p>
+
+  <p>For example, the proper divisors of 220 are
+1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284.
+The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
+</blockquote>
+
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
+
+<p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [base (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (concat (map #(/ n %) base) base))))
+</code></p>
+
+<p>Bad approach to find all divisors: to iterate on all numbers from 1 to <code>n</code>
+and check if it is divisor or not.
+Instead, we iterate from 1 to <code>sqrt(n)</code>, find one divisor and
+calculate another symmetric divisor.</p>
+
+<p>For example, take number <code>10</code>.
+We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code> is divisor, so we divide <code>(/ 10 2)</code>, get <code>5</code> which is also divisor. And so on.</p>
+
+<p>This is predicate checks where two numbers amicable or not:</p>
+
+<p><code>clojure
+(defn amicable? [a b]
+  (and (not (= a b))
+       (= a (sum-of-proper-divisors b))
+       (= b (sum-of-proper-divisors a))))
+</code></p>
+
+<p>Obvious enough, just consider that we skip case where <code>(= a b)</code>.</p>
+
+<p>The last part is to use our functions to obtain result.</p>
+
+<p><code>clojure
+(reduce +
+  (let [sums (vec (map sum-of-proper-divisors (range 1 10000)))]
+    (for [i (range 1 10000)]
+      (if (amicable? i (nth sums (dec i))) i 0))))
+</code></p>
+
+<p>Just generate all sums, and check if another number <code>i</code> produce the amicable pair. Done!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem021.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Take a look at the last snippet. <code>vec</code> is really important there.</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
@@ -393,74 +465,6 @@ recursively calculate the length of remainder, which is lower than <code>100</co
 
 <p>P.S. In fact algorithm is very simple, but needs some time to understand few branches.
 By the way, the problem is little boring.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 016]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-016/"/>
-    <updated>2013-03-05T01:31:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-016</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
-
-  <p>What is the sum of the digits of the number 2^1000 ?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=16">http://projecteuler.net/problem=16</a></p>
-
-<!-- more -->
-
-<p>Are you kidding me?</p>
-
-<ul>
-  <li>Find 1000th <em>power of two</em></li>
-  <li>Sum its digits</li>
-</ul>
-
-<p>In <a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> we
-learned how to sum digits in the number. Just gentle reminder:</p>
-
-<p><code>clojure
-(defn sum-of-digits [n]
-  (reduce + (map #(- (int %) 48) (seq (str n)))))
-</code></p>
-
-<p>Now, let’s create sequence of powers of two:</p>
-
-<p><code>clojure
-(defn powers-of-2 []
-  (iterate (partial * 2) 1))
-</code></p>
-
-<p>Unfortunately, this sequence throws <code>integer overflow</code> on the <code>64th</code> element.
-We can fix that using <em>long arithmetics</em>, which known as <code>BigInteger</code> in Java.
-Change <code>1</code> to <code>1N</code>.</p>
-
-<p><code>clojure
-(iterate (partial * 2) 1N)
-</code></p>
-
-<p>Another way is to use <strong>automatic promotion</strong> operator (<code>+'</code>, <code>*'</code>).
-If result of some operation is not suitable for some type,
-instead of invalid computation and runtime exception, clojure automatically promotes
-the type to suitable one (<em>for example</em> <code>Long.MAX_VALUE +' 1</code> <em>works fine and produces
- correct result with type of</em> <code>BigInteger</code>):</p>
-
-<p><code>clojure
-(iterate (partial *' 2) 1)
-</code></p>
-
-<p>Choose <code>powers-of-2</code> that you prefer and final result will look like this:</p>
-
-<p><code>clojure
-(sum-of-digits (last (take 1001 (powers-of-2))))
-</code></p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem016.clj">github</a></p>
-
-<p><strong>P.S.</strong> Automatic promotion is a beatiful thing. But be aware about losing in
-speed of calculations. Also, no way back. If promotion happened, <em>depromotion</em> won’t.</p>
 ]]></content>
   </entry>
   

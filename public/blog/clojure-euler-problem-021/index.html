@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Clojure Euler: Problem 007 - mishadoff thoughts</title>
+  <title>Clojure Euler: Problem 021 - mishadoff thoughts</title>
   <meta name="author" content="mishadoff">
 
   
-  <meta name="description" content="By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13. What is the 10001st prime number? Permalink: &hellip;">
+  <meta name="description" content="Evaluate the sum of all the amicable numbers under 10000. Permalink: http://projecteuler.net/problem=21 Let d(n) be defined as the sum of proper &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-007/">
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-021/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -98,7 +98,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">Clojure Euler: Problem 007</h1>
+      <h1 class="entry-title">Clojure Euler: Problem 021</h1>
     
     
       <p class="meta">
@@ -114,7 +114,7 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2012-11-20T15:37:00+02:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+<time datetime="2013-10-05T15:24:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2013</time>
         
       </p>
     
@@ -122,54 +122,77 @@ MathJax.Hub.Config({
 
 
 <div class="entry-content"><blockquote>
-  <p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+  <p>Evaluate the sum of all the amicable numbers under 10000.</p>
 </blockquote>
 
-<blockquote>
-  <p>What is the 10001st prime number?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=7">http://projecteuler.net/problem=7</a></p>
+<p>Permalink: <a href="http://projecteuler.net/problem=21">http://projecteuler.net/problem=21</a></p>
 
 <!-- more -->
 
-<p>It’s also pretty clear problem to make you more familiar with prime numbers.
-As I said in <a href="/blog/clojure-euler-problem-003">Clojure Euler: Problem 003</a>,
-big amount of Project Euler problems devoted to prime numbers so it is <strong>MUST HAVE</strong> (<em>I don’t like this phrase either</em>)</p>
-
-<p>You need to implement by yourself effective prime number algorithm. And only after that use one from library.
-As we do.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.lazy-seqs</span> <span class="ss">:only</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)])</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>This line import just one symbol <code>primes</code> to your namespace. It’s a prime numbers lazy sequence. Lazy sequences briefly covered
-in <a href="/blog/clojure-euler-problem-002">Clojure Euler: Problem 002</a> or <a href="http://en.wikipedia.org/wiki/Lazy_evaluation">Wikipedia article</a>,
-that’s enough for now.</p>
-
-<p>Return to question.</p>
-
 <blockquote>
-  <p>What is the 10001st prime number?</p>
+  <p>Let d(n) be defined as the sum of proper divisors of n
+(numbers less than n which divide evenly into n).</p>
+
+  <p>If d(a) = b and d(b) = a, where a != b, then a and b are an
+amicable pair and each of a and b are called amicable numbers.</p>
+
+  <p>For example, the proper divisors of 220 are
+1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284.
+The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
 </blockquote>
 
-<p>No problem.</p>
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
+
+<p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">last </span><span class="p">(</span><span class="nb">take </span><span class="mi">10001</span> <span class="nv">primes</span><span class="p">))</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of-proper-divisors</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">base</span> <span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">)))]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">reduce + </span><span class="mi">1</span> <span class="p">(</span><span class="nb">concat </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">base</span><span class="p">)</span> <span class="nv">base</span><span class="p">))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Two lines of code: one for import, one for solution. What can be simpler?</p>
+<p>Bad approach to find all divisors: to iterate on all numbers from 1 to <code>n</code>
+and check if it is divisor or not.
+Instead, we iterate from 1 to <code>sqrt(n)</code>, find one divisor and
+calculate another symmetric divisor.</p>
 
-<p>Note, that <a href="http://clojuredocs.org/clojure_core/clojure.core/last">last</a> return last element of the sequence and works in linear time.</p>
+<p>For example, take number <code>10</code>.
+We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code> is divisor, so we divide <code>(/ 10 2)</code>, get <code>5</code> which is also divisor. And so on.</p>
 
-<p>Another one problem solved in few <strike>seconds</strike> minutes.</p>
+<p>This is predicate checks where two numbers amicable or not:</p>
 
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem007.clj">GitHub</a></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">amicable?</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+</span><span class="line">       <span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="p">(</span><span class="nf">sum-of-proper-divisors</span> <span class="nv">b</span><span class="p">))</span>
+</span><span class="line">       <span class="p">(</span><span class="nb">= </span><span class="nv">b</span> <span class="p">(</span><span class="nf">sum-of-proper-divisors</span> <span class="nv">a</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><strong>P.S.</strong> Actually, I lied. In linked solution I use 6 lines of code: namespace declaration, use, <em>empty line</em>,
-comment with executing time, function declaration and, finally, solution.</p>
+<p>Obvious enough, just consider that we skip case where <code>(= a b)</code>.</p>
+
+<p>The last part is to use our functions to obtain result.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">sums</span> <span class="p">(</span><span class="nf">vec</span> <span class="p">(</span><span class="nb">map </span><span class="nv">sum-of-proper-divisors</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">10000</span><span class="p">)))]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">10000</span><span class="p">)]</span>
+</span><span class="line">      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">amicable?</span> <span class="nv">i</span> <span class="p">(</span><span class="nb">nth </span><span class="nv">sums</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">i</span><span class="p">)))</span> <span class="nv">i</span> <span class="mi">0</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Just generate all sums, and check if another number <code>i</code> produce the amicable pair. Done!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem021.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Take a look at the last snippet. <code>vec</code> is really important there.</p>
+
 </div>
 
 
@@ -192,7 +215,7 @@ comment with executing time, function declaration and, finally, solution.</p>
   
 
 
-<time datetime="2012-11-20T15:37:00+02:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+<time datetime="2013-10-05T15:24:00+03:00" pubdate data-updated="true">Oct 5<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -206,7 +229,7 @@ comment with executing time, function declaration and, finally, solution.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-007/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-007/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-021/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-021/" >Tweet</a>
   
   
   
@@ -217,10 +240,8 @@ comment with executing time, function declaration and, finally, solution.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/java-magic-part-3-finally/" title="Previous Post: Java Magic. Part 3: Finally">&laquo; Java Magic. Part 3: Finally</a>
+        <a class="basic-alignment left" href="/blog/announcing-numberto/" title="Previous Post: Announcing numberto">&laquo; Announcing numberto</a>
       
-      
-        <a class="basic-alignment right" href="/blog/pigeon-cipher/" title="Next Post: Pigeon Cipher">Pigeon Cipher &raquo;</a>
       
     </p>
   </footer>
@@ -307,8 +328,8 @@ comment with executing time, function declaration and, finally, solution.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-007/';
-        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-007/';
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-021/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-021/';
         var disqus_script = 'embed.js';
       
     (function () {

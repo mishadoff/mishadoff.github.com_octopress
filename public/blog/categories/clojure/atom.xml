@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-05T02:19:42+03:00</updated>
+  <updated>2013-10-05T16:11:30+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-021/"/>
+    <updated>2013-10-05T15:24:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-021</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Evaluate the sum of all the amicable numbers under 10000.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=21">http://projecteuler.net/problem=21</a></p>
+
+<!-- more -->
+
+<blockquote>
+  <p>Let d(n) be defined as the sum of proper divisors of n
+(numbers less than n which divide evenly into n).</p>
+
+  <p>If d(a) = b and d(b) = a, where a != b, then a and b are an
+amicable pair and each of a and b are called amicable numbers.</p>
+
+  <p>For example, the proper divisors of 220 are
+1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284.
+The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
+</blockquote>
+
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
+
+<p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [base (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (concat (map #(/ n %) base) base))))
+</code></p>
+
+<p>Bad approach to find all divisors: to iterate on all numbers from 1 to <code>n</code>
+and check if it is divisor or not.
+Instead, we iterate from 1 to <code>sqrt(n)</code>, find one divisor and
+calculate another symmetric divisor.</p>
+
+<p>For example, take number <code>10</code>.
+We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code> is divisor, so we divide <code>(/ 10 2)</code>, get <code>5</code> which is also divisor. And so on.</p>
+
+<p>This is predicate checks where two numbers amicable or not:</p>
+
+<p><code>clojure
+(defn amicable? [a b]
+  (and (not (= a b))
+       (= a (sum-of-proper-divisors b))
+       (= b (sum-of-proper-divisors a))))
+</code></p>
+
+<p>Obvious enough, just consider that we skip case where <code>(= a b)</code>.</p>
+
+<p>The last part is to use our functions to obtain result.</p>
+
+<p><code>clojure
+(reduce +
+  (let [sums (vec (map sum-of-proper-divisors (range 1 10000)))]
+    (for [i (range 1 10000)]
+      (if (amicable? i (nth sums (dec i))) i 0))))
+</code></p>
+
+<p>Just generate all sums, and check if another number <code>i</code> produce the amicable pair. Done!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem021.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Take a look at the last snippet. <code>vec</code> is really important there.</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Announcing numberto]]></title>
@@ -382,227 +454,6 @@ and count Sundays.</p>
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
 
 <p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Fast Factorial]]></title>
-    <link href="http://mishadoff.github.io/blog/fast-factorial/"/>
-    <updated>2013-06-07T01:08:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/fast-factorial</id>
-    <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
-In <a href="/blog/stirlings-approximation/">Stirling’s Approximation</a> article
-we’ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
-By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
-than “by definition”.</p>
-
-<!-- more -->
-
-<h3 id="factorials">Factorials</h3>
-
-<p>Most of programming languages tutorials shows the following
-approach to calculate factorial (<em>transformed to clojure</em>):</p>
-
-<p><code>clojure
-(defn factorial [n]
-  (if (zero? n) 1
-      (* n (factorial (dec n)))))
-</code></p>
-
-<p>Simple recursive solution.</p>
-
-<p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
-
-<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>…</p>
-
-<p><code>
-&gt; ArithmeticException integer overflow
-</code></p>
-
-<p>Oops.</p>
-
-<p>Default clojure integer type is 64 bit (<code>Long</code>).
-It does not fit well for <em>such large input</em>, so we rewrite function.</p>
-
-<p><code>clojure
-(defn ! [n]
-  (if (zero? n) 1
-      (*' n (! (dec n)))))
-</code></p>
-
-<p>Just one character added, <code>*</code> became <code>*'</code>. It is automatic type promotion.
-If type can not hold the value without losing precision, it automatically extends.
-In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
-
-<p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
-<code>(! 30000)</code>…</p>
-
-<p><code>
-&gt; StackOverflowError
-</code></p>
-
-<p>Yet another overflow.</p>
-
-<p>Well, stack size is limited. We don’t need to consume stackframes and
-will use <code>loop/recur</code> approach.</p>
-
-<p><code>clojure
-(defn ! [n]
-  (loop [cur n acc 1]
-    (if (zero? cur) acc
-        (recur (dec cur) (*' cur acc)))))
-</code></p>
-
-<p>It is also recursive approach, but instead of saving so far calculated value
-in stack, we pass it to the function as a parameter.
-Clojure optimize tail recursion to iterative version and does not consume stack.
-It succesfully calculates factorial for 30000,
-and for any other value. Great!</p>
-
-<p>If we look at the factorial as a calculation process, not definition, it means
-“product of all numbers between 1 and n”. It is very concise for functional programming:</p>
-
-<p><code>clojure
-(defn ! [n]
-  (reduce *' (range 1 (inc n))))
-</code></p>
-
-<p>Does not consume stack, no number overflow, but works
-~2 times slower than <code>loop/recur</code> version.</p>
-
-<p>I don’t know the reason, but it seems time wasted
-by <code>reduce</code> for creating intermediate results. So we choose
-previous <code>loop/recur</code> function as baseline factorial.</p>
-
-<h3 id="fast-factorial">Fast Factorial</h3>
-
-<p>Here is another way to calculate factorial.</p>
-
-<p>Let’s consider example <code>12!</code>.</p>
-
-<p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
-Perform prime factorization of each number.
-For example, prime factorization of <code>12</code> is <code>2 * 2 * 3</code>.</p>
-
-<p>After that we get a factorization of the <code>12!</code>, which contains only prime numbers.
-To find factorial value we can just multiply them all. But we do clever trick instead.</p>
-
-<p>Group every prime number and its power.
-E.g. if we have factorization <code>2 * 2 * 2 * 3 * 5</code> it becomes vector of pairs <code>[[2 3] [3 1] [5 1]]</code>.</p>
-
-<p>To calculate power we have simple <code>power</code> implementation:</p>
-
-<p><code>clojure
-(defn power [x n]
-  (reduce *' (repeat n x)))
-</code></p>
-
-<p>Trick is using exponentiation by squaring, which reduce
-exponentiation complexity from <code>O(n)</code> to <code>O(log n)</code>.</p>
-
-<p><code>clojure
-(defn power [x n]
-  (cond (= 0 n) 1
-        (= 1 n) x
-        (even? n) (power* (*' x x) (/ n 2))
-        (odd? n) (*' x (power* (*' x x) (/ (dec n) 2)))))
-</code></p>
-
-<p>It is not tail-recursive solution and theoretically may cause
-stackoverflow, but its not critical. It works well for large numbers.</p>
-
-<p>Actually, we do not perform factorization. We just know that factorization of <code>n!</code> contains all prime numbers below or equal <code>n</code> and every number have some multiplicity. </p>
-
-<p>The function calculates how many times prime number <code>k</code> occurs in factorial factorization for <code>n</code></p>
-
-<p><code>clojure
-(defn- find-power [n k]
-  (loop [total n sum 0]
-    (let [i (int (/ total k))]
-      (if (zero? i) sum
-          (recur i (+ sum i))))))
-</code></p>
-
-<p>Binding all together:</p>
-
-<p><code>clojure
-(defn !! [n]
-  (loop [[h &amp; t] 
-         (map #(power % (find-power n %))
-              (take-while #(&lt;= % n) (primes)))
-         acc 1]
-    (if h (recur t (*' h acc)) acc)))
-</code></p>
-
-<p><a href="https://github.com/mishadoff/numberto/blob/master/src/numberto/factorial.clj">Code available here</a></p>
-
-<p><em>Note:</em> <code>primes</code> is a function generates lazy-sequence of prime numbers. It can be taken from <code>clojure.contrib.lazy-seqs</code>.</p>
-
-<h3 id="testing">Testing</h3>
-
-<blockquote>
-  <p>Anyway, why do you think it is faster?
-You performing more calculations than just multiplying numbers.</p>
-</blockquote>
-
-<p>Let’s see.</p>
-
-<p><code>clojure
-(do (println "== 10 ==")
-    (time (! 10))
-    (time (!! 10))
-    (println "== 100 ==")
-    (time (! 100))
-    (time (!! 100))
-    (println "== 1000 ==")
-    (time (! 1000))
-    (time (!! 1000))
-    (println "== 10000 ==")
-    (time (! 10000))
-    (time (!! 10000))
-    (println "== 100000 ==")
-    (time (! 100000))
-    (time (!! 100000))
-    (println "== 1000000 ==")
-    (time (! 1000000))
-    (time (!! 1000000)) nil)
-</code></p>
-
-<p><code>
-== 10 ==
-"Elapsed time: 0.051054 msecs"
-"Elapsed time: 0.137587 msecs"
-== 100 ==
-"Elapsed time: 0.081365 msecs"
-"Elapsed time: 0.376653 msecs"
-== 1000 ==
-"Elapsed time: 1.59252 msecs"
-"Elapsed time: 3.212842 msecs"
-== 10000 ==
-"Elapsed time: 161.856965 msecs"
-"Elapsed time: 76.452529 msecs"
-== 100000 ==
-"Elapsed time: 19403.375319 msecs"
-"Elapsed time: 6372.35266 msecs"
-== 1000000 ==
-"Elapsed time: 2863893.471718 msecs"
-"Elapsed time: 1079632.255919 msecs"
-nil
-</code></p>
-
-<p>For small factorials <code>(&lt; 1000)</code> improved version works ~2 times slower.
-Around the thousand it has the same performance as standard version.
-And, finally, some win (up to 3 times) for larger numbers.</p>
-
-<p>Theoretically, you can implement generalized factorial with these two algorithms
-and switch between them, depending on input. But who really need it? </p>
-
-<blockquote>
-  <p>Question: What the complexity of this algorithm?</p>
-</blockquote>
-
-<p><strong>P.S.</strong> Enterprise lovers would say factorial complexity is <code>O(1)</code>.
-Just precompute all values and save them to database.</p>
 ]]></content>
   </entry>
   
