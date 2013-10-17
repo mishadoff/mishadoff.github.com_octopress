@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ide | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/ide/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-05T16:11:30+03:00</updated>
+  <updated>2013-10-17T21:17:09+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -29,7 +29,7 @@ some operation to be finished?</p>
 to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
 
 <p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
-Add SSD to make filesystem operations faster. We assume you can’t afford all that. All you can is setup your
+Add SSD to make filesystem operations faster. We assume you can&rsquo;t afford all that. All you can is setup your
 eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
 almost everything is identical in other versions for other platforms.</p>
 
@@ -37,7 +37,7 @@ almost everything is identical in other versions for other platforms.</p>
 
 <h4 id="plugins">Plugins</h4>
 
-<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn’t
+<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn&rsquo;t
 work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
 It is not deleting, you always can enable it back.</p>
 
@@ -97,7 +97,7 @@ I use following settings to increase heap size (objects) to <code>768Mb</code> a
 </code></p>
 
 <p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
-step of JVM loading you will get performance boost. But it’s very risky change.</p>
+step of JVM loading you will get performance boost. But it&rsquo;s very risky change.</p>
 
 <p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
 experimental VM options like (some of these):</p>
@@ -116,7 +116,7 @@ for reference and choose ones that appropriate for you.</p>
 
 <h4 id="disable-animations">Disable animations</h4>
 
-<p>Animations it’s cool. But I always disable animations if it possible in all tools.
+<p>Animations it&rsquo;s cool. But I always disable animations if it possible in all tools.
 Also, classic theme is most usable for me.</p>
 
 <pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
@@ -157,7 +157,7 @@ can identify the reason, but you save your development time.</p>
 
 <h4 id="close-unrelated-projects">Close unrelated projects</h4>
 
-<p>If you working in context of few projects, better to have all unrelated projects closed. They won’t appear
+<p>If you working in context of few projects, better to have all unrelated projects closed. They won&rsquo;t appear
 in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
 You can add any number of projects to one working set, and quickly switch between different working sets
 in one workspace.</p>
@@ -178,7 +178,7 @@ in one workspace.</p>
 
 <h4 id="disable-spell-check">Disable spell check</h4>
 
-<p>Are you developer or what? I don’t see any reason to have <code>spell check</code> enabled.</p>
+<p>Are you developer or what? I don&rsquo;t see any reason to have <code>spell check</code> enabled.</p>
 
 <pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
 </code></pre>
@@ -195,7 +195,7 @@ Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 
 <h4 id="hotkeys">Hotkeys</h4>
 
 <p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
-single operation, your development process won’t be fast. Configure most-often used actions
+single operation, your development process won&rsquo;t be fast. Configure most-often used actions
 to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
 
 <pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys
@@ -232,16 +232,16 @@ to hotkeys and learn them. You will get a positive feedback after a week of usag
 <h3 id="little-history">Little history</h3>
 
 <p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
-But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it’s my fault, this time I’ve created configuration on GitHub</em>).
+But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it&rsquo;s my fault, this time I&rsquo;ve created configuration on GitHub</em>).
 So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
-<em>“This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead”</em>.
-Ok, let’s see what nrepl is.</p>
+<em>&ldquo;This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead&rdquo;</em>.
+Ok, let&rsquo;s see what nrepl is.</p>
 
 <h3 id="why-emacs">Why emacs?</h3>
 
-<p>I don’t know. I like lisp, and emacs created in (e)lisp.
+<p>I don&rsquo;t know. I like lisp, and emacs created in (e)lisp.
 Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
-Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can’t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
+Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can&rsquo;t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
 
 <p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
 
@@ -260,7 +260,7 @@ Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can’t f
 
 <h3 id="emacs">Emacs</h3>
 
-<p>First of all you need to install emacs, to get your future clojure coding environment. I’m using ubuntu, so I just type:</p>
+<p>First of all you need to install emacs, to get your future clojure coding environment. I&rsquo;m using ubuntu, so I just type:</p>
 
 <p><code>sudo apt-get install emacs</code></p>
 
@@ -293,7 +293,7 @@ To check if it works, type <code>M-x package-list-packages</code> and this show 
 <p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
 Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
 
-<p>To install lein 2 (it’s shorter name for Leiningen) do the following:</p>
+<p>To install lein 2 (it&rsquo;s shorter name for Leiningen) do the following:</p>
 
 <ol>
   <li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
@@ -363,7 +363,7 @@ M-x package-install nrepl
 (hello)
 </code></p>
 
-<p>Probably, you’ll get output:</p>
+<p>Probably, you&rsquo;ll get output:</p>
 
 <pre><code>Hell, O'World!
 nil
@@ -373,7 +373,7 @@ nil
 
 <p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
 There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
-I’ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
+I&rsquo;ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
 is currently available.</p>
 ]]></content>
   </entry>

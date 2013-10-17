@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-05T16:11:30+03:00</updated>
+  <updated>2013-10-17T21:17:09+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -38,7 +38,7 @@ amicable pair and each of a and b are called amicable numbers.</p>
 The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
 </blockquote>
 
-<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
+<p>We can do it <em>bruteforcely</em>, but we won&rsquo;t.</p>
 
 <p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
 
@@ -166,7 +166,7 @@ Pretty print for long numbers</li>
 
 <!-- more -->
 
-<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today’s problem is a Brainfuck Interpreter.</p>
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
 
 <p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
 
@@ -181,7 +181,7 @@ Pretty print for long numbers</li>
   <li><code>]</code> finish loop</li>
 </ul>
 
-<p>That’s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
 
 <h3 id="tweet">Tweet</h3>
 
@@ -197,7 +197,7 @@ Pretty print for long numbers</li>
 
 <p>Exactly 2 tweets.</p>
 
-<h3 id="sugared-version">“Sugared” version</h3>
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
 
 <p>Translating to more readable code:</p>
 
@@ -225,7 +225,7 @@ Pretty print for long numbers</li>
         (swap! pc inc)))))
 </code></p>
 
-<p>So, what’s happening there?</p>
+<p>So, what&rsquo;s happening there?</p>
 
 <p>Function arguments are parameters of our tape and brainfuck program.</p>
 
@@ -254,7 +254,7 @@ string - program, written in brainfuck.</p>
 
 <h4 id="testing">Testing</h4>
 
-<p>Print “Hello, world”</p>
+<p>Print &ldquo;Hello, world&rdquo;</p>
 
 <p><code>clojure
 (parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
@@ -275,7 +275,7 @@ this version (<em>for the sake of small size!</em>)</p>
 
 <p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
 
-<p><strong>P.S.</strong> This version is not “fully-featured” brainfuck interpreter.</p>
+<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
 
 <ul>
   <li>It does not work for inifinite tape</li>

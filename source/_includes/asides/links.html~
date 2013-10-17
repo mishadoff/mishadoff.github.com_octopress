@@ -1,0 +1,8 @@
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="{{root_url}}/pages/quotes">Quotes</a></li>
+      <li><a href="{{root_url}}/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+

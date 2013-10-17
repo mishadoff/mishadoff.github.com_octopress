@@ -659,7 +659,7 @@ primitive `compareAndSwapLong` to see if it is really privilegy to use it.
 
 ``` java
 class CASCounter implements Counter {
-    private long counter = 0;
+    private volatile long counter = 0;
     private Unsafe unsafe;
     private long offset;
 
@@ -706,6 +706,10 @@ Actually, in real it is more hard than you can imagine. There are a lot of probl
 [ABA Problem](http://en.wikipedia.org/wiki/ABA_problem), instructions reordering, etc.
 
 If you really interested, you can refer to the awesome presentation about [lock-free HashMap](http://www.azulsystems.com/about_us/presentations/lock-free-hash)
+
+**UPDATE:** Added `volatile` keyword to `counter` variable to avoid risk of infinite loop.
+
+Kudos to *Nitsan Wakart*
 
 ### Bonus
 

@@ -158,7 +158,7 @@ get <code>SecurityException</code>. Using this method available only from truste
 It is just checking that our code was loaded with
 primary classloader.</p>
 
-<p>We can make our code “trusted”. Use option <code>bootclasspath</code> when running
+<p>We can make our code &ldquo;trusted&rdquo;. Use option <code>bootclasspath</code> when running
 your program and specify
 path to system classes plus your one that will use <code>Unsafe</code>.</p>
 
@@ -166,7 +166,7 @@ path to system classes plus your one that will use <code>Unsafe</code>.</p>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">java</span> <span class="o">-</span><span class="nl">Xbootclasspath:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">jdk1</span><span class="o">.</span><span class="mf">7.0</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">rt</span><span class="o">.</span><span class="na">jar</span><span class="o">:.</span> <span class="n">com</span><span class="o">.</span><span class="na">mishadoff</span><span class="o">.</span><span class="na">magic</span><span class="o">.</span><span class="na">UnsafeClient</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>But it’s too hard.</p>
+<p>But it&rsquo;s too hard.</p>
 
 <p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
 We can steal that variable via java reflection.</p>
@@ -179,7 +179,7 @@ We can steal that variable via java reflection.</p>
 </span><span class="line"><span class="n">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="o">(</span><span class="n">Unsafe</span><span class="o">)</span> <span class="n">f</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><em>Note:</em> Ignore your IDE. For example, eclipse show error “Access restriction…”
+<p><em>Note:</em> Ignore your IDE. For example, eclipse show error &ldquo;Access restriction&hellip;&rdquo;
 but if you run code, all works just fine. If the error is annoying, ignore errors on
 <code>Unsafe</code> usage in:</p>
 
@@ -248,7 +248,7 @@ Here is some of them:</p>
 
 <p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
 or bypass security checks in constructor or you want instance of that class
-but don’t have any public constructor. Consider following class:</p>
+but don&rsquo;t have any public constructor. Consider following class:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -321,7 +321,7 @@ By the way, its common technique for security bypass.</p>
 it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
 value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
 
-<p>In fact, it’s not true. Here is the code demostrates it:</p>
+<p>In fact, it&rsquo;s not true. Here is the code demostrates it:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -356,9 +356,9 @@ located next to current <code>guard</code> object. We can modify its <code>ACCES
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">unsafe</span><span class="o">.</span><span class="na">putInt</span><span class="o">(</span><span class="n">guard</span><span class="o">,</span> <span class="mi">16</span> <span class="o">+</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">objectFieldOffset</span><span class="o">(</span><span class="n">f</span><span class="o">),</span> <span class="mi">42</span><span class="o">);</span> <span class="c1">// memory corruption</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Note, we didn’t use any reference to this object.
+<p>Note, we didn&rsquo;t use any reference to this object.
 <code>16</code> is size of <code>Guard</code> object in 32 bit architecture.
-We can calculate it manually or use <code>sizeOf</code> method, that defined… right now.</p>
+We can calculate it manually or use <code>sizeOf</code> method, that defined&hellip; right now.</p>
 
 <h4 id="sizeof"><strong>sizeOf</strong></h4>
 
@@ -456,7 +456,7 @@ but it requires specifyng <code>agent</code> option in your JVM.</p>
 
 <p>Having implementation of calculating shallow object size, we can simply
 add function that copy objects. Standard solution need modify your code with <code>Cloneable</code>,
-or you can implement custom copy function in your object, but it won’t be multipurpose function.</p>
+or you can implement custom copy function in your object, but it won&rsquo;t be multipurpose function.</p>
 
 <p>Shallow copy:</p>
 
@@ -512,10 +512,10 @@ dynamically. Note that after copying you need to cast object to specific type.</
 <p>One more interesting usage of direct memory access in <code>Unsafe</code> is removing
 unwanted objects from memory.</p>
 
-<p>Most of the APIs for retrieving user’s password, have signature
+<p>Most of the APIs for retrieving user&rsquo;s password, have signature
 as <code>byte[]</code> or <code>char[]</code>. Why arrays?</p>
 
-<p>It is completely for security reason, because we can nullify array elements after we don’t need them.
+<p>It is completely for security reason, because we can nullify array elements after we don&rsquo;t need them.
 If we retrieve password as <code>String</code> it can be saved like an object in memory and nullifying that
 string just perform dereference operation. This object still in memory by the time GC decide to perform cleanup.</p>
 
@@ -628,7 +628,7 @@ or aspects for existing code.</p>
 
 <h4 id="throw-an-exception">Throw an Exception</h4>
 
-<p>Don’t like checked exceptions? Not a problem.</p>
+<p>Don&rsquo;t like checked exceptions? Not a problem.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">getUnsafe</span><span class="o">().</span><span class="na">throwException</span><span class="o">(</span><span class="k">new</span> <span class="n">IOException</span><span class="o">());</span>
@@ -930,7 +930,7 @@ Second attempt, add easiest java-way synchronization:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Radical synchronization always work. But timings is awful.
-Let’s try <code>ReentrantReadWriteLock</code>:</p>
+Let&rsquo;s try <code>ReentrantReadWriteLock</code>:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -1038,7 +1038,7 @@ primitive <code>compareAndSwapLong</code> to see if it is really privilegy to us
 <span class="line-number">21</span>
 <span class="line-number">22</span>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">CASCounter</span> <span class="kd">implements</span> <span class="n">Counter</span> <span class="o">{</span>
-</span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">long</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 </span><span class="line">    <span class="kd">private</span> <span class="n">Unsafe</span> <span class="n">unsafe</span><span class="o">;</span>
 </span><span class="line">    <span class="kd">private</span> <span class="kt">long</span> <span class="n">offset</span><span class="o">;</span>
 </span><span class="line">
@@ -1089,10 +1089,14 @@ The intuition behind this is simple:</p>
 
 <p>If you really interested, you can refer to the awesome presentation about <a href="http://www.azulsystems.com/about_us/presentations/lock-free-hash">lock-free HashMap</a></p>
 
+<p><strong>UPDATE:</strong> Added <code>volatile</code> keyword to <code>counter</code> variable to avoid risk of infinite loop.</p>
+
+<p>Kudos to <em>Nitsan Wakart</em></p>
+
 <h3 id="bonus">Bonus</h3>
 
 <p>Documentation for <code>park</code> method from <code>Unsafe</code> class contains
-longest English sentence I’ve ever seen:</p>
+longest English sentence I&rsquo;ve ever seen:</p>
 
 <blockquote>
   <p>Block current thread, returning when a balancing
@@ -1101,7 +1105,7 @@ already occurred, or the thread is interrupted, or, if not
 absolute and time is not zero, the given time nanoseconds have
 elapsed, or if absolute, the given deadline in milliseconds
 since Epoch has passed, or spuriously (i.e., returning for no
-“reason”). Note: This operation is in the Unsafe class only
+&ldquo;reason&rdquo;). Note: This operation is in the Unsafe class only
 because unpark is, so it would be strange to place it
 elsewhere.</p>
 </blockquote>
@@ -1206,6 +1210,13 @@ elsewhere.</p>
   <ul id="pages_static">
       <li><a href="/pages/quotes">Quotes</a></li>
       <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
   </ul>
 </section>
 
