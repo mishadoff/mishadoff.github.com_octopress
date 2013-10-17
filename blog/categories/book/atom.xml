@@ -4,7 +4,7 @@
   <title><![CDATA[Category: book | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/book/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-05T16:11:30+03:00</updated>
+  <updated>2013-10-17T21:17:09+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -30,24 +30,24 @@ Now I pushed back for a little some of my activities, and started with perl.</p>
 <p>The reason for this was the third launch of <a href="https://class.coursera.org/crypto-004/class/index">Stanford Cryptography</a> class on coursera.</p>
 
 <p>Cryptography is a field that I never know, but would like to. I see a lot of practical applications here,
-but, honestly, for me it’s more <em>just for fun</em>, than anything else. Isn’t it interesting to (de)cypher something?</p>
+but, honestly, for me it&rsquo;s more <em>just for fun</em>, than anything else. Isn&rsquo;t it interesting to (de)cypher something?</p>
 
 <p>First two launches was marked as lack of time for me, so I postponed it. By the way, other interesting courses was <em>in progress</em>.
 But now I really hope that I get enough time (<em>and patience</em>) to finish the class and get some good knowledge in this field.</p>
 
 <p><img src="http://imgs.xkcd.com/comics/lisp.jpg" alt="" /></p>
 
-<p>I don’t know why, but I choose perl as primary language for doing programming assignments.</p>
+<p>I don&rsquo;t know why, but I choose perl as primary language for doing programming assignments.</p>
 
 <p>First of all, I needed some fast scripting language for general-purpose problems. To choose between perl and python, I choose perl.
-Because of <em>“less number of symbols in the name”</em>, of course. Second of all, I don’t know perl and it’s a good reason to learn it <em>in action</em>.
+Because of <em>&ldquo;less number of symbols in the name&rdquo;</em>, of course. Second of all, I don&rsquo;t know perl and it&rsquo;s a good reason to learn it <em>in action</em>.
 Also, what is important, I did get only positive reviews from my friends who know perl, but all their stories was like a mistery for me.
 Thought, that only chosen one can learn perl. I want to dispel this myth. To try, at least.</p>
 
 <blockquote>
-  <p>There’s more than one way to do it</p>
+  <p>There&rsquo;s more than one way to do it</p>
 
-  <p>– Perl motto</p>
+  <p>&ndash; Perl motto</p>
 </blockquote>
 
 <p>The book that I choose for learning is a classic book (<em>read Perl Bible</em>) from the creator of perl, <a href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>.
@@ -55,7 +55,7 @@ There is fresh, 4th edition, available.</p>
 
 <p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
 
-<p>Hope, I won’t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
+<p>Hope, I won&rsquo;t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
 ]]></content>
   </entry>
   

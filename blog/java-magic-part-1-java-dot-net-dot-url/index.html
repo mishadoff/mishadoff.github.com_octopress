@@ -148,11 +148,11 @@ MathJax.Hub.Config({
 <p>Definitely not <code>true, true</code> if the question was asked. Think for two minutes.</p>
 
 <p>Ok. In most cases it will be <code>true, false</code> because you have internet connection (<em>How else you can read this?</em>).
-Turn off your network cable or wi-fi, and you’ll get <code>true, true</code>.</p>
+Turn off your network cable or wi-fi, and you&rsquo;ll get <code>true, true</code>.</p>
 
 <p>The reason is in implementation of <code>hashCode()</code> and <code>equals()</code> methods for <code>URL</code> class.</p>
 
-<p>Let’s see how hashCode calculated:</p>
+<p>Let&rsquo;s see how hashCode calculated:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -169,7 +169,7 @@ Turn off your network cable or wi-fi, and you’ll get <code>true, true</code>.<
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>We can see hashCode is an instance variable that calculates once. Makes sense, <code>URL</code> is <a href="http://en.wikipedia.org/wiki/Immutable_object">immutable</a>.
-What is handler? It’s an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
+What is handler? It&rsquo;s an instance of one of <code>URLStreamHandler</code> subclasses, depends on protocol type (file, http, ftp), that have helper hashCode implementation.
 Just look at <code>URL.hashCode()</code> javadoc:</p>
 
 <blockquote>
@@ -178,28 +178,28 @@ Just look at <code>URL.hashCode()</code> javadoc:</p>
 
 <p>Stop! <strong>BLOCKING OPERATION?!</strong></p>
 
-<p><em>- Sorry, I couldn’t check email yesterday due to hashCode calculation.</em></p>
+<p><em>- Sorry, I couldn&rsquo;t check email yesterday due to hashCode calculation.</em></p>
 
 <p>or even better</p>
 
-<p><em>- No, mom, I can’t watch porn, It’s hashCode, you know.</em></p>
+<p><em>- No, mom, I can&rsquo;t watch porn, It&rsquo;s hashCode, you know.</em></p>
 
 <p>Ok, let it be blocking. Another exciting part, that handler <strong>resolves host IP address</strong> for hashCode calculation.
 Tries to resolve, to be honest. If it can not do this, it calculates hashCode based on host, which is <em>google.com</em> for our example.
 Shit happens when IP is dynamic, or host have request balancer that also changes host IP.
 In that case we got different hashCodes for one host name, and will have two (or even more) instances in HashSet. Not good at all.
-By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it’s another topic.</p>
+By the way, hashCode and equals performance is terrible because of <code>URLStreamHandler</code> opens <code>URLConnection</code>. But it&rsquo;s another topic.</p>
 
 <h3 id="how-to-avoid-this">How to avoid this?</h3>
 
 <ul>
-  <li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It’s not the best choice though, but have deterministic hashCode implementation.</li>
+  <li>Use <code>java.net.URI</code> instead of <code>java.net.URL</code>. It&rsquo;s not the best choice though, but have deterministic hashCode implementation.</li>
   <li>Do not use <code>java.net.URL</code> in collections. Good option to maintain collection of String objects (that represent host name) and get URL when needed.</li>
-  <li>Disable your network adapter during hashCode calculation. (<em>It’s a joke, but it helps</em>)</li>
+  <li>Disable your network adapter during hashCode calculation. (<em>It&rsquo;s a joke, but it helps</em>)</li>
   <li>Use your own subclass of URLStreamHandler with proper implementation of hashCode.</li>
 </ul>
 
-<p>Finally, I’m pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
+<p>Finally, I&rsquo;m pretty sure <code>java.net.URL</code> class has lot of useful applications. But not that way.</p>
 </div>
 
 
@@ -297,6 +297,13 @@ By the way, hashCode and equals performance is terrible because of <code>URLStre
   <ul id="pages_static">
       <li><a href="/pages/quotes">Quotes</a></li>
       <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
   </ul>
 </section>
 
