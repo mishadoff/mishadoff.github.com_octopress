@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-17T21:17:09+03:00</updated>
+  <updated>2013-10-20T14:16:55+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,109 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 022]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-022/"/>
+    <updated>2013-10-20T13:22:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-022</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Using <a href="http://projecteuler.net/project/names.txt">names.txt</a>
+a 46K text file containing over five-thousand first names,
+begin by sorting it into alphabetical order. Then working out the alphabetical
+value for each name, multiply this value by its alphabetical
+position in the list to obtain a name score.</p>
+
+  <p>For example, when the list is sorted into alphabetical order,
+COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list.
+So, COLIN would obtain a score of 938 x 53 = 49714.</p>
+
+  <p>What is the total of all the name scores in the file?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=22">http://projecteuler.net/problem=22</a></p>
+
+<!-- more -->
+
+<p>Problem is very easy, assuming you know how to work with files.</p>
+
+<p>First of all read the file, clojure has awesome simple function <code>slurp</code>, discussed in <a href="http://mishadoff.github.io/blog/clojure-euler-problem-008">Clojure Euler: Problem 008</a>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;names.txt&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then, you need to select all words in that file:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\w+&quot;</span> <span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;names.txt&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It return a list with the names. How that simple, yeah?</p>
+
+<p>Next two steps are:</p>
+
+<ul>
+  <li>sort list in ascending order, what is done by calling <code>sort</code> function</li>
+  <li>calculate score for each word</li>
+</ul>
+
+<p>By the way, <code>score</code> consists of two parts. First of all, you must calculate natural score of the word, without its actual position in sorted list, and then you must multiply that score on its position.</p>
+
+<p>First part looks like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">score</span> <span class="p">[</span><span class="nv">string</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">int </span><span class="nv">%</span><span class="p">)</span> <span class="mi">64</span><span class="p">)</span> <span class="nv">string</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Convert each character to its positional number in alphabet. For example the character &ldquo;A&rdquo; (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means &ldquo;A&rdquo; is a first letter in alphabet and so on.</p>
+
+<p>To track positions in list we use
+<a href="http://clojuredocs.org/clojure_core/clojure.core/map-indexed">map-indexed</a>
+function. It works almost the same way as map, except it accept function of two arguments, index of item in current list, and item itself.</p>
+
+<p>For example:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">map-indexed</span> <span class="o">#</span><span class="p">(</span><span class="nf">vec</span> <span class="p">[</span><span class="nv">%1</span> <span class="nv">%2</span><span class="p">])</span> <span class="p">[</span><span class="s">&quot;a&quot;</span> <span class="s">&quot;b&quot;</span> <span class="s">&quot;c&quot;</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">([</span><span class="mi">0</span> <span class="s">&quot;a&quot;</span><span class="p">]</span> <span class="p">[</span><span class="mi">1</span> <span class="s">&quot;b&quot;</span><span class="p">]</span> <span class="p">[</span><span class="mi">2</span> <span class="s">&quot;c&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>As indices start from zero, do not forget increment!</p>
+
+<p>Bind all together</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">map-indexed</span> <span class="o">#</span><span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nb">inc </span><span class="nv">%1</span><span class="p">)</span> <span class="p">(</span><span class="nf">score</span> <span class="nv">%2</span><span class="p">))</span>
+</span><span class="line">                     <span class="p">(</span><span class="nb">sort </span><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\w+&quot;</span> <span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;names.txt&quot;</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Solved! <a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem022.clj">Code is here</a></p>
+
+<p><em>P.S.</em> Actually, this code is not elegant. We need to read from the end to the beginning of expression. And it can be solved by Threading Macro. Read the nice <strong>Fogus</strong> <a href="http://blog.fogus.me/2009/09/04/understanding-the-clojure-macro/">explanation</a></p>
+
+<p>Our last solution, becomes transformed to:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="s">&quot;names.txt&quot;</span>
+</span><span class="line">	<span class="p">(</span><span class="nf">slurp</span><span class="p">)</span>
+</span><span class="line">	<span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\w+&quot;</span><span class="p">)</span>
+</span><span class="line">	<span class="p">(</span><span class="nf">sort</span><span class="p">)</span>
+</span><span class="line">	<span class="p">(</span><span class="nf">map-indexed</span> <span class="o">#</span><span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nb">inc </span><span class="nv">%1</span><span class="p">)</span> <span class="p">(</span><span class="nf">score</span> <span class="nv">%2</span><span class="p">)))</span>
+</span><span class="line">	<span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Way more readable, huh?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
@@ -3182,145 +3285,6 @@ modules and lot more.</p>
 so great as Clojure in rapid prototyping, but it&rsquo;s worth to devote
 few days for ML basics. It really improve your dev skills and maybe made your
 <em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 014]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-014/"/>
-    <updated>2013-02-16T01:08:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-014</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Which starting number, under one million, produces the longest Collatz chain?</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
-
-<!-- more -->
-
-<blockquote>
-  <p>The following iterative sequence is defined for the set of positive integers:</p>
-
-  <p>n → n/2 (n is even)</p>
-
-  <p>n → 3n + 1 (n is odd)</p>
-
-  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
-
-  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-
-  <p>It can be seen that this sequence (starting at 13 and finishing at 1)
-contains 10 terms. Although it has not been proved yet (Collatz Problem),
-it is thought that all starting numbers finish at 1.</p>
-
-  <p>Which starting number, under one million, produces the longest chain?</p>
-
-  <p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
-</blockquote>
-
-<p>Sequences again.
-So, first of all we need function to detect next collatz number.
-It is pretty straightforward:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">collatz-next</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="mi">3</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
-starting from number <code>n</code>:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="nv">collatz-next</span> <span class="nv">n</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
-count of collatz chain sequence:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">collatz-chain-length</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class="line">  <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">%</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">iterate </span><span class="nv">collatz-next</span> <span class="nv">n</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Now we have almost all code logic and just use it: calculate collatz chain
-for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">reduce </span><span class="o">#</span><span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">second </span><span class="nv">%1</span><span class="p">)</span> <span class="p">(</span><span class="nb">second </span><span class="nv">%2</span><span class="p">))</span> <span class="nv">%1</span> <span class="nv">%2</span><span class="p">)</span>
-</span><span class="line">               <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">list </span><span class="nv">%</span> <span class="p">(</span><span class="nf">collatz-chain-length</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000000</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
-
-<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
-and I have no idea how to solve it another way.</p>
-
-<p>I am sure there is a better algorithm than mine. But I don&rsquo;t know it.
-What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
-
-<blockquote>
-  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
-</blockquote>
-
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,&hellip;</p>
-
-<p>Got it?</p>
-
-<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don&rsquo;t need to calculate length
-for <code>40</code>, <code>20</code> and so on.</p>
-
-<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
-it to have recursive solution.</p>
-
-<p>Here the first (<em>and final</em>) version:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">collatz-chain-recursive</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
-</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">1</span>
-</span><span class="line">      <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">collatz-chain-recursive</span> <span class="p">(</span><span class="nf">collatz-next</span> <span class="nv">n</span><span class="p">)))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Recursion is impressive at the point that its implementation
-almost exactly follows the problem definition. It is easy to understand.</p>
-
-<p>But, as you may notice our implementation not
-<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
-have troubles. Do not think about it unless we actually have them.</p>
-
-<p>For the sake of fun let&rsquo;s run this function instead of previous to
-obtain the results.</p>
-
-<p><strong>20 seconds</strong>, it is great. I even don&rsquo;t think that
-this simple recursive function gives such boost in performance.</p>
-
-<p>One little tweak in result function:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">first</span>
-</span><span class="line">  <span class="p">(</span><span class="nb">apply max-key </span><span class="nv">second</span>
-</span><span class="line">         <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">list </span><span class="nv">%</span> <span class="p">(</span><span class="nf">collatz-chain-recursive</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000000</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>And we have <strong>~12 seconds</strong>.</p>
-
-<p>Unexpected &ldquo;The End&rdquo;. Yeah, I love The Doors.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
-
-<p><strong>P.S.</strong> I really wanted to explain technique called
-<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
-simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn&rsquo;t have much sense here because
-12 seconds is acceptable. We will have chance to introduce
-memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 ]]></content>
   </entry>
   
