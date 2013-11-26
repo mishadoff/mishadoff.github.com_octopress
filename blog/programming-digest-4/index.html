@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Programming Digest 4 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="How to live in the Kingdom of Nouns, why mathematicians cry, filling gaps in algorithms, portion of clojure, STM, HTTP and more. 1. Execution in the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/programming-digest-4/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Programming Digest 4</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-25T22:50:00+02:00" pubdate data-updated="true">Nov 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>How to live in the Kingdom of Nouns, why mathematicians cry, filling gaps in algorithms, portion of clojure, STM, HTTP and more.</p>
+
+<!-- more -->
+
+<h3 id="execution-in-the-kingdom-of-nounshttpsteve-yeggeblogspotcom200603execution-in-kingdom-of-nounshtml">1. <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">Execution in the Kingdom of Nouns</a></h3>
+
+<p>Another great Steve Yegge&rsquo;s post. Not a post, a tale about <em>Javaland</em>, a place where all verbs are owned by nouns. Accept it like an analogy between OOP and FP.</p>
+
+<blockquote>
+  <p>Verbs in Javaland are responsible for all the work, but as they are held
+in contempt by all, no Verb is ever permitted to wander about freely.
+If a Verb is to be seen in public at all,
+it must be escorted at all times by a Noun.</p>
+</blockquote>
+
+<p>Of course <em>to be escorted</em> must be replaced by <strong>VerbEscorter</strong>.</p>
+
+<blockquote>
+  <p>The Verb &ldquo;execute&rdquo;, and its synonymous cousins &ldquo;run&rdquo;, &ldquo;start&rdquo;, &ldquo;go&rdquo;,
+&ldquo;justDoIt&rdquo;, &ldquo;makeItSo&rdquo;, and the like, can perform the work of any
+other Verb by replacing it with an appropriate Executioner and a
+call to execute(). Need to wait? Waiter.execute().
+Brush your teeth? ToothBrusher(myTeeth).go().
+Take out the garbage? TrashDisposalPlanExecutor.doIt().
+No Verb is safe; all can be replaced by a Noun on the run.</p>
+</blockquote>
+
+<p>You are not forced to use functions everywhere, but use them where it is appropriate to simplify solution and avoid <a href="https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition">enterprise hell</a>. You know, not everything is an object. The same way not everything is a function. </p>
+
+<h3 id="a-mathematicians-lamenthttpwwwmaaorgexternalarchivedevlinlockhartslamentpdf">2. <a href="http://www.maa.org/external_archive/devlin/LockhartsLament.pdf">A Mathematician&rsquo;s Lament</a></h3>
+
+<p>Long paper by Paul Lockhart about problems in mathematical education.</p>
+
+<blockquote>
+  <p>Math class is stupid and boring. - Students.</p>
+</blockquote>
+
+<p>Author claims that mathematics is an art, instead of some practical thing. Of course, it can be applied in real world and it is, but it&rsquo;s not primary goal of math.</p>
+
+<blockquote>
+  <p>A mathematician, like a painter or poet is a maker
+of patterns. If his patterns are more permanent than theirs,
+it is because they are made wit <em>ideas</em>.</p>
+</blockquote>
+
+<p>Very exciting reading.</p>
+
+<h3 id="algorithmshttpcstheorystackexchangecomquestions19759core-algorithms-deployed1977319773">3. <a href="http://cstheory.stackexchange.com/questions/19759/core-algorithms-deployed/19773#19773">Algorithms</a></h3>
+
+<p>Algorithms are not just devils you need to learn for CS course or to prepare for interview. You can <em>apply</em> them to solve real-world problems. This SO answer provides links and some explanations where specific algorithm is used in linux kernel, chromium browser and some utils.</p>
+
+<blockquote>
+  <p>&hellip;
+Red-Black trees are used for scheduling, virtual memory management,
+to track file descriptors and directory entries, etc.</p>
+</blockquote>
+
+<blockquote>
+  <p>grep, implements the Boyer-Moore algorithm</p>
+</blockquote>
+
+<blockquote>
+  <p>fgrep implements the Aho-Corasick string matching algorithm.
+&hellip;</p>
+</blockquote>
+
+<p>Even Bubblesort has its <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/media/common/saa7146/saa7146_hlp.c">application</a>!</p>
+
+<h3 id="rich-hickeys-greatest-hitshttpthechangelogcomrich-hickeys-greatest-hits">4. <a href="http://thechangelog.com/rich-hickeys-greatest-hits/">Rich Hickey&rsquo;s Greatest Hits</a></h3>
+
+<p>I&rsquo;m huge Rich Hickey&rsquo;s fan. It&rsquo;s just a list of his most interesting presentations. Definitely, must see.</p>
+
+<p><img src="http://farm4.staticflickr.com/3229/2613013337_bcc9c7857d.jpg" alt="" /></p>
+
+<ul>
+  <li><a href="http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey">Are We There Yet (2009)</a></li>
+  <li><a href="http://www.youtube.com/watch?v=f84n5oFoZBc">Hammock Driven Development (2010)</a></li>
+  <li><a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy (2011)</a></li>
+  <li><a href="http://www.infoq.com/presentations/Value-Values">The Value of Values (2012)</a></li>
+  <li><a href="http://www.youtube.com/watch?v=ROor6_NGIWU">The Language of the System (2012)</a></li>
+  <li><a href="http://www.infoq.com/presentations/Design-Composition-Performance">Design, Composition and Performance (2013)</a></li>
+</ul>
+
+<h3 id="clojure-persistent-vectorhttphypirioncommusingsunderstanding-persistent-vector-pt-1">5. <a href="http://hypirion.com/musings/understanding-persistent-vector-pt-1">Clojure Persistent Vector</a></h3>
+
+<p>Two parts explanation how clojure vector works.</p>
+
+<p>Yeah, simple square brackets <code>[1 2 3]</code> in clojure have a lot complex things under the hood. Moreover, it gives understanding not only how vectors work, but how all other persistent structures can be implemeted in efficient manner.</p>
+
+<h3 id="software-transactional-memoryhttpjavaociwebcommarkstmarticlehtml">6. <a href="http://java.ociweb.com/mark/stm/article.html">Software Transactional Memory</a></h3>
+
+<p>Have you heard about STM?</p>
+
+<p>It&rsquo;s a good model for concurrency control, like database transactions, but on memory. Much simpler and less error-prone to use. This article explain STM basics with some implementation details. </p>
+
+<p>For my attempt to implement STM refer <a href="http://www.slideshare.net/mishadoff/implementing-stm-in-java">presentation</a></p>
+
+<h3 id="a-software-developers-huide-to-httphttpodetocodecomarticles741aspx">7. <a href="http://odetocode.com/articles/741.aspx">A Software Developer&rsquo;s Huide to HTTP</a></h3>
+
+<p>Five Parts article of looking at HTTP from developer&rsquo;s perspective. Worth reading to dig into some details. </p>
+
+<h3 id="ideas-for-computinghttpsgithubcomsamsquireideas">8. <a href="https://github.com/samsquire/ideas">100 Ideas for Computing</a></h3>
+
+<p>Great list, perhaps most ideas are already partially implemented.</p>
+
+<blockquote>
+  <p>This is a vision for how computing could be.
+I began writing ideas down a number of years ago,
+this is a selection of ideas old and new.</p>
+</blockquote>
+
+<p>Some of them are <a href="https://github.com/samsquire/ideas#68-right-click-outsource">great</a>:</p>
+
+<blockquote>
+  <p>Task management between computers is an unsolved problem in desktop
+environments. Many users have multiple devices. Sending tasks,
+inputs or outputs to different computers is painful. Usually sending
+audio to be played through another computer, taking control of an
+application running on another computer, sharing files or
+streaming data to other machines requires special software. </p>
+</blockquote>
+
+<p>It would be great to have the same in reverse order also. I get a phone call, but phone is far away. Much better to click on current machine <em>Accept Call</em> and to talk. Security can be a challenging.</p>
+
+<p>Some <a href="https://github.com/samsquire/ideas#18-shortcut-format">problematic</a>:</p>
+
+<blockquote>
+  <p>Keyboard shortcuts are configured differently in each program.
+Shortcut configuration should be in a standard format.
+This way you can load them and share them between operating
+systems and share configurations between applications.</p>
+</blockquote>
+
+<p>This reminds me of xkcd comics:</p>
+
+<p><img src="http://imgs.xkcd.com/comics/standards.png" alt="" /></p>
+
+<p>Some ideas are <a href="https://github.com/samsquire/ideas#31-mounting-source-code">not so great</a>:</p>
+
+<p><em>Mounting source code</em> does not solve a problem at all, it&rsquo;s just adds a bit of sugar to project structure and adds more pain to build tools.</p>
+
+<h3 id="top-10-lists-common-java-mistakeshttpjavadzonecomarticlestop-10-lists-common-java">9. <a href="http://java.dzone.com/articles/top-10-lists-common-java">Top 10 Lists Common Java Mistakes</a></h3>
+
+<p>Metalist of Top 10 items of Top 10 java pitfalls.</p>
+
+<p>Hundred times discussed, but if you are java programmer, you may refresh your knowledge. List of common java pitfalls includes:</p>
+
+<blockquote>
+  <p>Using Singletons</p>
+</blockquote>
+
+<blockquote>
+  <p>The GOF religion</p>
+</blockquote>
+
+<blockquote>
+  <p>Return null from API methods</p>
+</blockquote>
+
+<p>By the way, this list contains some other useful java things, like top 10 java people and top 15 worst Computer Software blunders. Not worst, but definitely bad.</p>
+
+<h3 id="rare-are-gc-talkshttpfurious-waterfall-55herokucomruby-guideinternalsgchtml">10. <a href="http://furious-waterfall-55.heroku.com/ruby-guide/internals/gc.html">Rare Are GC Talks</a></h3>
+
+<p>Different Garbage Collector algorithms briefly explained. Bookshelf used as an analogy:</p>
+
+<blockquote>
+  <p>Bookshelf - Memory, Books - Objects.</p>
+</blockquote>
+
+<p>Ruby GC implementation discussed, but you are not forced to know ruby to understand that. By the way, article contains a lot of links to more detailed GC algorithms explanation.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-25T22:50:00+02:00" pubdate data-updated="true">Nov 25<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digest/'>digest</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/programming-digest-4/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/programming-digest-4/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-022/" title="Previous Post: Clojure Euler: Problem 022">&laquo; Clojure Euler: Problem 022</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/programming-digest-4/';
+        var disqus_url = 'http://mishadoff.github.io/blog/programming-digest-4/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

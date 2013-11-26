@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-10-20T14:16:55+03:00</updated>
+  <updated>2013-11-26T17:16:28+02:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,184 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 4]]></title>
+    <link href="http://mishadoff.github.io/blog/programming-digest-4/"/>
+    <updated>2013-11-25T22:50:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/programming-digest-4</id>
+    <content type="html"><![CDATA[<p>How to live in the Kingdom of Nouns, why mathematicians cry, filling gaps in algorithms, portion of clojure, STM, HTTP and more.</p>
+
+<!-- more -->
+
+<h3 id="execution-in-the-kingdom-of-nounshttpsteve-yeggeblogspotcom200603execution-in-kingdom-of-nounshtml">1. <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">Execution in the Kingdom of Nouns</a></h3>
+
+<p>Another great Steve Yegge&rsquo;s post. Not a post, a tale about <em>Javaland</em>, a place where all verbs are owned by nouns. Accept it like an analogy between OOP and FP.</p>
+
+<blockquote>
+  <p>Verbs in Javaland are responsible for all the work, but as they are held
+in contempt by all, no Verb is ever permitted to wander about freely.
+If a Verb is to be seen in public at all,
+it must be escorted at all times by a Noun.</p>
+</blockquote>
+
+<p>Of course <em>to be escorted</em> must be replaced by <strong>VerbEscorter</strong>.</p>
+
+<blockquote>
+  <p>The Verb &ldquo;execute&rdquo;, and its synonymous cousins &ldquo;run&rdquo;, &ldquo;start&rdquo;, &ldquo;go&rdquo;,
+&ldquo;justDoIt&rdquo;, &ldquo;makeItSo&rdquo;, and the like, can perform the work of any
+other Verb by replacing it with an appropriate Executioner and a
+call to execute(). Need to wait? Waiter.execute().
+Brush your teeth? ToothBrusher(myTeeth).go().
+Take out the garbage? TrashDisposalPlanExecutor.doIt().
+No Verb is safe; all can be replaced by a Noun on the run.</p>
+</blockquote>
+
+<p>You are not forced to use functions everywhere, but use them where it is appropriate to simplify solution and avoid <a href="https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition">enterprise hell</a>. You know, not everything is an object. The same way not everything is a function. </p>
+
+<h3 id="a-mathematicians-lamenthttpwwwmaaorgexternalarchivedevlinlockhartslamentpdf">2. <a href="http://www.maa.org/external_archive/devlin/LockhartsLament.pdf">A Mathematician&rsquo;s Lament</a></h3>
+
+<p>Long paper by Paul Lockhart about problems in mathematical education.</p>
+
+<blockquote>
+  <p>Math class is stupid and boring. - Students.</p>
+</blockquote>
+
+<p>Author claims that mathematics is an art, instead of some practical thing. Of course, it can be applied in real world and it is, but it&rsquo;s not primary goal of math.</p>
+
+<blockquote>
+  <p>A mathematician, like a painter or poet is a maker
+of patterns. If his patterns are more permanent than theirs,
+it is because they are made wit <em>ideas</em>.</p>
+</blockquote>
+
+<p>Very exciting reading.</p>
+
+<h3 id="algorithmshttpcstheorystackexchangecomquestions19759core-algorithms-deployed1977319773">3. <a href="http://cstheory.stackexchange.com/questions/19759/core-algorithms-deployed/19773#19773">Algorithms</a></h3>
+
+<p>Algorithms are not just devils you need to learn for CS course or to prepare for interview. You can <em>apply</em> them to solve real-world problems. This SO answer provides links and some explanations where specific algorithm is used in linux kernel, chromium browser and some utils.</p>
+
+<blockquote>
+  <p>&hellip;
+Red-Black trees are used for scheduling, virtual memory management,
+to track file descriptors and directory entries, etc.</p>
+</blockquote>
+
+<blockquote>
+  <p>grep, implements the Boyer-Moore algorithm</p>
+</blockquote>
+
+<blockquote>
+  <p>fgrep implements the Aho-Corasick string matching algorithm.
+&hellip;</p>
+</blockquote>
+
+<p>Even Bubblesort has its <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/media/common/saa7146/saa7146_hlp.c">application</a>!</p>
+
+<h3 id="rich-hickeys-greatest-hitshttpthechangelogcomrich-hickeys-greatest-hits">4. <a href="http://thechangelog.com/rich-hickeys-greatest-hits/">Rich Hickey&rsquo;s Greatest Hits</a></h3>
+
+<p>I&rsquo;m huge Rich Hickey&rsquo;s fan. It&rsquo;s just a list of his most interesting presentations. Definitely, must see.</p>
+
+<p><img src="http://farm4.staticflickr.com/3229/2613013337_bcc9c7857d.jpg" alt="" /></p>
+
+<ul>
+  <li><a href="http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey">Are We There Yet (2009)</a></li>
+  <li><a href="http://www.youtube.com/watch?v=f84n5oFoZBc">Hammock Driven Development (2010)</a></li>
+  <li><a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy (2011)</a></li>
+  <li><a href="http://www.infoq.com/presentations/Value-Values">The Value of Values (2012)</a></li>
+  <li><a href="http://www.youtube.com/watch?v=ROor6_NGIWU">The Language of the System (2012)</a></li>
+  <li><a href="http://www.infoq.com/presentations/Design-Composition-Performance">Design, Composition and Performance (2013)</a></li>
+</ul>
+
+<h3 id="clojure-persistent-vectorhttphypirioncommusingsunderstanding-persistent-vector-pt-1">5. <a href="http://hypirion.com/musings/understanding-persistent-vector-pt-1">Clojure Persistent Vector</a></h3>
+
+<p>Two parts explanation how clojure vector works.</p>
+
+<p>Yeah, simple square brackets <code>[1 2 3]</code> in clojure have a lot complex things under the hood. Moreover, it gives understanding not only how vectors work, but how all other persistent structures can be implemeted in efficient manner.</p>
+
+<h3 id="software-transactional-memoryhttpjavaociwebcommarkstmarticlehtml">6. <a href="http://java.ociweb.com/mark/stm/article.html">Software Transactional Memory</a></h3>
+
+<p>Have you heard about STM?</p>
+
+<p>It&rsquo;s a good model for concurrency control, like database transactions, but on memory. Much simpler and less error-prone to use. This article explain STM basics with some implementation details. </p>
+
+<p>For my attempt to implement STM refer <a href="http://www.slideshare.net/mishadoff/implementing-stm-in-java">presentation</a></p>
+
+<h3 id="a-software-developers-huide-to-httphttpodetocodecomarticles741aspx">7. <a href="http://odetocode.com/articles/741.aspx">A Software Developer&rsquo;s Huide to HTTP</a></h3>
+
+<p>Five Parts article of looking at HTTP from developer&rsquo;s perspective. Worth reading to dig into some details. </p>
+
+<h3 id="ideas-for-computinghttpsgithubcomsamsquireideas">8. <a href="https://github.com/samsquire/ideas">100 Ideas for Computing</a></h3>
+
+<p>Great list, perhaps most ideas are already partially implemented.</p>
+
+<blockquote>
+  <p>This is a vision for how computing could be.
+I began writing ideas down a number of years ago,
+this is a selection of ideas old and new.</p>
+</blockquote>
+
+<p>Some of them are <a href="https://github.com/samsquire/ideas#68-right-click-outsource">great</a>:</p>
+
+<blockquote>
+  <p>Task management between computers is an unsolved problem in desktop
+environments. Many users have multiple devices. Sending tasks,
+inputs or outputs to different computers is painful. Usually sending
+audio to be played through another computer, taking control of an
+application running on another computer, sharing files or
+streaming data to other machines requires special software. </p>
+</blockquote>
+
+<p>It would be great to have the same in reverse order also. I get a phone call, but phone is far away. Much better to click on current machine <em>Accept Call</em> and to talk. Security can be a challenging.</p>
+
+<p>Some <a href="https://github.com/samsquire/ideas#18-shortcut-format">problematic</a>:</p>
+
+<blockquote>
+  <p>Keyboard shortcuts are configured differently in each program.
+Shortcut configuration should be in a standard format.
+This way you can load them and share them between operating
+systems and share configurations between applications.</p>
+</blockquote>
+
+<p>This reminds me of xkcd comics:</p>
+
+<p><img src="http://imgs.xkcd.com/comics/standards.png" alt="" /></p>
+
+<p>Some ideas are <a href="https://github.com/samsquire/ideas#31-mounting-source-code">not so great</a>:</p>
+
+<p><em>Mounting source code</em> does not solve a problem at all, it&rsquo;s just adds a bit of sugar to project structure and adds more pain to build tools.</p>
+
+<h3 id="top-10-lists-common-java-mistakeshttpjavadzonecomarticlestop-10-lists-common-java">9. <a href="http://java.dzone.com/articles/top-10-lists-common-java">Top 10 Lists Common Java Mistakes</a></h3>
+
+<p>Metalist of Top 10 items of Top 10 java pitfalls.</p>
+
+<p>Hundred times discussed, but if you are java programmer, you may refresh your knowledge. List of common java pitfalls includes:</p>
+
+<blockquote>
+  <p>Using Singletons</p>
+</blockquote>
+
+<blockquote>
+  <p>The GOF religion</p>
+</blockquote>
+
+<blockquote>
+  <p>Return null from API methods</p>
+</blockquote>
+
+<p>By the way, this list contains some other useful java things, like top 10 java people and top 15 worst Computer Software blunders. Not worst, but definitely bad.</p>
+
+<h3 id="rare-are-gc-talkshttpfurious-waterfall-55herokucomruby-guideinternalsgchtml">10. <a href="http://furious-waterfall-55.heroku.com/ruby-guide/internals/gc.html">Rare Are GC Talks</a></h3>
+
+<p>Different Garbage Collector algorithms briefly explained. Bookshelf used as an analogy:</p>
+
+<blockquote>
+  <p>Bookshelf - Memory, Books - Objects.</p>
+</blockquote>
+
+<p>Ruby GC implementation discussed, but you are not forced to know ruby to understand that. By the way, article contains a lot of links to more detailed GC algorithms explanation.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 022]]></title>
@@ -381,150 +559,6 @@ this version (<em>for the sake of small size!</em>)</p>
 </ul>
 
 <p>But, you are welcome to improve it!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Programming Digest 3]]></title>
-    <link href="http://mishadoff.github.io/blog/programming-digest-3/"/>
-    <updated>2013-07-22T20:33:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/programming-digest-3</id>
-    <content type="html"><![CDATA[<p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
-algorithm complexities refresher, functional programming, including
-Scala and Clojure, concurrency and lot of humor.</p>
-
-<!-- more -->
-
-<h3 id="big-ball-of-mudhttpwwwlaputanorgmud">1. <a href="http://www.laputan.org/mud/">Big Ball of Mud</a></h3>
-
-<blockquote>
-  <p>What does your programming day look like? </p>
-</blockquote>
-
-<p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
-
-<p>The article describes problems in software design and explains
-why almost every system nowadays look like &ldquo;Big Ball of Mud&rdquo;.</p>
-
-<p>There are seven <em>real</em> patterns in software design:</p>
-
-<ul>
-  <li>BIG BALL OF MUD</li>
-  <li>THROWAWAY CODE</li>
-  <li>PIECEMEAL GROWTH</li>
-  <li>KEEP IT WORKING</li>
-  <li>SHEARING LAYERS</li>
-  <li>SWEEPING IT UNDER THE RUG</li>
-  <li>RECONSTRUCTION </li>
-</ul>
-
-<p><em>caps preserved due to original article</em></p>
-
-<p>And our favorite phrase:</p>
-
-<blockquote>
-  <p>It works, so why fix it?</p>
-</blockquote>
-
-<h3 id="no-silver-bullethttpwwwcsnottacukcahg51issdocumentsnosilverbullethtml">2. <a href="http://www.cs.nott.ac.uk/~cah/G51ISS/Documents/NoSilverBullet.html">No Silver Bullet</a></h3>
-
-<p>Classic article by Frederick Brooks, Jr.</p>
-
-<p>Object-oriented programming? Artificial Intelligence? Expert systems? Time-sharing?
-Graphical or Automated programming?</p>
-
-<p>Nothing helps you.</p>
-
-<blockquote>
-  <p>The most radical possible solution for constructing software is not to construct it at all.</p>
-</blockquote>
-
-<p>Demotivating, but helpful.</p>
-
-<h3 id="beating-the-averageshttpwwwpaulgrahamcomavghtml">3. <a href="http://www.paulgraham.com/avg.html">Beating the Averages</a></h3>
-
-<p>This is inspiring one.</p>
-
-<p>Brooks told &ldquo;There is no Silver Bullet&rdquo;, but Paul Graham reveals &ldquo;The Secret Weapon&rdquo;.</p>
-
-<p>The article is success story of startup called Viaweb.
-Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
-
-<blockquote>
-  <p>Our secret weapon was similar.
-We wrote our software in a weird AI language, with a bizarre syntax full of parentheses.</p>
-</blockquote>
-
-<p>As you probably understood, it was Lisp.</p>
-
-<h3 id="know-thy-complexitieshttpbigocheatsheetcom">4. <a href="http://bigocheatsheet.com/">Know Thy Complexities!</a></h3>
-
-<p>Plain algorithm complexity cheatsheet. Contains time and space complexities
-for common algorithms and datastructures.</p>
-
-<h3 id="adventures-in-functional-programminghttpvimeocom45140590">5. <a href="http://vimeo.com/45140590">Adventures in Functional Programming</a></h3>
-
-<blockquote>
-  <p>Did you know that recursion is just syntactic sugar over higher-order functions?</p>
-</blockquote>
-
-<p>Awesome screencast by Jim Weirich about Y-Combinator in JavaScript.</p>
-
-<h3 id="scala-problemshttpaperiodicnetphilscalas-99">6. <a href="http://aperiodic.net/phil/scala/s-99/">99 Scala Problems</a></h3>
-
-<p>I am not using Scala and prefer Clojure for rapid protyping, but find such articles
-extremely useful when learning new language. Just exploring the code shows that Scala is
-the powerful and expressive language.</p>
-
-<p><strong>P.S.</strong> I am on half way to publish &ldquo;99 Clojure Problems&rdquo;.</p>
-
-<h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
-
-<p>Great pictures. This is nice intro to concurrency and overview of some common cocurrency problems.</p>
-
-<p><img src="http://adit.io/imgs/concurrency/threads_using_mutex.png" alt="" /></p>
-
-<h3 id="understanding-clojure-concurrencyhttpblakesmithme20120515understanding-clojure-concurrency-part-1html">8. <a href="http://blakesmith.me/2012/05/15/understanding-clojure-concurrency-part-1.html">Understanding Clojure Concurrency</a></h3>
-
-<p>Clojure is exciting language with great concurrency capabilities:
-default immutability, atoms, refs, agents, promises, futures and software transactional memory.</p>
-
-<p>This article is an introduction to them. Check out the <a href="http://blakesmith.me/2012/05/25/understanding-clojure-concurrency-part-2.html">2nd part</a></p>
-
-<h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
-
-<p>This is the video screencast of Gary Bernhardt&rsquo;s talk.
-Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
-
-<blockquote>
-  <p>An object plus an object is actually&hellip;. Not A Number!</p>
-</blockquote>
-
-<h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
-
-<p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
-
-<blockquote>
-  <p>Q: What does the &ldquo;B&rdquo; in Benoit B. Mandelbrot stand for?</p>
-
-  <p>A: Benoit B. Mandelbrot.</p>
-</blockquote>
-
-<p>In fact, some of the jokes related to programming.</p>
-
-<blockquote>
-  <p>There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.</p>
-</blockquote>
-
-<p>Some of them a bit stupid, but still fun.</p>
-
-<blockquote>
-  <p>How many surrealists does it take to screw in a light bulb?</p>
-
-  <p>A fish.</p>
-</blockquote>
-
-<p>Definitely, worth to read!</p>
 ]]></content>
   </entry>
   

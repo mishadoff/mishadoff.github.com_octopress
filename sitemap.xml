@@ -209,12 +209,16 @@
         <lastmod>2013-10-20T14:10:12+03:00</lastmod>
     </url>
     <url>
+        <loc>http://mishadoff.github.io/blog/programming-digest-4/</loc>
+        <lastmod>2013-11-26T16:32:47+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://mishadoff.github.io/about/</loc>
         <lastmod>2013-10-05T02:18:14+03:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.io/blog/archives/</loc>
-        <lastmod>2013-10-20T14:10:12+03:00</lastmod>
+        <lastmod>2013-11-26T16:32:47+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.io/blog/categories/</loc>
@@ -222,7 +226,7 @@
     </url>
     <url>
         <loc>http://mishadoff.github.io/</loc>
-        <lastmod>2013-10-20T14:10:12+03:00</lastmod>
+        <lastmod>2013-11-26T16:32:47+02:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.io/pages/clojure-links/</loc>
