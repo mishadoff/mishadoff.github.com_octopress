@@ -290,3 +290,81 @@ You see? We just pass functions.
 **Conclusion:** Template method is the same as Strategy
 
 ## Iterator
+
+"Iterator is an object that enables a programmer to traverse a container"
+
+*Example:* `java.util.Iterator`
+
+What does it mean "to traverse a container"?
+
+Standard iterator interface declares two functions:
+
+* `hasNext()` - return true if container has more elements
+* `next()` - return next element
+
+*Note:* There is also `remove()` method, but we ignore it.
+
+Using such interface, linear scan on collection looks like
+
+``` java
+Iterator it;
+while (i.hasNext()) {
+  i.next();
+}
+```
+
+Seems reasonable.
+
+Now, take a look at a simple linked list implementation
+
+``` java
+class Node<T> {
+  Node next;
+  T data;
+}
+```
+
+Traversing such list
+
+``` java
+Node next = root;
+while (next != null) {
+  next = next.next;
+}
+```
+
+So, what is the difference between Iterator and List?
+It just the same thing but with another name.
+
+In clojure we have `seq` function, which is abstraction over
+collection of any type, and it returns... List!
+
+``` clojure
+(seq [1 2 3])       => (1 2 3)
+(seq (list 4 5 6))  => (4 5 6)
+(seq #{7 8 9})      => (7 8 9)
+(seq (int-array 3)) => (0 0 0)
+(seq "abc")         => (\a \b \c)
+```
+
+List in clojure can be traversed in natural way,
+or partially with `first` and `rest`.
+
+``` clojure
+(first '(1 2 3))  => 1
+(rest '(1 2 3))   => (2 3)
+
+(defn traverse [list]
+  (if-not (empty? list)
+          (do 
+            (println (first list))
+            (traverse (rest list)))))
+```
+
+Ugly. But nobody use it that way as nobody use `while (hasNext())` in java.
+
+Worth to say that `seq` is much better abstraction than iterator.
+It is immutable and persistent. That means you won't have concurrency problems
+with `seq` at all.
+
+**Conclusion:** Iterator it's just an abstraction over list.
