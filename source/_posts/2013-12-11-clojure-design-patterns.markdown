@@ -3,106 +3,158 @@ layout: post
 title: "Clojure Design Patterns"
 date: 2013-12-11 00:09
 comments: true
-categories: [clojure, programming, java]
+categories: [clojure, programming, java, story]
 published: false
 ---
 
-Overview of Design Patterns from the
-[classic book](http://en.wikipedia.org/wiki/Design_Patterns) by Gang of Four.
-Some attempts to implement all of them in Clojure. 
+Story about classic [Design Patterns](http://en.wikipedia.org/wiki/Design_Patterns)
+with attempts to implement them in Clojure.
 
 <!-- more -->
 
 **Disclaimer:** *Most patterns are easy to implement because
 we use dynamic typing, functional programming and, of course,
-Clojure. Some of them look ugly. It's okay.*
+Clojure. Some of them look wrong and ugly. It's okay.
+All characters are fake, coincidences are accidental.*
 
 ---
-<br/>
+
+# Angel of Dev
+
+---  
+
+*or how to write social network for cats in 23 weeks*
+
+![PICTURE: ANGEL OF DEV]()
 
 > Our programming language is fucked up.
->
 > That's why we need design patterns.
+> -- Anonymous
 
-We have three problems in programming:
+## Intro
 
-- First of all, we have to **create** an object for representing some real-world entity
-- then, select an appropriate data **structure** for manupalating such objects
-- and finally, define set of functions (**behaviour**) for such objects.
+**Pedro Veel** was modest Java Software Engineer in a
+Leading European IT Service Provider company
+called **Serpent Hill & R.E.E.**
+The latest project he was working on, bank trading platform for
+a large investment bank **Weats Inc.**, crashed due to
+float numbers rounding error in production. 
+Company has been bankrupted. 
+Obviously, whole development team has been fired.
 
-Patterns solve all these problems([*](#prog)):
+Pedro didn't regret too much about his job. He found 
+that rounding bug earlier, and tried to prove its importance,
+but QA lead decided that non-localized labels for Latin
+language were the highest priority.
 
-- **Creational Patterns** help to create objects.
+In a month he found a new job: in a startup company,
+that got investments from business angel **Sven Tori**
+few days ago for developing *"social network for cats"*.
+They really tried to solve real-world problem,
+and Pedro felt great about it.
 
-  Customer not interested in expensive `new Object()`
-  (*what is the "new", should I pay for it?*),
-  but `ImportantBusiness.getInstance()` looks great.
-  
-- **Structural Patterns** help to maintain relationships between objects.
+Current team consists of four members:
+project manager **Rage Man**, team lead **Meat Dale**,
+beautiful receptionist **Terry P.** and our hero **Pedro**.
 
-  It's all about composition.
+## Chapter I. Behavioral
 
-- **Behavioral Patterns** help to define set of functions.
+Development started.
 
-  *What is "set of functions" you talking about?*
-  Behavior sounds official.  
+*Dale:* Pedro, we have to show investor our first demo on Friday.  
+*Pedro:* What needs to be done?  
+*Dale:* I suppose, registration, login and logout functionality.
+Let me verify with Rage Man, but start working now.  
+*Pedro:* Ok.  
 
-<a id="prog"></a>
-(\*) *Programming is just one big problem: regexps, off-by-one errors,
-threads, timezones, cache invalidation and million of topics,
-but this article about patterns, so we assume there are just 3 problems,
-and patterns solve them all.*
+Pedro never started new project alone and didn't know how to begin.
+;; TODO more
+Googling gives a comment on forum for necromancers:
+*"If you need dev help, summon Angel of Dev. Spell text is under the cut."*.
 
----
+*Pedro:* What a bullshit.  
 
-# Part I. Behavioral
+Four days gone and Dale came to Pedro.
 
-## Command
+*Dale:* Hi, Pedro. Yesterday we were at the theater with Terry P, I think I like her.  
+*Pedro:* Great...  
+*Dale:* What about our Friday's delivery?  
+*Pedro:* Will be in time.  
+*Dale:* Excellent! Did I tell you are a great developer?  
+*Pedro:* No.  
+*Dale:* You are a great developer!  
+*Pedro:* Thanks.  
 
-"Encapsulates information needed to call a method
-at a later time"
+Dale left the room.
 
-*Example:* `java.lang.Runnable`
+Pedro thought, nothing happens if he tries to wake elder gods... ;; TODO
 
-Guess, what information do you need to call a method?
+> Angel of Dev, while true I summon you!
 
-Correct, *object and method name* in OOP world or just *function* in FP.
-And a way to apply it.
+Blue screen of death appeared on the monitor.
+Some strange being climb out to the table.
+
+*Dale:* Who are you?  
+*Vaine:* Hi, my name is Vaine. I'm an Angel of Dev.  
+*Dale:* An angel?  
+*Vaine:* Not an angel, actually. I help developers. Do you need help?  
+*Dale:* I need to implement a register/login/logout functionality.  
+*Vaine:* As easy as pie! Just use `Command` design pattern.  
+
+### Episode 1. Command
+
+The phrase "design pattern" woke another being.
+
+*Niccy:* What I hear? Design Patterns?  
+*Pedro:* Who are you?  
+*Niccy:* I am Niccy, Angel of Dev.  
+*Pedro:* Another Angel?  
+*Niccy:* Correctamundo.  
+*Vaine:* Don't listen to him. He always breaks someone's concentration.
+Listen, first of all, you must create interface `Command` to
+**encapsulate information needed to call a method at a later time**,
+like in `java.lang.Runnable`.  
+*Niccy:* Hahaha! Allow me to retort, Vaine, what information do you need to call a method?  
+*Vaine:* Object and method name  
+*Niccy:* Or just a *function* in FP world. And a way to apply it.  
+
+Niccy showed a piece of code to Pedro.
 
 ``` clojure
 (defn execute-command [command]
   (command))
 ```
 
-This is how abstract command pattern looks like. `command` is a function,
-and `(command)` call to that function.
-
-**Task:** Implement two commands for login and logout.
-
-*Parameters?* Not a problem.
-
-One approach we can wrap our function with arguments to
-anonymous no-arg function.
+*Niccy:* This is how abstract command pattern looks like in Clojure.
+`command` is a function and `(command)` is the function call.  
+*Pedro:* That simple.  
+*Vaine:* But it does not support parameters for command.  
+*Niccy:* Sure it does. Just wrap function with arguments to
+anonymous no-arg function.  
 
 ``` clojure
+(execute-command #(register "user" "password" "email"))
 (execute-command #(login "user" "password"))
 (execute-command #(logout "user"))
 ```
 
-Another approach to implement `execute-command` with varargs.
-This way we can avoid unnecessary wraping.
+*Vaine:* No one understands this hash sign.  
+*Niccy:* Use varargs.  
 
 ``` clojure
 (defn execute-command [command & args]
   (apply command args))
 
+(execute-command register "user" "password" "email")
 (execute-command login "user" "password")
 (execute-command logout "user")
 ```
 
-*History?* Not a problem.
-
-We setting up a list to save our commands.
+*Niccy:* With that approach you don't even need `execute-command` function.  
+*Vaine:* How to support history?  
+*Niccy:* Very easy. We setting up a list to save our commands.  
+*Vaine:* With concurrent modification?  
+*Niccy:* Of course.  
 
 ``` clojure
 (def history (atom [])) 
@@ -112,138 +164,374 @@ We setting up a list to save our commands.
   (apply command args))
 ```
 
-Every call to `execute-command` will modify `history` vector
-that you can inspect later and restore all activites.
+*Pedro:* Sorry, `history` variable is?  
+*Niccy:* A vector. Every call to `execute-command` modifies `history` and
+you can inspect it later. For example to report login activites.  
+*Pedro:* That means...  
+*Niccy:* `Command` is just a function.  
 
-**Conclusion:** Command is just a function.
+After two hours, registration, login and logout functionality was implemented
+and Pedro was glad as never. The rest of the day he spent browsing the
+web for funny cat image for the front page.
 
-## Strategy
+**Demo**
 
-"Algorithm's behavior can be selected at runtime"
+*Sven Tori:* What have you done in a week?  
+*Rage Man:* We continue working on business plan for cats...and
+implemented important part of our system.  
+*Dale:* Correct, It's working registration, login and logout for the user.
+Now you can enter your name, password and see a page with the cat.  
+*Sven Tori:* Awesome! Let's checkout progress in a week. Bye all!  
+*Rage Man:* Sure, bye!  
+*Dale:* Bye!  
+*Pedro:* Bye!  
+*Sven Tori disconnected*.  
+*Rage Man:* It was great.  
+*Pedro:* It was a `Command` pattern, you know...  
+*Rage Man:* Yeah, it was used exactly what is needed for. I had been programming before...
+Next week we are going to implement list of users. Seems reasonable?  
+*Pedro:* Sure.  
+*Dale:* Ok. Have a nice weekend.  
 
-*Example:* `Collections.sort(list, comparator)`
+### Episode 2. Strategy
 
-For this particular example `sort` is an **algorithm**,
-list is **data** to be sorted (algorithm's input),
-and **comparator** runtime behaviour.
+Pedro implemented admin page and table with the list of users in one day.
 
-**Task:** Implement a function to check if collection
-is sorted according to comparator.
+*Dale:* Hi, Pedro! How are you?  
+*Pedro:* Fine.  
+*Dale:* How do you think, what flowers Terry likes?  
+*Pedro:* No idea.  
+*Dale:* Ok, then, let's check what you have. Admin page, fine. List of users, fine. Emm, wait.  
+*Pedro:* What's the problem?  
+*Dale:* Users with subscription must come *before* other users.  
+*Pedro:* There was no such requirement.  
+*Dale:* But it's obvious, agreed?  
+*Pedro:* Well, yes, I'll do it.  
+*Dale:* Great, good luck!  
+
+Obviously sorting by name should work in reverse order too.
+Pedro needs something that allows to
+**select an algorithm's behavior at runtime**.
+
+*Vaine:* It's candidate for `Strategy` pattern.  
+*Pedro:* Yes, it seems.  
+*Vaine:* Exactly it is, just like `Collections.sort(list, comparator)`  
+*Pedro:* But there is no "subscription" comparator.  
+*Vaine:* Write it yourself by *encapsulating needed behavior in custom comparator object*  
+*Niccy:* Boom!  
+*Vaine:* Again you!  
+*Niccy:* Everytime I hear *encapsulate behaviour in an object* I come in.  
+*Vaine:* Do not try to say I'm wrong.  
+*Niccy:* You are wrong. All these *encapsulate blah blah blah* is just function.  
+*Vaine:* You've already said the `Command` is just a function, now you're saying
+`Strategy` is a function. Do they the same?  
+*Niccy:* Kind of. `Strategy` just function accepts another function.  
+*Pedro:* Enough arguing! I need to work.  
+*Vaine:* Just get away, Niccy.  
+*Niccy:* Hope it helps, losers!  
+
+Nicky throw a piece with code on the table.
+Pedro put it into a pocket.
+
+*Vaine:* Listen to me. For this particular problem `sort` is an **algorithm**,
+list is **data** to be sorted, and **comparator** is runtime behaviour.  
+*Pedro:* Got it.  
+*Vaine:* You need to follow `Comparator` interface
+and provide implementation for `compare(Object o1, Object o2)` method.
+Also you need another implementation `ReverseComparator`  
+*Pedro:* Lot of classes...  
+*Vaine:* It is flexibility, and after that you...  
+*Pedro:* Got it. Got it.  
+*Vaine:* Good luck!  
+
+Pedro thought what Vaine was talking about.
+All these Comparator classes seem redundant.
+He took a Niccy's piece of paper from his pocket.
+There were few lines of clojure.
 
 ``` clojure
-(defn sorted? [coll comp]
-  (apply comp coll))
+(def users [{:name "felicia"     :subs true}
+            {:name "faina"       :subs false}
+            {:name "fernando"    :subs true}
+            {:name "father Duke" :subs true}])
 
-(sorted? [1 2 3] <) => true
-(sorted? [1 8 4] <) => false
-(sorted? [7 6 5] >) => true
+;; forward sort
+(sort-by (juxt (complement :subs) :name) users)
+;; reverse sort
+(sort-by (juxt :subs :name) #(compare %2 %1) users)
 ```
 
-Here is `<` and `>` are binary predicates
-(two-args functions return boolean) that define
-algorithm's behaviour.
+In a next 10 minutes (*8 of them was spent to understand clojure one-liners*),
+sorting functionality was done.
 
-*But behaviour can be not just one function?* Sure.
+**Demo**
 
-``` clojure
-(defn sorted? [coll context]
-  (let [{:keys [fun message]} context]
-    (print message)
-    (apply fun coll)))
+...  
+*Dale:* Users with subscription appears on the top of the list.  
+*Sven Tori:* Sure, because they pay us.  
+*Dale:* And if we click on reverse sort it will be sorted in reverse order.  
+*Sven Tori:* Awesome, they still on top.  
+*Rage Man:* Guys did a good work.  
+*Sven Tori:* Yes, keep it up. Good Luck!  
+*Rage Man:* Bye!  
+*Dale:* Bye!  
+*Pedro:* Bye!  
 
-(sorted? [1 2 3] {:fun < :message "Less"}) => true
-```
+### Episode 3. State
 
-We passed "context" as a behaviour.
-It can contain functions and data as well.
+Monday, all-hands meeting.
 
-**Conclusion:** Strategy is just a function accepts another function.
+*Rage Man:* We guys did a good job last week. Sven Tori allowed us to hire
+marketing person. Meet **Karm Tinge**, our first sales person.  
+*Karm:* Hello, all. I am Karm and I am a sales person.  
+*All:* Hi, Karm!  
+*Rage Man:* Karm will investigate the market and keep us profitable. Questions?  
+*Pedro:* What our plan for next week delivery?  
+*Rage Man:* Currently, we have enough functionality to attract users, you can relax for now.  
+*Pedro:* But...  
+*Karm:* You can change the cat picture on the front page, I think user needs something new.  
+*Rage Man:* Excellent, Karm. Dale, will you control that?  
+*Dale:* Sure.  
+*Rage Man:* Then, everybody's come back to work. Let's do the greatest cat service ever.  
 
-## State
+Whole day Pedro was reading about usage of `Strategy` pattern. Maybe he miss something?
 
-"Encapsulate varying behavior for the same routine based on an object's state"
+*Dale:* Pedro, I've sent you an new picture of cat for the front page. Did you check?  
+*Pedro:* One moment... Wait, what is this?  
+*Dale:* Oh God, this is my torso I wanted to send to Terry. That means I sent a cat photo to her. Shit.  
+*Pedro:* Happens.  
 
-*Example:* Not found in JDK
+Pedro slept very bad. He had a nightmare about naked Dale with cat's head.
+Disgusting.
 
-State pattern is very close to the Strategy.
-It achieves the same goal using different mechanism:
+*Karm:* Pedro, I've investigated some users staring too much at the cat picture.
+We need admin functionality to disable such users.  
+*Pedro:* But, how we detect who exactly staring too much?  
+*Karm:* Unfortunately, I am not a technical guy. Talk to Dale.  
+
+*Pedro:* Have you heard what Karm wants?  
+*Dale:* Yes, "must have" feature.  
+*Pedro:* Do you think it's possible to implement?  
+*Dale:* Just add functionality for admin to disable users.  
+*Pedro:* And how...  
+*Dale:* How, it's a Karm's problem.  
+
+Pedro thought about implementation.  
+*Label near username must be clickable. If we click on label
+user state should be changed. User can have four different states:
+enabled, disabled, user with subscription and user that staring too much.
+The following rules should be applied on click:
+if user staring too much or enabled, we disable him; 
+if user disabled we enable him; 
+if user with subscription, do nothing.
+Pretty straightforward. We need to make this extensible, because
+I'm sure new business rules will be added later.
+From code perspective we need to support some
+state for...*
+
+*Vaine:* `State`? Awesome pattern.  
+*Pedro:* Do you hear my thoughts?  
+*Vaine:* Yes I do.  
+*Pedro:* Strange.  
+*Vaine:* You definitely must use `State` pattern. It pattern helps you
+**encapsulate varying behavior for the same function based on an object's state**  
+*Niccy:* Hiao!  
+*Vaine:* What are you need?  
+*Niccy:* *"State. You're doing it wrong"*, know who said that?  
+*Vaine:* Doesn't matter.  
+*Niccy:* Really. State is very close to the Strategy.
+They even have the same UML diagrams.  
+*Vaine:* Don't start your song.  
+*Niccy:* I've already started. It achieves the same goal using another mechanism,
 instead of passing behavior to the method, we support some internal
 state for the object, which affects method behaviour.
-Moreover, successive calls can change object's state.
-
-**Task:** Implement switch for the lightbulb
-
-From clojure perspective it can be implemented the same way as strategy pattern.
-But we will use *different mechanism* - multimethods.
-
-Clojure is immutable, so let's do it correct -
-pass state to the `switch` function, which do the work
-and returns new state.
+And from clojure perspective it can be implemented
+the same way as strategy pattern. It is just a first-class function.  
+*Vaine:* But successive calls can change object's state.  
+*Niccy:* Right, but it has nothing to do with `Strategy` it is just implementation detail.  
+*Vaine:* What about "another mechanism"?  
+*Niccy:* Multimethods.  
+*Pedro:* Multi *what*?  
+*Vaine:* Methods, but I confused, I thought methods are in OOP.  
+*Pedro:* Functions, whatever. I don't care about names.  
 
 ```
+(def mr-white   (atom {:name "Mr. White"   :state :enabled}))
+(def mr-pink    (atom {:name "Mr. Pink"    :state :staring}))
+(def mr-blonde  (atom {:name "Mr. Blonde"  :state :subscription}))
+
 (defmulti switch :state)
 
-(defn- flip [state]
-  (->> (:state state)
-       (get {:on :off :off :on})
-       (assoc state :state)))
+(defmethod switch :enabled [user]
+  (println (:name user) "is disabled.")
+  (assoc user :state :disabled))
 
-(defmethod switch :on [state]
-  (println (:obj state) "is ON")
-  (flip context))
- 
-(defmethod switch :off [state]
-  (println (:obj state) "is OFF")
-  (flip context))
+(defmethod switch :disabled [user]
+  (println (:name user) "is enabled.")
+  (assoc user :state :enabled))
+
+(defmethod switch :staring [user]
+  (println (:name user) "is staring. Disable.")
+  (assoc user :state :disabled))
+
+(defmethod switch :subscription [user]
+  (println (:name user) "has subscription.")
+  user)
+
+;; Usage
+(swap! mr-white  switch)
+(swap! mr-pink   switch)
+(swap! mr-blonde switch)
 ```
 
-Lotta code, but idea is simple.
-We declare multimethod `switch` that use `:state` as dispatch function.
-Then we define first function `switch` dispatched by value `:on`.
-If call to switch sees value `:on` for key `:state` in state object,
-this function is executed. The same applies for `:off` implementation. 
-
-This code turn switch 10 times.
+Ton of completely new code for Pedro.
+He googled keywords: *clojure multimethods*, *single dispatch*, *multimethods vs switch statement*.
+Few hours of reading and he got "Aha!".
+*If new state appears in requirements, we just add another defmethod, awesome!*
+He used the same code Niccy gave to him, except one added line.
 
 ``` clojure
-(def initial-state {:state :on :obj "Lightbulb"})
-(take 10 (iterate switch initial-state))
+;; TODO replace println with logging
 ```
 
-But if we save state as an atom, code will become very similar to the strategy pattern.
+*Dale:* We don't have demo this week.  
+*Pedro:* Great!  
+*Dale:* Yes, but we plan a huge delivery next week.
+By the way, enable/disable feature works great.
+What did you use to implement it?  
+*Pedro:* Multimethods.  
+*Dale:* Multi *what*?  
+*Pedro:* Methods.  
+*Dale:* Ohh, got it. Methods are great. I told you are a great developer?  
+*Pedro:* Yes.  
+*Dale:* Remember that. Bye!  
+*Pedro:* Have a nice weekend!  
 
-``` clojure
-(def state (atom {:state :on :obj "Lightbulb"}))
+### Episode 4. Template Method
 
-(defn switch []
-  (let [{:keys [state obj]} @state]
-    (println obj "is" state) 
-    (swap! context flip)))
+*Rage Man:* Disabling users which don't want to pay
+for subscription is a big step to success. But we have just one unsolved problem. Karm?  
+*Karm:* Yeah. We have no idea how to detect such users.  
+*Pedro (whispered):* You don't say.  
+*Rage Man:* Let's propose some solutions and select the best one.
+Does everybody familliar with brainstorming?  
+*All:* Yes.  
+*Rage Man:* Whatever, just to clarify.  
+We generating ideas. No criticism, no slowpoking. Let's do it quick.
+Ideas may be crazy, does not matter. Then we select the best one. Clear?  
+*All:* Yes.  
+*Rage Man:* Starting now!  
+*Silence*  
+*Pedro (coughing):* Khm, khm.  
+*Silence*  
+*Karm (sneezing):* Aaaptsch.  
+*Silence*  
+*Dale (snuffling):* Thhhhhs.  
+*Silence*  
+*Karm:* User could select checkbox on registration "I will never pay subscription"  
+*Pedro:* Are they morons or what?  
+*Rage Man:* Remember, no criticism. Writing down first idea.  
+*Dale:* If user is staring at the cat more than 10 seconds,
+show him an alert "Are you staring? (YES/NO)"  
+*Rage Man:* Great, second idea.  
+*After few hours*  
+*Karm:* For unsubscribed users we can show a picture with dog instead of cat
+and if they complain, disable.  
+*Rage Man:* Idea #123.  
+*Dale:* Or it can be a bot, automatically inspecting all users and detect suspects.  
+*Rage Man:* Idea #124. Enough. Take a lunch guys, and we will conduct another meeting in an hour.  
 
-(repeatedly 10 switch)
-```
+At the end of working day, whole team was voting and arguing about solution.
+Democratic forces agreed on the bot idea, because it is
+*"automatic solution do not bother customers"* (Rage Man),
+*"entertain users and can be a marketable decision"* (Karm),
+*"challenging and very technical solution"* (Dale),
+*"I don't know"* (Pedro).
 
-**Conclusion:** State pattern is the same as Strategy.
+*Rage Man:* So, currently the best idea is a bot.  
+*Karm:* Agreed.  
+*Dale:* Moreover, we can implement different types of bots.
+All of them will behave similarly, but on some conditions specific actions will be taken.  
+*Rage Man:* Explain, please.  
+*Dale:* We will implement one bot for inspecting users, another for disabling users,
+yet another for saying *"Thanks!"* to users with subscription, etc.  
+*Rage Man:* Seems reasonable.  
+*Pedro:* Why don't we just implement one bot doing all things?  
+*Dale:* It's a principle of single responsibility.  
+*Pedro:* But single resp...  
+*Karm (interrupting):* We can also have a bot notifying users on their friends' birthdays.  
+*Dale:* And call all of them *CatBots*.  
+*Rage Man:* Ingenious. Do you see how powerful is brainstorming technique? Get back to work, guys.  
 
-## Template Method
+The next day Pedro was thinking how to approach the bot.
+He visited a lot of gamedev forums and had no success.
 
-"It lets redefine certain steps of an algorithm without changing the algorithm's structure"
+*Pedro:* I have no idea how to implement that.  
+*Dale:* It is simple. Few years ago I was playing MMORPG **Mech Dominore Fight Saga**.  
+*Pedro:* Great! I was playing it too.  
+*Dale:* Yes, the best game, in my opinion. But, there were a lot of routine tasks:
+killing monsters, gathering resources, daily quests, etc.
+Lot of things transformed game into a pain.  
+*Pedro:* That's why I stopped playing.  
+*Dale:* I did better, I implemented a bot doing all these thing automatically.  
+*Pedro:* Impossible!  
+*Dale:* I thought this the first time, but nothing impossible, you know.
+Moreover, the default bot was easily customizable for different classes:
+warriors, hunters, wizards.  
+*Pedro:* What technique did you use?  
+*Dale:* Don't remember exactly. It was some pattern called *"Pattern Fucntion"* or *"Pattern Method"*?  
+*Pedro:* *Template Method*?  
+*Dale:* Maybe. Really I don't remember. Google it.  
+*Pedro:* Sure, thanks Dale.  
+*Dale:* Break a leg. By the way, did you remember the cat picture I sent to Terry?  
+*Pedro:* Yes.  
+*Dale:* She liked it very much.
+And responded with another cat image, take a look.  
+*Pedro:* Funny. But if she sent you her torso it will be better ;; grammar
+*Dale:* Pervert!   (все попереду)
 
-*Example:* `java.util.AbstractList`
+It was the first time Dale helped. Pedro entered query in search field. Click.
+Whoa! The first match.
 
-Assume we have an algorithm to move character in some RPG world.
-All characters have a lot in common:
+*Pedro:* *"Template Method*, **It lets redefine certain steps of an algorithm
+without changing the algorithm's structure**". Seems useful for implementing
+their stupid catbot scenarios.  
+*Vaine:* You just found the ideal solution for your problem.  
+*Pedro:* Yes, but how to start?  
+*Vaine:* I would reccomend you to inspect `java.util.AbstractList` and its abstract methods,
+then write solution for Dale's bot and finally move to catbot.  
+*Pedro:* Thanks, Vaine.  
+*Vaine:* By the way, Niccy is not going to distract us today.
+He ended up in infinite recursion with his *Functional Programming* tricks.  
+*Pedro:* Did he die?  
+*Vaine:* No, just stucked in "Recursion World".  
+*Both laughing*  
 
-- they looking valuable items in chests
-- if they found better artifact, replace their artifact
-- if they encountered an enemy, attack or flee, depending on enemy strength
-- if they found a questgiver, accept quest
+Pedro started thinking:  
+*Assume we have an algorithm to move character in some RPG world.
+All characters have a lot in common: they searching for valuable items in chests,
+if they found better artifact, replace their artifact, if they encountered an enemy,
+attack or flee, depending on enemy strength, if they found a questgiver, accept quest...*
 
-But behavior between specific classes can vary depending on skills.
+*But behavior between specific classes can vary depending on skills.
 For example, most characters ignore closed chest, but thief can lockpick it,
-most characters accept melee combat, but hunters and wizards try to keep distance, etc.
+most characters accept melee combat, but hunters and wizards try to keep distance...*
 
-Abstract move for abstract character can be as follows
+Phone rang.
+
+*Pedro:* Hello?  
+*Niccy:* It's Niccy.  
+*Pedro:* What happened?  
+*Niccy:* I was implementing modified factorial algorithm and forgot
+to add exit condition. Waiting for stack overflow.  
+*Pedro:* Hope it will be soon.  
+*Niccy:* Definitely, few hours left. That idiot Vaine is thinking I can't help.  
+*Pedro:* Did you hear our talk?  
+*Niccy:* Of course, I am an angel.  
+*Pedro:* Even in "Recursion World"?  
+*Niccy:* Everywhere.
+
+*Niccy sent the file tm.clj*  
 
 ``` clojure
 (defn move-to [loc]
@@ -259,8 +547,15 @@ Abstract move for abstract character can be as follows
     (quest? loc) (accept quest)))
 ```
 
-But we agreed some action can be overridden depending on character class.
-We can extract them to parameters and provide default ones.
+Pedro quickly inspected the code. 
+
+*Pedro:* But how we can override some actions based on class?  
+*Niccy:* What actions? What class?  
+*Pedro:* For example, thief class can lockpick the chests
+or hunter class has a ranged attack.  
+*Niccy:* Wait a second.  
+
+*Niccy sent the file tm2.clj*
 
 ``` clojure
 (defn move-to [loc & {keys [lock-chest att-type :or
@@ -275,21 +570,69 @@ We can extract them to parameters and provide default ones.
                        (replace :art)))
     (enemy? loc) (attack att-type (:enemy loc))
     (quest? loc) (accept quest)))
-```
 
-Then we will have different calls for different classes
-
-``` clojure
 (move-to loc) ;; Warrior
 (move-to loc :lock-chest lockpick) ;; Thief
 (move-to loc :att-type :ranged) ;; Hunter
 ```
 
-You see? We just pass functions.
+*Niccy:* You see? We just pass functions.  
+*Pedro:* Unbelievable.  
 
-**Conclusion:** Template method is the same as Strategy
+Pedro used the same approach to implement *catbots*.
+By the way, he added a fancy js library to visualize bots' moving.
 
-## Iterator
+**Demo**
+
+*Pedro (shows the moving bots):* This bot disables users. This one is for... emmm?  
+*Karm:* Notifying users on friends' birthdays.  
+*Pedro:* Right.  
+*Sven Tori:* Who controls all these bots?  
+*Dale:* Nobody. They are bots and that's the trick.  
+*Sven Tori:* Does it mean we don't need to hire a person to control them?  
+*Rage Man:* Exactly, they are fully automatic.  
+*Sven Tori:* Awesome!  
+
+### Episode 5. Visitor
+
+Bot idea was very attractive from Sven's perspective.
+*"More bots!"*, he said.
+
+...  
+*Rage Man:* Guys, what we planned for this week?  
+*Karm:* I investigated the market. We can expand our services
+by introducing referral program.
+*Rage Man:* Explain please.
+*Karm:* Existing users can invite other users for some benefits.
+*Rage Man:* What benefits?
+*Karm:* Temporary subscription or cat-style avatar.
+I still experimenting with this.
+*Dale:* And if invited users will invite other users we'll grow exponentially.
+*Pedro:* 6 steps and we dominate!
+*Rage Man:* Ok, what about bots?
+*Dale:* What bots?
+*Rage Man:* Sven just said *"more bots"*.
+*Karm:* We'll think about it.
+
+There was no problem to implement referral system. Pedro handled it very easily.
+Just added database column for user table to indicate by whom this user was invited. Magical `NULL` was used to indicate users with no-referral registration.
+
+*Karm:* blah blah b;lha, visit.
+
+*Dale:* How thigs are going?
+*Pedro:* Excellent, reading about *Visitor pattern*.
+*Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.
+*Pedro (trying to joke):* V for Visitor.
+*Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?
+*Pedro:* Doubt. Just open the dictionary and find another word starting with "V".
+*Dale:* Good idea!
+
+*Niccy and Vaine battle*
+
+### Episode 6. Iterator
+
+
+*Dale* *Tells joke about V for *
 
 "Iterator is an object that enables a programmer to traverse a container"
 
@@ -355,16 +698,148 @@ or partially with `first` and `rest`.
 (rest '(1 2 3))   => (2 3)
 
 (defn traverse [list]
-  (if-not (empty? list)
-          (do 
-            (println (first list))
-            (traverse (rest list)))))
+  (when-not (empty? list)
+    (println (first list))
+    (traverse (rest list)))))
 ```
 
 Ugly. But nobody use it that way as nobody use `while (hasNext())` in java.
 
-Worth to say that `seq` is much better abstraction than iterator.
+Worth to say that `seq` is much better than iterator.
 It is immutable and persistent. That means you won't have concurrency problems
 with `seq` at all.
 
+*But this function works only on clojure data structures,
+what if I want implement custom one?*
+
+Using `deftype` we can create new classes the same way as in java.
+To make `seq` work on our class, just implement `seq` function
+from `clojure.lang.Seqable` interface.
+
+``` clojure
+(deftype ReverseArray [vec]
+  clojure.lang.Seqable
+  (seq [self] 
+    (seq (reverse vec))))
+
+(def ra (ReverseArray. [1 2 3]))
+(seq ra)   =>  (3 2 1)
+```
+
 **Conclusion:** Iterator it's just an abstraction over list.
+
+
+### Episode 7: Memento
+### Episode 8: Mediator
+### Episode 9: Observer
+### Episode 10: Chain of responsibility
+### Episode 11: Interpretator
+
+## TODO
+
+---
+
+## Part II. Creational
+
+### Prototype
+
+"type of objects to create is determined by a prototypical instance,
+which is cloned to produce new objects"
+
+*Example:* `Object.clone()`
+
+In mutable world we need `clone()` operation to create
+new object with the same properties.
+The hard part is the copy must be deep, i.e. instead of copying
+reference you need recursively `clone()` object.
+
+Clojure creates new copy when you modifyng object.
+
+Imagine group of students in the class.
+All of them share a lot of properties: school, class, age.
+Only names are different.
+
+We start from creating prototype object:
+
+``` clojure
+(def student-prototype
+  {:name "TODO"
+   :age 12
+   :school "School #13"
+   :class "5-B"})
+```
+
+To create a specific person you just modify a prototype
+
+```
+(def create-student [name]
+  (assoc student-prototype :name name))
+```
+
+Modifying a map is a very effective operation,
+it does not need to copy all values, just changed ones. Magic.
+
+If you have a string collection with `names`,
+to create student objects based on these names
+as simple as never.
+
+``` clojure
+(def students (mapv create-student names))
+```
+
+*Note:* `mapv` produce vector instead of list.
+
+Suddenly, third student celebrates its birthday.
+We must increment his age.
+
+``` clojure
+(update-in students [2 :age] inc)
+```
+
+School got investments from Google and decided to rename it as "Schoogle #13"
+
+``` clojure
+(map #(assoc % :school "Schoogle #13") students)
+```
+
+Simple and clear.
+
+**Conclusion:** Prototype is not needed in immutable world.
+
+## Singleton (Simpleton)
+
+"restricts the instantiation of a class to one object"
+
+*Example:* `java.lang.Runtime`
+
+Believe or not, it's just a fancy global variable.
+
+`(def singleton [:data])`
+
+Oh, sorry it must be mutable.
+
+`(def singleton (atom [:data]))`
+
+
+
+
+
+
+
+
+### Roles
+
+With the lack of imagination all characters
+and names are anagrams of some words.
+
+**Pedro Veel** - Developer  
+**Serpent Hill & R.E.E.** - Enterprise Hell  
+**Weats Inc.** - Waste Inc.  
+**Sven Tori** - Investor  
+**Meat Dale** - Team Lead  
+**Rage Man** - Manager  
+**Terry P** - Pretty  
+**Vaine** - Naive  
+**Niccy** - Cynic  
+**Karm Tinge** - Marketing  
+**Mech Dominore Fight Saga** - Heroes of Might and Magic  
