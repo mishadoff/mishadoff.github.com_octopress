@@ -51,10 +51,12 @@ In a month he found a new job: in a startup company,
 that got investments from business angel **Sven Tori**
 few days ago for developing *"social network for cats"*.
 They really tried to solve real-world problem,
-and Pedro felt great about it.
+and Pedro felt great about it. Moreover, he was only one
+developer in the startup and could choose programming language.
+Long time he wanted to try clojure in production.
 
 Current team consists of four members:
-project manager **Rage Man**, team lead **Meat Dale**,
+project manager **Rage Man**, team lead **Mate Dale**,
 beautiful receptionist **Terry P.** and our hero **Pedro**.
 
 ## Chapter I. Behavioral
@@ -67,9 +69,10 @@ Development started.
 Let me verify with Rage Man, but start working now.  
 *Pedro:* Ok.  
 
-Pedro never started new project alone and didn't know how to begin.
-;; TODO more
-Googling gives a comment on forum for necromancers:
+Pedro never started new project alone (plus *clojure!*) and didn't know how to begin.
+He googled the words *lein*, *ring*, *emacs* and started to code.
+
+Googling login/logout functionality gives him a comment on forum for necromancers:
 *"If you need dev help, summon Angel of Dev. Spell text is under the cut."*.
 
 *Pedro:* What a bullshit.  
@@ -79,6 +82,10 @@ Four days gone and Dale came to Pedro.
 *Dale:* Hi, Pedro. Yesterday we were at the theater with Terry P, I think I like her.  
 *Pedro:* Great...  
 *Dale:* What about our Friday's delivery?  
+*Pedro:* Emm...  
+
+Nothing was done. But Pedro has one day left.
+
 *Pedro:* Will be in time.  
 *Dale:* Excellent! Did I tell you are a great developer?  
 *Pedro:* No.  
@@ -87,18 +94,19 @@ Four days gone and Dale came to Pedro.
 
 Dale left the room.
 
-Pedro thought, nothing happens if he tries to wake elder gods... ;; TODO
+Pedro was frustrated. He opened browser history and found link to the 
+necromancers' forum. Looked at the empty room and yelled:
 
 > Angel of Dev, while true I summon you!
 
 Blue screen of death appeared on the monitor.
 Some strange being climb out to the table.
 
-*Dale:* Who are you?  
+*Pedro:* Who are you?  
 *Vaine:* Hi, my name is Vaine. I'm an Angel of Dev.  
-*Dale:* An angel?  
+*Pedro:* An angel?  
 *Vaine:* Not an angel, actually. I help developers. Do you need help?  
-*Dale:* I need to implement a register/login/logout functionality.  
+*Pedro:* I need to implement a register/login/logout functionality.  
 *Vaine:* As easy as pie! Just use `Command` design pattern.  
 
 ### Episode 1. Command
@@ -188,7 +196,7 @@ Now you can enter your name, password and see a page with the cat.
 *Sven Tori disconnected*.  
 *Rage Man:* It was great.  
 *Pedro:* It was a `Command` pattern, you know...  
-*Rage Man:* Yeah, it was used exactly what is needed for. I had been programming before...
+*Rage Man:* Yeah, it was used exactly what is needed for. I had been programming before... // Grammar
 Next week we are going to implement list of users. Seems reasonable?  
 *Pedro:* Sure.  
 *Dale:* Ok. Have a nice weekend.  
@@ -206,7 +214,7 @@ Pedro implemented admin page and table with the list of users in one day.
 *Dale:* Users with subscription must come *before* other users.  
 *Pedro:* There was no such requirement.  
 *Dale:* But it's obvious, agreed?  
-*Pedro:* Well, yes, I'll do it.  
+*Pedro:* Well... Yes, I'll do it.  
 *Dale:* Great, good luck!  
 
 Obviously sorting by name should work in reverse order too.
@@ -282,21 +290,21 @@ sorting functionality was done.
 Monday, all-hands meeting.
 
 *Rage Man:* We guys did a good job last week. Sven Tori allowed us to hire
-marketing person. Meet **Karm Tinge**, our first sales person.  
-*Karm:* Hello, all. I am Karm and I am a sales person.  
-*All:* Hi, Karm!  
-*Rage Man:* Karm will investigate the market and keep us profitable. Questions?  
+marketing person. Meet **Karmen Git**, our first sales person.  
+*Karmen:* Hello, all. I am Karmen and I am a sales person.  
+*All:* Hi, Karmen!  
+*Rage Man:* Karmen will investigate the market and keep us profitable. Questions?  
 *Pedro:* What our plan for next week delivery?  
 *Rage Man:* Currently, we have enough functionality to attract users, you can relax for now.  
 *Pedro:* But...  
-*Karm:* You can change the cat picture on the front page, I think user needs something new.  
-*Rage Man:* Excellent, Karm. Dale, will you control that?  
+*Karmen:* You can change the cat picture on the front page, I think user needs something new.  
+*Rage Man:* Excellent, Karmen. Dale, will you control that?  
 *Dale:* Sure.  
 *Rage Man:* Then, everybody's come back to work. Let's do the greatest cat service ever.  
 
 Whole day Pedro was reading about usage of `Strategy` pattern. Maybe he miss something?
 
-*Dale:* Pedro, I've sent you an new picture of cat for the front page. Did you check?  
+*Dale:* Pedro, I've sent you new picture of cat for the front page. Did you check?  
 *Pedro:* One moment... Wait, what is this?  
 *Dale:* Oh God, this is my torso I wanted to send to Terry. That means I sent a cat photo to her. Shit.  
 *Pedro:* Happens.  
@@ -304,17 +312,17 @@ Whole day Pedro was reading about usage of `Strategy` pattern. Maybe he miss som
 Pedro slept very bad. He had a nightmare about naked Dale with cat's head.
 Disgusting.
 
-*Karm:* Pedro, I've investigated some users staring too much at the cat picture.
+*Karmen:* Pedro, I've investigated some users staring too much at the cat picture.
 We need admin functionality to disable such users.  
 *Pedro:* But, how we detect who exactly staring too much?  
-*Karm:* Unfortunately, I am not a technical guy. Talk to Dale.  
+*Karmen:* Unfortunately, I am not a technical guy. Talk to Dale.  
 
-*Pedro:* Have you heard what Karm wants?  
+*Pedro:* Have you heard what Karmen wants?  
 *Dale:* Yes, "must have" feature.  
 *Pedro:* Do you think it's possible to implement?  
 *Dale:* Just add functionality for admin to disable users.  
 *Pedro:* And how...  
-*Dale:* How, it's a Karm's problem.  
+*Dale:* How, it's a Karmen's problem.  
 
 Pedro thought about implementation.  
 *Label near username must be clickable. If we click on label
@@ -353,7 +361,7 @@ the same way as strategy pattern. It is just a first-class function.
 *Niccy:* Multimethods.  
 *Pedro:* Multi *what*?  
 *Vaine:* Methods, but I confused, I thought methods are in OOP.  
-*Pedro:* Functions, whatever. I don't care about names.  
+*Niccy:* Functions, whatever. I don't care about names.  
 
 ```
 (def mr-white   (atom {:name "Mr. White"   :state :enabled}))
@@ -410,8 +418,8 @@ What did you use to implement it?
 ### Episode 4. Template Method
 
 *Rage Man:* Disabling users which don't want to pay
-for subscription is a big step to success. But we have just one unsolved problem. Karm?  
-*Karm:* Yeah. We have no idea how to detect such users.  
+for subscription is a big step to success. But we have just one unsolved problem. Karmen?  
+*Karmen:* Yeah. We have no idea how to detect such users.  
 *Pedro (whispered):* You don't say.  
 *Rage Man:* Let's propose some solutions and select the best one.
 Does everybody familliar with brainstorming?  
@@ -424,18 +432,18 @@ Ideas may be crazy, does not matter. Then we select the best one. Clear?
 *Silence*  
 *Pedro (coughing):* Khm, khm.  
 *Silence*  
-*Karm (sneezing):* Aaaptsch.  
+*Karmen (sneezing):* Aaaptsch.  
 *Silence*  
 *Dale (snuffling):* Thhhhhs.  
 *Silence*  
-*Karm:* User could select checkbox on registration "I will never pay subscription"  
+*Karmen:* User could select checkbox on registration "I will never pay subscription"  
 *Pedro:* Are they morons or what?  
 *Rage Man:* Remember, no criticism. Writing down first idea.  
 *Dale:* If user is staring at the cat more than 10 seconds,
 show him an alert "Are you staring? (YES/NO)"  
 *Rage Man:* Great, second idea.  
 *After few hours*  
-*Karm:* For unsubscribed users we can show a picture with dog instead of cat
+*Karmen:* For unsubscribed users we can show a picture with dog instead of cat
 and if they complain, disable.  
 *Rage Man:* Idea #123.  
 *Dale:* Or it can be a bot, automatically inspecting all users and detect suspects.  
@@ -444,12 +452,12 @@ and if they complain, disable.
 At the end of working day, whole team was voting and arguing about solution.
 Democratic forces agreed on the bot idea, because it is
 *"automatic solution do not bother customers"* (Rage Man),
-*"entertain users and can be a marketable decision"* (Karm),
+*"entertain users and can be a marketable decision"* (Karmen),
 *"challenging and very technical solution"* (Dale),
 *"I don't know"* (Pedro).
 
 *Rage Man:* So, currently the best idea is a bot.  
-*Karm:* Agreed.  
+*Karmen:* Agreed.  
 *Dale:* Moreover, we can implement different types of bots.
 All of them will behave similarly, but on some conditions specific actions will be taken.  
 *Rage Man:* Explain, please.  
@@ -459,7 +467,7 @@ yet another for saying *"Thanks!"* to users with subscription, etc.
 *Pedro:* Why don't we just implement one bot doing all things?  
 *Dale:* It's a principle of single responsibility.  
 *Pedro:* But single resp...  
-*Karm (interrupting):* We can also have a bot notifying users on their friends' birthdays.  
+*Karmen (interrupting):* We can also have a bot notifying users on their friends' birthdays.  
 *Dale:* And call all of them *CatBots*.  
 *Rage Man:* Ingenious. Do you see how powerful is brainstorming technique? Get back to work, guys.  
 
@@ -585,7 +593,7 @@ By the way, he added a fancy js library to visualize bots' moving.
 **Demo**
 
 *Pedro (shows the moving bots):* This bot disables users. This one is for... emmm?  
-*Karm:* Notifying users on friends' birthdays.  
+*Karmen:* Notifying users on friends' birthdays.  
 *Pedro:* Right.  
 *Sven Tori:* Who controls all these bots?  
 *Dale:* Nobody. They are bots and that's the trick.  
@@ -593,81 +601,69 @@ By the way, he added a fancy js library to visualize bots' moving.
 *Rage Man:* Exactly, they are fully automatic.  
 *Sven Tori:* Awesome!  
 
-### Episode 5. Visitor
+### Episode 5. Iterator
 
-Bot idea was very attractive from Sven's perspective.
-*"More bots!"*, he said.
+*Dale:* Hi, Pedro.  
+*Pedro:* Hi.
+*Dale:* Can you believe, Terry invited me to her Birthday.
+What can you suggest to present her?
+*Pedro:* A cup.
+*Dale:* A cup is банально
+*Pedro:* A cup with a cat image.
+*Dale:* That seems much better. Thanks.
+*Pedro:* No problem.
+*Dale:* By the way, I've inspected the code you using for iterating over catbots and users.
+It seems kinda... unprofessional.  
+*Pedro:* What do you mean?  
+*Dale:* There is `for` in one place, `loop/recur` in another.  
+*Pedro:* They are pretty similar.  
+*Dale:* Exactly! We need to abstract iteration.  
+*Pedro:* Why?  
+*Dale:* To be professional.  
+*Pedro:* Ohh..kay.  
+*Dale:* There is `Iterator` pattern, take a look.  
+*Pedro:* Sure. Thanks.  
+*Dale:* Thanks to you, for the cup idea.  
 
-...  
-*Rage Man:* Guys, what we planned for this week?  
-*Karm:* I investigated the market. We can expand our services
-by introducing referral program.
-*Rage Man:* Explain please.
-*Karm:* Existing users can invite other users for some benefits.
-*Rage Man:* What benefits?
-*Karm:* Temporary subscription or cat-style avatar.
-I still experimenting with this.
-*Dale:* And if invited users will invite other users we'll grow exponentially.
-*Pedro:* 6 steps and we dominate!
-*Rage Man:* Ok, what about bots?
-*Dale:* What bots?
-*Rage Man:* Sven just said *"more bots"*.
-*Karm:* We'll think about it.
+Pedro started reading about iterator pattern and can't
+understand its purpose. ;; TODO more
 
-There was no problem to implement referral system. Pedro handled it very easily.
-Just added database column for user table to indicate by whom this user was invited. Magical `NULL` was used to indicate users with no-referral registration.
+*Pedro:* Vaine, Niccy are you there?  
+*Vaine:* Yes.  
+*Niccy:* Ass.  
+*Pedro:* Could you explain me what purpose of the iterator pattern?  
+*Vaine:* Of course, it's easy.  
+*Niccy:* I'm listening!  
+*Vaine:* **Iterator enables a programmer to traverse a container**  
+*Pedro:* Is it like `java.util.Iterator`?  
+*Vaine:* Yes.  
+*Pedro:* But nobody use it.  
+*Vaine:* Everybody use it implicitly in `for-each` loop.  
+*Niccy:* Vaine, sorry, I'm lost. What does it mean *"to traverse a container"*?  
+*Vaine:* Formally, the container should provide two methods for you:  
+`next()` to return next element and `hasNext()` to return true if container has more elements.  
+*Niccy:* Ok. Do you know what linked list is?  
+*Vaine:* Singly linked list?  
+*Niccy:* Singly linked list.  
+*Vaine:* Sure. It is a container consists of nodes. 
+Each node has a data value and reference to the next node.  
+*Pedro:* And `null` value if there is no next node?  
+*Niccy:* Correct. Now tell me how traversing such list is differs
+from traversing via iterator?  
+*Vaine:* Emmm...  
 
-*Karm:* blah blah b;lha, visit.
+Vaine wrote two traversing snippets:
 
-*Dale:* How thigs are going?
-*Pedro:* Excellent, reading about *Visitor pattern*.
-*Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.
-*Pedro (trying to joke):* V for Visitor.
-*Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?
-*Pedro:* Doubt. Just open the dictionary and find another word starting with "V".
-*Dale:* Good idea!
-
-*Niccy and Vaine battle*
-
-### Episode 6. Iterator
-
-
-*Dale* *Tells joke about V for *
-
-"Iterator is an object that enables a programmer to traverse a container"
-
-*Example:* `java.util.Iterator`
-
-What does it mean "to traverse a container"?
-
-Standard iterator interface declares two functions:
-
-* `hasNext()` - return true if container has more elements
-* `next()` - return next element
-
-*Note:* There is also `remove()` method, but we ignore it.
-
-Using such interface, linear scan on collection looks like
+* Traversing using iterator
 
 ``` java
-Iterator it;
+Iterator i;
 while (i.hasNext()) {
   i.next();
 }
 ```
 
-Seems reasonable.
-
-Now, take a look at a simple linked list implementation
-
-``` java
-class Node<T> {
-  Node next;
-  T data;
-}
-```
-
-Traversing such list
+* Traversing using linked list
 
 ``` java
 Node next = root;
@@ -676,11 +672,13 @@ while (next != null) {
 }
 ```
 
-So, what is the difference between Iterator and List?
-It just the same thing but with another name.
-
-In clojure we have `seq` function, which is abstraction over
-collection of any type, and it returns... List!
+*Vaine:* They are pretty similar...  
+*Pedro:* I think so. What is analogue of `Iterator` in clojure?  
+*Niccy:* `seq` function.  
+*Vaine:* Why not list?  
+*Niccy:* It's abstraction. Guess what returns applying `seq` to a container?  
+*Pedro:* A list?  
+*Niccy:* Yes.  
 
 ``` clojure
 (seq [1 2 3])       => (1 2 3)
@@ -690,31 +688,19 @@ collection of any type, and it returns... List!
 (seq "abc")         => (\a \b \c)
 ```
 
-List in clojure can be traversed in natural way,
-or partially with `first` and `rest`.
-
-``` clojure
-(first '(1 2 3))  => 1
-(rest '(1 2 3))   => (2 3)
-
-(defn traverse [list]
-  (when-not (empty? list)
-    (println (first list))
-    (traverse (rest list)))))
-```
-
-Ugly. But nobody use it that way as nobody use `while (hasNext())` in java.
-
-Worth to say that `seq` is much better than iterator.
-It is immutable and persistent. That means you won't have concurrency problems
-with `seq` at all.
-
-*But this function works only on clojure data structures,
-what if I want implement custom one?*
-
-Using `deftype` we can create new classes the same way as in java.
-To make `seq` work on our class, just implement `seq` function
-from `clojure.lang.Seqable` interface.
+*Vaine:* Ok, I agree. But they just called java iterator with another name.  
+*Niccy:* Actually, it's java called list an *"iterator"*.  
+*Vaine:* ...  
+*Niccy:* And, in fact, `seq` is much better than iterator.  
+*Vaine:* Why?  
+*Niccy:* It is immutable and persistent.
+That means you won't have concurrency problems
+with `seq` at all.  
+*Vaine:* Makes sense, but this function works only on
+clojure data structures, what if I want implement custom one?  
+*Niccy:* You do. Using `deftype` you can create new classes the same way as in java.
+To make `seq` work on new class, just implement `seq` function
+from `clojure.lang.Seqable` interface.  
 
 ``` clojure
 (deftype ReverseArray [vec]
@@ -726,10 +712,59 @@ from `clojure.lang.Seqable` interface.
 (seq ra)   =>  (3 2 1)
 ```
 
-**Conclusion:** Iterator it's just an abstraction over list.
+*Vaine:* Ha! It's just like implementing an `Iterator`.  
+*Niccy:* I suppose it is a plus.  
+*Vaine:* Ok, you win the battle, but didn't win a war.  
+*Niccy:* War consists of battles. If I win every battle...  
+*Vaine:* Stupid!  
+*Vaine disappeared*  
+*Pedro:* Niccy and how `seq` is applied to...  
+*Niccy:* `(doc seq)`  
+*Niccy disappeared*  
 
+;; Pedro wrote something
+;; Dale come and said everything is good
+
+### Episode 6. Visitor
+
+Bot idea was very attractive from Sven's perspective.
+*"More bots!"*, he said.
+
+...  
+*Rage Man:* Guys, what we planned for this week?  
+*Karmen:* I investigated the market. We can expand our services
+by introducing referral program.
+*Rage Man:* Explain please.
+*Karmen:* Existing users can invite other users for some benefits.
+*Rage Man:* What benefits?
+*Karmen:* Temporary subscription or cat-style avatar.
+I still experimenting with this.
+*Dale:* And if invited users will invite other users we'll grow exponentially.
+*Pedro:* 6 steps and we dominate!
+*Rage Man:* Ok, what about bots?
+*Dale:* What bots?
+*Rage Man:* Sven just said *"more bots"*.
+*Karmen:* We'll think about it.
+
+There was no problem to implement referral system. Pedro handled it very easily.
+Just added database column for user table to indicate by whom this user was invited. Magical `NULL` was used to indicate users with no-referral registration.
+
+*Karmen:* blah blah b;lha, visit.
+
+*Dale:* How thigs are going?
+*Pedro:* Excellent, reading about *Visitor pattern*.
+*Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.
+*Pedro (trying to joke):* V for Visitor.
+*Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?
+*Pedro:* Doubt. Just open the dictionary and find another word starting with "V".
+*Dale:* Good idea!
+
+*Niccy and Vaine battle*
 
 ### Episode 7: Memento
+
+*Dale* *Tells joke about V for *
+
 ### Episode 8: Mediator
 ### Episode 9: Observer
 ### Episode 10: Chain of responsibility
@@ -836,10 +871,10 @@ and names are anagrams of some words.
 **Serpent Hill & R.E.E.** - Enterprise Hell  
 **Weats Inc.** - Waste Inc.  
 **Sven Tori** - Investor  
-**Meat Dale** - Team Lead  
+**Mate Dale** - Team Lead  
 **Rage Man** - Manager  
 **Terry P** - Pretty  
 **Vaine** - Naive  
 **Niccy** - Cynic  
-**Karm Tinge** - Marketing  
+**Karmen Git** - Marketing  
 **Mech Dominore Fight Saga** - Heroes of Might and Magic  
