@@ -676,9 +676,9 @@ while (next != null) {
 *Pedro:* I think so. What is analogue of `Iterator` in clojure?  
 *Niccy:* `seq` function.  
 *Vaine:* Why not list?  
-*Niccy:* It's abstraction. Guess what returns applying `seq` to a container?  
+*Niccy:* Why not? Guess what returns applying `seq` to a container?  
 *Pedro:* A list?  
-*Niccy:* Yes.  
+*Niccy:* Ingeniously.
 
 ``` clojure
 (seq [1 2 3])       => (1 2 3)
@@ -732,34 +732,165 @@ Bot idea was very attractive from Sven's perspective.
 
 ...  
 *Rage Man:* Guys, what we planned for this week?  
-*Karmen:* I investigated the market. We can expand our services
-by introducing referral program.
-*Rage Man:* Explain please.
-*Karmen:* Existing users can invite other users for some benefits.
-*Rage Man:* What benefits?
+*Karmen:* I investigated the market. We can expand our services  
+by introducing referral program.  
+*Rage Man:* Explain please.  
+*Karmen:* Existing users can invite other users for some benefits.  
+*Rage Man:* What benefits?  
 *Karmen:* Temporary subscription or cat-style avatar.
-I still experimenting with this.
-*Dale:* And if invited users will invite other users we'll grow exponentially.
-*Pedro:* 6 steps and we dominate!
-*Rage Man:* Ok, what about bots?
-*Dale:* What bots?
-*Rage Man:* Sven just said *"more bots"*.
-*Karmen:* We'll think about it.
+I still experimenting with this.  
+*Dale:* And if invited users will invite other users we'll grow exponentially.  
+*Pedro:* 6 steps and we dominate!  
+*Rage Man:* Ok, what about bots?  
+*Dale:* What bots?  
+*Rage Man:* Sven just said *"more bots"*.  
+*Karmen:* We'll think about it.  
 
 There was no problem to implement referral system. Pedro handled it very easily.
-Just added database column for user table to indicate by whom this user was invited. Magical `NULL` was used to indicate users with no-referral registration.
+Just added database column for user table to indicate by whom this user was invited.
+Magical `NULL` was used to indicate users with no-referral registration.
 
 *Karmen:* blah blah b;lha, visit.
 
-*Dale:* How thigs are going?
-*Pedro:* Excellent, reading about *Visitor pattern*.
-*Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.
-*Pedro (trying to joke):* V for Visitor.
-*Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?
-*Pedro:* Doubt. Just open the dictionary and find another word starting with "V".
-*Dale:* Good idea!
+*Dale:* How thigs are going?  
+*Pedro:* Excellent, reading about *Visitor pattern*.  
+*Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.  
+*Pedro (trying to joke):* V for Visitor.  
+*Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?  
+*Pedro:* Doubt. Just open the dictionary and find another word starting with "V".  
+*Dale:* Good idea!  
 
 *Niccy and Vaine battle*
+
+*Pedro:* I really can't understand what is Visitor pattern for.  
+*Vaine:* Yeah, it is probably the most complicated pattern.  
+*Pedro:* Wiki says it is a **way of separating an algorithm
+from an object structure on which it operates**.  
+*Vaine:* Kind of. I'll give you an example.  
+*Pedro:* I like examples.  
+*Vaine:* Assume you have a different shapes: rectangle, triangle, circle, etc.    
+*Pedro:* Yes.  
+*Vaine:* How would you implement them.  
+*Pedro:* I can create an abstract `Shape` class and all
+other shapes will extend it.  
+*Vaine:* Why would you do that?  
+*Pedro:* It's because parent `Shape` could contain some method
+common for all shape types, but differs in implementation.  
+*Vaine:* Like what?  
+*Pedro:* Like square function.  
+*Vaine:* Great. It's easy to add new type to hierarchy.
+Now, assume you want to render a shape.  
+*Pedro:* I will add `render` method to `Shape` class.  
+*Vaine:* And implement shape-specific rendering in all shapes?  
+*Pedro:* ..Yes..  
+*Vaine:* Ok, now you got another bunch of methods. You need to
+modify all your one million (*how much?*) shapes.  
+*Pedro:* Compiler is fast.  
+*Vaine (laughing):* Hahaha! It is not the way professional
+programmers think. This problem is called **expression problem**.  
+*Pedro:* I've never heard about it before.  
+*Vaine:* In OOP languages easy to add new types,
+but hard to add new operations on them.
+Visitor pattern solves this problem.  
+*Pedro:* And what about FP languages?  
+*Vaine:* Hush!  
+*Pedro:* ...  
+*Vaine (whisper):* I don't want a Niccy to hear us.
+FP languages have reverse problem.
+Easy to add new operations and hard to add new types.  
+*Pedro:* And what pattern to use in that case?  
+*Vaine:* Really, I don't know. FP is something strange for me.  
+*Niccy appeared with colander on the head*  
+*Niccy:* Nothing strange. It is clear problem that can be 
+solved by **double dispatch**.  
+*Vaine:* Not all languages support double dispatch.  
+*Niccy (laughing):* That's what I say every time.  
+*Pedro:* I am aware of *single dispatch*, but...  
+*Niccy:* If you have a call `object.method(argument)`, you see
+**runtime polymorphism** in action. Actual `method` will be selected
+depending on the type of `object`.  
+*Pedro:* It's obvious.  
+*Niccy:* It's obvious fail. Runtime can't use 
+information of `argument` type to select an appropriate method.  
+*Vaine:* Sure runtime is aware about `argument` type.  
+*Niccy:* You didn't get. Just look at the code:  
+
+``` java
+class Food { }
+class FastFood extends Food { }
+
+class Coder {
+	void eat(Food food) { 
+		System.out.println("Programmer eats Food");
+	}
+	void eat(FastFood food) {
+		System.out.println("Programmer eats FastFood");
+	}
+}
+
+public static void main(String[] args) {
+	Food     f1 = new Food();
+	FastFood f2 = new FastFood();
+	Food     f3 = new FastFood();
+	
+	Coder c = new Coder();
+	c.eat(f1); // Coder eats Food
+	c.eat(f2); // Coder eats FastFood
+	c.eat(f3); // Coder eats Food
+}
+```
+
+*Vaine:* Hmm... Why would you need to dispatch on `argument` type?  
+*Niccy:* You don't need to.  
+*Vaine:* Hey, really, explain.  
+*Niccy:* Who was talking about *expression problem*?
+*Vaine:* ...
+*Pedro:* Seems we can solve this problem by using argument
+as an object and pass object as an argument in addition to first call.  
+*Niccy:* This is exactly a hack Visitor uses.  
+*Vaine:* Is there any better alternative?  
+*Niccy:* Multimethods.  
+*Both Vaine and Pedro:* Multi *what*?  
+*Niccy:* Multi *youaremorons* and adhoc hierarchies.  
+*Vaine:* Proofcode!  
+*Niccy:* Ha! Easy:  
+
+``` clojure
+(derive ::fastfood ::food)
+
+(defmulti eat (fn [a b] [a b]))
+
+(defmethod eat [::coder ::food] [x y]
+  (println "Coder eats Food"))
+  
+(defmethod eat [::coder ::fastfood] [x y]
+  (println "Coder eats FastFood"))
+
+(eat ::coder ::food)     => Coder eats Food
+(eat ::coder ::fastfood) => Coder eats FastFood
+
+;; if [::coder ::fastfood] is missing
+;; then [::coder ::food] is used for dispatch
+```
+
+Ten minutes staring to the code in silent room.
+
+*Pedro:* I'm frustrated.  
+*Vaine:* **Quadrocolumn**! That's the face of FP monster, I'm done with that.  
+*Vaine is leaving*  
+*Niccy:* Hahaha! What the hard part?  
+*Pedro:* What is *quadrocolumn*?  
+*Niccy:* Namespace qualified keywords. Read about it.  
+*Pedro:* Emm...   
+*Niccy:* You want to ask how is it better? I'll tell you.
+`derive` can be used to create adhoc hierarchies, even usin multiple inheritance, `parents/ancestors/descendants` methods are used to retrieve hierarchy structure, hardly achievable in OOP and `prefer-method` can be used if there is any ambiguity.  
+*Pedro:* ...  
+*Niccy:* I'm sure you'll understand.  
+
+Three days Pedro was experimenting with multimethods, adhoc hierarchies and practicing multiple dispatch.
+
+;; niccy is writing
+;; demo
 
 ### Episode 7: Memento
 
