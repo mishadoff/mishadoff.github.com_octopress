@@ -59,7 +59,7 @@ Current team consists of four members:
 project manager **Rage Man**, team lead **Mate Dale**,
 beautiful receptionist **Terry P.** and our hero **Pedro**.
 
-## Chapter I. Behavioral
+## Season I. Behavioral
 
 Development started.
 
@@ -747,28 +747,82 @@ I still experimenting with this.
 *Karmen:* We'll think about it.  
 
 There was no problem to implement referral system. Pedro handled it very easily.
-Just added database column for user table to indicate by whom this user was invited.
+Just added database column `referrer` for user table to indicate by whom this user was invited.
 Magical `NULL` was used to indicate users with no-referral registration.
 
-*Karmen:* blah blah b;lha, visit.
+*Incoming call from karmelove81*
+*Karmen:* Hi, Pedro.
+*Pedro:* Hello, Karm.
+*Karmen:* We decided to implement *"PayBot"*
+*Pedro:* Pay?
+*Karmen:* Yes, it will give some bonus points to each 
+user based on some conditions. I sent you an email with rules.
+*Pedro:* But... We don't have bonus points in user account.
+*Karmen:* Really? Let me confirm.
+*karmelove81 disconnected*
+
+Pedro received email from Karmen and clicked 
+to open attachment `business_rules.jpg`
+
+*Incoming call from karmelove81*
+*Karmen:* Hi, Pedro. I confirmed. We really don't have bonus points yet.
+*Pedro:* As I said.
+*Karmen:* That means we must implement them.
+*Pedro:* It's not planned delivery.
+*Karmen:* I'll confirm with Rage Man, but start working.
+*karmelove81 disconnected*
+
+*Pedro:* Asylum.
+
+Pedro added another column `bonus_points` to user table. Done.
+He went to drink some coffee, but some strange feeling was as
+he forgot something.
+
+*Pedro:* Attachment!
+
+Attachment `business_rules.jpg` was just a photo
+of terribly-written text on the piece of paper.
+
+* If user is no-referral registered, with subscription +100 points.
+* If user is no-referral registered, enabled +50 points.
+* If user is no-referral registered, disabled +10 point.
+* If user is referral registered, with subscription +50 points.
+* If user is referral registered, enabled +10 point.
+* If user is referral registered, disabled 0 point.
+* Also, for each user add points per invited user
+  * 5 for no-referral
+  * 3 for referral
+  
+*Pedro:* She's, probably, never heard of cross product.
+
+Pedro started to implement the rules directly via if/else conditions.
+Very soon he was lost in his own code.
 
 *Dale:* How thigs are going?  
-*Pedro:* Excellent, reading about *Visitor pattern*.  
+*Pedro:* Not so good, thinking about this PayBot.  
+*Dale:* What's the problem?  
+*Pedro:* There are a lot conditions to check during visiting user in iteration.
+I just don't want if/else mess.  
 *Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.  
 *Pedro (trying to joke):* V for Visitor.  
 *Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?  
 *Pedro:* Doubt. Just open the dictionary and find another word starting with "V".  
 *Dale:* Good idea!  
 
-*Niccy and Vaine battle*
+Pedro was trying to guess what horny word Dale 
+will choose to impress Terry.
+
+*Pedro:* Stop talking! I need to concentrate on the problem.  
+
+Search query *"visitor pattern"* didn't clear his mind.
+Every source was explaining something completely different.
 
 *Pedro:* I really can't understand what is Visitor pattern for.  
 *Vaine:* Yeah, it is probably the most complicated pattern.  
 *Pedro:* Wiki says it is a **way of separating an algorithm
 from an object structure on which it operates**.  
-*Vaine:* Kind of. I'll give you an example.  
-*Pedro:* I like examples.  
-*Vaine:* Assume you have a different shapes: rectangle, triangle, circle, etc.    
+*Vaine:* Kind of. I'll give you an example.
+Assume you have a different shapes: rectangle, triangle, circle, etc.  
 *Pedro:* Yes.  
 *Vaine:* How would you implement them.  
 *Pedro:* I can create an abstract `Shape` class and all
@@ -883,31 +937,74 @@ Ten minutes staring to the code in silent room.
 *Niccy:* Namespace qualified keywords. Read about it.  
 *Pedro:* Emm...   
 *Niccy:* You want to ask how is it better? I'll tell you.
-`derive` can be used to create adhoc hierarchies, even usin multiple inheritance, `parents/ancestors/descendants` methods are used to retrieve hierarchy structure, hardly achievable in OOP and `prefer-method` can be used if there is any ambiguity.  
+`derive` can be used to create adhoc hierarchies, even using multiple inheritance,
+`parents/ancestors/descendants` methods are used to retrieve hierarchy structure,
+hardly achievable in OOP and `prefer-method` can be used if there is any ambiguity.  
 *Pedro:* ...  
 *Niccy:* I'm sure you'll understand.  
 
-Three days Pedro was experimenting with multimethods, adhoc hierarchies and practicing multiple dispatch.
+Pedro was experimenting with multimethods,
+adhoc hierarchies and practicing multiple dispatch
+until he was enlightened.
 
-;; niccy is writing
-;; demo
+*Pedro:* As easy as pie!
+
+``` clojure
+(def user {:name "William"
+           :state :subscription
+		   :referral false
+		   :bonus 0
+		   :referrers [user1 user2 user3]})
+;; TODO good example
+```
+
+**Demo**
+
+...
+*Sven Tori:* I'm very impressed, guys. 
+You've implemented bonus points functionality 
+in such limited period. It's awesome!
+*Rage Man:* Thanks!
+*Karmen:* Sven, we have several feature requests from users.
+*Dale:* Because of feedback system we integrated.
 
 ### Episode 7: Memento
 
+**No purpose at all**
+We just saving this to atom/ref
+
 *Dale* *Tells joke about V for *
 
+
 ### Episode 8: Mediator
+
+???
+
 ### Episode 9: Observer
+
+New thanks person
+
 ### Episode 10: Chain of responsibility
+
+Logging?
+
 ### Episode 11: Interpretator
+
+// bencode?
+Our users opened torrent tracker with our cat videos
+need to decode B-encode format
+
 
 ## TODO
 
 ---
 
-## Part II. Creational
+## Season II. Creational
 
-### Prototype
+Seed Investments, Startup summit
+
+
+### Episode 12: Prototype
 
 "type of objects to create is determined by a prototypical instance,
 which is cloned to produce new objects"
