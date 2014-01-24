@@ -952,10 +952,13 @@ until he was enlightened.
 ``` clojure
 (def user {:name "William"
            :state :subscription
-		   :referral false
+		   :registration ::base
 		   :bonus 0
-		   :referrers [user1 user2 user3]})
-;; TODO good example
+		   :ref-num 12})
+
+(derive ::referral ::base)
+
+
 ```
 
 **Demo**
@@ -965,16 +968,175 @@ until he was enlightened.
 You've implemented bonus points functionality 
 in such limited period. It's awesome!
 *Rage Man:* Thanks!
-*Karmen:* Sven, we have several feature requests from users.
-*Dale:* Because of feedback system we integrated.
+*Karmen:* We plan to build a store-system for users. They can
+buy some virtual items for their bonus points.
+*Sven Tori:* I see here a huge place for monetisation.
+*Karmen:* Exactly. By the way, we have several feature requests from users.
+*Dale (interrupting):* Because of feedback system we integrated.
 
 ### Episode 7: Memento
 
-**No purpose at all**
-We just saving this to atom/ref
+*Rage Man (in panic):* Pedro, what's going on?
+*Pedro:* What's up?
+*Rage Man:* There is a user in the system with bonus points over one million.
+*Pedro:* I..I... don't know.
+*Rage Man:* Nothing works.
+*Pedro:* Everything works, it's just some bug.
+*Rage Man:* It's not *"just bug"*, it's our money.
+*Pedro:* I understand, I'll investigate.
+*Rage Man:* We need fix for that as soon as possible.
 
-*Dale* *Tells joke about V for *
+Pedro wasn't good in security bu he used as much prevention mechanism as. 
+;; more
 
+*Pedro:* Impossible. There is only one place which 
+modifies user bonus points - it is a PayBot.
+*Pedro:* There is no problems with PayBot controling. 
+It still not managed by admin, fully server code and running by timer.
+
+Pedro took a look at the referers code.
+
+*Pedro:* Oh, shi~
+
+Pedro incremented `ref-num` variable right after user sent invite.
+Some user sent invites to million of fake accounts. They didn't register.
+
+*Dale:* Hi, Pedro. Did you hear about user with 1M+ bonus points?
+*Pedro:* Yes, I've found the problem and aalready fixed it.
+*Dale:* It is great! What was the root cause?
+*Pedro:* It's my fault.
+*Dale:* Everybody make mistakes. Don't embarass yourself. Really, what was the prbolem?
+*Pedro:* I was incrementing referal-registered users after user sent invites. 
+Not when invite was approved.  
+*Dale:* Understand. Everybody make mistakes. 
+However, you are good developer.
+*Pedro:* Thanks...
+
+**Unplanned meeting**
+
+*Rage Man:* User with ONE MILLION BONUS POINTS!!!
+*Dale:* Keep calm, everybody make mistakes.
+*Pedro:* As I said it is already fixed.
+*Rage Man:* Fixed what?
+*Pedro:* The problem with bonus points. It was caused by invalid...
+*Rage Man:* I don't care about technical things.
+The user with ONE MILLION BONUS POINTS still in the system!
+*Dale:* Oh my god! We forgot to nullify his points.
+*Rage Man:* That's the problem! And there is probably other users
+with fake points, how to detect them?
+*Dale:* ...
+*Pedro:* ...
+*Rage Man:* I want solution tomorrow.
+
+Meeting has ended. blah blah
+
+*Pedro:* We are fucked up.
+*Dale:* Remember the joke *"V for Visitor"*?
+*Pedro:* Yes.
+*Dale:* Actually, now is *"V for Vaseline"*.
+*Both laughing*
+*Pedro:* Кстати, did you tell Terry joke about Visitor?
+*Dale:* No.
+*Pedro:* And what did you tell her?
+*Dale:* Does not matter.
+*Pedro:* Hey, I'm really interesed.
+*Dale:* *"V for Vagina"*
+*Pedro:* What a pervert!
+*Karmen:* Sorry, guys, for interruping.
+I think I've gound a solution.
+*Dale:* We are listening.
+*Karmen:* What about periodically save user bonus points. 
+*Pedro:* Like shapshot?
+*Karmen:* What screenshot?
+*Pedro:* Nevermind.
+*Karmen:* And compare it's last state with current, if there is big deviation
+we will investigate the issue.
+*Dale:* And will be able to revert it's points!
+*Karmen:* This also will prevent some issues in future.
+*Dale:* Karm, you are genious! Pedro, do you see some issues with that.
+*Pedro:* No.
+*Dale:* Great! Will be done tomorrow.
+*Karmen:* Thanks, guys.
+*Dale and Pedro:* Thanks, Karm!
+
+Pedro started working. He thought some of previous patterns 
+could support this functionality. State? Command?
+
+*Vaine:* Memento.
+*Pedro:* Www...what?
+*Vaine:* Memento pattern.
+*Pedro:* Oh, i thought you mean movie.
+*Niccy:* Good movie. Definitely better than the pattern.
+*Vaine:* Niccy, could you don't interrupt me.
+*Niccy (sarcastic):* Sure. I mean it is the world greatest pattern ever.
+*Vaine:* Ok. So the Memento **provides the ability to restore an object to its previous state**
+*Pedro:* Got it.
+*Niccy:* Got it.
+*Vaine:* To implement it you need three objects: *originator*, *caretaker*
+and a *memento*
+*Niccy (whisper):* Or two functions: `save` and `restore`
+*Vaine:* *The originator is...*
+*Pedro and Niccy talking during Vaine's monologue*
+*Pedro:* How two functions handle this?
+*Niccy:* One is saving state, another is restoring.
+*Vaine:* *...the internal state of an object...*
+*Pedro:* Where is state?
+*Niccy:* Atom is good.
+*Vaine:* *...The caretaker is going...*
+*Pedro:* So, you mean if I have some user, I can just save needed values to an atom?
+*Niccy:* Exactly.
+*Vaine:* *...able to restore previous state...*
+
+``` clojure
+(def user (atom {:name "Memento" :points 10 :state :disabled :referer nil}))
+(def memento (atom {}))
+
+(defn save []
+  (swap! memento @user))
+
+(defn restore []
+  (swap! user @memento))
+```
+
+*Pedro:* And if there are lot of users?
+*Niccy:* `map`
+*Vaine:* *...a memento object...*
+*Pedro:* An atom per user?
+*Niccy:* If you want to perform `restore` per user, then yes.
+*Vaine:* *...to the originator...*
+*Pedro:* Understand. Now it is very easy to implement what they want.
+*Niccy:* Take care.
+*Vaine:* *...caretaker.* Did you understand?
+*Pedro:* Sure.
+*Vaine:* Where is Niccy?
+*Pedro:* He is gone. Probably was bored by your mono... uhh.. talk.
+*Vaine:* Haha, loser! Goodbye, Pedro.
+*Pedro:* Bye, Vaine. And.. thanks for explanation.
+*Vaine:* No problem.
+
+Pedro was thinking 
+
+*Pedro:* Why these *"two functions"* were called *pattern*?
+*Pedro:* Did I miss something?
+*Pedro:* Anyway, all works as expected.
+
+The rest of the day Pedro included js library for charts to
+visualize bonus points deviation betwen states.
+
+**Demo**
+
+*Sven Tori:* I heard some user had one million bonus points?
+*Rage Man (lie):* It is hacker. He broke our system and increased his points.
+*Sven Tori:* It is very bad, we don't want such situations in future.
+*Rage Man:* Ah.. Sure. We implemented a system allows us to monitor intruders.
+*Dale shows the system*
+*Sven Tori:* What a..an AWESOME charts! Very exciting work.
+*Rage Man:* We are just professionals.
+*Sven Tori:* I know. Good work guys, as always. Bye!
+*Sven Tori disconnected.*
+
+The rest of the meeting Rage Man was explaining to the team,
+why he was lying to Sven.
 
 ### Episode 8: Mediator
 
