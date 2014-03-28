@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: coursera | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/coursera/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2014-03-28T20:16:18+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Standard ML]]></title>
+    <link href="http://mishadoff.github.com/blog/standard-ml/"/>
+    <updated>2013-02-16T13:33:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/standard-ml</id>
+    <content type="html"><![CDATA[<p>Last weekend I was hacking <a href="http://en.wikipedia.org/wiki/Standard_ML">Standard ML</a> a bit.</p>
+
+<!-- more -->
+
+<h3 id="coursera">Coursera</h3>
+
+<p>There are excellent course on coursera called <a href="https://class.coursera.org/proglang-2012-001/class/index">Programming Languages</a></p>
+
+<p>Currently, the first half is available, that explains basic and advanced functional programming constructions
+with Standard ML as primary language. Later some idioms will be presented using
+<strong>Racket</strong> and <strong>Ruby</strong> (<em>maybe, I will finally understand ruby</em>) so you can treat this course as introduction
+to these languages. In fact, it teaches much more than “<em>how to code in XXX</em>”.</p>
+
+<h3 id="tools">Tools</h3>
+
+<p>For playing with ML you need <a href="http://www.smlnj.org/">SML/NJ</a> compiler and
+<a href="http://www.smlnj.org/doc/Emacs/sml-mode.html">sml-mode</a> for emacs.</p>
+
+<p><em>If you don’t have emacs installed, do it right now!</em></p>
+
+<h3 id="play">Play</h3>
+
+<p>Following snippets give you basic understanding of ML or
+refresh your knowledge for syntax.</p>
+
+<p>Print “Hello, world!”:</p>
+
+<p><code>sml
+fun print_hello_world () = print "Hello, world\n";
+</code></p>
+
+<p>Variables (<em>in fact, values</em>):</p>
+
+<p><code>sml
+val a = 38;
+val b = a + 3;
+val c = b + 1;
+</code></p>
+
+<p>Conditionals:</p>
+
+<p><code>sml
+val cond = if 5 &gt; 4 then 5 else 4
+</code></p>
+
+<p>Boolean operators have terrible names:</p>
+
+<p><code>sml
+val cond2 = if 5 &gt; 4 andalso 4 &gt; 5 then 5 else 7
+</code></p>
+
+<p>Function with one parameter:</p>
+
+<p><code>sml
+fun square x = x * x
+</code></p>
+
+<p>Function with more than one parameter:</p>
+
+<p><code>sml
+fun sum (x, y, z) = x + y + z
+</code></p>
+
+<p>Actually, it’s not three parameters, it’s one parameter - tuple:</p>
+
+<p><code>sml
+fun swap (x, y) = (y, x)
+</code></p>
+
+<p>To access tuple elements use hash-number, note you can specify tuple type:</p>
+
+<p><code>sml
+fun get_month (date : int * string * int) : string= (#2 date)
+val month1 = get_month(2012, "January", 21);
+</code></p>
+
+<p>You can specify input types and return type, but ML is very clever. Almost always
+it can detect correct type using <em>type inference</em> without explicit definition.</p>
+
+<p><em>I don’t understand it! Explain, please</em>. Comments:</p>
+
+<p><code>sml
+(* Operation '*' defined for int types, so this function has type int -&gt; int *)
+fun cube x = x * x * x
+</code></p>
+
+<p>There is records. It’s like named tuples.</p>
+
+<p><code>sml
+fun get_month_real ({year, month, day}) = month
+val month2 = get_month_real({year=2012, month="January", day=21});
+</code></p>
+
+<p>Using <code>let</code> form we can define new lexical scope:</p>
+
+<p><code>sml
+fun add3 x =
+    let
+        val num = 3
+    in
+        x + 3
+    end
+</code></p>
+
+<p>This leads to closures (<em>function + context</em>):</p>
+
+<p><code>sml
+fun add3 x =
+    let
+        val num = 3
+        fun add_to x = x + num
+    in
+        add_to x
+    end
+</code></p>
+
+<p>Function <code>add_to</code> capture <code>num</code> value from context.</p>
+
+<p>By the way functions are first-class objects and values also,
+so we can assign one function to another:</p>
+
+<p><code>sml
+val another_cube = cube
+</code></p>
+
+<p>Function composition becomes a piece of cake:</p>
+
+<p><code>sml
+val cube_and_cube = cube o cube
+</code></p>
+
+<p>We even can pass function as a parameter:</p>
+
+<p><code>sml
+fun binary_apply (f, x, y) = f (x, y)
+binary_apply(swap, 1, 2);
+</code></p>
+
+<p>We don’t forced to provide function name, we can use lambdas:</p>
+
+<p><code>sml
+binary_apply(fn (x, y) =&gt; x * y, 23, 46)
+</code></p>
+
+<p>This helps us easily implement such useful functions as <code>map</code>, <code>reduce</code> and <code>filter</code>.
+But they are already available in
+<a href="http://www.standardml.org/Basis/manpages.html">Standard ML Basis Library</a></p>
+
+<p>Another great feature is <em>pattern-matching</em>. Here is factorial function</p>
+
+<p><code>sml
+fun factorial x =
+    case x of
+        0 =&gt; 1
+      | _ =&gt; x * factorial(x - 1)
+</code></p>
+
+<p>or list concatenation</p>
+
+<p><code>sml
+fun concat (x, y) =
+    case x of
+        [] =&gt; y
+      | x::xs =&gt; x::concat(xs, y)
+</code></p>
+
+<p>Honestly, it’s just baby examples of pattern matching. In fact, it is much more
+powerful.</p>
+
+<p>And the last thing I wanted to show is datatypes:</p>
+
+<p>To define a list:</p>
+
+<p><code>sml
+datatype 'a list = EMPTY | CONS of 'a * 'a list
+</code></p>
+
+<p>To create that list:</p>
+
+<p><code>sml
+val list = CONS(1, CONS(2, CONS(3, EMPTY)))
+</code></p>
+
+<p>That’s very small part of all that can be done in ML. There are also a lot of useful
+constructs and idioms that not covered: type synonyms, polymorphic types,
+equality types, tail recursion, mutual recursion, function wrapping,
+currying, partial application, advanced pattern matching, signatures,
+modules and lot more.</p>
+
+<p>If you really interested you will find a lot of these terms exciting.</p>
+
+<p>Full code is available on
+<a href="https://github.com/mishadoff/prog-experiment/blob/master/sml/play.sml">github</a></p>
+
+<h3 id="impressions">Impressions</h3>
+
+<p>ML is a great language. Perhaps, it is not so great as Java in enterprise, and not
+so great as Clojure in rapid prototyping, but it’s worth to devote
+few days for ML basics. It really improve your dev skills and maybe made your
+<em>Factories</em>, <em>Bridges</em> and <em>Proxies</em> better.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Learn Perl]]></title>
+    <link href="http://mishadoff.github.com/blog/learn-perl/"/>
+    <updated>2012-11-12T20:38:00+02:00</updated>
+    <id>http://mishadoff.github.com/blog/learn-perl</id>
+    <content type="html"><![CDATA[<p><code>perl
+($current_tasks, $perl) = ($perl, $current_tasks);
+</code></p>
+
+<p>Long time learning <a href="http://www.perl.org/">perl</a> was my desire.
+Now I pushed back for a little some of my activities, and started with perl.</p>
+
+<!-- more -->
+
+<p>The reason for this was the third launch of <a href="https://class.coursera.org/crypto-004/class/index">Stanford Cryptography</a> class on coursera.</p>
+
+<p>Cryptography is a field that I never know, but would like to. I see a lot of practical applications here,
+but, honestly, for me it’s more <em>just for fun</em>, than anything else. Isn’t it interesting to (de)cypher something?</p>
+
+<p>First two launches was marked as lack of time for me, so I postponed it. By the way, other interesting courses was <em>in progress</em>.
+But now I really hope that I get enough time (<em>and patience</em>) to finish the class and get some good knowledge in this field.</p>
+
+<p><img src="http://imgs.xkcd.com/comics/lisp.jpg" alt="" /></p>
+
+<p>I don’t know why, but I choose perl as primary language for doing programming assignments.</p>
+
+<p>First of all, I needed some fast scripting language for general-purpose problems. To choose between perl and python, I choose perl.
+Because of <em>“less number of symbols in the name”</em>, of course. Second of all, I don’t know perl and it’s a good reason to learn it <em>in action</em>.
+Also, what is important, I did get only positive reviews from my friends who know perl, but all their stories was like a mistery for me.
+Thought, that only chosen one can learn perl. I want to dispel this myth. To try, at least.</p>
+
+<blockquote>
+  <p>There’s more than one way to do it</p>
+
+  <p>– Perl motto</p>
+</blockquote>
+
+<p>The book that I choose for learning is a classic book (<em>read Perl Bible</em>) from the creator of perl, <a href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>.
+There is fresh, 4th edition, available.</p>
+
+<p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
+
+<p>Hope, I won’t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure Euler: Problem 014 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Which starting number, under one million, produces the longest Collatz chain? Permalink: http://projecteuler.net/problem=14 The following iterative &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-014/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure Euler: Problem 014</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-16T01:08:00+02:00" pubdate data-updated="true">Feb 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><blockquote>
+  <p>Which starting number, under one million, produces the longest Collatz chain?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=14">http://projecteuler.net/problem=14</a></p>
+
+<!-- more -->
+
+<blockquote>
+  <p>The following iterative sequence is defined for the set of positive integers:</p>
+
+  <p>n → n/2 (n is even)</p>
+
+  <p>n → 3n + 1 (n is odd)</p>
+
+  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
+
+  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+
+  <p>It can be seen that this sequence (starting at 13 and finishing at 1)
+contains 10 terms. Although it has not been proved yet (Collatz Problem),
+it is thought that all starting numbers finish at 1.</p>
+
+  <p>Which starting number, under one million, produces the longest chain?</p>
+
+  <p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
+</blockquote>
+
+<p>Sequences again.
+So, first of all we need function to detect next collatz number.
+It is pretty straightforward:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">collatz-next</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="mi">3</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using this <em>next-element-generator</em> we can generate infinite collatz sequence,
+starting from number <code>n</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">iterate </span><span class="nv">collatz-next</span> <span class="nv">n</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But instead of infinite sequence, we stop processing when we reach <code>1</code> and calculate
+count of collatz chain sequence:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">collatz-chain-length</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">%</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">iterate </span><span class="nv">collatz-next</span> <span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now we have almost all code logic and just use it: calculate collatz chain
+for all numbers in range <code>[1..1000000]</code>, find maximum and output its index:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">reduce </span><span class="o">#</span><span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">second </span><span class="nv">%1</span><span class="p">)</span> <span class="p">(</span><span class="nb">second </span><span class="nv">%2</span><span class="p">))</span> <span class="nv">%1</span> <span class="nv">%2</span><span class="p">)</span>
+</span><span class="line">               <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">list </span><span class="nv">%</span> <span class="p">(</span><span class="nf">collatz-chain-length</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000000</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Run it. Wait a minute. I mean minute <em>literally</em>.</p>
+
+<p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
+and I have no idea how to solve it another way.</p>
+
+<p>I am sure there is a better algorithm than mine. But I don’t know it.
+What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
+
+<blockquote>
+  <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
+</blockquote>
+
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
+
+<p>Got it?</p>
+
+<p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
+chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
+for <code>40</code>, <code>20</code> and so on.</p>
+
+<p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
+it to have recursive solution.</p>
+
+<p>Here the first (<em>and final</em>) version:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">collatz-chain-recursive</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">      <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">collatz-chain-recursive</span> <span class="p">(</span><span class="nf">collatz-next</span> <span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Recursion is impressive at the point that its implementation
+almost exactly follows the problem definition. It is easy to understand.</p>
+
+<p>But, as you may notice our implementation not
+<a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
+have troubles. Do not think about it unless we actually have them.</p>
+
+<p>For the sake of fun let’s run this function instead of previous to
+obtain the results.</p>
+
+<p><strong>20 seconds</strong>, it is great. I even don’t think that
+this simple recursive function gives such boost in performance.</p>
+
+<p>One little tweak in result function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">first</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">apply max-key </span><span class="nv">second</span>
+</span><span class="line">         <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">list </span><span class="nv">%</span> <span class="p">(</span><span class="nf">collatz-chain-recursive</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">1000000</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And we have <strong>~12 seconds</strong>.</p>
+
+<p>Unexpected “The End”. Yeah, I love The Doors.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
+
+<p><strong>P.S.</strong> I really wanted to explain technique called
+<a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
+simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
+but seems that caching result doesn’t have much sense here because
+12 seconds is acceptable. We will have chance to introduce
+memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-16T01:08:00+02:00" pubdate data-updated="true">Feb 16<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-014/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-014/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/programming-digest-1/" title="Previous Post: Programming Digest 1">&laquo; Programming Digest 1</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/standard-ml/" title="Next Post: Standard ML">Standard ML &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-014/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-014/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

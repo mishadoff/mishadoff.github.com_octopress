@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: random | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.com/blog/categories/random/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2014-03-28T20:16:18+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[randomorg-0.1]]></title>
+    <link href="http://mishadoff.github.com/blog/randomorg-0-dot-1/"/>
+    <updated>2013-07-06T15:33:00+03:00</updated>
+    <id>http://mishadoff.github.com/blog/randomorg-0-dot-1</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
+
+<!-- more -->
+
+<p>If you use random numbers in your software you might be interested in
+better numbers distribution than <code>Random.nextInt()</code>.</p>
+
+<p>Someone solves this problem with hardware generators, few entropy sources and
+even <a href="http://www.amazon.com/Million-Random-Digits-Normal-Deviates/dp/0833030477/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1373114958&amp;sr=1-1&amp;keywords=A+Million+Random+Digits+with+100%2C000+Normal+Deviates">books</a>.</p>
+
+<p>By the way, there is great service <a href="http://random.org">random.org</a>
+which allows to generate random numbers via atmospheric noise.</p>
+
+<p><strong>randomorg</strong> is a small java library for random.org API.</p>
+
+<p>Check project page for usage and documentation!</p>
+]]></content>
+  </entry>
+  
+</feed>

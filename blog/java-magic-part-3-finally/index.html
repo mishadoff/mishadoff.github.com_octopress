@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Java Magic. Part 3: Finally - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Every experienced java programmer should know that finally block always executed. But is it true? It depends on our definition of program execution. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/java-magic-part-3-finally/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Java Magic. Part 3: Finally</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-18T19:39:00+02:00" pubdate data-updated="true">Nov 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Every experienced java programmer should know that <code>finally</code> block always executed. But is it true?</p>
+
+<!-- more -->
+
+<p>It depends on our definition of program execution. But, generally speaking, <strong>yes</strong>.</p>
+
+<h3 id="normal-program-execution">Normal program execution</h3>
+
+<p><em>Aha, look at this</em>, someone might retort:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">try</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;I&#39;m here, man&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>You just said, finally block always executed?</em></p>
+
+<p>Well. In that case no, because we speaking about normal flow of program execution.
+This is <em>abnormal</em>.</p>
+
+<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">official tutorial</a></p>
+
+<blockquote>
+  <p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p>
+</blockquote>
+
+<p>Your counter question might be: <em>If second line of that code always exectued?</em></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 1&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 2&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 3&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Sure, because it’s linear flow. Nothing can break…<strong>BANG</strong>…<code>Electricity unavailable. Program stopped.</code></p>
+
+<p>What about this? It’s also abnormal program execution, and we can’t guarantee anything for 100%.
+In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
+
+<p>That’s why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
+
+<blockquote>
+  <p>I said yes? I meant no!</p>
+</blockquote>
+
+<h3 id="perpetuum-mobile">Perpetuum Mobile</h3>
+
+<p>Consider the following code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="k">try</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;I print here some useful information&quot;</span><span class="o">);</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line"><span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Let me run&quot;</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Will be the line <em>“Let me run”</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
+
+<p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
+
+<h3 id="threads">Threads</h3>
+
+<p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
+
+<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn’t executed.</p>
+
+<p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
+
+<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
+
+<blockquote>
+  <p>…if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p>
+</blockquote>
+
+<p>So, we can treat thread like a program, and make one effective rule:</p>
+
+<p><strong>Rule 1</strong>. Finally executes always, except the case where controlling program or thread was aborted.</p>
+
+<h3 id="finally-we-return">Finally we return</h3>
+
+<p>Ok, now we know when finally is not executed. But do we know when finally is executed?</p>
+
+<p>Consider the example:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">int</span> <span class="nf">someFunc</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">try</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The result is obviously <code>1</code>. Just because <code>finally</code> is always executed.</p>
+
+<p>Consider, next example:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kt">int</span> <span class="nf">someFunc</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">try</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">();</span>
+</span><span class="line">  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The result is <code>1</code> again. And it’s a problem. We just lose the exception.
+Such issue known as <em>exception swallowing</em>. It is very dangerous, because client’s code expect either exception or some value, but it always get only value.</p>
+
+<p>One more less imaginary example.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">String</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">DAOException</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">try</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">dao</span><span class="o">.</span><span class="na">deposit</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+</span><span class="line">  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="s">&quot;OK&quot;</span><span class="o">;</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
+responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string “OK” will be returned.</p>
+
+<p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
+
+<h3 id="instead-of-conclusion">Instead of conclusion</h3>
+
+<p>A lot of programmers are aware about this common mistake. But some are not.
+Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-18T19:39:00+02:00" pubdate data-updated="true">Nov 18<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/java-magic-part-3-finally/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/java-magic-part-3-finally/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-006/" title="Previous Post: Clojure Euler: Problem 006">&laquo; Clojure Euler: Problem 006</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-007/" title="Next Post: Clojure Euler: Problem 007">Clojure Euler: Problem 007 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/java-magic-part-3-finally/';
+        var disqus_url = 'http://mishadoff.github.com/blog/java-magic-part-3-finally/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

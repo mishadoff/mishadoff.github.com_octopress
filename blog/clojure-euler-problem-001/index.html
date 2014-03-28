@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure Euler: Problem 001 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23. Find the sum of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.com/blog/clojure-euler-problem-001/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure Euler: Problem 001</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-12T17:38:00+03:00" pubdate data-updated="true">Oct 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><blockquote>
+  <p>If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.</p>
+</blockquote>
+
+<blockquote>
+  <p>Find the sum of all the multiples of 3 or 5 below 1000.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=1">http://projecteuler.net/problem=1</a></p>
+
+<!-- more -->
+
+<p>The simplest problem and nothing hard to solve it in standard iterative way (C-style pseudocode):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">((</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="n">s</span><span class="o">+=</span><span class="n">i</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We get result immediately. But loop that changes value of some variable it’s not a functional approach.
+Let’s rewrite this solution in <a href="http://en.wikipedia.org/wiki/Recursion">recursive</a> way in clojure:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">i</span> <span class="mi">0</span> <span class="nv">s</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">i</span> <span class="mi">1000</span><span class="p">)</span> <span class="nv">s</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">i</span> <span class="mi">3</span><span class="p">))</span>
+</span><span class="line">            <span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">i</span> <span class="mi">5</span><span class="p">)))</span> <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">s</span> <span class="nv">i</span><span class="p">))</span>
+</span><span class="line">                             <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">i</span><span class="p">)</span> <span class="nv">s</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Just few words what we are doing here:</p>
+
+<ol>
+  <li><a href="http://clojuredocs.org/clojure_core/clojure.core/loop">loop</a> - create binding between names and values in scope of loop body.
+For now, think about loop like a function definition with two variables <code>i</code> and <code>s</code> along with calling such function with arguments <code>i=0, s=0</code>.
+<code>i</code> is a loop counter, <code>s</code> is an accumulator variable that holds current sum.</li>
+  <li><a href="http://clojuredocs.org/clojure_core/clojure.core/mod">mod</a> - calculates remainder of division two numbers.
+<a href="http://clojuredocs.org/clojure_core/clojure.core/inc">inc</a> - increment value, similar to <code>(+ i 1)</code>.</li>
+  <li><em>Recursion base case:</em> if we have <code>i</code> value equals to <code>1000</code>, then we finished our work and return current accumulator value <code>s</code>. Otherwise,</li>
+  <li><em>Recursion step:</em> if current <code>i</code> value is multiply of <code>3</code> or multiply of <code>5</code>, we add counter value to accumulator,
+increment loop counter and call this function with these new arguments. Otherwise, we just increment value and call function.
+This way we recursively go back to the first line of function with changed values until we get recursion base condition as true and return accumulator.
+Recursion call performed by <a href="http://clojure.org/special_forms#recur">recur</a>.</li>
+</ol>
+
+<p>This can be a bit harder to understand than iterative style, but we have a couple of pros there.</p>
+
+<ol>
+  <li>There are no variables. There are values and names bound to that values.
+That means that we can’t change one value to another inside loop. That’s why we recursively call this function with changed values.
+Such trick helps to avoid hard-to-spot error-prone situations where iteration counter changed inside the loop.</li>
+  <li>This is more flexible way than iteration. We can pass as much arguments as we want, move forward-backward,
+select dynamic iterative step and even select any stop condition.</li>
+  <li>Safety. We are completely safe that our loop is pure local. It can not change anything outside.
+All garbage he left was cleared after returning value (<em>Ecologists are very happy!</em>)</li>
+</ol>
+
+<p><strong>Congratulations!</strong> Problem solved, but let’s find more elegant way.</p>
+
+<p>We can split our problem into two simpler problems:</p>
+
+<ol>
+  <li>Find sum of all multiples of <code>3</code> below <code>1000</code></li>
+  <li>Find sum of all multiples of <code>5</code> below <code>1000</code></li>
+  <li>Add these two sums</li>
+</ol>
+
+<p>Stop, stop! What about numbers that multiples of <code>3</code> and multiples of <code>5</code>, like <code>15, 30, 45,...</code>? We add them twice.
+Good catch. Let’s just subtract them once from total sum:</p>
+
+<ol>
+  <li>Find sum of all multiples of <code>3</code> below <code>1000</code></li>
+  <li>Find sum of all multiples of <code>5</code> below <code>1000</code></li>
+  <li>Find sum of all multiples of <code>15</code> below <code>1000</code></li>
+  <li>Add sum 1 to sum 2 and subtract sum 3.</li>
+</ol>
+
+<p>You see the repeated <em>“Find sum of all…”</em>. It’s clear definition of function. Let’s implement it.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of</span> <span class="p">[</span><span class="nv">d</span><span class="p">]</span> <span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">0</span> <span class="mi">1000</span> <span class="nv">d</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>One line! Excited?
+Brief description, what we wrote:</p>
+
+<ol>
+  <li><a href="http://clojuredocs.org/clojure_core/clojure.core/defn">defn</a> indicates function definition.
+We called function <code>sum-of</code>, it accepts one argument <code>d</code> (multiple of what?).
+As you, probably notice, we do not enforced to specify type of function argument, as well as function returning type.
+All it’s because clojure is <a href="http://en.wikipedia.org/wiki/Dynamic_programming_language">dynamic</a> language.
+Dynamic languages have pros and cons over static, but we omit their differences. For now.</li>
+  <li><a href="http://clojuredocs.org/clojure_core/clojure.core/reduce">reduce</a> takes two parameters: function of two arguments and collection,
+and applies that function to first two values, than to result and next value, again, again, until the end of collection.
+So, for example <code>(reduce * [2 3 4 5])</code> calculates <code>(* 2 3)</code> that is <code>6</code>, calls <code>(reduce * [6 4 5])</code>, then calls <code>(reduce * [24 5])</code> and finally returns <code>120</code>.</li>
+  <li><a href="http://clojuredocs.org/clojure_core/clojure.core/range">range</a> function generates list. As you see it takes three parameters,
+but there are overloaded versions that takes 2, 1 or even 0 values. <code>(range 0 1000 d)</code> start generation from <code>0</code>,
+next value will be <code>previous plus d</code>, until we exceed <code>1000</code>. Exclusively. So, <code>(range 0 10 3)</code> returns <code>(0 3 6 9)</code>.</li>
+</ol>
+
+<p>Ok. We have function <em>“Find sum of all…”</em> and almost all work is done. Just call this function with proper arguments and you’ll get the result:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">sum-of</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nf">sum-of</span> <span class="mi">5</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">sum-of</span> <span class="mi">15</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Done. In functional, clear, concise way in two lines of code.</p>
+
+<p><strong>Note:</strong> our <a href="http://en.wikipedia.org/wiki/Big_O_notation">algorithm complexity</a> is <code>O(n)</code>.
+If we remember school course of math, we realize that all our sequences are <a href="http://en.wikipedia.org/wiki/Arithmetic_progression">arithmetic progressions</a>.
+That means for caluclating sum of sequence we don’t need count sum in usual way, we just can use formula:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/f/e/afe20f89d7bfdbd0a191168d80eb8077.png" /></p>
+
+<p><code>n</code> is a count of numbers in a sequence, <code>a1</code> - first value, <code>an</code> - last value.
+Now we can reimplement our <code>sum-of</code> function next way:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of</span> <span class="p">[</span><span class="nv">d</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">a1</span> <span class="nv">d</span>
+</span><span class="line">        <span class="nv">an</span> <span class="p">(</span><span class="nb">- </span><span class="mi">999</span> <span class="p">(</span><span class="nf">mod</span> <span class="mi">999</span> <span class="nv">d</span><span class="p">))</span>
+</span><span class="line">        <span class="nv">n</span> <span class="p">(</span><span class="nb">quot </span><span class="mi">999</span> <span class="nv">d</span><span class="p">)]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">* </span><span class="nv">cnt</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a1</span> <span class="nv">an</span><span class="p">))</span> <span class="mi">2</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>More harder to understand, but doable. New language syntax appears (999 used as we have <em>“below 1000”</em> in problem description):</p>
+
+<ol>
+  <li><a href="http://clojuredocs.org/clojure_core/clojure.core/let">let</a> - creates a lexical context for expression.
+In fact, it’s just separate block of code, with names, that exist only in scope of that block.
+After let we evaluates some expression and gives some values to the result.</li>
+  <li><code>a1</code> - first element of sequence, just step value <code>d</code>.</li>
+  <li><code>an</code> - last element of sequence. We don’t know last element, so we need to calculate it.
+Little trick: find the remainder of division 999 by d, and subtract it from 999.</li>
+  <li><code>n</code> - count of numbers in a sequence. We also don’t know this value. It just will be integer number of division 999 by d.
+Exactly what <a href="http://clojuredocs.org/clojure_core/clojure.core/quot">quot</a> function does.</li>
+  <li>And finally, the expression - formula for sum of arithmetic progression.</li>
+</ol>
+
+<p>Actually, we reduced readability of our code, but improved algorithmic complexity from <code>O(n)</code> to <code>O(1)</code>.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem001.clj">GitHub</a> for lazy.</p>
+
+<p><a href="http://tryclj.com/">Try clojure online!</a></p>
+
+<p><strong>P.S.</strong> Programming not tied to some problem is nothing. That’s why, in first problem I prefer <code>O(n)</code> solution.
+It still solves problem in appropriate time and have more readable code. If <code>n</code> grow, I’ll think about switching to <code>O(1)</code> strategy, but not for now.</p>
+
+<p>Have fun!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-12T17:38:00+03:00" pubdate data-updated="true">Oct 12<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.com/blog/clojure-euler-problem-001/" data-via="mishadoff" data-counturl="http://mishadoff.github.com/blog/clojure-euler-problem-001/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/lisp-live-coding/" title="Previous Post: Lisp live-coding">&laquo; Lisp live-coding</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/" title="Next Post: Clojure + Emacs + Leiningen + nREPL">Clojure + Emacs + Leiningen + nREPL &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.com/blog/clojure-euler-problem-001/';
+        var disqus_url = 'http://mishadoff.github.com/blog/clojure-euler-problem-001/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
