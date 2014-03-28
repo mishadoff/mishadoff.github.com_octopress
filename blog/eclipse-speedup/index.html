@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Eclipse Speedup - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Have you been in situation where most of the time in eclipse you were waiting for
+some operation to be finished? If you here, probably, the answer is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/eclipse-speedup/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Eclipse Speedup</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-23T18:00:00+02:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Have you been in situation where most of the time in eclipse you were waiting for
+some operation to be finished?</p>
+
+<!-- more -->
+
+<p><img src="http://upload.wikimedia.org/wikipedia/en/3/34/Eclipse-logo.png" alt="" /></p>
+
+<p>If you here, probably, the answer is yes. You are bored with that slow functionality and want
+to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
+
+<p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
+Add SSD to make filesystem operations faster. We assume you can&rsquo;t afford all that. All you can is setup your
+eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
+almost everything is identical in other versions for other platforms.</p>
+
+<h3 id="eclipse-tweaks">Eclipse tweaks</h3>
+
+<h4 id="plugins">Plugins</h4>
+
+<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn&rsquo;t
+work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
+It is not deleting, you always can enable it back.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Startup and Shutdown
+</code></pre>
+
+<p><img src="http://i.imgur.com/kgavA.png" alt="" /></p>
+
+<p>By the way, some plugins appeared due to your experimenting and not used anymore. <strong>Delete</strong> redundant plugins if they
+not used at all.</p>
+
+<pre><code>Help -&gt; About Eclipse SDK -&gt; Instalation Details -&gt; &lt;Select plugin&gt; -&gt; Uninstall
+</code></pre>
+
+<p><img src="http://i.imgur.com/7wRoR.png" alt="" /></p>
+
+<h4 id="eclipseini">eclipse.ini</h4>
+
+<p>Following tweaks based on editing <code>eclipse.ini</code> file located in root folder
+of your eclipse instalation.</p>
+
+<ul>
+  <li><strong>Use specific JVM to run eclipse.</strong>
+This allows do not take into account system properties which alters your JDK.</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">-vm
+</span><span class="line">/path/to/your/java</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p><strong>Use latest JDK to run eclipse.</strong>
+Much better if you point your eclipse to the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">latest JDK</a>.
+<em>Rumors</em> said it has better performance.</p>
+  </li>
+  <li>
+    <p><strong>Use Sun JDK to run eclipse.</strong>
+The reason behind this has the same explanation.</p>
+  </li>
+  <li>
+    <p><strong>Configure VM arguments.</strong>
+You can set your own values for virtual machine if you think
+they are appropriate
+(<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning">Performance related options</a>)
+I use following settings to increase heap size (objects) to <code>768Mb</code> and permgen (classes) to <code>256 Mb</code> on my <code>3Gb</code> RAM machine.</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">-vmargs
+</span><span class="line">-Xms768m
+</span><span class="line">-Xmx768m
+</span><span class="line">-XX:PermSize=256m
+</span><span class="line">-XX:MaxPermSize=256m</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
+step of JVM loading you will get performance boost. But it&rsquo;s very risky change.</p>
+
+<p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
+experimental VM options like (some of these):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">-server
+</span><span class="line">-XX:+UnlockExperimentalVMOptions
+</span><span class="line">-XX:+UseG1GC
+</span><span class="line">-XX:+UseParallelGC
+</span><span class="line">-XX:+UseFastAccessorMethods
+</span><span class="line">-Xss2m</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Check all <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fruntime-options.html">Eclipse runtime options</a>
+for reference and choose ones that appropriate for you.</p>
+
+<h4 id="disable-animations">Disable animations</h4>
+
+<p>Animations it&rsquo;s cool. But I always disable animations if it possible in all tools.
+Also, classic theme is most usable for me.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
+</code></pre>
+
+<p><img src="http://i.imgur.com/mzLp7.png" alt="" /></p>
+
+<h4 id="disable-label-decorations">Disable label decorations</h4>
+
+<p>Label decorations are small icons on project, file, class levels that helps
+visually indicate some state of file. Like commited it to git or no.
+They are provided by various plugins and rarely useful. Just left ones that you want.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Label Decorations
+</code></pre>
+
+<p><img src="http://i.imgur.com/MKZp5.png" alt="" /></p>
+
+<h4 id="autocompletion">Autocompletion</h4>
+
+<p>Sometimes on slow machines or when you have a lot of classes in your classpath autocompletion performance is terrible.
+Small improvement you can get by reducing group of possible proposals. I left only <code>Java Proposals</code> and <code>Template Proposals</code>:</p>
+
+<pre><code>Window -&gt; Preferences -&gt; Java -&gt; Editor -&gt; Content Assist -&gt; Advanced
+</code></pre>
+
+<p><img src="http://i.imgur.com/Aa7MY.png" alt="" /></p>
+
+<h4 id="uncheck-validators">Uncheck validators</h4>
+
+<p>If you are sure in your competence just suspend all validators. If problem appears, you always
+can identify the reason, but you save your development time.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; Validation -&gt; Suspend All Validators
+</code></pre>
+
+<p><img src="http://i.imgur.com/n1XQ2.png" alt="" /></p>
+
+<h4 id="close-unrelated-projects">Close unrelated projects</h4>
+
+<p>If you working in context of few projects, better to have all unrelated projects closed. They won&rsquo;t appear
+in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
+You can add any number of projects to one working set, and quickly switch between different working sets
+in one workspace.</p>
+
+<pre><code>Right Click on Project -&gt; Assign Working Sets..
+</code></pre>
+
+<h4 id="close-unused-tabs-in-editor">Close unused tabs in editor</h4>
+
+<p>Big number of tabs in editor can greatly slow down your performance. Just limit them.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors
+</code></pre>
+
+<p>Check <code>Close editors automatically</code> and set <code>Number of opened tabs</code> to <code>10</code>.</p>
+
+<p><img src="http://i.imgur.com/gjRd8.png" alt="" /></p>
+
+<h4 id="disable-spell-check">Disable spell check</h4>
+
+<p>Are you developer or what? I don&rsquo;t see any reason to have <code>spell check</code> enabled.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
+</code></pre>
+
+<h4 id="disable-autobuild">Disable autobuild</h4>
+
+<p>Probably, you aware about when you want to build your project and when not.</p>
+
+<pre><code>Project -&gt; Uncheck 'Build Automatically'
+Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Scrub output folders when cleaning'
+Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Rebuild class files modified by others'
+</code></pre>
+
+<h4 id="hotkeys">Hotkeys</h4>
+
+<p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
+single operation, your development process won&rsquo;t be fast. Configure most-often used actions
+to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
+
+<pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys
+</code></pre>
+
+<p>To force myself learn all hotkeys I just disabled toolbar.</p>
+
+<pre><code>Window -&gt; Hide Toolbar
+</code></pre>
+
+<h3 id="useful-links">Useful Links</h3>
+
+<ul>
+  <li><a href="http://wiki.eclipse.org/Eclipse.ini">http://wiki.eclipse.org/Eclipse.ini</a></li>
+  <li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
+  <li><a href="http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/">http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/</a></li>
+  <li><a href="http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/">http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/</a></li>
+  <li><a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590">http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590</a></li>
+</ul>
+
+<p><strong>P.S.</strong> This article planned to be updatable, other tweaks are welcome!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-23T18:00:00+02:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/eclipse/'>eclipse</a>, <a class='category' href='/blog/categories/ide/'>ide</a>, <a class='category' href='/blog/categories/java/'>java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/eclipse-speedup/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/eclipse-speedup/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-010/" title="Previous Post: Clojure Euler: Problem 010">&laquo; Clojure Euler: Problem 010</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/devops-reactions/" title="Next Post: DevOps reactions">DevOps reactions &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/eclipse-speedup/';
+        var disqus_url = 'http://mishadoff.github.io/blog/eclipse-speedup/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

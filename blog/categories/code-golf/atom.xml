@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: code golf | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.io/blog/categories/code-golf/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-11-26T17:16:28+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
+    <link href="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/"/>
+    <updated>2013-08-09T17:44:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter</id>
+    <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
+
+<!-- more -->
+
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
+
+<ul>
+  <li><code>&gt;</code> move to the next cell</li>
+  <li><code>&lt;</code> move to the previous cell</li>
+  <li><code>+</code> increment value in the current cell</li>
+  <li><code>-</code> decrement value in the current cell</li>
+  <li><code>.</code> print char with ascii value of current cell</li>
+  <li><code>,</code> read ascii value for input char to the current cell</li>
+  <li><code>[</code> start loop until value of pointer is not zero </li>
+  <li><code>]</code> finish loop</li>
+</ul>
+
+<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+
+<h3 id="tweet">Tweet</h3>
+
+<p>Final version took <code>280</code> characters in Clojure:</p>
+
+<p><code>clojure
+(fn[a p k c](let[h #(nth %1@%2)e #(h a p)s #(swap! %1%2 1)t
+#(aset a@p(%(e)1))l #(do(s k %)(case(h c k)\]()\[()(recur %)
+))](while(&gt;(count c)@k)(do(case(h c k)\&gt;(s p +)\&lt;(s p -)\+
+(t +)\-(t -)\.(print(char(e)))\,(aset a@p(.read *in*))\[(if
+(=(e)0)(l +))\](if(&gt;(e)0)(l -)))(s k +)))))
+</code></p>
+
+<p>Exactly 2 tweets.</p>
+
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+
+<p>Translating to more readable code:</p>
+
+<p><code>clojure
+(defn parse-internal [a pt pc cs]
+  (letfn [(act []
+            (case (nth cs @pc)
+              \&gt; (swap! pt inc)
+              \&lt; (swap! pt dec)
+              \+ (aset a @pt (inc (nth a @pt))) 
+              \- (aset a @pt (dec (nth a @pt)))
+              \. (print (char (nth a @pt)))
+              \, (aset a @pt (.read *in*))
+              \[ (if (zero? (nth a @pt)) (loop- inc))
+              \] (if-not (zero? (nth a @pt)) (loop- dec))))
+          (loop- [f]
+            (do (swap! pc f)
+                (case (nth cs @pc)
+                  \[ ()
+                  \] () 
+                  (recur f))))]
+    (while (not= (count cs) @pc)
+      (do
+        (act)
+        (swap! pc inc)))))
+</code></p>
+
+<p>So, what&rsquo;s happening there?</p>
+
+<p>Function arguments are parameters of our tape and brainfuck program.</p>
+
+<ul>
+  <li><code>a</code> is an array represents finite tape <code>e.g (int-array 100)</code></li>
+  <li><code>pt</code> is an atom - pointer to the tape</li>
+  <li><code>pc</code> is an atom - pointer to the command list</li>
+  <li><code>cs</code> command list</li>
+</ul>
+
+<p>Function <code>act</code> decides which action to perform depending on current command,
+<code>loop</code> allows us to move command pointer inside a loop,
+and main <code>while-do</code> loop executes commands until they exhausted. Simple enough.</p>
+
+<p>To make our interpreter more friendly we create function <code>parse</code> that accepts
+string - program, written in brainfuck.</p>
+
+<p><code>clojure
+(defn parse [s]
+  (let [a (int-array 100)  ;; Turing Tape
+        p (atom 0)         ;; Pointer to Tape
+        k (atom 0)         ;; Pointer to Command
+        c (vec (seq s))]   ;; Vector of Commands
+    (parse-internal a p k c)))
+</code></p>
+
+<h4 id="testing">Testing</h4>
+
+<p>Print &ldquo;Hello, world&rdquo;</p>
+
+<p><code>clojure
+(parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
+        &gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;
+        .+++.------.--------.&gt;+.&gt;.") =&gt;
+Hello World!
+</code></p>
+
+<p>Input 5 characters and reverse print them</p>
+
+<p><code>clojure
+(parse ",&gt;,&gt;,&gt;,&gt;,.&lt;.&lt;.&lt;.&lt;.") =&gt; &lt;wait input "hello"&gt;
+olleh
+</code></p>
+
+<p>More complex program need nested loops, which is not supported by
+this version (<em>for the sake of small size!</em>)</p>
+
+<p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
+
+<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
+
+<ul>
+  <li>It does not work for inifinite tape</li>
+  <li>Cell datatype is fixed and not assumed to be cyclic. For example, if cell type is unsigned byte <code>[0..255]</code>, then <code>255 + 1 != 0</code> and break interpreter</li>
+  <li>Only unsigned types supported</li>
+  <li>Nested loops are not allowed</li>
+  <li>No error handling</li>
+</ul>
+
+<p>But, you are welcome to improve it!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
+    <link href="http://mishadoff.github.io/blog/code-golf-game-of-life/"/>
+    <updated>2013-03-07T17:59:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/code-golf-game-of-life</id>
+    <content type="html"><![CDATA[<p>Conway&rsquo;s Game of Life in a tweet.</p>
+
+<!-- more -->
+
+<p>Recently, my friend pointed out me an article <a href="http://trelford.com/blog/post/140.aspx">Life in a tweet</a>
+where <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a> was implemented in one tweet
+(<em>less than 140 characters</em>) in Ruby and F#. I took this challenge.</p>
+
+<h3 id="tweet">Tweet</h3>
+
+<p>Here is the final version in <code>137</code> characters of Clojure:</p>
+
+<p><code>clojure
+(fn[g r](reduce(fn[i j](update-in i j(fn[v](get[v 1]
+(-(apply +(map #(get-in g% 0)(for[a[-1 0 1]b[-1 0 1]]
+(map + j[a b]))))v 2)0))))g r))
+</code></p>
+
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+
+<p>Translate tweet to more readable code:</p>
+
+<p><code>clojure
+(defn step-sugar [grid range]
+  (let [count-neighbours ;; determine number of neighbours
+        (fn[[i j]]
+          (reduce + (map #(get-in grid % 0)
+                         (for[a [-1 0 1] b [-1 0 1]]
+                           [(+ i a) (+ j b)]))))
+        new-value  ;; calculate new value for cell
+        (fn [v [i j]]
+          (let [c (- (count-neighbours [i j]) v)]
+            (cond (= 3 c) 1
+                  (= 2 c) v
+                  :else 0)))
+        evolve-cell ;; update cell in a grid
+        (fn[g i] (update-in g i #(new-value % i)))]
+    (reduce evolve-cell grid range)))
+</code></p>
+
+<p>Actually, this version is cheating,
+due to passing one extra-parameter <code>range</code> that contains all indices
+need to be updated in form <code>[[0 1] [1 1]]...</code></p>
+
+<p>On the other side it gives us two features:</p>
+
+<ul>
+  <li><strong>Works for rectangular grid</strong>. Although, initial
+implementation assumes the world is square.</li>
+  <li><strong>Specific part of world can be updated</strong>. It gives possibility
+to update specific area in the world, for example <em>west organisms evolve faster</em>.</li>
+</ul>
+
+<p>To use this function you need:</p>
+
+<ul>
+  <li>World</li>
+</ul>
+
+<p><code>clojure
+(def grid [[0 0 0]
+           [1 1 1]
+           [0 0 0]])
+</code></p>
+
+<ul>
+  <li>Evolution</li>
+</ul>
+
+<p><code>clojure
+(defn evolution [g]
+  (let [p (count g) q (count (get g 0))
+        range (for [i (range p) j (range q)][i j])]
+    (iterate #(step-sugar % range) g)))
+</code></p>
+
+<ul>
+  <li>Visualization</li>
+</ul>
+
+<p><code>clojure
+(defn print-grid [g]
+  (doseq [s (map #(apply str (replace {0 "." 1 "⚫"} %)) g)]
+    (println s)))
+</code></p>
+
+<h3 id="testing">Testing</h3>
+
+<p>To make sure results are correct use the following
+<code>run</code> function and compare results to some common
+<a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns">examples</a>.</p>
+
+<p><code>clojure
+(defn run [grid]
+  (doseq [g (evolution grid)]
+    (print-grid g)
+    (Thread/sleep 1000)))
+</code></p>
+
+<p>Pattern examples:</p>
+
+<p>``` clojure
+(def block [[0 0 0 0]
+            [0 1 1 0]
+            [0 1 1 0]
+            [0 0 0 0]])</p>
+
+<p>(def glider [[0 0 1 0 0 0 0 0]
+             [1 0 1 0 0 0 0 0]
+             [0 1 1 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0]])
+```</p>
+
+<p>Full history of implementation and more life patterns
+<a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/life.clj">available here</a></p>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+</feed>

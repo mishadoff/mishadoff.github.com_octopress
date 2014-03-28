@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure Euler: Problem 005 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder. What is the smallest positive number that &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-005/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure Euler: Problem 005</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-09T19:01:00+02:00" pubdate data-updated="true">Nov 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><blockquote>
+  <p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+</blockquote>
+
+<blockquote>
+  <p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=5">http://projecteuler.net/problem=5</a></p>
+
+<!-- more -->
+
+<p>It&rsquo;s a tricky problem. First look gives us straightforward solution:
+Take a number, test if it evenly divisible by all of needed numbers, if yes - we good,
+otherwise increment number and test again, and again, and again&hellip;</p>
+
+<p>No, really, assume it&rsquo;s our function to test divisibility by all 20 numbers:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">evenly-divisible-by-20?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="mi">21</span><span class="p">)]</span>
+</span><span class="line">      <span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">i</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Awful implementation, but keeps the idea.
+If sum of all remainders equals to zero, then every remainder equals to zero.
+Now, using this function we write naive implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">first</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">drop-while </span><span class="o">#</span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nf">evenly-divisible-by-20?</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">iterate inc </span><span class="mi">1</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note, function <a href="http://clojuredocs.org/clojure_core/clojure.core/drop-while">drop-while</a>
+similar to take-while, but skips values until they meet predicate condition.</p>
+
+<p>Waiting for result? Take a cup of tea and wait a little. Still waiting? Wait a little more&hellip;</p>
+
+<p>I did not post exact answer here, but result greater than 100 millions.
+And obviously this linear algorithm will work considerable amount of time.
+So, stop the execution and let&rsquo;s see at the problem from the other end.</p>
+
+<p><em>What is the smallest number that evenly divisible by 1 and 2?</em>
+Obviously 2.</p>
+
+<p><em>What is the smallest number that evenly divisible by 2 and 3?</em>
+A bit harder, but answer is 6.</p>
+
+<p><em>What is the smallest number that evenly divisible by 4 and 5?</em>
+20.</p>
+
+<blockquote>
+  <p>Oh, it&rsquo;s just multiplication</p>
+</blockquote>
+
+<p>Unfortunately, no. Take numbers <code>4</code> and <code>6</code>, multiplication gives us <code>24</code> and it will be evenly divisible by <code>4</code> and <code>6</code>, but
+this number is not the <em>smallest</em>. Snmallest number for this case will be <code>12</code>.</p>
+
+<p>There is a function, that finds smallest number divisible by 2 different numbers.
+This function called <a href="http://en.wikipedia.org/wiki/Least_common_multiple">Least Common Multiple</a> (<em>lcm</em>).
+There are lot of different methods to calculate it, but we will use one that uses
+<a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a> (<em>gcd</em>)</p>
+
+<p><img src="http://upload.wikimedia.org/math/5/b/3/5b3f3c62dd59cc5594af7b2ece3798fb.png" alt="" /></p>
+
+<p>Where <em>gcd</em> calculated according to <a href="http://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid&rsquo;s algorithm</a></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">gcd</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">a</span> <span class="nv">n</span> <span class="nv">b</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">b</span><span class="p">)</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">recur</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using formula above, our <em>lcm</em> function will look like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">lcm</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">abs</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">k</span><span class="p">))</span> <span class="p">(</span><span class="nf">gcd</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You see, here we need <code>abs</code> function. Nothing hard to implement it, but if we remember
+<a href="/blog/clojure-euler-problem-004">previous problem</a> there are was a reference
+to <code>clojure.contrib.math</code> library. <code>abs</code> there and we can use it, just add to your namespace definition</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.contrib.math</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Oh look, even <code>lcm</code> and <code>gcd</code> functions there. Excellent.</p>
+
+<p>Now we can solve the problem. Remember the <code>reduce</code> function?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce </span><span class="nv">lcm</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">21</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Actually, this one-liner is solution. And it gives us correct result.</p>
+
+<p>What happens here? We iteratively (<em>with using reduce</em>) find the lcm for <code>1</code> and <code>2</code>,
+then for result and <code>3</code>, for result and <code>4</code> and so on.</p>
+
+<p><strong>Great!</strong> One more problem solved!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem005.clj">GitHub</a></p>
+
+<p><strong>P.S.</strong> One lesson we learned here. Be aware about library functionality. It helps you
+to solve problems and avoid coward mistakes. For example, we have incorrect above implementation
+for <code>lcm</code> function. If we call <code>(lcm 0 0)</code> program fails with <code>DivideByZero</code> exception.
+It still solve our problem, but in future uses can be an additional problem.
+But in lib implementation this error is covered. And we can be sure that <em>almost always</em> libs contain much less
+errors that your <em>new fancy wheel</em>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-09T19:01:00+02:00" pubdate data-updated="true">Nov 9<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-005/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-005/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/what-is-greater-e-pi-or-pi-e/" title="Previous Post: What is greater: e^pi or pi^e?">&laquo; What is greater: e^pi or pi^e?</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/learn-perl/" title="Next Post: Learn Perl">Learn Perl &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-005/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-005/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

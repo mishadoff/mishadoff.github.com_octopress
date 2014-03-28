@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: algorithms | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.io/blog/categories/algorithms/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-11-26T17:16:28+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Fast Factorial]]></title>
+    <link href="http://mishadoff.github.io/blog/fast-factorial/"/>
+    <updated>2013-06-07T01:08:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/fast-factorial</id>
+    <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
+In <a href="/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
+we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
+than &ldquo;by definition&rdquo;.</p>
+
+<!-- more -->
+
+<h3 id="factorials">Factorials</h3>
+
+<p>Most of programming languages tutorials shows the following
+approach to calculate factorial (<em>transformed to clojure</em>):</p>
+
+<p><code>clojure
+(defn factorial [n]
+  (if (zero? n) 1
+      (* n (factorial (dec n)))))
+</code></p>
+
+<p>Simple recursive solution.</p>
+
+<p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
+
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>&hellip;</p>
+
+<p><code>
+&gt; ArithmeticException integer overflow
+</code></p>
+
+<p>Oops.</p>
+
+<p>Default clojure integer type is 64 bit (<code>Long</code>).
+It does not fit well for <em>such large input</em>, so we rewrite function.</p>
+
+<p><code>clojure
+(defn ! [n]
+  (if (zero? n) 1
+      (*' n (! (dec n)))))
+</code></p>
+
+<p>Just one character added, <code>*</code> became <code>*'</code>. It is automatic type promotion.
+If type can not hold the value without losing precision, it automatically extends.
+In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
+
+<p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
+<code>(! 30000)</code>&hellip;</p>
+
+<p><code>
+&gt; StackOverflowError
+</code></p>
+
+<p>Yet another overflow.</p>
+
+<p>Well, stack size is limited. We don&rsquo;t need to consume stackframes and
+will use <code>loop/recur</code> approach.</p>
+
+<p><code>clojure
+(defn ! [n]
+  (loop [cur n acc 1]
+    (if (zero? cur) acc
+        (recur (dec cur) (*' cur acc)))))
+</code></p>
+
+<p>It is also recursive approach, but instead of saving so far calculated value
+in stack, we pass it to the function as a parameter.
+Clojure optimize tail recursion to iterative version and does not consume stack.
+It succesfully calculates factorial for 30000,
+and for any other value. Great!</p>
+
+<p>If we look at the factorial as a calculation process, not definition, it means
+&ldquo;product of all numbers between 1 and n&rdquo;. It is very concise for functional programming:</p>
+
+<p><code>clojure
+(defn ! [n]
+  (reduce *' (range 1 (inc n))))
+</code></p>
+
+<p>Does not consume stack, no number overflow, but works
+~2 times slower than <code>loop/recur</code> version.</p>
+
+<p>I don&rsquo;t know the reason, but it seems time wasted
+by <code>reduce</code> for creating intermediate results. So we choose
+previous <code>loop/recur</code> function as baseline factorial.</p>
+
+<h3 id="fast-factorial">Fast Factorial</h3>
+
+<p>Here is another way to calculate factorial.</p>
+
+<p>Let&rsquo;s consider example <code>12!</code>.</p>
+
+<p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
+Perform prime factorization of each number.
+For example, prime factorization of <code>12</code> is <code>2 * 2 * 3</code>.</p>
+
+<p>After that we get a factorization of the <code>12!</code>, which contains only prime numbers.
+To find factorial value we can just multiply them all. But we do clever trick instead.</p>
+
+<p>Group every prime number and its power.
+E.g. if we have factorization <code>2 * 2 * 2 * 3 * 5</code> it becomes vector of pairs <code>[[2 3] [3 1] [5 1]]</code>.</p>
+
+<p>To calculate power we have simple <code>power</code> implementation:</p>
+
+<p><code>clojure
+(defn power [x n]
+  (reduce *' (repeat n x)))
+</code></p>
+
+<p>Trick is using exponentiation by squaring, which reduce
+exponentiation complexity from <code>O(n)</code> to <code>O(log n)</code>.</p>
+
+<p><code>clojure
+(defn power [x n]
+  (cond (= 0 n) 1
+        (= 1 n) x
+        (even? n) (power* (*' x x) (/ n 2))
+        (odd? n) (*' x (power* (*' x x) (/ (dec n) 2)))))
+</code></p>
+
+<p>It is not tail-recursive solution and theoretically may cause
+stackoverflow, but its not critical. It works well for large numbers.</p>
+
+<p>Actually, we do not perform factorization. We just know that factorization of <code>n!</code> contains all prime numbers below or equal <code>n</code> and every number have some multiplicity. </p>
+
+<p>The function calculates how many times prime number <code>k</code> occurs in factorial factorization for <code>n</code></p>
+
+<p><code>clojure
+(defn- find-power [n k]
+  (loop [total n sum 0]
+    (let [i (int (/ total k))]
+      (if (zero? i) sum
+          (recur i (+ sum i))))))
+</code></p>
+
+<p>Binding all together:</p>
+
+<p><code>clojure
+(defn !! [n]
+  (loop [[h &amp; t] 
+         (map #(power % (find-power n %))
+              (take-while #(&lt;= % n) (primes)))
+         acc 1]
+    (if h (recur t (*' h acc)) acc)))
+</code></p>
+
+<p><a href="https://github.com/mishadoff/numberto/blob/master/src/numberto/factorial.clj">Code available here</a></p>
+
+<p><em>Note:</em> <code>primes</code> is a function generates lazy-sequence of prime numbers. It can be taken from <code>clojure.contrib.lazy-seqs</code>.</p>
+
+<h3 id="testing">Testing</h3>
+
+<blockquote>
+  <p>Anyway, why do you think it is faster?
+You performing more calculations than just multiplying numbers.</p>
+</blockquote>
+
+<p>Let&rsquo;s see.</p>
+
+<p><code>clojure
+(do (println "== 10 ==")
+    (time (! 10))
+    (time (!! 10))
+    (println "== 100 ==")
+    (time (! 100))
+    (time (!! 100))
+    (println "== 1000 ==")
+    (time (! 1000))
+    (time (!! 1000))
+    (println "== 10000 ==")
+    (time (! 10000))
+    (time (!! 10000))
+    (println "== 100000 ==")
+    (time (! 100000))
+    (time (!! 100000))
+    (println "== 1000000 ==")
+    (time (! 1000000))
+    (time (!! 1000000)) nil)
+</code></p>
+
+<p><code>
+== 10 ==
+"Elapsed time: 0.051054 msecs"
+"Elapsed time: 0.137587 msecs"
+== 100 ==
+"Elapsed time: 0.081365 msecs"
+"Elapsed time: 0.376653 msecs"
+== 1000 ==
+"Elapsed time: 1.59252 msecs"
+"Elapsed time: 3.212842 msecs"
+== 10000 ==
+"Elapsed time: 161.856965 msecs"
+"Elapsed time: 76.452529 msecs"
+== 100000 ==
+"Elapsed time: 19403.375319 msecs"
+"Elapsed time: 6372.35266 msecs"
+== 1000000 ==
+"Elapsed time: 2863893.471718 msecs"
+"Elapsed time: 1079632.255919 msecs"
+nil
+</code></p>
+
+<p>For small factorials <code>(&lt; 1000)</code> improved version works ~2 times slower.
+Around the thousand it has the same performance as standard version.
+And, finally, some win (up to 3 times) for larger numbers.</p>
+
+<p>Theoretically, you can implement generalized factorial with these two algorithms
+and switch between them, depending on input. But who really need it? </p>
+
+<blockquote>
+  <p>Question: What the complexity of this algorithm?</p>
+</blockquote>
+
+<p><strong>P.S.</strong> Enterprise lovers would say factorial complexity is <code>O(1)</code>.
+Just precompute all values and save them to database.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stirling's Approximation]]></title>
+    <link href="http://mishadoff.github.io/blog/stirlings-approximation/"/>
+    <updated>2013-02-23T01:38:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/stirlings-approximation</id>
+    <content type="html"><![CDATA[<p>Do you like factorials?</p>
+
+<p>Probably, you do. If no, whatever, read this post to know
+how get rid of factorials.</p>
+
+<!-- more -->
+
+<h3 id="tldr">TL;DR</h3>
+
+<script type="math/tex; mode=display">
+ln(n!) = n \cdot ln(n) - n + 1
+</script>
+
+<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling&rsquo;s approximation</a>
+or just Stirling&rsquo;s formula.
+It allows to replace factorials with their approximation.
+If you not interested in math, skip to <a href="#usage">formula usage</a></p>
+
+<h3 id="proof">Proof</h3>
+
+<p>Replace factorial with its definition:</p>
+
+<script type="math/tex; mode=display">
+ln(n!) = ln(1 \cdot 2 \cdot 3 ...)
+</script>
+
+<p>Transform logarithm of multiplication to sum of logarithms:</p>
+
+<script type="math/tex; mode=display">
+ln(1 \cdot 2 \cdot 3 ...) = ln(1) + ln(2) + ln(3) + ... + ln(n)
+</script>
+
+<p>Take a look at the integral $\int_a^b f(x) dx$.
+Replace $f(x)$ with $ln(x)$, $a$ with $1$, and $b$ with $n$. Then use numerical
+integration with step <code>1</code> and <a href="http://en.wikipedia.org/wiki/Rectangle_method">right rectangle rule</a></p>
+
+<script type="math/tex; mode=display">
+\int_1^n ln(x) dx \approx ln(2) + ln(3) + ... + ln(n)
+</script>
+
+<p>Right-hand parts of two previous formulas are equal, with respect $ln(1)=0$. Then:</p>
+
+<script type="math/tex; mode=display">
+ln(1 \cdot 2 \cdot 3 ...) \approx \int_1^n ln(x) dx
+</script>
+
+<p>Calculate integral using <a href="http://en.wikipedia.org/wiki/Integration_by_parts">integration by parts</a>:</p>
+
+<script type="math/tex; mode=display">
+\int ln(x) dx = x \cdot ln(x) - \int x d(ln(x)) = x \cdot ln(x) - \int dt = x \cdot ln(x) - x + C
+</script>
+
+<p>Applying boundaries <code>[1..n]</code></p>
+
+<script type="math/tex; mode=display">
+n \cdot ln(n) - n + C - 1 \cdot ln(1) + 1 - C = n \cdot ln(n) - n + 1
+</script>
+
+<p>yields final result:</p>
+
+<script type="math/tex; mode=display">
+ln(n!) = n \cdot ln(n) - n + 1
+</script>
+
+<p>Exactly what on the top.</p>
+
+<h3 id="developer-proof">Developer Proof</h3>
+
+<p>It is much simpler proof, with lose of accuracy, but still valid for partial applications.</p>
+
+<p>Replace factorial with its definition:</p>
+
+<script type="math/tex; mode=display">
+ln(n!) = ln(1 \cdot 2 \cdot 3 ...)
+</script>
+
+<p>Transform logarithm of multiplication to sum of logarithms:</p>
+
+<script type="math/tex; mode=display">
+ln(1 \cdot 2 \cdot 3 ...) = ln(1) + ln(2) + ln(3) + ... = \sum_{i=1}^n ln(i)
+</script>
+
+<p>From monotonic property of logarithms $a \leq b \rightarrow ln(a) \leq ln(b)$
+take upper bound for each $ln(i)$:</p>
+
+<script type="math/tex; mode=display">
+\forall i \; ln(i) \leq ln(n)
+</script>
+
+<p>Then, using worst case substitution, sum can be rewritten as:</p>
+
+<script type="math/tex; mode=display">
+\sum_{i=1}^n ln(i) \leq \sum_{i=1}^N ln(n)
+</script>
+
+<p>But $ln(n)$ does not depend on <code>i</code>, so get rid of sum:</p>
+
+<script type="math/tex; mode=display">
+\sum_{i=1}^n ln(n) = n \cdot ln(n)
+</script>
+
+<p>Done.</p>
+
+<h3 id="a-idusageausage"><a id="usage"></a>Usage</h3>
+
+<ul>
+  <li><strong>Algorithm complexity</strong></li>
+</ul>
+
+<p>No one cares about <code>O(log(n!))</code> of your algorithm, but everybody
+knows that <code>O(n log n)</code>, <a href="http://en.wikipedia.org/wiki/Time_complexity#Linearithmic.2Fquasilinear_time">linearithmic complexity</a>,
+is very good property of algorithm. By the way, do not scare people with factorial sign.</p>
+
+<ul>
+  <li><strong>Overflow prevention</strong></li>
+</ul>
+
+<p>If you try to calculate <code>ln(n!)</code> with most straightforward implementation
+without suitable datatype, you&rsquo;ll likely get the number overflow exception, in spite
+of result value is not very large. For example for <code>n=100</code> overall result is
+approximately <code>363</code> (<em>Stirling&rsquo;s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
+
+<ul>
+  <li><strong>Speedup</strong></li>
+</ul>
+
+<p>As far as I know, calculating factorial is <code>O(n)</code> complexity algorithm,
+because we need <code>n</code> multiplications. Using Stirling&rsquo;s approximation we need to calculate $n^n$ term, that can
+be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wiki/Exponentiation_by_squaring">clever trick</a></p>
+
+<ul>
+  <li><strong>Gamma function</strong></li>
+</ul>
+
+<p>It can be surprising, but factorials defined not only for positive integers.
+So, for example <code>2.5!</code> is completely valid expression. <code>-6!</code> also. They can be calculated
+using <a href="http://en.wikipedia.org/wiki/Gamma_function">Gamma-functions</a> for real numbers. Unfortunately, they are
+pretty complicated, so people use Stirling&rsquo;s formula instead.</p>
+
+<ul>
+  <li><strong>Partial applications</strong></li>
+</ul>
+
+<p>Almost everything that using factorials can use Stirling&rsquo;s approximation. Permutations,
+binomial coefficients, fractals, number theory and a huge amount of topics I&rsquo;m not aware of.</p>
+
+<p><strong>P.S.</strong> Stirling&rsquo;s formula presented here is rough enough. More accurate formula is
+$n! = \sqrt{2\pi} n^{n + 0.5}e^{-n}$.
+Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirling.html">here</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

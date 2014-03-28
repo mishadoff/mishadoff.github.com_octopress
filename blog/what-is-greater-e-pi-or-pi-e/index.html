@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>What is greater: e^pi or pi^e? - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="You can answer almost immediately using calculator, but what if you don&rsquo;t have it? I don&rsquo;t remember the exact origin of this meme, but &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">What Is Greater: E^pi or Pi^e?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-06T16:00:00+02:00" pubdate data-updated="true">Nov 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>You can answer almost immediately using calculator, but what if you don&rsquo;t have it?</p>
+
+<!-- more -->
+
+<p>I don&rsquo;t remember the exact origin of this meme, but this situation was almost every time when we played with numbers.</p>
+
+<blockquote>
+  <p>&ndash; Propose a number.</p>
+
+  <p>&ndash; e^π.</p>
+
+  <p>&ndash; Integer, shithead!</p>
+</blockquote>
+
+<p>This even might appear in usual conversations:</p>
+
+<blockquote>
+  <p>&ndash; What is her size?</p>
+
+  <p>&ndash; e^π</p>
+
+  <p>&ndash; So small. I prefer π^e.</p>
+</blockquote>
+
+<p>And a following arguing about <strong>what is greater?</strong> Until we simply compare results using calculator.</p>
+
+<p>Let&rsquo;s see how this problem can be solved without using a calc.</p>
+
+<p><strong>Warning:</strong> Goal of this article not only to show correct solution to the problem, but provide other solutions (<em>even incorrect!</em>) that can convince somebody.</p>
+
+<h2 id="origins">Origins</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Pi">π</a> is the mathematical constant. It&rsquo;s just a number that represents ratio between circle circumference and diameter <code>C/d</code>.
+Approximately, equal to <code>3.1415</code>. <a href="http://webdocs.cs.ualberta.ca/~smillie/Pi10000.html">Get more decimal places for FREE!</a></p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pi_eq_C_over_d.svg/600px-Pi_eq_C_over_d.svg.png" width="300" height="300" /></p>
+
+<p><a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">e</a> is the harder one. If you sum infinite sequence below, you&rsquo;ll get <code>e</code>.
+Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmltest/gifcity/e.2mil">FREE decimal places without registration!</a></p>
+
+<p><img src="http://upload.wikimedia.org/math/8/0/5/8050a584d4b528e6293bf02c34f6e399.png" alt="" /></p>
+
+<p>I&rsquo;m pretty sure that&rsquo;s more than enough you need to know to solve the problem.</p>
+
+<h2 id="google-it">Google It</h2>
+
+<p><a href="https://www.google.com/#hl=uk&amp;gs_nf=3&amp;tok=WfGdb7x83ofvKLc_85HnIw&amp;cp=5&amp;gs_id=227&amp;xhr=t&amp;q=e^pi+-+pi^e&amp;pf=p&amp;output=search&amp;sclient=psy-ab&amp;oq=e^pi+&amp;gs_l=&amp;pbx=1&amp;bav=on.2,or.r_gc.r_pw.r_qf.&amp;fp=51e735cc3a152124&amp;bpcl=37643589&amp;biw=1280&amp;bih=634">Get answer from google</a></p>
+
+<h2 id="rough-estimate">Rough estimate</h2>
+
+<p><img src="http://i.imgur.com/Jv0W1.jpg" alt="" /></p>
+
+<p>We can use exponent function on integers, so let&rsquo;s just round the numbers.
+<code>3.1415</code> becomes <code>3</code>, <code>2.7183</code> becomes&hellip; <code>3</code> also.</p>
+
+<pre><code>3^3 vs 3^3
+27 = 27
+</code></pre>
+
+<p>They are equal. Wrong answer.</p>
+
+<p>Let&rsquo;s use <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">floor and ceiling</a> functions.</p>
+
+<p>Floor: <code>floor(e) = 2</code>, <code>floor(π) = 3</code></p>
+
+<pre><code>2^3 vs 3^2
+8 &lt; 9
+</code></pre>
+
+<p>Ceiling: <code>ceil(e) = 3</code>, <code>ceil(π) = 4</code></p>
+
+<pre><code>3^4 vs 4^3
+81 &gt; 64
+</code></pre>
+
+<p>Two different results depend on round function that we use. Can&rsquo;t be sure.
+Need another method for verification.</p>
+
+<h2 id="calculus">Calculus</h2>
+
+<p><img src="http://i.imgur.com/Low4R.jpg" alt="" /></p>
+
+<p>This needs basic understanding of <a href="http://en.wikipedia.org/wiki/Logarithm">logarithm</a> and <a href="http://en.wikipedia.org/wiki/Derivative">derivative</a></p>
+
+<pre><code>e^π vs π^e
+</code></pre>
+
+<p>Use logarithm property <code>a &lt; b =&gt; log(a) &lt; log(b)</code>, and take <code>log</code> with base <code>e</code> (<code>ln</code>).
+Honestly, it&rsquo;s not logarithm property, but <a href="http://en.wikipedia.org/wiki/Monotonic_function">monotonic function</a> property. Who cares?</p>
+
+<pre><code>ln(e^π) vs ln(π^e)
+</code></pre>
+
+<p>Use logarithm property <code>log_a(a^b) = b</code></p>
+
+<pre><code>π vs ln(π^e)
+</code></pre>
+
+<p>Use logarithm property <code>log_a(b^c) = c * log_a(b)</code></p>
+
+<pre><code>π vs e * ln(π)
+</code></pre>
+
+<p>Now, people who know value of <code>ln(π)</code> can answer the question. We don&rsquo;t know. Move <code>ln(π)</code> to the left side</p>
+
+<pre><code>π/ln(π) vs e
+</code></pre>
+
+<p>Take a look at expression <code>π/ln(π)</code>. Change <code>π</code> to <code>x</code>. Got <code>x/ln(x)</code>. What is it? It&rsquo;s a function!</p>
+
+<p>Let&rsquo;s find extrema of this function <code>f(x)</code>. Take first derivative.</p>
+
+<pre><code>f'(x) = (ln(x) - 1)/(ln^2(x))
+</code></pre>
+
+<p>We get extrema at the points where derivative equals to zero</p>
+
+<pre><code>(ln(x) - 1)/(ln^2(x)) = 0
+</code></pre>
+
+<p>Ratio number equals to zero if its numerator equals to zero.</p>
+
+<pre><code>ln(x) - 1 = 0
+</code></pre>
+
+<p>Move <code>1</code> to the right</p>
+
+<pre><code>ln(x) = 1
+</code></pre>
+
+<p>Logarithm equals to <code>1</code> if base equals to argument. Therefore</p>
+
+<pre><code>x = e
+</code></pre>
+
+<p>And if you know <code>1/ln(x)</code> behavior, you get that extremum is a minimum of function <code>f(x)</code>.
+Substitute <code>x</code> with <code>e</code></p>
+
+<pre><code>e/ln(e) = e
+</code></pre>
+
+<p>Function minimum is <code>e</code> where <code>x = e</code>. If <code>x = π</code>, due to minimum, function value will be <strong>greater than</strong> <code>e</code>.
+Remember that we do this to get estimate of <code>π/ln(π)</code> which was on the left side of expression <code>π/ln(π) vs e</code> and if its <strong>greater than</strong> e,
+<code>e^π</code> greater than <code>π^e</code>. Huh. Done.</p>
+
+<p><strong>Note:</strong> We skip mathematical proof that extrema <code>x = e</code> is minimum. Not hard to show.</p>
+
+<h2 id="manual-computations">Manual computations</h2>
+
+<p><img src="http://i.imgur.com/tTTCC.jpg" alt="" /></p>
+
+<p>Why don&rsquo;t we perform calculation manually?</p>
+
+<p>Ok, we have <code>π</code>, which is <code>3.1415</code> or <code>22/7</code> its famous simplest ratio approximation.
+On the other side we have <code>e</code>, which is <code>2.7183</code>. But I&rsquo;m not aware of any <code>e</code> approximation.
+Let&rsquo;s create one from the definition of <code>e</code>. Take and sum first 5 elements.</p>
+
+<pre><code>1 + 1 + 1/2 + 1/6 + 1/24 = 65/24
+</code></pre>
+
+<p>Excellent. Now we need just compare <code>2.7183^(22/7)</code> and <code>3.1415^(65/24)</code>. What can be simpler?</p>
+
+<p>Rational exponent can be expanded as nth-root of some power:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/4/3/a43d1edf99a795101aa58ce39cc72f52.png" alt="" /></p>
+
+<p>To take n-th root manually we use a special case of <a href="http://en.wikipedia.org/wiki/Newton%27s_method">Newton&rsquo;s method</a>.
+Just one iteration:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/2/5/a25d581b7161170fc8ab0dbe74532ecc.png" alt="" /></p>
+
+<p>Estimate for <code>e^π</code>:</p>
+
+<pre><code>2.7183^(22/7)
+sqrt_7(2.7183^22)
+</code></pre>
+
+<p>&hellip;Multiplying 22 times&hellip;</p>
+
+<p>In fact, not all so bad. To calculate <code>a^22</code> we need only 6 multiplications:</p>
+
+<pre><code>a^1 * a^1 = a^2
+a^2 * a^2 = a^4
+a^4 * a^4 = a^8
+a^8 * a^8 = a^16
+a^16 * a^4 = a^20
+a^20 * a^2 = a^22
+</code></pre>
+
+<p>Nth-root we obtain (<em>decimal dropped</em>):</p>
+
+<pre><code>sqrt_7(3585440111)
+</code></pre>
+
+<p>Applying Newton&rsquo;s method. Select closest root:</p>
+
+<pre><code>1^7 = 7 &lt; 3585440111
+2^7 = 128 &lt; 3585440111
+3^7 = 2187 &lt; 3585440111
+...
+23^7 = 3404825447 &lt; 3585440111
+24^7 = 4586471424 &gt; 3585440111
+</code></pre>
+
+<p>Good. Most closest value is <code>23</code>. Then</p>
+
+<pre><code>sqrt_7(3585440111.25)
+sqrt_7(23^7 + 180614664)
+23 + 180614664/(7 * 23^6)
+23 + 180614664/1036251223
+23 + 0.17
+23.17
+</code></pre>
+
+<p>And the same for <code>π^e</code>:</p>
+
+<pre><code>3.1415^(65/24)
+sqrt_24(3.1415^65)
+</code></pre>
+
+<p>This power <code>65</code> much larger than <code>22</code>. But it needs just 7 multiplications.</p>
+
+<p>We can cheat here. We get rough result <code>2 * 10^32</code>. Now we test <code>23^24</code> (<em>most closest root from previous</em>) and its value <code>4.8 * 10^32</code>.
+So, definitely nth-root will be lower than <code>23</code>. Solved.</p>
+
+<p>Don&rsquo;t ask how many basic arithmetic operations we performed. A lot.</p>
+
+<h2 id="liar-approach">Liar approach</h2>
+
+<p>Actually, it&rsquo;s offensive to use the word &ldquo;liar&rdquo;.
+There is a whole technique called <a href="http://en.wikipedia.org/wiki/Mathematical_fallacy">Mathematical Fallacy</a>.
+It based on some illegal math transformation (<em>division by zero, roots from negative numbers, etc.</em>) to get <strong>any desired result</strong>.</p>
+
+<p>This is powerful instrument for mathematicians to show magic for not mathematicians.</p>
+
+<p>Suppose, we don&rsquo;t know exact value of π. Not a problem, but we know <a href="http://en.wikipedia.org/wiki/Complex_number">complex numbers</a>.
+And also the fact that <code>sqrt(-1) = i</code>. Where <code>i</code> is <a href="http://en.wikipedia.org/wiki/Imaginary_unit">imaginary unit</a></p>
+
+<p>We have bad memory and can&rsquo;t remember π value, but we know <a href="http://en.wikipedia.org/wiki/Euler%27s_formula">Euler&rsquo;s formula</a></p>
+
+<pre><code>e^(i * x) = cos(x) + i * sin(x)
+</code></pre>
+
+<p>x is a variable. Take <code>x = 2π</code>:</p>
+
+<pre><code>e^(2π * i) = cos(2π) + i * sin(2π)
+</code></pre>
+
+<p>From the school math course we know: <code>cos(2π) = 1</code>, <code>sin(2π) = 0</code>. Just substitute:</p>
+
+<pre><code>e^(2π * i) = 1 + i * 0
+</code></pre>
+
+<p>Everything multiplied by <code>0</code> is <code>0</code>. Next step:</p>
+
+<pre><code>e^(2π * i) = 1
+</code></pre>
+
+<p><code>a^b</code> gives <code>1</code> if <code>b = 0</code>. That we also know from logarithms.</p>
+
+<pre><code>2π * i = 0
+</code></pre>
+
+<p>It means either <code>2</code> or <code>π</code> or <code>i</code> is zero. <code>2</code> is not zero. <code>i</code> is not zero. <code>π</code> we don&rsquo;t know.
+Ok, that means <code>π</code> equals to <code>0</code>.</p>
+
+<p>Returning to comparing our constants:</p>
+
+<pre><code>e^0 vs 0^e
+</code></pre>
+
+<p>Left term is <code>1</code>, right is <code>0</code>. That means <code>e^π</code> <strong>greater than</strong> <code>π^e</code>.</p>
+
+<p>The trick that we used hard to spot. Look carefully again through the proof.</p>
+
+<p>The fallacy was where we implicitly took a logarithm and said that <code>2π * i = 0</code>.
+The number <code>e^(2π * i)</code> is not real and we not allowed to logarithm it.
+But if person who listens you don&rsquo;t know this fact&hellip; This is an excellent proof.</p>
+
+<h2 id="programming-approach">Programming approach</h2>
+
+<p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="" /></p>
+
+<p>You not allowed to use calculator. Nothing said about programming language.</p>
+
+<p>One-liner in Java:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">PI</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">E</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="fun-approach">Fun approach</h2>
+
+<p>Derived from joke:</p>
+
+<blockquote>
+  <p>Scientific lab wasted a lot of money for calculating decimal places of π. They come up with idea, let&rsquo;s π will be equal to 4, to save money.</p>
+
+  <p>&ndash; But why 4 instead of 3?</p>
+
+  <p>&ndash; Because 3 reserved for e.</p>
+</blockquote>
+
+<p>That way <code>e^π</code> equal to <code>81</code>, and <code>π^e</code> equal to <code>64</code>. <code>81 &gt; 64</code>. Simple, concise way.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>There are much more fun about these irrational bastards. Math is fun.</p>
+
+<p>If you were asked question of such type on interview, 99% that interviewer is joking and want to test your reaction.
+Last solution would be good. But if he or she really expect solution with using calculus, nothing to lose.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-06T16:00:00+02:00" pubdate data-updated="true">Nov 6<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fun/'>fun</a>, <a class='category' href='/blog/categories/math/'>math</a>, <a class='category' href='/blog/categories/xkcd/'>xkcd</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/java-magic-part-2-0xcafebabe/" title="Previous Post: Java Magic. Part 2: 0xCAFEBABE">&laquo; Java Magic. Part 2: 0xCAFEBABE</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/clojure-euler-problem-005/" title="Next Post: Clojure Euler: Problem 005">Clojure Euler: Problem 005 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/';
+        var disqus_url = 'http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

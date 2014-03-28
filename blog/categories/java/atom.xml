@@ -1,0 +1,1573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: java | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.io/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-11-26T17:16:28+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[randomorg-0.1]]></title>
+    <link href="http://mishadoff.github.io/blog/randomorg-0-dot-1/"/>
+    <updated>2013-07-06T15:33:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/randomorg-0-dot-1</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
+
+<!-- more -->
+
+<p>If you use random numbers in your software you might be interested in
+better numbers distribution than <code>Random.nextInt()</code>.</p>
+
+<p>Someone solves this problem with hardware generators, few entropy sources and
+even <a href="http://www.amazon.com/Million-Random-Digits-Normal-Deviates/dp/0833030477/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1373114958&amp;sr=1-1&amp;keywords=A+Million+Random+Digits+with+100%2C000+Normal+Deviates">books</a>.</p>
+
+<p>By the way, there is great service <a href="http://random.org">random.org</a>
+which allows to generate random numbers via atmospheric noise.</p>
+
+<p><strong>randomorg</strong> is a small java library for random.org API.</p>
+
+<p>Check project page for usage and documentation!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
+    <link href="http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
+    <updated>2013-02-26T02:37:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
+    <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
+from doing a lot of stupid mistakes, most of which based on memory management.
+But, there is a way to do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
+
+<p>This article is a quick overview of <code>sun.misc.Unsafe</code> <em>public</em> API and few
+interesting cases of its usage.</p>
+
+<!-- more -->
+
+<h3 id="unsafe-instantiation">Unsafe instantiation</h3>
+
+<p>Before usage, we need to create instance of <code>Unsafe</code> object.
+There is no simple way to do it like <code>Unsafe unsafe = new Unsafe()</code>,
+because <code>Unsafe</code> class has private constructor. It also has static
+<code>getUnsafe()</code> method, but if you naively try to call <code>Unsafe.getUnsafe()</code> you, probably,
+get <code>SecurityException</code>. Using this method available only from trusted code.</p>
+
+<p><code>java
+public static Unsafe getUnsafe() {
+    Class cc = sun.reflect.Reflection.getCallerClass(2);
+    if (cc.getClassLoader() != null)
+        throw new SecurityException("Unsafe");
+    return theUnsafe;
+}
+</code></p>
+
+<p>This is how java validates if code is trusted.
+It is just checking that our code was loaded with
+primary classloader.</p>
+
+<p>We can make our code &ldquo;trusted&rdquo;. Use option <code>bootclasspath</code> when running
+your program and specify
+path to system classes plus your one that will use <code>Unsafe</code>.</p>
+
+<p><code>java
+java -Xbootclasspath:/usr/jdk1.7.0/jre/lib/rt.jar:. com.mishadoff.magic.UnsafeClient
+</code></p>
+
+<p>But it&rsquo;s too hard.</p>
+
+<p><code>Unsafe</code> class contains its instance called <code>theUnsafe</code>, which marked as <code>private</code>.
+We can steal that variable via java reflection.</p>
+
+<p><code>java
+Field f = Unsafe.class.getDeclaredField("theUnsafe");
+f.setAccessible(true);
+Unsafe unsafe = (Unsafe) f.get(null);
+</code></p>
+
+<p><em>Note:</em> Ignore your IDE. For example, eclipse show error &ldquo;Access restriction&hellip;&rdquo;
+but if you run code, all works just fine. If the error is annoying, ignore errors on
+<code>Unsafe</code> usage in:</p>
+
+<pre><code>Preferences -&gt; Java -&gt; Compiler -&gt; Errors/Warnings -&gt;
+Deprecated and restricted API -&gt; Forbidden reference -&gt; Warning
+</code></pre>
+
+<h3 id="unsafe-api">Unsafe API</h3>
+
+<p>Class <a href="http://www.docjar.com/docs/api/sun/misc/Unsafe.html">sun.misc.Unsafe</a>
+consists of <code>105</code> methods. There are, actually,
+few groups of important methods for manipulating with various entities.
+Here is some of them:</p>
+
+<ul>
+  <li><strong>Info</strong>. Just returns some low-level memory information.
+    <ul>
+      <li><code>addressSize</code></li>
+      <li><code>pageSize</code></li>
+    </ul>
+  </li>
+  <li><strong>Objects</strong>. Provides methods for object and its fields manipulation.
+    <ul>
+      <li><code>allocateInstance</code></li>
+      <li><code>objectFieldOffset</code></li>
+    </ul>
+  </li>
+  <li><strong>Classes</strong>. Provides methods for classes and static fields manipulation.
+    <ul>
+      <li><code>staticFieldOffset</code></li>
+      <li><code>defineClass</code></li>
+      <li><code>defineAnonymousClass</code></li>
+      <li><code>ensureClassInitialized</code></li>
+    </ul>
+  </li>
+  <li><strong>Arrays</strong>. Arrays manipulation.
+    <ul>
+      <li><code>arrayBaseOffset</code></li>
+      <li><code>arrayIndexScale</code></li>
+    </ul>
+  </li>
+  <li><strong>Synchronization</strong>. Low level primitives for synchronization.
+    <ul>
+      <li><code>monitorEnter</code></li>
+      <li><code>tryMonitorEnter</code></li>
+      <li><code>monitorExit</code></li>
+      <li><code>compareAndSwapInt</code></li>
+      <li><code>putOrderedInt</code></li>
+    </ul>
+  </li>
+  <li><strong>Memory</strong>. Direct memory access methods.
+    <ul>
+      <li><code>allocateMemory</code></li>
+      <li><code>copyMemory</code></li>
+      <li><code>freeMemory</code></li>
+      <li><code>getAddress</code></li>
+      <li><code>getInt</code></li>
+      <li><code>putInt</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="interesting-use-cases">Interesting use cases</h3>
+
+<h4 id="avoid-initialization">Avoid initialization</h4>
+
+<p><code>allocateInstance</code> method can be <em>useful</em> when you need to skip object initialization phase
+or bypass security checks in constructor or you want instance of that class
+but don&rsquo;t have any public constructor. Consider following class:</p>
+
+<p>``` java
+class A {
+    private long a; // not initialized value</p>
+
+<pre><code>public A() {
+    this.a = 1; // initialization
+}
+
+public long a() { return this.a; } } ```
+</code></pre>
+
+<p>Instantiating it using constructor, reflection and unsafe gives
+different results.</p>
+
+<p>``` java
+A o1 = new A(); // constructor
+o1.a(); // prints 1</p>
+
+<p>A o2 = A.class.newInstance(); // reflection
+o2.a(); // prints 1</p>
+
+<p>A o3 = (A) unsafe.allocateInstance(A.class); // unsafe
+o3.a(); // prints 0
+```</p>
+
+<p>Just think what happens to all your <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singletons</a>.</p>
+
+<h4 id="memory-corruption">Memory corruption</h4>
+
+<p>This one is usual for every C programmer.
+By the way, its common technique for security bypass.</p>
+
+<p>Consider some simple class that check access rules:</p>
+
+<p>``` java
+class Guard {
+    private int ACCESS_ALLOWED = 1;</p>
+
+<pre><code>public boolean giveAccess() {
+    return 42 == ACCESS_ALLOWED;
+} } ```
+</code></pre>
+
+<p>The client code is <em>very secure</em> and calls
+<code>giveAccess()</code> to check access rules. Unfortunately, for clients,
+it always returns <code>false</code>. Only privileged users <em>somehow</em> can change
+value of <code>ACCESS_ALLOWED</code> constant and get access.</p>
+
+<p>In fact, it&rsquo;s not true. Here is the code demostrates it:</p>
+
+<p>``` java
+Guard guard = new Guard();
+guard.giveAccess();   // false, no access</p>
+
+<p>// bypass
+Unsafe unsafe = getUnsafe();
+Field f = guard.getClass().getDeclaredField(&ldquo;ACCESS_ALLOWED&rdquo;);
+unsafe.putInt(guard, unsafe.objectFieldOffset(f), 42); // memory corruption</p>
+
+<p>guard.giveAccess(); // true, access granted
+```</p>
+
+<p>Now all clients will get unlimited access.</p>
+
+<p>Actually, the same functionality can be achieved by reflection.
+But interesting, that we can modify any object, even ones
+that we do not have references to.</p>
+
+<p>For example, there is another <code>Guard</code> object in memory
+located next to current <code>guard</code> object. We can modify its <code>ACCESS_ALLOWED</code> field with the following code</p>
+
+<p><code>java
+unsafe.putInt(guard, 16 + unsafe.objectFieldOffset(f), 42); // memory corruption
+</code></p>
+
+<p>Note, we didn&rsquo;t use any reference to this object.
+<code>16</code> is size of <code>Guard</code> object in 32 bit architecture.
+We can calculate it manually or use <code>sizeOf</code> method, that defined&hellip; right now.</p>
+
+<h4 id="sizeof"><strong>sizeOf</strong></h4>
+
+<p>Using <code>objectFieldOffset</code> method we can implement C-style <code>sizeof</code> function.
+This implementation returns <em>shallow</em> size of object:</p>
+
+<p>``` java
+public static long sizeOf(Object o) {
+    Unsafe u = getUnsafe();
+    HashSet<field> fields = new HashSet<field>();
+    Class c = o.getClass();
+    while (c != Object.class) {
+        for (Field f : c.getDeclaredFields()) {
+            if ((f.getModifiers() &amp; Modifier.STATIC) == 0) {
+                fields.add(f);
+            }
+        }
+        c = c.getSuperclass();
+    }</field></field></p>
+
+<pre><code>// get offset
+long maxSize = 0;
+for (Field f : fields) {
+    long offset = u.objectFieldOffset(f);
+    if (offset &gt; maxSize) {
+        maxSize = offset;
+    }
+}
+
+return ((maxSize/8) + 1) * 8;   // padding } ```
+</code></pre>
+
+<p>Algorithm is the following: go through all <em>non-static</em> fields including all
+superclases, get offset for each field, find maximum and add padding.
+Probably, I missed something, but idea is clear.</p>
+
+<p>Much simpler <code>sizeOf</code> can be achieved if we just read <code>size</code> value from
+the class struct for this object, which located with offset 12 in <code>JVM 1.7 32 bit</code>.</p>
+
+<p><code>java
+public static long sizeOf(Object object){
+    return getUnsafe().getAddress(
+        normalize(getUnsafe().getInt(object, 4L)) + 12L);
+}
+</code></p>
+
+<p><code>normalize</code> is a method for casting signed int to unsigned long, for
+correct address usage.</p>
+
+<p><code>java
+private static long normalize(int value) {
+    if(value &gt;= 0) return value;
+    return (~0L &gt;&gt;&gt; 32) &amp; value;
+}
+</code></p>
+
+<p>Awesome, this method returns the same result as our previous <code>sizeof</code>
+function.</p>
+
+<p>In fact, for good, safe and accurate <code>sizeof</code> function better to use
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html">java.lang.instrument</a> package,
+but it requires specifyng <code>agent</code> option in your JVM.</p>
+
+<h4 id="shallow-copy"><strong>Shallow copy</strong></h4>
+
+<p>Having implementation of calculating shallow object size, we can simply
+add function that copy objects. Standard solution need modify your code with <code>Cloneable</code>,
+or you can implement custom copy function in your object, but it won&rsquo;t be multipurpose function.</p>
+
+<p>Shallow copy:</p>
+
+<p><code>java
+static Object shallowCopy(Object obj) {
+    long size = sizeOf(obj);
+    long start = toAddress(obj);
+    long address = getUnsafe().allocateMemory(size);
+    getUnsafe().copyMemory(start, address, size);
+    return fromAddress(address);
+}
+</code></p>
+
+<p><code>toAddress</code> and <code>fromAddress</code> convert object to its address in memory and vice versa.</p>
+
+<p>``` java
+static long toAddress(Object obj) {
+    Object[] array = new Object[] {obj};
+    long baseOffset = getUnsafe().arrayBaseOffset(Object[].class);
+    return normalize(getUnsafe().getInt(array, baseOffset));
+}</p>
+
+<p>static Object fromAddress(long address) {
+    Object[] array = new Object[] {null};
+    long baseOffset = getUnsafe().arrayBaseOffset(Object[].class);
+    getUnsafe().putLong(array, baseOffset, address);
+    return array[0];
+}
+```</p>
+
+<p>This copy function can be used to copy object of any type, its size will be calculated
+dynamically. Note that after copying you need to cast object to specific type.</p>
+
+<h4 id="hide-password">Hide Password</h4>
+
+<p>One more interesting usage of direct memory access in <code>Unsafe</code> is removing
+unwanted objects from memory.</p>
+
+<p>Most of the APIs for retrieving user&rsquo;s password, have signature
+as <code>byte[]</code> or <code>char[]</code>. Why arrays?</p>
+
+<p>It is completely for security reason, because we can nullify array elements after we don&rsquo;t need them.
+If we retrieve password as <code>String</code> it can be saved like an object in memory and nullifying that
+string just perform dereference operation. This object still in memory by the time GC decide to perform cleanup.</p>
+
+<p>This trick creates fake <code>String</code> object with the same size and replace original one in memory:</p>
+
+<p>``` java
+String password = new String(&ldquo;l00k@myHor$e&rdquo;);
+String fake = new String(password.replaceAll(&ldquo;.&rdquo;, &ldquo;?&rdquo;));
+System.out.println(password); // l00k@myHor$e
+System.out.println(fake); // ????????????</p>
+
+<p>getUnsafe().copyMemory(
+          fake, 0L, null, toAddress(password), sizeOf(password));</p>
+
+<p>System.out.println(password); // ????????????
+System.out.println(fake); // ????????????
+```</p>
+
+<p>Feel safe.</p>
+
+<p><strong>UPDATE:</strong> That way is not really safe. For real safety we need to nullify
+backed char array via reflection:</p>
+
+<p><code>java
+Field stringValue = String.class.getDeclaredField("value");
+stringValue.setAccessible(true);
+char[] mem = (char[]) stringValue.get(password);
+for (int i=0; i &lt; mem.length; i++) {
+  mem[i] = '?';
+}
+</code></p>
+
+<p>Thanks to <em>Peter Verhas</em> for pointing out that.</p>
+
+<h4 id="multiple-inheritance"><strong>Multiple Inheritance</strong></h4>
+
+<p>There is no multiple inheritance in java.</p>
+
+<p>Correct, except we can cast every type to every another one, if we want.</p>
+
+<p><code>java
+long intClassAddress = normalize(getUnsafe().getInt(new Integer(0), 4L));
+long strClassAddress = normalize(getUnsafe().getInt("", 4L));
+getUnsafe().putAddress(intClassAddress + 36, strClassAddress);
+</code></p>
+
+<p>This snippet adds <code>String</code> class to <code>Integer</code> superclasses, so we can cast
+without runtime exception.</p>
+
+<p><code>java
+(String) (Object) (new Integer(666))
+</code></p>
+
+<p>One problem that we must do it with pre-casting to object. To cheat compiler.</p>
+
+<h4 id="dynamic-classes">Dynamic classes</h4>
+
+<p>We can create classes in runtime, for example from
+compiled <code>.class</code> file. To perform that read class contents
+to byte array and pass it properly to <code>defineClass</code> method.</p>
+
+<p><code>java
+byte[] classContents = getClassContent();
+Class c = getUnsafe().defineClass(
+              null, classContents, 0, classContents.length);
+    c.getMethod("a").invoke(c.newInstance(), null); // 1
+</code></p>
+
+<p>And reading from file defined as:</p>
+
+<p><code>java
+private static byte[] getClassContent() throws Exception {
+    File f = new File("/home/mishadoff/tmp/A.class");
+    FileInputStream input = new FileInputStream(f);
+    byte[] content = new byte[(int)f.length()];
+    input.read(content);
+    input.close();
+    return content;
+}
+</code></p>
+
+<p>This can be useful, when you must create classes dynamically, some proxies
+or aspects for existing code.</p>
+
+<h4 id="throw-an-exception">Throw an Exception</h4>
+
+<p>Don&rsquo;t like checked exceptions? Not a problem.</p>
+
+<p><code>java
+getUnsafe().throwException(new IOException());
+</code></p>
+
+<p>This method throws checked exception, but your code not forced to catch or rethrow it.
+Just like runtime exception.</p>
+
+<h4 id="fast-serialization">Fast Serialization</h4>
+
+<p>This one is more practical.</p>
+
+<p>Everyone knows that standard java <code>Serializable</code> capability
+to perform serialization is very slow. It also require class
+to have public non-argument constructor.</p>
+
+<p><code>Externalizable</code> is better, but it needs to define schema for
+class to be serialized.</p>
+
+<p>Popular high-performance libraries, like <a href="http://code.google.com/p/kryo/">kryo</a>
+have dependencies, which can be unacceptable with low-memory requirements.</p>
+
+<p>But full serialization cycle can be easily achieved with unsafe class.</p>
+
+<p>Serialization:</p>
+
+<ul>
+  <li>Build schema for object using reflection. It can be done once for class.</li>
+  <li>Use <code>Unsafe</code> methods <code>getLong</code>, <code>getInt</code>, <code>getObject</code>, etc. to retrieve actual field values.</li>
+  <li>Add <code>class</code> identifier to have capability restore this object.</li>
+  <li>Write them to the file or any output.</li>
+</ul>
+
+<p>You can also add compression to save space.</p>
+
+<p>Deserialization:</p>
+
+<ul>
+  <li>Create instance of serialized class. <code>allocateInstance</code> helps, because does not require any constructor.</li>
+  <li>Build schema. The same as 1 step in serialization.</li>
+  <li>Read all fields from file or any input.</li>
+  <li>Use <code>Unsafe</code> methods <code>putLong</code>, <code>putInt</code>, <code>putObject</code>, etc. to fill the object.</li>
+</ul>
+
+<p>Actually, there are much more details in correct inplementation, but intuition is clear.</p>
+
+<p>This serialization will be really fast.</p>
+
+<p>By the way, there are some attempts in <code>kryo</code> to use <code>Unsafe</code> <a href="http://code.google.com/p/kryo/issues/detail?id=75">http://code.google.com/p/kryo/issues/detail?id=75</a></p>
+
+<h4 id="big-arrays"><strong>Big Arrays</strong></h4>
+
+<p>As you know <code>Integer.MAX_VALUE</code> constant is a max size of java array.
+Using direct memory allocation we can create arrays with size limited by only heap size.</p>
+
+<p>Here is <code>SuperArray</code> implementation:</p>
+
+<p>``` java
+class SuperArray {
+    private final static int BYTE = 1;</p>
+
+<pre><code>private long size;
+private long address;
+
+public SuperArray(long size) {
+    this.size = size;
+    address = getUnsafe().allocateMemory(size * BYTE);
+}
+
+public void set(long i, byte value) {
+    getUnsafe().putByte(address + i * BYTE, value);
+}
+
+public int get(long idx) {
+    return getUnsafe().getByte(address + idx * BYTE);
+}
+
+public long size() {
+    return size;
+} } ```
+</code></pre>
+
+<p>And sample usage:</p>
+
+<p><code>java
+long SUPER_SIZE = (long)Integer.MAX_VALUE * 2;
+SuperArray array = new SuperArray(SUPER_SIZE);
+System.out.println("Array size:" + array.size()); // 4294967294
+for (int i = 0; i &lt; 100; i++) {
+    array.set((long)Integer.MAX_VALUE + i, (byte)3);
+    sum += array.get((long)Integer.MAX_VALUE + i);
+}
+System.out.println("Sum of 100 elements:" + sum);  // 300
+</code></p>
+
+<p>In fact, this technique uses <code>off-heap memory</code> and partially
+available in <code>java.nio</code> package.</p>
+
+<p>Memory allocated this way not located in the heap and not under GC management, so take care of it
+using <code>Unsafe.freeMemory()</code>. It also does not perform any boundary checks, so any
+illegal access may cause JVM crash.</p>
+
+<p>It can be useful for math computations, where code can operate with large arrays of data.
+Also, it can be interesting for realtime programmers, where GC delays on large arrays can
+break the limits.</p>
+
+<h4 id="concurrency">Concurrency</h4>
+
+<p>And few words about concurrency with <code>Unsafe</code>.
+<code>compareAndSwap</code> methods are atomic and can be used to implement
+high-performance lock-free data structures.</p>
+
+<p>For example, consider the problem to increment value in the shared object
+using lot of threads.</p>
+
+<p>First we define simple interface <code>Counter</code>:</p>
+
+<p><code>java
+interface Counter {
+    void increment();
+    long getCounter();
+}
+</code></p>
+
+<p>Then we define worker thread <code>CounterClient</code>, that uses <code>Counter</code>:</p>
+
+<p>``` java
+class CounterClient implements Runnable {
+    private Counter c;
+    private int num;</p>
+
+<pre><code>public CounterClient(Counter c, int num) {
+    this.c = c;
+    this.num = num;
+}
+
+@Override
+public void run() {
+    for (int i = 0; i &lt; num; i++) {
+        c.increment();
+    }
+} } ```
+</code></pre>
+
+<p>And this is testing code:</p>
+
+<p><code>java
+int NUM_OF_THREADS = 1000;
+int NUM_OF_INCREMENTS = 100000;
+ExecutorService service = Executors.newFixedThreadPool(NUM_OF_THREADS);
+Counter counter = ... // creating instance of specific counter
+long before = System.currentTimeMillis();
+for (int i = 0; i &lt; NUM_OF_THREADS; i++) {
+    service.submit(new CounterClient(counter, NUM_OF_INCREMENTS));
+}
+service.shutdown();
+service.awaitTermination(1, TimeUnit.MINUTES);
+long after = System.currentTimeMillis();
+System.out.println("Counter result: " + c.getCounter());
+System.out.println("Time passed in ms:" + (after - before));
+</code></p>
+
+<p>First implementation is not-synchronized counter:</p>
+
+<p>``` java
+class StupidCounter implements Counter {
+    private long counter = 0;</p>
+
+<pre><code>@Override
+public void increment() {
+    counter++;
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 99542945
+Time passed in ms: 679
+</code></p>
+
+<p>Working fast, but no threads management at all, so result is inaccurate.
+Second attempt, add easiest java-way synchronization:</p>
+
+<p>``` java
+class SyncCounter implements Counter {
+    private long counter = 0;</p>
+
+<pre><code>@Override
+public synchronized void increment() {
+    counter++;
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 10136
+</code></p>
+
+<p>Radical synchronization always work. But timings is awful.
+Let&rsquo;s try <code>ReentrantReadWriteLock</code>:</p>
+
+<p>``` java
+class LockCounter implements Counter {
+    private long counter = 0;
+    private WriteLock lock = new ReentrantReadWriteLock().writeLock();</p>
+
+<pre><code>@Override
+public void increment() {
+    lock.lock();
+    counter++;
+    lock.unlock();
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 8065
+</code></p>
+
+<p>Still correct, and timings are better. What about atomics?</p>
+
+<p>``` java
+class AtomicCounter implements Counter {
+    AtomicLong counter = new AtomicLong(0);</p>
+
+<pre><code>@Override
+public void increment() {
+    counter.incrementAndGet();
+}
+
+@Override
+public long getCounter() {
+    return counter.get();
+} } ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 6552
+</code></p>
+
+<p><code>AtomicCounter</code> is even better. Finally, try <code>Unsafe</code>
+primitive <code>compareAndSwapLong</code> to see if it is really privilegy to use it.</p>
+
+<p>``` java
+class CASCounter implements Counter {
+    private volatile long counter = 0;
+    private Unsafe unsafe;
+    private long offset;</p>
+
+<pre><code>public CASCounter() throws Exception {
+    unsafe = getUnsafe();
+    offset = unsafe.objectFieldOffset(CASCounter.class.getDeclaredField("counter"));
+}
+
+@Override
+public void increment() {
+    long before = counter;
+    while (!unsafe.compareAndSwapLong(this, offset, before, before + 1)) {
+        before = counter;
+    }
+}
+
+@Override
+public long getCounter() {
+    return counter;
+} ```
+</code></pre>
+
+<p>Output:</p>
+
+<p><code>
+Counter result: 100000000
+Time passed in ms: 6454
+</code></p>
+
+<p>Hmm, seems equal to atomics. Maybe atomics use <code>Unsafe</code>? (<em>YES</em>)</p>
+
+<p>In fact this example is easy enough, but it shows some power of <code>Unsafe</code>.</p>
+
+<p>As I said, <code>CAS</code> primitive can be used to implement lock-free data structures.
+The intuition behind this is simple:</p>
+
+<ul>
+  <li>Have some state</li>
+  <li>Create a copy of it</li>
+  <li>Modify it</li>
+  <li>Perform <code>CAS</code></li>
+  <li>Repeat if it fails</li>
+</ul>
+
+<p>Actually, in real it is more hard than you can imagine. There are a lot of problems like
+<a href="http://en.wikipedia.org/wiki/ABA_problem">ABA Problem</a>, instructions reordering, etc.</p>
+
+<p>If you really interested, you can refer to the awesome presentation about <a href="http://www.azulsystems.com/about_us/presentations/lock-free-hash">lock-free HashMap</a></p>
+
+<p><strong>UPDATE:</strong> Added <code>volatile</code> keyword to <code>counter</code> variable to avoid risk of infinite loop.</p>
+
+<p>Kudos to <em>Nitsan Wakart</em></p>
+
+<h3 id="bonus">Bonus</h3>
+
+<p>Documentation for <code>park</code> method from <code>Unsafe</code> class contains
+longest English sentence I&rsquo;ve ever seen:</p>
+
+<blockquote>
+  <p>Block current thread, returning when a balancing
+unpark occurs, or a balancing unpark has
+already occurred, or the thread is interrupted, or, if not
+absolute and time is not zero, the given time nanoseconds have
+elapsed, or if absolute, the given deadline in milliseconds
+since Epoch has passed, or spuriously (i.e., returning for no
+&ldquo;reason&rdquo;). Note: This operation is in the Unsafe class only
+because unpark is, so it would be strange to place it
+elsewhere.</p>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Although, <code>Unsafe</code> has a bunch of useful applications, never use it.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
+    <link href="http://mishadoff.github.io/blog/critical-software-bugs-part-1/"/>
+    <updated>2013-01-20T18:48:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/critical-software-bugs-part-1</id>
+    <content type="html"><![CDATA[<p>Little journey through the history of most critical software bugs
+with some code examples.</p>
+
+<p><em>Do not try to reproduce any of these!</em></p>
+
+<!-- more -->
+
+<h3 id="intro">Intro</h3>
+
+<blockquote>
+  <p>Every last bug is the last but one.</p>
+</blockquote>
+
+<p><strong>Bugs</strong> are bad. Some of them cause uncomfortable work, more actions
+than expected, inconsistency, layout issues, etc.
+Some of them &ldquo;<a href="http://en.wikipedia.org/wiki/Undocumented_feature">not a bug</a>&rdquo; at all.</p>
+
+<p><strong>Bad bugs</strong> much worse. They cause data corruption, invalid data representation,
+unavailability to perform action, losing integrity and so on.</p>
+
+<p>There are <strong>critical bugs</strong> with painful consequences. They can damage the health, nature, people
+break buildings, technics. Theoretically, they
+<a href="http://www.washingtonpost.com/wp-srv/inatl/longterm/coldwar/shatter021099b.htm">can lead to World War III</a>.
+Hope, it&rsquo;s just theoretically.</p>
+
+<p>If you are software engineer, you definitely will commit the bugs. No panacea.
+But if we aware about common mistakes, then less likely we make that mistakes.</p>
+
+<p>This article is review of famous most critical software bugs
+including brief history, consequences, root causes, possible solutions, code examples and some advices.</p>
+
+<h3 id="mariner-1httpenwikipediaorgwikimariner1-1962"><a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a> (1962)</h3>
+
+<p><strong>History:</strong>
+In 1962, spacecraft <em>Mariner 1</em> was guided by computer program with error causes
+racket do not follow its expected trajectory. To prevent tragic consequences, racket
+was destoyed immediately.</p>
+
+<p><strong>Consequences:</strong> Money, $18 million.</p>
+
+<p><strong>Reason:</strong>
+There are tons of versions about what type of error it was, but official version
+is <em>missing hyphen</em> (&lsquo;-&lsquo;) in program. Maybe it&rsquo;s just a myth for publicity,
+but, anyway, if the reason of bug is incorrect handwritten formula transcription
+from paper to computer, it&rsquo;s sad.</p>
+
+<p>Probably, the root cause of that is writer and computer operator were different people.
+It&rsquo;s common case for that times. <em>Programming</em> was synonym to the <em>scientific calculations</em> not
+an enterprise, as nowadays. That&rsquo;s why scientist, programmer, and operator could be
+different people.</p>
+
+<p>Related story, it&rsquo;s why zero symbol has a period or diagonal line inside - to prevent
+confusing with &ldquo;big O&rdquo; for &ldquo;typer&rdquo; person. Just compare <code>0</code> and <code>O</code>.</p>
+
+<p><strong>Solution:</strong>
+It&rsquo;s hardly can be a problem today (as it was 50 years ago), but if you write for somebody on the paper, write it accurate.
+If you type into computer from someone&rsquo;s paper sheet, check, re-check and double re-check
+what you typing. Ask if you have concerns. Especially, if it is the program for spaceship.</p>
+
+<p>In very <em>far-fetched</em> example missing minus sign can result into invalid computation:</p>
+
+<p>``` java
+double getDiscountPercent() {
+    return 0.25; // instead of return -0.25;
+}</p>
+
+<p>double calculatePrice(double initial) {
+    return initial * (1.0 + getDiscountPercent());
+}
+```</p>
+
+<p>That way instead of paying $75, you pay $125.</p>
+
+<p><strong>Lesson:</strong> Always check your manual rewriting actions.</p>
+
+<h3 id="siberian-pipeline-sabotagehttpenwikipediaorgwikisiberianpipelinesabotage-1982"><a href="http://en.wikipedia.org/wiki/Siberian_pipeline_sabotage">Siberian pipeline sabotage</a> (1982)</h3>
+
+<p><strong>History:</strong> Cold war. Soviet Union steal technology for managing gas pipelines from Canada. This
+technology intentionally contained the bug (<a href="http://en.wikipedia.org/wiki/Logic_bomb">Logic Bomb</a>), developed by CIA
+for sabotage purposes. Bomb triggered.</p>
+
+<p><strong>Consequences:</strong> The greatest non-nuclear explosion in the world.</p>
+
+<p><strong>Reason:</strong> Every microship from stolen technology would
+work fine just for 10 million cycles, after that switches to another mode.</p>
+
+<p>They <em>used someone&rsquo;s code</em>.</p>
+
+<p><strong>Solution:</strong></p>
+
+<blockquote>
+  <p>You shall not steal</p>
+
+  <p>&ndash; <a href="http://en.wikipedia.org/wiki/Ten_Commandments">Ten Commandments</a></p>
+</blockquote>
+
+<p>Honestly, if someone&rsquo;s technology used for critical areas, like gas
+transportation, it must be reviewed and tested. 100 times.</p>
+
+<p>Story can be translated as:</p>
+
+<p>I found memory card on the city dump.
+Card contained one shell script <code>please-execute-me.sh</code>.
+I <em>executed</em> it. System crashed. Who&rsquo;s guilty? Just me.</p>
+
+<p>Use software from trusted sources.</p>
+
+<p>In modern software world, we often use someone&rsquo;s libraries, frameworks,
+APIs to build our own applications. We <em>expect</em> that code is <em>reviewed</em> and <em>tested</em>.
+If not, we can help to do it. How we can be sure these libs without logic bombs?</p>
+
+<p>Trust or review the sources. That&rsquo;s why I love open source software.</p>
+
+<p>Logic bomb detection is not that hard. Just find the code that causes error
+and see the reason of that error. Again, code review helps <em>to prevent</em> the
+logic bomb instead of <em>fixing it</em>. Build application to production only from
+version control system (<em>which is controlled, right?</em>)</p>
+
+<p>Just for educational purposes: simple example of time-triggered logic bomb</p>
+
+<p>``` java
+public class LogicBombRunner {
+        public static void main(String[] args) {
+                Thread thread = new Thread(new LogicBomb());
+                thread.start();
+        }
+}</p>
+
+<p>class LogicBomb implements Runnable {</p>
+
+<pre><code>    private long toStop;
+    private final long TIME_TO_TRIGGER = 1000 * 60 * 60 * 24 * 100;
+
+    public LogicBomb() {
+            toStop = System.currentTimeMillis() + TIME_TO_TRIGGER;
+    }
+
+    @Override
+    public void run() {
+            while (true) {
+                    if (System.currentTimeMillis() &lt; toStop) {
+                            System.out.println("System works fine.");
+                            try {
+                                    Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                            }
+                    } else {
+                            System.out.println("Logic bomb triggered.");
+                            throw new RuntimeException();
+                    }
+            }
+    } }
+</code></pre>
+
+<p>```</p>
+
+<p>Yes. It throws <code>RuntimeException</code> after approximately 100 days from <code>LogicBomb</code> object creation.</p>
+
+<p><strong>Lesson:</strong> Do not steal. Trust to very limited circle of people.</p>
+
+<h3 id="therac-25httpenwikipediaorgwikitherac-25-1985---1987"><a href="http://en.wikipedia.org/wiki/Therac-25">Therac-25</a> (1985 - 1987)</h3>
+
+<p><strong>History:</strong> Therac-25 was a medical device for radiation therapy.
+It could deliver either beta-particles or X-rays. Unfortunately,
+operating system for controling the device was written with error,
+that causes sad results.</p>
+
+<p><strong>Consequences:</strong> At least 2 patients died, 4 patients were given overdose,
+approximately 100 times intended dose.</p>
+
+<p><strong>Reason:</strong> Investigation concluded the common reason was a
+<em>bad software design</em>, <em>development practices</em> and a <em>set of bugs</em>
+instead of some particular critical bug.</p>
+
+<p>These bad practices and bugs include:</p>
+
+<ul>
+  <li>No code review</li>
+  <li>Poor exception handling</li>
+  <li>No integration testing until device was assembled in the hospital</li>
+  <li>Poor hardware design</li>
+  <li><em>Bad code</em> reuse</li>
+  <li>Concurrency issues</li>
+</ul>
+
+<p><strong>Solution:</strong> Code review its a must. Even if you working
+alone in the team, show sources to some your friend (programmer).
+Two pair of eyes can spot the mistake two times more.</p>
+
+<p><em>Poor exception handling</em>. If failure occurs, no one knows about that failure.
+Never handle exception like that:</p>
+
+<p>``` java
+catch (SomeException e) {</p>
+
+<p>}
+```</p>
+
+<p>In 99% there are must be a proper handling. If you don&rsquo;t know how
+to handle, rethrow it, possible with wrapping:</p>
+
+<p><code>java
+catch (SomeException e) {
+   throw new SpecificException(e);
+}
+</code></p>
+
+<p>Much better to throw responsibility for handling one level up
+in method signature:</p>
+
+<p><code>java
+void method() throws SomeException
+</code></p>
+
+<p>If your real intention to left catch block empty, say this:</p>
+
+<p><code>java
+catch (SomeExcpetion e) {
+  // swallowing this exception is intended
+}
+</code></p>
+
+<p><em>Bad code reuse</em>. <a href="http://en.wikipedia.org/wiki/Code_reuse">Code reuse</a> is a good thing.
+Except the case when you reuse something with errors.</p>
+
+<p>For example, I have following method for testing if number is even in some of my
+previous projects (<em>yes, look at your code that was written few years ago</em>):</p>
+
+<p><code>java
+static boolean isEven(int num) {
+    return num % 2 != 1;
+}
+</code></p>
+
+<p>This method returns incorrect result <code>true</code> for all negative odd numbers. Just because
+<code>%</code> operator returns <code>-1</code> except <code>1</code> for negative numbers. Better do <em>NOT</em> reuse such method.
+Just write new. And replace old method immediately.</p>
+
+<p><code>java
+static boolean isEven(int num) {
+    return num % 2 == 0;
+}
+</code></p>
+
+<p><em>Concurrency</em>. Software world hardest issues are concurrency issues.</p>
+
+<blockquote>
+  <p>You have a problem and decide to use threads.
+Two now problems have you.</p>
+
+  <p>&ndash; Some guy from internet
+<br /></p>
+</blockquote>
+
+<blockquote>
+  <p>You have a problem and decide to use locks.
+Now you have</p>
+
+  <p>&ndash; Some another guy from internet</p>
+</blockquote>
+
+<p>If you know that some object will be shared between threads, one solution to
+add <code>synchronized</code> (<a href="http://en.wikipedia.org/wiki/Monitor_%28synchronization%29">Monitor object</a>)
+to each read/write state method. It will slow
+your work with that object but prevent a lot of unexpected errors.</p>
+
+<p>Although, there are much flexible synchronization mechanisms in java that
+plain old <code>synchronized</code> as <a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphores</a>,
+<a href="http://en.wikipedia.org/wiki/Mutual_exclusion">mutexes</a>,
+<a href="http://en.wikipedia.org/wiki/Read_write_lock_pattern">read-write locks</a>.</p>
+
+<p>I reccomend to use java package <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>.
+It consists of a lot of concurrency techniques, like <code>Synchronizers</code>, <code>Executors</code>,
+<code>Atomics</code>, <code>Concurrent Collections</code>, <code>Futures</code>, <code>Callbacks</code> etc.</p>
+
+<p><strong>As a bonus:</strong> Good books about concurrency in Java:</p>
+
+<ul>
+  <li><a href="http://www.goodreads.com/book/show/127932.Java_Concurrency_in_Practice">Java Concurrency in Practice</a></li>
+  <li><a href="http://www.goodreads.com/book/show/629608.Concurrent_Programming_in_Java">Concurrent Programming in Java</a></li>
+</ul>
+
+<p><strong>Lesson:</strong> Always handle exceptions. Pay more attention to concurrency issues.</p>
+
+<h3 id="patriot-missilehttpenwikipediaorgwikimim-104patriot-1991"><a href="http://en.wikipedia.org/wiki/MIM-104_Patriot">Patriot Missile</a> (1991)</h3>
+
+<p><strong>History:</strong> In 1991, American battery fired Patriot Missile to intercept Iraq missile.
+Interception failed because of system bug in time step calculation.
+Iraq missile destroyed an American Army barracks.</p>
+
+<p><strong>Consequences:</strong> 28 soldiers died, 100 injured.</p>
+
+<p><strong>Reason:</strong> Floating point rounding error. System&rsquo;s internal clock was calculating
+time by 0.1 seconds step (0.1, 0.2, 0.3, &hellip;). As <code>0.1 = 1/10</code> have infinite binary representation
+<code>0.0001100110011001100110011001100110011001100110011001100..</code>
+and for this calculation 24-bit register was used,
+register hold just <code>0.00011001100110011001100</code> introducing truncating error
+<code>0.00000000000000000000000110011</code> what is approximately <code>0.0000001</code> in decimal.</p>
+
+<p>Small enough, huh?</p>
+
+<p>Not really, Multiplying this number for 100 hours gives:</p>
+
+<pre><code>0.0000001 * 100 * 60 * 60 * 10 = 0.36 sec
+</code></pre>
+
+<p>During that time Iraq missile travels a half kilometer, and was out of tracking radius
+for Patriot Missile. Bad things happen.</p>
+
+<p><strong>Solution:</strong> Floats are very error-prone if we don&rsquo;t handle them correctly.</p>
+
+<p>Predict the output of the following code:</p>
+
+<p><code>java
+for (double d = 0.0; d != 1.0; d = d + 0.1) {
+    System.out.println("Iteration");
+}
+</code></p>
+
+<p>Infinite loop. The same problem as described above.</p>
+
+<p>One solution is to use float that have exact binary representation.
+<code>0.125</code>, <code>0.25</code>, <code>0.5</code> for example.
+But this greatly reduces the space of allowed values and give less flexibility.</p>
+
+<p>Another solution to use big decimal or ratio types.
+Java, as example, have out-of-the-box <code>BigDecimal</code> class. Loop above rewritten with
+that class works as expected:</p>
+
+<p>``` java
+BigDecimal init = new BigDecimal(&ldquo;0.0&rdquo;);
+BigDecimal bound = new BigDecimal(&ldquo;1.0&rdquo;);
+BigDecimal step = new BigDecimal(&ldquo;0.1&rdquo;)</p>
+
+<p>for (BigDecimal d = init; !d.equals(bound); d = d.add(step)) {
+        System.out.println(d);
+}
+```</p>
+
+<p>One disadvantage it has slower execution than with floats. Consider trade-off
+between time and accuracy. If human lives on the stake, it&rsquo;s not relevant choice.</p>
+
+<p><code>Ratio</code> class can be defined without any problems and used similar way.</p>
+
+<p><strong>Lesson:</strong> If you need very accurate calculations use big decimals or ratios.</p>
+
+<h3 id="mars-climate-orbiterhttpenwikipediaorgwikimarsclimateorbiter-1998"><a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a> (1998)</h3>
+
+<p><strong>History:</strong> Again about space. In 1998, communication with Mars Climate Orbiter
+was lost, because of changed trajectory. Space probe was crashed near Mars.</p>
+
+<p><strong>Consequences:</strong> Money, $327 million</p>
+
+<p><strong>Reason:</strong> Navigation system design was developed by another team.
+To represent Force they used <a href="http://en.wikipedia.org/wiki/Pound-force">pound-force</a>
+from <a href="http://en.wikipedia.org/wiki/Imperial_units">Imperial units</a>
+instead of <a href="http://en.wikipedia.org/wiki/Newton_%28unit%29">Newton</a>
+from <a href="http://en.wikipedia.org/wiki/Metric_system">metric system</a>.</p>
+
+<pre><code>1 Newton = 0.22 pound-force
+</code></pre>
+
+<p>Without provided conversion between them system failed.</p>
+
+<p>Issue resemble to using dates in different timezones, but much more critical.</p>
+
+<p><strong>Solution:</strong> First of all, at least one science-aware person must perform code review.
+At least for code blocks with formulas and calculations. If there are comments about using pound-force,
+the problem easy spotted. Second of all, received code must be tested on model
+instead of physical machine. This is also, likely, detects the issue.
+Developer who wrote that less guilty, but still guilty.</p>
+
+<p>There are different approaches to implement this in java:</p>
+
+<p>very bad approach, we don&rsquo;t know what units are used:</p>
+
+<p><code>java
+new Force(1.533);
+</code></p>
+
+<p>better (still bad) approach to indicate with comment:</p>
+
+<p><code>java
+// force in Newtons!
+new Force(1.533);
+</code></p>
+
+<p>better (still bad) approach to indicate different constructors for different units:</p>
+
+<p><code>java
+new ForceInNewtons(1.533);
+</code></p>
+
+<p>I prefer approach where you specifies a <em>value</em> and <em>unit</em> in the constructor, and
+they converted to something common unit (metric) convenient for use in internal representation:</p>
+
+<p>``` java
+enum ForceUnit {
+  NEWTON,
+  POUND_FORCE
+}</p>
+
+<p>new Force(1.533, ForceUnit.NEWTON);
+```</p>
+
+<p>A bit more code, but it is understandable and easy to use for different unit systems.
+Unit conversion method can be defined either at the <code>enum ForceUnit</code> or <code>class Force</code> level.</p>
+
+<p><strong>Lesson:</strong> Always explicitly indicate what units used in your code.</p>
+
+<p><em>To be continued.</em></p>
+
+<h3 id="links">Links</h3>
+
+<ul>
+  <li><a href="http://en.wikipedia.org/wiki/List_of_software_bugs">List of Software Bugs</a></li>
+  <li><a href="http://www5.in.tum.de/~huckle/bugse.html">Collection of Software Bugs</a></li>
+  <li><a href="http://www.wired.com/software/coolapps/news/2005/11/69355?currentPage=all">History&rsquo;s Worst Software Bugs</a></li>
+  <li><a href="http://www.sundoginteractive.com/sunblog/posts/top-ten-most-infamous-software-bugs-of-all-time">Top Ten Most Infamous Software Bugs Of All Time</a></li>
+  <li><a href="http://nssdc.gsfc.nasa.gov/nmc/spacecraftDisplay.do?id=MARIN1">NASA Mariner 1</a></li>
+  <li><a href="http://www.wired.com/culture/lifestyle/news/2004/03/62806">Soviets Burned By CIA Hackers?</a></li>
+  <li><a href="http://courses.cs.vt.edu/cs3604/lib/Therac_25/Therac_1.html">An Investigation of the Therac-25 Accidents</a></li>
+  <li><a href="http://seeri.etsu.edu/SECodeCases/ethicsC/PatriotMissile.htm">An Analysis of the Patriot Missile System</a></li>
+  <li><a href="http://www.ima.umn.edu/~arnold/disasters/patriot.html">The Patriot Missile Failure</a></li>
+  <li><a href="http://www.tysknews.com/Depts/Metrication/mystery_of_orbiter_crash_solved.htm">Mystery of Orbiter Crash Solved</a></li>
+</ul>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Eclipse Speedup]]></title>
+    <link href="http://mishadoff.github.io/blog/eclipse-speedup/"/>
+    <updated>2012-12-23T18:00:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/eclipse-speedup</id>
+    <content type="html"><![CDATA[<p>Have you been in situation where most of the time in eclipse you were waiting for
+some operation to be finished?</p>
+
+<!-- more -->
+
+<p><img src="http://upload.wikimedia.org/wikipedia/en/3/34/Eclipse-logo.png" alt="" /></p>
+
+<p>If you here, probably, the answer is yes. You are bored with that slow functionality and want
+to increase eclipse performance to make your development work more comfortable. It is the right thing to do.</p>
+
+<p><em>Warning:</em> Most frequent advice I heard <em>to add more RAM</em>. Probably, you can buy better workstation with better CPU.
+Add SSD to make filesystem operations faster. We assume you can&rsquo;t afford all that. All you can is setup your
+eclipse instance. All preferences based on <code>Eclipse SDK Version: 4.3.0 Build id: I20121031-2000</code> for ubuntu, but
+almost everything is identical in other versions for other platforms.</p>
+
+<h3 id="eclipse-tweaks">Eclipse tweaks</h3>
+
+<h4 id="plugins">Plugins</h4>
+
+<p>First time I found the power of plugins I was excited. I installed them more and more until I couldn&rsquo;t
+work comfortable with eclipse. Probably, you have a lot of plugins, just <strong>disable</strong> on startup ones that not used.
+It is not deleting, you always can enable it back.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Startup and Shutdown
+</code></pre>
+
+<p><img src="http://i.imgur.com/kgavA.png" alt="" /></p>
+
+<p>By the way, some plugins appeared due to your experimenting and not used anymore. <strong>Delete</strong> redundant plugins if they
+not used at all.</p>
+
+<pre><code>Help -&gt; About Eclipse SDK -&gt; Instalation Details -&gt; &lt;Select plugin&gt; -&gt; Uninstall
+</code></pre>
+
+<p><img src="http://i.imgur.com/7wRoR.png" alt="" /></p>
+
+<h4 id="eclipseini">eclipse.ini</h4>
+
+<p>Following tweaks based on editing <code>eclipse.ini</code> file located in root folder
+of your eclipse instalation.</p>
+
+<ul>
+  <li><strong>Use specific JVM to run eclipse.</strong>
+This allows do not take into account system properties which alters your JDK.</li>
+</ul>
+
+<p><code>
+-vm
+/path/to/your/java
+</code></p>
+
+<ul>
+  <li>
+    <p><strong>Use latest JDK to run eclipse.</strong>
+Much better if you point your eclipse to the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">latest JDK</a>.
+<em>Rumors</em> said it has better performance.</p>
+  </li>
+  <li>
+    <p><strong>Use Sun JDK to run eclipse.</strong>
+The reason behind this has the same explanation.</p>
+  </li>
+  <li>
+    <p><strong>Configure VM arguments.</strong>
+You can set your own values for virtual machine if you think
+they are appropriate
+(<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning">Performance related options</a>)
+I use following settings to increase heap size (objects) to <code>768Mb</code> and permgen (classes) to <code>256 Mb</code> on my <code>3Gb</code> RAM machine.</p>
+  </li>
+</ul>
+
+<p><code>
+-vmargs
+-Xms768m
+-Xmx768m
+-XX:PermSize=256m
+-XX:MaxPermSize=256m
+</code></p>
+
+<p>You can also add <code>-Xverify:none</code> that skips validation of loaded clases to JVM. Due to fact it skips one
+step of JVM loading you will get performance boost. But it&rsquo;s very risky change.</p>
+
+<p>You can also test your eclipse performance  with different Garbage collector strategies, server options,
+experimental VM options like (some of these):</p>
+
+<p><code>
+-server
+-XX:+UnlockExperimentalVMOptions
+-XX:+UseG1GC
+-XX:+UseParallelGC
+-XX:+UseFastAccessorMethods
+-Xss2m
+</code></p>
+
+<p>Check all <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fruntime-options.html">Eclipse runtime options</a>
+for reference and choose ones that appropriate for you.</p>
+
+<h4 id="disable-animations">Disable animations</h4>
+
+<p>Animations it&rsquo;s cool. But I always disable animations if it possible in all tools.
+Also, classic theme is most usable for me.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Uncheck 'Enable animations'
+</code></pre>
+
+<p><img src="http://i.imgur.com/mzLp7.png" alt="" /></p>
+
+<h4 id="disable-label-decorations">Disable label decorations</h4>
+
+<p>Label decorations are small icons on project, file, class levels that helps
+visually indicate some state of file. Like commited it to git or no.
+They are provided by various plugins and rarely useful. Just left ones that you want.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Appearance -&gt; Label Decorations
+</code></pre>
+
+<p><img src="http://i.imgur.com/MKZp5.png" alt="" /></p>
+
+<h4 id="autocompletion">Autocompletion</h4>
+
+<p>Sometimes on slow machines or when you have a lot of classes in your classpath autocompletion performance is terrible.
+Small improvement you can get by reducing group of possible proposals. I left only <code>Java Proposals</code> and <code>Template Proposals</code>:</p>
+
+<pre><code>Window -&gt; Preferences -&gt; Java -&gt; Editor -&gt; Content Assist -&gt; Advanced
+</code></pre>
+
+<p><img src="http://i.imgur.com/Aa7MY.png" alt="" /></p>
+
+<h4 id="uncheck-validators">Uncheck validators</h4>
+
+<p>If you are sure in your competence just suspend all validators. If problem appears, you always
+can identify the reason, but you save your development time.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; Validation -&gt; Suspend All Validators
+</code></pre>
+
+<p><img src="http://i.imgur.com/n1XQ2.png" alt="" /></p>
+
+<h4 id="close-unrelated-projects">Close unrelated projects</h4>
+
+<p>If you working in context of few projects, better to have all unrelated projects closed. They won&rsquo;t appear
+in index. You can manually <code>Close unrelated projects</code> in workspace. But I recommend to use <code>Working Set</code>.
+You can add any number of projects to one working set, and quickly switch between different working sets
+in one workspace.</p>
+
+<pre><code>Right Click on Project -&gt; Assign Working Sets..
+</code></pre>
+
+<h4 id="close-unused-tabs-in-editor">Close unused tabs in editor</h4>
+
+<p>Big number of tabs in editor can greatly slow down your performance. Just limit them.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors
+</code></pre>
+
+<p>Check <code>Close editors automatically</code> and set <code>Number of opened tabs</code> to <code>10</code>.</p>
+
+<p><img src="http://i.imgur.com/gjRd8.png" alt="" /></p>
+
+<h4 id="disable-spell-check">Disable spell check</h4>
+
+<p>Are you developer or what? I don&rsquo;t see any reason to have <code>spell check</code> enabled.</p>
+
+<pre><code>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Spelling -&gt; Uncheck 'Enable spell checking'
+</code></pre>
+
+<h4 id="disable-autobuild">Disable autobuild</h4>
+
+<p>Probably, you aware about when you want to build your project and when not.</p>
+
+<pre><code>Project -&gt; Uncheck 'Build Automatically'
+Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Scrub output folders when cleaning'
+Window -&gt; Preferences -&gt; Java -&gt; Compiler -&gt; Building -&gt; Uncheck 'Rebuild class files modified by others'
+</code></pre>
+
+<h4 id="hotkeys">Hotkeys</h4>
+
+<p>It is human-related advice. Even if you working in super-fast IDE and spend 10 actions to perform
+single operation, your development process won&rsquo;t be fast. Configure most-often used actions
+to hotkeys and learn them. You will get a positive feedback after a week of usage.</p>
+
+<pre><code>Windows -&gt; Preferences -&gt; General -&gt; Keys
+</code></pre>
+
+<p>To force myself learn all hotkeys I just disabled toolbar.</p>
+
+<pre><code>Window -&gt; Hide Toolbar
+</code></pre>
+
+<h3 id="useful-links">Useful Links</h3>
+
+<ul>
+  <li><a href="http://wiki.eclipse.org/Eclipse.ini">http://wiki.eclipse.org/Eclipse.ini</a></li>
+  <li><a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
+  <li><a href="http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/">http://www.beyondlinux.com/2011/06/25/speed-up-your-eclipse-as-a-super-fast-ide/</a></li>
+  <li><a href="http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/">http://blog.normation.com/2010/05/24/optimizing-eclipse-performances/</a></li>
+  <li><a href="http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590">http://stackoverflow.com/questions/142357/what-are-the-best-jvm-settings-for-eclipse/1409590#1409590</a></li>
+</ul>
+
+<p><strong>P.S.</strong> This article planned to be updatable, other tweaks are welcome!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>
+    <link href="http://mishadoff.github.io/blog/java-magic-part-3-finally/"/>
+    <updated>2012-11-18T19:39:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/java-magic-part-3-finally</id>
+    <content type="html"><![CDATA[<p>Every experienced java programmer should know that <code>finally</code> block always executed. But is it true?</p>
+
+<!-- more -->
+
+<p>It depends on our definition of program execution. But, generally speaking, <strong>yes</strong>.</p>
+
+<h3 id="normal-program-execution">Normal program execution</h3>
+
+<p><em>Aha, look at this</em>, someone might retort:</p>
+
+<p><code>java
+try {
+  System.exit(1);
+} finally {
+  System.out.println("I'm here, man");
+}
+</code></p>
+
+<p><em>You just said, finally block always executed?</em></p>
+
+<p>Well. In that case no, because we speaking about normal flow of program execution.
+This is <em>abnormal</em>.</p>
+
+<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">official tutorial</a></p>
+
+<blockquote>
+  <p>Note: If the JVM exits while the try or catch code is being executed, then the finally block may not execute.</p>
+</blockquote>
+
+<p>Your counter question might be: <em>If second line of that code always exectued?</em></p>
+
+<p><code>java
+System.out.println("Line 1");
+System.out.println("Line 2");
+System.out.println("Line 3");
+</code></p>
+
+<p>Sure, because it&rsquo;s linear flow. Nothing can break&hellip;<strong>BANG</strong>&hellip;<code>Electricity unavailable. Program stopped.</code></p>
+
+<p>What about this? It&rsquo;s also abnormal program execution, and we can&rsquo;t guarantee anything for 100%.
+In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
+
+<p>That&rsquo;s why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
+
+<blockquote>
+  <p>I said yes? I meant no!</p>
+</blockquote>
+
+<h3 id="perpetuum-mobile">Perpetuum Mobile</h3>
+
+<p>Consider the following code:</p>
+
+<p><code>java
+try {
+  while (true) {
+    System.out.println("I print here some useful information");
+  }
+} finally {
+  System.out.println("Let me run");
+}
+</code></p>
+
+<p>Will be the line <em>&ldquo;Let me run&rdquo;</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
+
+<p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
+
+<h3 id="threads">Threads</h3>
+
+<p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
+
+<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn&rsquo;t executed.</p>
+
+<p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
+
+<p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
+
+<blockquote>
+  <p>&hellip;if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p>
+</blockquote>
+
+<p>So, we can treat thread like a program, and make one effective rule:</p>
+
+<p><strong>Rule 1</strong>. Finally executes always, except the case where controlling program or thread was aborted.</p>
+
+<h3 id="finally-we-return">Finally we return</h3>
+
+<p>Ok, now we know when finally is not executed. But do we know when finally is executed?</p>
+
+<p>Consider the example:</p>
+
+<p><code>java
+int someFunc() {
+  try {
+    return 0;
+  } finally {
+    return 1;
+  }
+}
+</code></p>
+
+<p>The result is obviously <code>1</code>. Just because <code>finally</code> is always executed.</p>
+
+<p>Consider, next example:</p>
+
+<p><code>java
+int someFunc() {
+  try {
+    throw new RuntimeException();
+  } finally {
+    return 1;
+  }
+}
+</code></p>
+
+<p>The result is <code>1</code> again. And it&rsquo;s a problem. We just lose the exception.
+Such issue known as <em>exception swallowing</em>. It is very dangerous, because client&rsquo;s code expect either exception or some value, but it always get only value.</p>
+
+<p>One more less imaginary example.</p>
+
+<p><code>java
+String deposit(int amount) throws DAOException {
+  try {
+    return dao.deposit(amount);
+  } finally {
+    return "OK";
+  }
+}
+</code></p>
+
+<p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
+responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string &ldquo;OK&rdquo; will be returned.</p>
+
+<p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
+
+<h3 id="instead-of-conclusion">Instead of conclusion</h3>
+
+<p>A lot of programmers are aware about this common mistake. But some are not.
+Maybe these two simple rules give you a tiny light on coward <code>finally</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>

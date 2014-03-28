@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Code Golf: Brainfuck Interpreter - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Brainfuck Interpreter in two tweets. Previous article Code Golf: Game of Life raised some interest, and I decided to proceed. Today&rsquo;s problem &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Code Golf: Brainfuck Interpreter</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-09T17:44:00+03:00" pubdate data-updated="true">Aug 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Brainfuck Interpreter in two tweets.</p>
+
+<!-- more -->
+
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
+
+<ul>
+  <li><code>&gt;</code> move to the next cell</li>
+  <li><code>&lt;</code> move to the previous cell</li>
+  <li><code>+</code> increment value in the current cell</li>
+  <li><code>-</code> decrement value in the current cell</li>
+  <li><code>.</code> print char with ascii value of current cell</li>
+  <li><code>,</code> read ascii value for input char to the current cell</li>
+  <li><code>[</code> start loop until value of pointer is not zero </li>
+  <li><code>]</code> finish loop</li>
+</ul>
+
+<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+
+<h3 id="tweet">Tweet</h3>
+
+<p>Final version took <code>280</code> characters in Clojure:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">fn</span><span class="p">[</span><span class="nv">a</span> <span class="nv">p</span> <span class="nv">k</span> <span class="nv">c</span><span class="p">](</span><span class="nf">let</span><span class="p">[</span><span class="nv">h</span> <span class="o">#</span><span class="p">(</span><span class="nb">nth </span><span class="nv">%1</span><span class="err">@</span><span class="nv">%2</span><span class="p">)</span><span class="nv">e</span> <span class="o">#</span><span class="p">(</span><span class="nf">h</span> <span class="nv">a</span> <span class="nv">p</span><span class="p">)</span><span class="nv">s</span> <span class="o">#</span><span class="p">(</span><span class="nf">swap!</span> <span class="nv">%1%2</span> <span class="mi">1</span><span class="p">)</span><span class="nv">t</span>
+</span><span class="line"><span class="o">#</span><span class="p">(</span><span class="nb">aset </span><span class="nv">a</span><span class="err">@</span><span class="nv">p</span><span class="p">(</span><span class="nf">%</span><span class="p">(</span><span class="nf">e</span><span class="p">)</span><span class="mi">1</span><span class="p">))</span><span class="nv">l</span> <span class="o">#</span><span class="p">(</span><span class="nf">do</span><span class="p">(</span><span class="nf">s</span> <span class="nv">k</span> <span class="nv">%</span><span class="p">)(</span><span class="nf">case</span><span class="p">(</span><span class="nf">h</span> <span class="nv">c</span> <span class="nv">k</span><span class="p">)</span><span class="sc">\]</span><span class="p">()</span><span class="sc">\[</span><span class="p">()(</span><span class="nf">recur</span> <span class="nv">%</span><span class="p">)</span>
+</span><span class="line"><span class="p">))](</span><span class="nf">while</span><span class="p">(</span><span class="nf">&gt;</span><span class="p">(</span><span class="nb">count </span><span class="nv">c</span><span class="p">)</span><span class="err">@</span><span class="nv">k</span><span class="p">)(</span><span class="nf">do</span><span class="p">(</span><span class="nf">case</span><span class="p">(</span><span class="nf">h</span> <span class="nv">c</span> <span class="nv">k</span><span class="p">)</span><span class="sc">\&gt;</span><span class="p">(</span><span class="nf">s</span> <span class="nv">p</span> <span class="nv">+</span><span class="p">)</span><span class="sc">\&lt;</span><span class="p">(</span><span class="nf">s</span> <span class="nv">p</span> <span class="nv">-</span><span class="p">)</span><span class="sc">\+</span>
+</span><span class="line"><span class="p">(</span><span class="nf">t</span> <span class="nv">+</span><span class="p">)</span><span class="sc">\-</span><span class="p">(</span><span class="nf">t</span> <span class="nv">-</span><span class="p">)</span><span class="sc">\.</span><span class="p">(</span><span class="nf">print</span><span class="p">(</span><span class="nf">char</span><span class="p">(</span><span class="nf">e</span><span class="p">)))</span><span class="sc">\,</span><span class="p">(</span><span class="nb">aset </span><span class="nv">a</span><span class="err">@</span><span class="nv">p</span><span class="p">(</span><span class="nf">.read</span> <span class="nv">*in*</span><span class="p">))</span><span class="sc">\[</span><span class="p">(</span><span class="nf">if</span>
+</span><span class="line"><span class="p">(</span><span class="nf">=</span><span class="p">(</span><span class="nf">e</span><span class="p">)</span><span class="mi">0</span><span class="p">)(</span><span class="nf">l</span> <span class="nv">+</span><span class="p">))</span><span class="sc">\]</span><span class="p">(</span><span class="nf">if</span><span class="p">(</span><span class="nf">&gt;</span><span class="p">(</span><span class="nf">e</span><span class="p">)</span><span class="mi">0</span><span class="p">)(</span><span class="nf">l</span> <span class="nv">-</span><span class="p">)))(</span><span class="nf">s</span> <span class="nv">k</span> <span class="nv">+</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Exactly 2 tweets.</p>
+
+<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+
+<p>Translating to more readable code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">parse-internal</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">pt</span> <span class="nv">pc</span> <span class="nv">cs</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nf">letfn</span> <span class="p">[(</span><span class="nf">act</span> <span class="p">[]</span>
+</span><span class="line">            <span class="p">(</span><span class="nf">case</span> <span class="p">(</span><span class="nb">nth </span><span class="nv">cs</span> <span class="err">@</span><span class="nv">pc</span><span class="p">)</span>
+</span><span class="line">              <span class="sc">\&gt;</span> <span class="p">(</span><span class="nf">swap!</span> <span class="nv">pt</span> <span class="nv">inc</span><span class="p">)</span>
+</span><span class="line">              <span class="sc">\&lt;</span> <span class="p">(</span><span class="nf">swap!</span> <span class="nv">pt</span> <span class="nv">dec</span><span class="p">)</span>
+</span><span class="line">              <span class="sc">\+</span> <span class="p">(</span><span class="nb">aset </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span><span class="p">)))</span>
+</span><span class="line">              <span class="sc">\-</span> <span class="p">(</span><span class="nb">aset </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span> <span class="p">(</span><span class="nb">dec </span><span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span><span class="p">)))</span>
+</span><span class="line">              <span class="sc">\.</span> <span class="p">(</span><span class="nb">print </span><span class="p">(</span><span class="nb">char </span><span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span><span class="p">)))</span>
+</span><span class="line">              <span class="sc">\,</span> <span class="p">(</span><span class="nb">aset </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span> <span class="p">(</span><span class="nf">.read</span> <span class="nv">*in*</span><span class="p">))</span>
+</span><span class="line">              <span class="sc">\[</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span><span class="p">))</span> <span class="p">(</span><span class="nf">loop-</span> <span class="nv">inc</span><span class="p">))</span>
+</span><span class="line">              <span class="sc">\]</span> <span class="p">(</span><span class="nb">if-not </span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="err">@</span><span class="nv">pt</span><span class="p">))</span> <span class="p">(</span><span class="nf">loop-</span> <span class="nv">dec</span><span class="p">))))</span>
+</span><span class="line">          <span class="p">(</span><span class="nf">loop-</span> <span class="p">[</span><span class="nv">f</span><span class="p">]</span>
+</span><span class="line">            <span class="p">(</span><span class="k">do </span><span class="p">(</span><span class="nf">swap!</span> <span class="nv">pc</span> <span class="nv">f</span><span class="p">)</span>
+</span><span class="line">                <span class="p">(</span><span class="nf">case</span> <span class="p">(</span><span class="nb">nth </span><span class="nv">cs</span> <span class="err">@</span><span class="nv">pc</span><span class="p">)</span>
+</span><span class="line">                  <span class="sc">\[</span> <span class="p">()</span>
+</span><span class="line">                  <span class="sc">\]</span> <span class="p">()</span>
+</span><span class="line">                  <span class="p">(</span><span class="nf">recur</span> <span class="nv">f</span><span class="p">))))]</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">while</span> <span class="p">(</span><span class="nb">not= </span><span class="p">(</span><span class="nb">count </span><span class="nv">cs</span><span class="p">)</span> <span class="err">@</span><span class="nv">pc</span><span class="p">)</span>
+</span><span class="line">      <span class="p">(</span><span class="nf">do</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">act</span><span class="p">)</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">swap!</span> <span class="nv">pc</span> <span class="nv">inc</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>So, what&rsquo;s happening there?</p>
+
+<p>Function arguments are parameters of our tape and brainfuck program.</p>
+
+<ul>
+  <li><code>a</code> is an array represents finite tape <code>e.g (int-array 100)</code></li>
+  <li><code>pt</code> is an atom - pointer to the tape</li>
+  <li><code>pc</code> is an atom - pointer to the command list</li>
+  <li><code>cs</code> command list</li>
+</ul>
+
+<p>Function <code>act</code> decides which action to perform depending on current command,
+<code>loop</code> allows us to move command pointer inside a loop,
+and main <code>while-do</code> loop executes commands until they exhausted. Simple enough.</p>
+
+<p>To make our interpreter more friendly we create function <code>parse</code> that accepts
+string - program, written in brainfuck.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nb">parse </span><span class="p">[</span><span class="nv">s</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nf">int-array</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1">;; Turing Tape</span>
+</span><span class="line">        <span class="nv">p</span> <span class="p">(</span><span class="nf">atom</span> <span class="mi">0</span><span class="p">)</span>         <span class="c1">;; Pointer to Tape</span>
+</span><span class="line">        <span class="nv">k</span> <span class="p">(</span><span class="nf">atom</span> <span class="mi">0</span><span class="p">)</span>         <span class="c1">;; Pointer to Command</span>
+</span><span class="line">        <span class="nv">c</span> <span class="p">(</span><span class="nf">vec</span> <span class="p">(</span><span class="nb">seq </span><span class="nv">s</span><span class="p">))]</span>   <span class="c1">;; Vector of Commands</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">parse-internal</span> <span class="nv">a</span> <span class="nv">p</span> <span class="nv">k</span> <span class="nv">c</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="testing">Testing</h4>
+
+<p>Print &ldquo;Hello, world&rdquo;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">parse </span><span class="s">&quot;++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]</span>
+</span><span class="line"><span class="s">        &gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;</span>
+</span><span class="line"><span class="s">        .+++.------.--------.&gt;+.&gt;.&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="nv">Hello</span> <span class="nv">World!</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Input 5 characters and reverse print them</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">parse </span><span class="s">&quot;,&gt;,&gt;,&gt;,&gt;,.&lt;.&lt;.&lt;.&lt;.&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="nv">&lt;wait</span> <span class="nv">input</span> <span class="s">&quot;hello&quot;</span><span class="nv">&gt;</span>
+</span><span class="line"><span class="nv">olleh</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>More complex program need nested loops, which is not supported by
+this version (<em>for the sake of small size!</em>)</p>
+
+<p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
+
+<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
+
+<ul>
+  <li>It does not work for inifinite tape</li>
+  <li>Cell datatype is fixed and not assumed to be cyclic. For example, if cell type is unsigned byte <code>[0..255]</code>, then <code>255 + 1 != 0</code> and break interpreter</li>
+  <li>Only unsigned types supported</li>
+  <li>Nested loops are not allowed</li>
+  <li>No error handling</li>
+</ul>
+
+<p>But, you are welcome to improve it!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-09T17:44:00+03:00" pubdate data-updated="true">Aug 9<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/code-golf/'>code golf</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/programming-digest-3/" title="Previous Post: Programming Digest 3">&laquo; Programming Digest 3</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/announcing-numberto/" title="Next Post: Announcing numberto">Announcing numberto &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/';
+        var disqus_url = 'http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Programming Digest 3 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
+algorithm complexities refresher, functional programming, including
+Scala &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/programming-digest-3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Programming Digest 3</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-22T20:33:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Why your software sucks and what is the &ldquo;Secret Weapon&rdquo;. Also,
+algorithm complexities refresher, functional programming, including
+Scala and Clojure, concurrency and lot of humor.</p>
+
+<!-- more -->
+
+<h3 id="big-ball-of-mudhttpwwwlaputanorgmud">1. <a href="http://www.laputan.org/mud/">Big Ball of Mud</a></h3>
+
+<blockquote>
+  <p>What does your programming day look like? </p>
+</blockquote>
+
+<p><img src="http://www.laputan.org/images/pictures/spaghetti-medium.jpg" alt="" /></p>
+
+<p>The article describes problems in software design and explains
+why almost every system nowadays look like &ldquo;Big Ball of Mud&rdquo;.</p>
+
+<p>There are seven <em>real</em> patterns in software design:</p>
+
+<ul>
+  <li>BIG BALL OF MUD</li>
+  <li>THROWAWAY CODE</li>
+  <li>PIECEMEAL GROWTH</li>
+  <li>KEEP IT WORKING</li>
+  <li>SHEARING LAYERS</li>
+  <li>SWEEPING IT UNDER THE RUG</li>
+  <li>RECONSTRUCTION </li>
+</ul>
+
+<p><em>caps preserved due to original article</em></p>
+
+<p>And our favorite phrase:</p>
+
+<blockquote>
+  <p>It works, so why fix it?</p>
+</blockquote>
+
+<h3 id="no-silver-bullethttpwwwcsnottacukcahg51issdocumentsnosilverbullethtml">2. <a href="http://www.cs.nott.ac.uk/~cah/G51ISS/Documents/NoSilverBullet.html">No Silver Bullet</a></h3>
+
+<p>Classic article by Frederick Brooks, Jr.</p>
+
+<p>Object-oriented programming? Artificial Intelligence? Expert systems? Time-sharing?
+Graphical or Automated programming?</p>
+
+<p>Nothing helps you.</p>
+
+<blockquote>
+  <p>The most radical possible solution for constructing software is not to construct it at all.</p>
+</blockquote>
+
+<p>Demotivating, but helpful.</p>
+
+<h3 id="beating-the-averageshttpwwwpaulgrahamcomavghtml">3. <a href="http://www.paulgraham.com/avg.html">Beating the Averages</a></h3>
+
+<p>This is inspiring one.</p>
+
+<p>Brooks told &ldquo;There is no Silver Bullet&rdquo;, but Paul Graham reveals &ldquo;The Secret Weapon&rdquo;.</p>
+
+<p>The article is success story of startup called Viaweb.
+Chosen technologies were so good, that allowed Viaweb to compete with all similar startups.</p>
+
+<blockquote>
+  <p>Our secret weapon was similar.
+We wrote our software in a weird AI language, with a bizarre syntax full of parentheses.</p>
+</blockquote>
+
+<p>As you probably understood, it was Lisp.</p>
+
+<h3 id="know-thy-complexitieshttpbigocheatsheetcom">4. <a href="http://bigocheatsheet.com/">Know Thy Complexities!</a></h3>
+
+<p>Plain algorithm complexity cheatsheet. Contains time and space complexities
+for common algorithms and datastructures.</p>
+
+<h3 id="adventures-in-functional-programminghttpvimeocom45140590">5. <a href="http://vimeo.com/45140590">Adventures in Functional Programming</a></h3>
+
+<blockquote>
+  <p>Did you know that recursion is just syntactic sugar over higher-order functions?</p>
+</blockquote>
+
+<p>Awesome screencast by Jim Weirich about Y-Combinator in JavaScript.</p>
+
+<h3 id="scala-problemshttpaperiodicnetphilscalas-99">6. <a href="http://aperiodic.net/phil/scala/s-99/">99 Scala Problems</a></h3>
+
+<p>I am not using Scala and prefer Clojure for rapid protyping, but find such articles
+extremely useful when learning new language. Just exploring the code shows that Scala is
+the powerful and expressive language.</p>
+
+<p><strong>P.S.</strong> I am on half way to publish &ldquo;99 Clojure Problems&rdquo;.</p>
+
+<h3 id="locks-actors-and-stm-in-pictureshttpaditioposts2013-05-15-locks-actors-and-stm-in-pictureshtml">7. <a href="http://adit.io/posts/2013-05-15-Locks,-Actors,-And-STM-In-Pictures.html">Locks, Actors, And STM In Pictures</a></h3>
+
+<p>Great pictures. This is nice intro to concurrency and overview of some common cocurrency problems.</p>
+
+<p><img src="http://adit.io/imgs/concurrency/threads_using_mutex.png" alt="" /></p>
+
+<h3 id="understanding-clojure-concurrencyhttpblakesmithme20120515understanding-clojure-concurrency-part-1html">8. <a href="http://blakesmith.me/2012/05/15/understanding-clojure-concurrency-part-1.html">Understanding Clojure Concurrency</a></h3>
+
+<p>Clojure is exciting language with great concurrency capabilities:
+default immutability, atoms, refs, agents, promises, futures and software transactional memory.</p>
+
+<p>This article is an introduction to them. Check out the <a href="http://blakesmith.me/2012/05/25/understanding-clojure-concurrency-part-2.html">2nd part</a></p>
+
+<h3 id="wathttpswwwdestroyallsoftwarecomtalkswat">9. <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a></h3>
+
+<p>This is the video screencast of Gary Bernhardt&rsquo;s talk.
+Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
+
+<blockquote>
+  <p>An object plus an object is actually&hellip;. Not A Number!</p>
+</blockquote>
+
+<h3 id="what-is-the-most-intellectual-joke-you-knowhttpwwwredditcomraskredditcomments1h1cygwhatsthemostintellectualjokeyouknow">10. <a href="http://www.reddit.com/r/AskReddit/comments/1h1cyg/whats_the_most_intellectual_joke_you_know/">What is the most intellectual joke you know</a></h3>
+
+<p>We touch humorous side and this article (<em>reddit thread</em>) not about programming, just jokes.</p>
+
+<blockquote>
+  <p>Q: What does the &ldquo;B&rdquo; in Benoit B. Mandelbrot stand for?</p>
+
+  <p>A: Benoit B. Mandelbrot.</p>
+</blockquote>
+
+<p>In fact, some of the jokes related to programming.</p>
+
+<blockquote>
+  <p>There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.</p>
+</blockquote>
+
+<p>Some of them a bit stupid, but still fun.</p>
+
+<blockquote>
+  <p>How many surrealists does it take to screw in a light bulb?</p>
+
+  <p>A fish.</p>
+</blockquote>
+
+<p>Definitely, worth to read!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-22T20:33:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/digest/'>digest</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/programming-digest-3/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/programming-digest-3/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-020/" title="Previous Post: Clojure Euler: Problem 020">&laquo; Clojure Euler: Problem 020</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/code-golf-brainfuck-interpreter/" title="Next Post: Code Golf: Brainfuck Interpreter">Code Golf: Brainfuck Interpreter &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/programming-digest-3/';
+        var disqus_url = 'http://mishadoff.github.io/blog/programming-digest-3/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

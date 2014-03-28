@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure Euler: Problem 011 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="What is the greatest product of four adjacent numbers in the same
+direction (up, down, left, right, or diagonally) in the 20 x 20 grid? Permalink: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-euler-problem-011/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure Euler: Problem 011</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-18T13:45:00+02:00" pubdate data-updated="true">Jan 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><blockquote>
+  <p>What is the greatest product of four adjacent numbers in the same
+direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=11">http://projecteuler.net/problem=11</a></p>
+
+<!-- more -->
+
+<blockquote>
+  <p>In the 20 x 20 grid below, four numbers along a diagonal
+line have been enclosed into square brackets</p>
+</blockquote>
+
+<pre><code>08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
+49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
+81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
+52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
+22 31 16 71 51 67 63 89 41 92 36 54 22 40 40 28 66 33 13 80
+24 47 32 60 99 03 45 02 44 75 33 53 78 36 84 20 35 17 12 50
+32 98 81 28 64 23 67 10[26]38 40 67 59 54 70 66 18 38 64 70
+67 26 20 68 02 62 12 20 95[63]94 39 63 08 40 91 66 49 94 21
+24 55 58 05 66 73 99 26 97 17[78]78 96 83 14 88 34 89 63 72
+21 36 23 09 75 00 76 44 20 45 35[14]00 61 33 97 34 31 33 95
+78 17 53 28 22 75 31 67 15 94 03 80 04 62 16 14 09 53 56 92
+16 39 05 42 96 35 31 47 55 58 88 24 00 17 54 24 36 29 85 57
+86 56 00 48 35 71 89 07 05 44 44 37 44 60 21 58 51 54 17 58
+19 80 81 68 05 94 47 69 28 73 92 13 86 52 17 77 04 89 55 40
+04 52 08 83 97 35 99 16 07 97 57 32 16 26 26 79 33 27 98 66
+88 36 68 87 57 62 20 72 03 46 33 67 46 55 12 32 63 93 53 69
+04 42 16 73 38 25 39 11 24 94 72 18 08 46 29 32 40 62 76 36
+20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
+20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
+01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
+</code></pre>
+
+<blockquote>
+  <p>The product of these numbers is 26 * 63 * 78 * 14 = 1788696.</p>
+
+  <p>What is the greatest product of four adjacent numbers in the
+same direction (up, down, left, right, or diagonally) in the 20 x 20 grid?</p>
+</blockquote>
+
+<p>First step is pretty routine, we need to create such grid representation
+in our program from file. For the way how we read files refer
+<a href="/blog/clojure-euler-problem-008">Clojure Euler: Problem 008</a>, we have
+similar problem there.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">get-matrix</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">Integer/parseInt</span> <span class="p">(</span><span class="nb">apply str </span><span class="nv">%</span><span class="p">))</span>
+</span><span class="line">       <span class="p">(</span><span class="nf">partition</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">= </span><span class="sc">\n</span><span class="nv">ewline</span> <span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="sc">\ </span><span class="nv">%</span><span class="p">))</span>
+</span><span class="line">                              <span class="p">(</span><span class="nb">seq </span><span class="p">(</span><span class="nb">slurp </span><span class="s">&quot;res/problem011.txt&quot;</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Idea is following: read the file, drop the garbage,
+take all two-digit combinations, concat each and transform to the integer.</p>
+
+<p>To make things simple we reading the numbers in one-dimensional list
+of size 20 x 20 = 400. We always can use formula to represent two dimensional
+indexing for one-dimensional array and vice versa.</p>
+
+<p><em>Example:</em> suppose you need a 3 x 3 matrix <code>A</code></p>
+
+<pre><code>9    2    4
+6    1    7
+5    3    8
+</code></pre>
+
+<p>You can flat it into 1D array <code>B</code></p>
+
+<pre><code>9 2 4 6 1 7 5 3 8
+</code></pre>
+
+<p>Now, when you want <code>A[i][j]</code> use the formula <code>i * size_j + j</code>, where <code>size_j</code>
+is second matrix dimension. Therefore <code>A[1][2] = B[1 * 3 + 2] = B[5] = 7</code>, what is correct.</p>
+
+<p>Implementing that in clojure gives one indexing function</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">get-at</span> <span class="p">[</span><span class="nv">i</span> <span class="nv">j</span> <span class="nv">matrix</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">i</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">&lt; </span><span class="nv">i</span> <span class="mi">20</span><span class="p">)</span> <span class="p">(</span><span class="nb">&gt;= </span><span class="nv">j</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">&lt; </span><span class="nv">j</span> <span class="mi">20</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">nth </span><span class="nv">matrix</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">j</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="mi">20</span><span class="p">)))</span> <span class="mi">0</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We check the boundaries of array inside this function, which can be inappropriate
+in many cases, but it is good as we use it in one place.</p>
+
+<p>Ok. We have data, we have methods operate this data, now let&rsquo;s code logic.
+Our good friend - <strong>bruteforce</strong>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">matrix</span> <span class="p">(</span><span class="nf">get-matrix</span><span class="p">)</span>
+</span><span class="line">      <span class="nv">ways</span> <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">range </span><span class="mi">20</span><span class="p">)</span> <span class="nv">j</span> <span class="p">(</span><span class="nb">range </span><span class="mi">20</span><span class="p">)]</span>
+</span><span class="line">             <span class="p">[(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="nv">i</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">j</span><span class="p">)</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))</span>
+</span><span class="line">              <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">j</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))</span>
+</span><span class="line">              <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">j</span><span class="p">)</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))</span>
+</span><span class="line">              <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">get-at</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">%</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="nv">j</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">matrix</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">4</span><span class="p">))])]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">reduce max </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">reduce * </span><span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nb">reduce concat </span><span class="nv">ways</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We iterate on all matrix elements as start of 4-element range.</p>
+
+<p>We have 4 conditions, each of them represents some direction.
+All these 4 directions represent all possible direction in grid.</p>
+
+<ol>
+  <li>NORTH -&gt; SOUTH (Up &amp; Down covered)</li>
+  <li>WEST -&gt; EAST (Left &amp; Right covered)</li>
+  <li>NW -&gt; SE (backslash diagonals covered)</li>
+  <li>NE -&gt; SW (slash diagonals covered)</li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nv">S</span>      <span class="nv">S</span> <span class="nb">* * * </span>        <span class="nv">S</span>                  <span class="nv">S</span>
+</span><span class="line"><span class="nb">* </span>                      <span class="nb">* </span>               <span class="nv">*</span>
+</span><span class="line"><span class="nb">* </span>                       <span class="nb">* </span>             <span class="nv">*</span>
+</span><span class="line"><span class="nb">* </span>                        <span class="nb">* </span>           <span class="nv">*</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>S is for start</em></p>
+
+<p>If we obtain all possible 4-element ranges for matrix, just find
+maximum of product.</p>
+
+<p>Problem solved!</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem011.clj">github</a></p>
+
+<p><strong>P.S.</strong> Boring problem.
+I think it just for introducing matrices computation.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-18T13:45:00+02:00" pubdate data-updated="true">Jan 18<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/project-euler/'>project-euler</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-euler-problem-011/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-euler-problem-011/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/devops-reactions/" title="Previous Post: DevOps reactions">&laquo; DevOps reactions</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/critical-software-bugs-part-1/" title="Next Post: Critical Software Bugs: Part 1">Critical Software Bugs: Part 1 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-euler-problem-011/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-euler-problem-011/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

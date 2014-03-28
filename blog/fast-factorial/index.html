@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Fast Factorial - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Factorial function is simple enough. But there is still some fun about it.
+In Stirling&rsquo;s Approximation article
+we&rsquo;ve seen how to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/fast-factorial/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Fast Factorial</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-07T01:08:00+03:00" pubdate data-updated="true">Jun 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Factorial function is simple enough. But there is still some fun about it.
+In <a href="/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
+we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
+than &ldquo;by definition&rdquo;.</p>
+
+<!-- more -->
+
+<h3 id="factorials">Factorials</h3>
+
+<p>Most of programming languages tutorials shows the following
+approach to calculate factorial (<em>transformed to clojure</em>):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">factorial</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">n</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">      <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="p">(</span><span class="nf">factorial</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Simple recursive solution.</p>
+
+<p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
+
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>&hellip;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">ArithmeticException</span> <span class="nv">integer</span> <span class="nv">overflow</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Oops.</p>
+
+<p>Default clojure integer type is 64 bit (<code>Long</code>).
+It does not fit well for <em>such large input</em>, so we rewrite function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">n</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">      <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">n</span> <span class="p">(</span><span class="nf">!</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Just one character added, <code>*</code> became <code>*'</code>. It is automatic type promotion.
+If type can not hold the value without losing precision, it automatically extends.
+In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
+
+<p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
+<code>(! 30000)</code>&hellip;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">&gt; </span><span class="nv">StackOverflowError</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Yet another overflow.</p>
+
+<p>Well, stack size is limited. We don&rsquo;t need to consume stackframes and
+will use <code>loop/recur</code> approach.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">cur</span> <span class="nv">n</span> <span class="nv">acc</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">cur</span><span class="p">)</span> <span class="nv">acc</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">cur</span><span class="p">)</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">cur</span> <span class="nv">acc</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It is also recursive approach, but instead of saving so far calculated value
+in stack, we pass it to the function as a parameter.
+Clojure optimize tail recursion to iterative version and does not consume stack.
+It succesfully calculates factorial for 30000,
+and for any other value. Great!</p>
+
+<p>If we look at the factorial as a calculation process, not definition, it means
+&ldquo;product of all numbers between 1 and n&rdquo;. It is very concise for functional programming:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">&#39;</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">n</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Does not consume stack, no number overflow, but works
+~2 times slower than <code>loop/recur</code> version.</p>
+
+<p>I don&rsquo;t know the reason, but it seems time wasted
+by <code>reduce</code> for creating intermediate results. So we choose
+previous <code>loop/recur</code> function as baseline factorial.</p>
+
+<h3 id="fast-factorial">Fast Factorial</h3>
+
+<p>Here is another way to calculate factorial.</p>
+
+<p>Let&rsquo;s consider example <code>12!</code>.</p>
+
+<p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
+Perform prime factorization of each number.
+For example, prime factorization of <code>12</code> is <code>2 * 2 * 3</code>.</p>
+
+<p>After that we get a factorization of the <code>12!</code>, which contains only prime numbers.
+To find factorial value we can just multiply them all. But we do clever trick instead.</p>
+
+<p>Group every prime number and its power.
+E.g. if we have factorization <code>2 * 2 * 2 * 3 * 5</code> it becomes vector of pairs <code>[[2 3] [3 1] [5 1]]</code>.</p>
+
+<p>To calculate power we have simple <code>power</code> implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">power</span> <span class="p">[</span><span class="nv">x</span> <span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">&#39;</span> <span class="p">(</span><span class="nb">repeat </span><span class="nv">n</span> <span class="nv">x</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Trick is using exponentiation by squaring, which reduce
+exponentiation complexity from <code>O(n)</code> to <code>O(log n)</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">power</span> <span class="p">[</span><span class="nv">x</span> <span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class="line">        <span class="p">(</span><span class="nb">= </span><span class="mi">1</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">x</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">power*</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class="line">        <span class="p">(</span><span class="nf">odd?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">x</span> <span class="p">(</span><span class="nf">power*</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">)</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It is not tail-recursive solution and theoretically may cause
+stackoverflow, but its not critical. It works well for large numbers.</p>
+
+<p>Actually, we do not perform factorization. We just know that factorization of <code>n!</code> contains all prime numbers below or equal <code>n</code> and every number have some multiplicity. </p>
+
+<p>The function calculates how many times prime number <code>k</code> occurs in factorial factorization for <code>n</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn- </span><span class="nv">find-power</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">k</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">total</span> <span class="nv">n</span> <span class="nv">sum</span> <span class="mi">0</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">i</span> <span class="p">(</span><span class="nb">int </span><span class="p">(</span><span class="nb">/ </span><span class="nv">total</span> <span class="nv">k</span><span class="p">))]</span>
+</span><span class="line">      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">i</span><span class="p">)</span> <span class="nv">sum</span>
+</span><span class="line">          <span class="p">(</span><span class="nf">recur</span> <span class="nv">i</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">sum</span> <span class="nv">i</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Binding all together:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">!!</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">loop </span><span class="p">[[</span><span class="nv">h</span> <span class="o">&amp;</span> <span class="nv">t</span><span class="p">]</span>
+</span><span class="line">         <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">power</span> <span class="nv">%</span> <span class="p">(</span><span class="nf">find-power</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span>
+</span><span class="line">              <span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt;= </span><span class="nv">%</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">primes</span><span class="p">)))</span>
+</span><span class="line">         <span class="nv">acc</span> <span class="mi">1</span><span class="p">]</span>
+</span><span class="line">    <span class="p">(</span><span class="k">if </span><span class="nv">h</span> <span class="p">(</span><span class="nf">recur</span> <span class="nv">t</span> <span class="p">(</span><span class="nf">*</span><span class="o">&#39;</span> <span class="nv">h</span> <span class="nv">acc</span><span class="p">))</span> <span class="nv">acc</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><a href="https://github.com/mishadoff/numberto/blob/master/src/numberto/factorial.clj">Code available here</a></p>
+
+<p><em>Note:</em> <code>primes</code> is a function generates lazy-sequence of prime numbers. It can be taken from <code>clojure.contrib.lazy-seqs</code>.</p>
+
+<h3 id="testing">Testing</h3>
+
+<blockquote>
+  <p>Anyway, why do you think it is faster?
+You performing more calculations than just multiplying numbers.</p>
+</blockquote>
+
+<p>Let&rsquo;s see.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">do </span><span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 10 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 100 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 1000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">1000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">1000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 10000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">10000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">10000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 100000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">100000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">100000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">println </span><span class="s">&quot;== 1000000 ==&quot;</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!</span> <span class="mi">1000000</span><span class="p">))</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">!!</span> <span class="mi">1000000</span><span class="p">))</span> <span class="nv">nil</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="nb">== </span><span class="mi">10</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.051054 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.137587 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">100</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.081365 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 0.376653 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">1000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 1.59252 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 3.212842 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">10000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 161.856965 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 76.452529 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">100000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 19403.375319 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 6372.35266 msecs&quot;</span>
+</span><span class="line"><span class="nb">== </span><span class="mi">1000000</span> <span class="nv">==</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 2863893.471718 msecs&quot;</span>
+</span><span class="line"><span class="s">&quot;Elapsed time: 1079632.255919 msecs&quot;</span>
+</span><span class="line"><span class="nv">nil</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For small factorials <code>(&lt; 1000)</code> improved version works ~2 times slower.
+Around the thousand it has the same performance as standard version.
+And, finally, some win (up to 3 times) for larger numbers.</p>
+
+<p>Theoretically, you can implement generalized factorial with these two algorithms
+and switch between them, depending on input. But who really need it? </p>
+
+<blockquote>
+  <p>Question: What the complexity of this algorithm?</p>
+</blockquote>
+
+<p><strong>P.S.</strong> Enterprise lovers would say factorial complexity is <code>O(1)</code>.
+Just precompute all values and save them to database.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-07T01:08:00+03:00" pubdate data-updated="true">Jun 7<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/algorithms/'>algorithms</a>, <a class='category' href='/blog/categories/clojure/'>clojure</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/fast-factorial/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/fast-factorial/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-018/" title="Previous Post: Clojure Euler: Problem 018">&laquo; Clojure Euler: Problem 018</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/randomorg-0-dot-1/" title="Next Post: randomorg-0.1">randomorg-0.1 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-021/">Clojure Euler: Problem 021</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-numberto/">Announcing numberto</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/fast-factorial/';
+        var disqus_url = 'http://mishadoff.github.io/blog/fast-factorial/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

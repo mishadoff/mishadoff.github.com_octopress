@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: xkcd | mishadoff thoughts]]></title>
+  <link href="http://mishadoff.github.io/blog/categories/xkcd/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2013-11-26T17:16:28+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
+  <author>
+    <name><![CDATA[mishadoff]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ingress Tricks]]></title>
+    <link href="http://mishadoff.github.io/blog/ingress-tricks/"/>
+    <updated>2012-12-11T12:00:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/ingress-tricks</id>
+    <content type="html"><![CDATA[<p>Ingress - MMORPG with <a href="http://en.wikipedia.org/wiki/Augmented_reality">augmented reality</a> created by Google.
+This is very impressive game with capability to run over the city with your friends for capturing portals.</p>
+
+<!-- more -->
+
+<p><img src="http://i.imgur.com/vskNt.jpg?1" alt="" /></p>
+
+<p>The game genre positioned as <strong>MMMMOARG</strong> (<em>massively multiplayer map-based mobile online augmented reality game</em>).
+In fact, it&rsquo;s just MMORPG. You have character, you play online with other people.</p>
+
+<h2 id="brief-game-overview">Brief game overview</h2>
+
+<p><em>skip if you already now what Ingress is</em></p>
+
+<p>There are two fractions in game: <strong>Enlightened</strong> and <strong>Resistance</strong>.
+In few words, Enlightened for a progress and big changes, Resistance for conservative being.
+<strong>Portals</strong> are famous places like monuments, memorials, sculptures, etc.
+Each fraction can capture portals, improve, destroy them, link portals with each other,
+and create control field (<em>by linking three portals in triangle</em>). Area under this control field covers
+some number of <strong>mind units</strong>. Fraction that have more mind units - more succesful to achieve its goal.</p>
+
+<h2 id="some-tricks">Some tricks</h2>
+
+<p>If you already a member of Ingress, check these tricks, probably some you know.</p>
+
+<h2 id="resonators"><strong>Resonators</strong></h2>
+<ul>
+  <li><strong>Deploy resonator on maximum distance betwen portal.</strong> Because it is much harder for your enemy
+to destroy spattered resonators than if they were in one place.</li>
+  <li><strong>Waste resonators.</strong> If you have no time while running near neutral or low-level
+portal, just deploy one resonator of your maximum level. You still can not link it to another portal,
+but enemy need to spend enough effort to destroy it.</li>
+  <li><strong>Upgrade.</strong> Use upgrade menu to improve resonators on portal. If somebody deployed L1 resonator, and you
+can change it to L4, it would be good.</li>
+  <li><strong>Use specific resonators.</strong> By default you deploy only L1 resonators. From upgrade menu you can select
+what resonators you want to deploy.</li>
+</ul>
+
+<h2 id="bursters"><strong>Bursters</strong></h2>
+<ul>
+  <li><strong>Do not waste bursters.</strong> It&rsquo;s useless to fire couple bursts if they are not destroying resonators/portals. Just save them.
+When you have enough bursters, then you can destroy enemy portal and get XP.</li>
+  <li><strong>Use bursters from optimal point.</strong> It&rsquo;s opposite from previous. Find place where your bursters&rsquo; coverage
+on enemy resonators will be maximum. Use weighted estimate, you need stand closer to higher level resonators.</li>
+  <li><strong>Use specific bursters.</strong> By default you fire with you maximum level bursters. If enemy portal not so hard you can
+select lower-level burster from weapons menu.</li>
+</ul>
+
+<h2 id="mods"><strong>Mods</strong></h2>
+<ul>
+  <li><strong>Deploy portal shields.</strong> For portals that have enough support and high level. Portal shields are relatively rare resources, so don&rsquo;t waste them.
+Also if you deployed shield on high level portal, much harder for enemy to get resources, and destroy it.</li>
+</ul>
+
+<h2 id="links"><strong>Links</strong></h2>
+<ul>
+  <li><strong>Plan links and fields carefully.</strong> You must not be fast at linking, in case you linking more than 4 portals,
+there are possibilities. And you should choose one that gives you maximum number of fields.
+To make link between A and B, you need portal A with enough distance to B, and portal key from B.</li>
+  <li><strong>Build long links.</strong> Long links can prevent other fraction to link something.
+Because crossed links are restricted. But if you have time to link something better, think about it.</li>
+</ul>
+
+<h2 id="resources"><strong>Resources</strong></h2>
+<ul>
+  <li><strong>Gather resources.</strong> Find place where you can see a lot of high-level portals and hack them. One hour
+spent near them gives you a lot of resources.</li>
+  <li><strong>Share resources.</strong> You can, or better you need to share resources with your friends. It&rsquo;s cooperative game.</li>
+</ul>
+
+<h2 id="area"><strong>Area</strong></h2>
+<ul>
+  <li><strong>Distribute area locally.</strong> Communicate with players from your city and plan what territory can be supported by whom.</li>
+  <li><strong>Strategic portals.</strong> Don&rsquo;t plan your strategic portals in common places. They can be simply destroyed. Use for your strategic
+portals some strange places, like portal inside building, mountain portals, island portals, etc.</li>
+  <li><strong>Use Intel Map to plan your trip.</strong> Move only in the way you already know. Don&rsquo;t practice <em>blind trips</em>.</li>
+</ul>
+
+<h2 id="friends"><strong>Friends</strong></h2>
+<ul>
+  <li><strong>Play with friends.</strong> Preferably, the same level friends. Obviously, you can destroy more, you can capture more.
+Also, it&rsquo;s more fun to talk with somebody during the moving.</li>
+  <li><strong>Communication.</strong> If you see somebody playing ingress near you, don&rsquo;t hesitate to meet and make friendship. Even he or she from
+another fraction. Maybe it&rsquo;s your future spouse.</li>
+</ul>
+
+<h2 id="home-playing"><strong>Home playing</strong></h2>
+<ul>
+  <li><strong>Repair portals.</strong> If you are sitting at office, have enough XM, you still can help your fraction.
+Just open portal keys and you can repair these portals distantly. Keep in mind that resonator XM reduces by 10% each day.
+The trick is also to repair one most valuable resonator.</li>
+  <li><strong>Solve puzzles.</strong> If you solve some puzzle that appeared on niantic site or in your inventory, you
+can help you fraction a lot by posting code in faction channel.</li>
+  <li><strong>Manage the actions.</strong> You can sit at home with opened Intel Map and guide somebody to do right things.</li>
+</ul>
+
+<p>This post planned to be updatable, because all these advices found upon investigation. Check for new updates.
+Also, if you have some useful information, other tips and tricks,  post it in comments.</p>
+
+<h2 id="links-1">Links</h2>
+
+<p>More about game and some useful resources here:</p>
+
+<ul>
+  <li><a href="http://www.ingress.com/">Ingress Official</a></li>
+  <li><a href="http://www.nianticproject.com/">History and Puzzles</a></li>
+  <li><a href="http://ingressfieldguide.com/">Tips &amp; Tricks</a></li>
+  <li><a href="http://www.reddit.com/r/Ingress">Ingress subreddit</a></li>
+  <li><a href="http://www.ingress.com/intel">Intel Map</a></li>
+</ul>
+
+<h2 id="bonus-xkcd">Bonus: xkcd</h2>
+
+<p><img src="http://imgs.xkcd.com/comics/location.png" alt="" /></p>
+
+<p>Viva la Resistance!</p>
+
+<p><strong>P.S.</strong> Unfornunately game at closed beta right now. Only for Android devices.
+Hope it will be released very soon and we will see more people near monuments.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Learn Perl]]></title>
+    <link href="http://mishadoff.github.io/blog/learn-perl/"/>
+    <updated>2012-11-12T20:38:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/learn-perl</id>
+    <content type="html"><![CDATA[<p><code>perl
+($current_tasks, $perl) = ($perl, $current_tasks);
+</code></p>
+
+<p>Long time learning <a href="http://www.perl.org/">perl</a> was my desire.
+Now I pushed back for a little some of my activities, and started with perl.</p>
+
+<!-- more -->
+
+<p>The reason for this was the third launch of <a href="https://class.coursera.org/crypto-004/class/index">Stanford Cryptography</a> class on coursera.</p>
+
+<p>Cryptography is a field that I never know, but would like to. I see a lot of practical applications here,
+but, honestly, for me it&rsquo;s more <em>just for fun</em>, than anything else. Isn&rsquo;t it interesting to (de)cypher something?</p>
+
+<p>First two launches was marked as lack of time for me, so I postponed it. By the way, other interesting courses was <em>in progress</em>.
+But now I really hope that I get enough time (<em>and patience</em>) to finish the class and get some good knowledge in this field.</p>
+
+<p><img src="http://imgs.xkcd.com/comics/lisp.jpg" alt="" /></p>
+
+<p>I don&rsquo;t know why, but I choose perl as primary language for doing programming assignments.</p>
+
+<p>First of all, I needed some fast scripting language for general-purpose problems. To choose between perl and python, I choose perl.
+Because of <em>&ldquo;less number of symbols in the name&rdquo;</em>, of course. Second of all, I don&rsquo;t know perl and it&rsquo;s a good reason to learn it <em>in action</em>.
+Also, what is important, I did get only positive reviews from my friends who know perl, but all their stories was like a mistery for me.
+Thought, that only chosen one can learn perl. I want to dispel this myth. To try, at least.</p>
+
+<blockquote>
+  <p>There&rsquo;s more than one way to do it</p>
+
+  <p>&ndash; Perl motto</p>
+</blockquote>
+
+<p>The book that I choose for learning is a classic book (<em>read Perl Bible</em>) from the creator of perl, <a href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>.
+There is fresh, 4th edition, available.</p>
+
+<p><a href="http://shop.oreilly.com/product/9780596004927.do"><img src="http://akamaicovers.oreilly.com/images/9780596004927/cat.gif" alt="" /></a></p>
+
+<p>Hope, I won&rsquo;t stop at the middle of something and get useful tool for <em>everyday problems</em>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[What is greater: e^pi or pi^e?]]></title>
+    <link href="http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/"/>
+    <updated>2012-11-06T16:00:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e</id>
+    <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don&rsquo;t have it?</p>
+
+<!-- more -->
+
+<p>I don&rsquo;t remember the exact origin of this meme, but this situation was almost every time when we played with numbers.</p>
+
+<blockquote>
+  <p>&ndash; Propose a number.</p>
+
+  <p>&ndash; e^π.</p>
+
+  <p>&ndash; Integer, shithead!</p>
+</blockquote>
+
+<p>This even might appear in usual conversations:</p>
+
+<blockquote>
+  <p>&ndash; What is her size?</p>
+
+  <p>&ndash; e^π</p>
+
+  <p>&ndash; So small. I prefer π^e.</p>
+</blockquote>
+
+<p>And a following arguing about <strong>what is greater?</strong> Until we simply compare results using calculator.</p>
+
+<p>Let&rsquo;s see how this problem can be solved without using a calc.</p>
+
+<p><strong>Warning:</strong> Goal of this article not only to show correct solution to the problem, but provide other solutions (<em>even incorrect!</em>) that can convince somebody.</p>
+
+<h2 id="origins">Origins</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Pi">π</a> is the mathematical constant. It&rsquo;s just a number that represents ratio between circle circumference and diameter <code>C/d</code>.
+Approximately, equal to <code>3.1415</code>. <a href="http://webdocs.cs.ualberta.ca/~smillie/Pi10000.html">Get more decimal places for FREE!</a></p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pi_eq_C_over_d.svg/600px-Pi_eq_C_over_d.svg.png" width="300" height="300" /></p>
+
+<p><a href="http://en.wikipedia.org/wiki/E_%28mathematical_constant%29">e</a> is the harder one. If you sum infinite sequence below, you&rsquo;ll get <code>e</code>.
+Approximately, equal to <code>2.7183</code>. <a href="http://apod.nasa.gov/htmltest/gifcity/e.2mil">FREE decimal places without registration!</a></p>
+
+<p><img src="http://upload.wikimedia.org/math/8/0/5/8050a584d4b528e6293bf02c34f6e399.png" alt="" /></p>
+
+<p>I&rsquo;m pretty sure that&rsquo;s more than enough you need to know to solve the problem.</p>
+
+<h2 id="google-it">Google It</h2>
+
+<p><a href="https://www.google.com/#hl=uk&amp;gs_nf=3&amp;tok=WfGdb7x83ofvKLc_85HnIw&amp;cp=5&amp;gs_id=227&amp;xhr=t&amp;q=e^pi+-+pi^e&amp;pf=p&amp;output=search&amp;sclient=psy-ab&amp;oq=e^pi+&amp;gs_l=&amp;pbx=1&amp;bav=on.2,or.r_gc.r_pw.r_qf.&amp;fp=51e735cc3a152124&amp;bpcl=37643589&amp;biw=1280&amp;bih=634">Get answer from google</a></p>
+
+<h2 id="rough-estimate">Rough estimate</h2>
+
+<p><img src="http://i.imgur.com/Jv0W1.jpg" alt="" /></p>
+
+<p>We can use exponent function on integers, so let&rsquo;s just round the numbers.
+<code>3.1415</code> becomes <code>3</code>, <code>2.7183</code> becomes&hellip; <code>3</code> also.</p>
+
+<pre><code>3^3 vs 3^3
+27 = 27
+</code></pre>
+
+<p>They are equal. Wrong answer.</p>
+
+<p>Let&rsquo;s use <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">floor and ceiling</a> functions.</p>
+
+<p>Floor: <code>floor(e) = 2</code>, <code>floor(π) = 3</code></p>
+
+<pre><code>2^3 vs 3^2
+8 &lt; 9
+</code></pre>
+
+<p>Ceiling: <code>ceil(e) = 3</code>, <code>ceil(π) = 4</code></p>
+
+<pre><code>3^4 vs 4^3
+81 &gt; 64
+</code></pre>
+
+<p>Two different results depend on round function that we use. Can&rsquo;t be sure.
+Need another method for verification.</p>
+
+<h2 id="calculus">Calculus</h2>
+
+<p><img src="http://i.imgur.com/Low4R.jpg" alt="" /></p>
+
+<p>This needs basic understanding of <a href="http://en.wikipedia.org/wiki/Logarithm">logarithm</a> and <a href="http://en.wikipedia.org/wiki/Derivative">derivative</a></p>
+
+<pre><code>e^π vs π^e
+</code></pre>
+
+<p>Use logarithm property <code>a &lt; b =&gt; log(a) &lt; log(b)</code>, and take <code>log</code> with base <code>e</code> (<code>ln</code>).
+Honestly, it&rsquo;s not logarithm property, but <a href="http://en.wikipedia.org/wiki/Monotonic_function">monotonic function</a> property. Who cares?</p>
+
+<pre><code>ln(e^π) vs ln(π^e)
+</code></pre>
+
+<p>Use logarithm property <code>log_a(a^b) = b</code></p>
+
+<pre><code>π vs ln(π^e)
+</code></pre>
+
+<p>Use logarithm property <code>log_a(b^c) = c * log_a(b)</code></p>
+
+<pre><code>π vs e * ln(π)
+</code></pre>
+
+<p>Now, people who know value of <code>ln(π)</code> can answer the question. We don&rsquo;t know. Move <code>ln(π)</code> to the left side</p>
+
+<pre><code>π/ln(π) vs e
+</code></pre>
+
+<p>Take a look at expression <code>π/ln(π)</code>. Change <code>π</code> to <code>x</code>. Got <code>x/ln(x)</code>. What is it? It&rsquo;s a function!</p>
+
+<p>Let&rsquo;s find extrema of this function <code>f(x)</code>. Take first derivative.</p>
+
+<pre><code>f'(x) = (ln(x) - 1)/(ln^2(x))
+</code></pre>
+
+<p>We get extrema at the points where derivative equals to zero</p>
+
+<pre><code>(ln(x) - 1)/(ln^2(x)) = 0
+</code></pre>
+
+<p>Ratio number equals to zero if its numerator equals to zero.</p>
+
+<pre><code>ln(x) - 1 = 0
+</code></pre>
+
+<p>Move <code>1</code> to the right</p>
+
+<pre><code>ln(x) = 1
+</code></pre>
+
+<p>Logarithm equals to <code>1</code> if base equals to argument. Therefore</p>
+
+<pre><code>x = e
+</code></pre>
+
+<p>And if you know <code>1/ln(x)</code> behavior, you get that extremum is a minimum of function <code>f(x)</code>.
+Substitute <code>x</code> with <code>e</code></p>
+
+<pre><code>e/ln(e) = e
+</code></pre>
+
+<p>Function minimum is <code>e</code> where <code>x = e</code>. If <code>x = π</code>, due to minimum, function value will be <strong>greater than</strong> <code>e</code>.
+Remember that we do this to get estimate of <code>π/ln(π)</code> which was on the left side of expression <code>π/ln(π) vs e</code> and if its <strong>greater than</strong> e,
+<code>e^π</code> greater than <code>π^e</code>. Huh. Done.</p>
+
+<p><strong>Note:</strong> We skip mathematical proof that extrema <code>x = e</code> is minimum. Not hard to show.</p>
+
+<h2 id="manual-computations">Manual computations</h2>
+
+<p><img src="http://i.imgur.com/tTTCC.jpg" alt="" /></p>
+
+<p>Why don&rsquo;t we perform calculation manually?</p>
+
+<p>Ok, we have <code>π</code>, which is <code>3.1415</code> or <code>22/7</code> its famous simplest ratio approximation.
+On the other side we have <code>e</code>, which is <code>2.7183</code>. But I&rsquo;m not aware of any <code>e</code> approximation.
+Let&rsquo;s create one from the definition of <code>e</code>. Take and sum first 5 elements.</p>
+
+<pre><code>1 + 1 + 1/2 + 1/6 + 1/24 = 65/24
+</code></pre>
+
+<p>Excellent. Now we need just compare <code>2.7183^(22/7)</code> and <code>3.1415^(65/24)</code>. What can be simpler?</p>
+
+<p>Rational exponent can be expanded as nth-root of some power:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/4/3/a43d1edf99a795101aa58ce39cc72f52.png" alt="" /></p>
+
+<p>To take n-th root manually we use a special case of <a href="http://en.wikipedia.org/wiki/Newton%27s_method">Newton&rsquo;s method</a>.
+Just one iteration:</p>
+
+<p><img src="http://upload.wikimedia.org/math/a/2/5/a25d581b7161170fc8ab0dbe74532ecc.png" alt="" /></p>
+
+<p>Estimate for <code>e^π</code>:</p>
+
+<pre><code>2.7183^(22/7)
+sqrt_7(2.7183^22)
+</code></pre>
+
+<p>&hellip;Multiplying 22 times&hellip;</p>
+
+<p>In fact, not all so bad. To calculate <code>a^22</code> we need only 6 multiplications:</p>
+
+<pre><code>a^1 * a^1 = a^2
+a^2 * a^2 = a^4
+a^4 * a^4 = a^8
+a^8 * a^8 = a^16
+a^16 * a^4 = a^20
+a^20 * a^2 = a^22
+</code></pre>
+
+<p>Nth-root we obtain (<em>decimal dropped</em>):</p>
+
+<pre><code>sqrt_7(3585440111)
+</code></pre>
+
+<p>Applying Newton&rsquo;s method. Select closest root:</p>
+
+<pre><code>1^7 = 7 &lt; 3585440111
+2^7 = 128 &lt; 3585440111
+3^7 = 2187 &lt; 3585440111
+...
+23^7 = 3404825447 &lt; 3585440111
+24^7 = 4586471424 &gt; 3585440111
+</code></pre>
+
+<p>Good. Most closest value is <code>23</code>. Then</p>
+
+<pre><code>sqrt_7(3585440111.25)
+sqrt_7(23^7 + 180614664)
+23 + 180614664/(7 * 23^6)
+23 + 180614664/1036251223
+23 + 0.17
+23.17
+</code></pre>
+
+<p>And the same for <code>π^e</code>:</p>
+
+<pre><code>3.1415^(65/24)
+sqrt_24(3.1415^65)
+</code></pre>
+
+<p>This power <code>65</code> much larger than <code>22</code>. But it needs just 7 multiplications.</p>
+
+<p>We can cheat here. We get rough result <code>2 * 10^32</code>. Now we test <code>23^24</code> (<em>most closest root from previous</em>) and its value <code>4.8 * 10^32</code>.
+So, definitely nth-root will be lower than <code>23</code>. Solved.</p>
+
+<p>Don&rsquo;t ask how many basic arithmetic operations we performed. A lot.</p>
+
+<h2 id="liar-approach">Liar approach</h2>
+
+<p>Actually, it&rsquo;s offensive to use the word &ldquo;liar&rdquo;.
+There is a whole technique called <a href="http://en.wikipedia.org/wiki/Mathematical_fallacy">Mathematical Fallacy</a>.
+It based on some illegal math transformation (<em>division by zero, roots from negative numbers, etc.</em>) to get <strong>any desired result</strong>.</p>
+
+<p>This is powerful instrument for mathematicians to show magic for not mathematicians.</p>
+
+<p>Suppose, we don&rsquo;t know exact value of π. Not a problem, but we know <a href="http://en.wikipedia.org/wiki/Complex_number">complex numbers</a>.
+And also the fact that <code>sqrt(-1) = i</code>. Where <code>i</code> is <a href="http://en.wikipedia.org/wiki/Imaginary_unit">imaginary unit</a></p>
+
+<p>We have bad memory and can&rsquo;t remember π value, but we know <a href="http://en.wikipedia.org/wiki/Euler%27s_formula">Euler&rsquo;s formula</a></p>
+
+<pre><code>e^(i * x) = cos(x) + i * sin(x)
+</code></pre>
+
+<p>x is a variable. Take <code>x = 2π</code>:</p>
+
+<pre><code>e^(2π * i) = cos(2π) + i * sin(2π)
+</code></pre>
+
+<p>From the school math course we know: <code>cos(2π) = 1</code>, <code>sin(2π) = 0</code>. Just substitute:</p>
+
+<pre><code>e^(2π * i) = 1 + i * 0
+</code></pre>
+
+<p>Everything multiplied by <code>0</code> is <code>0</code>. Next step:</p>
+
+<pre><code>e^(2π * i) = 1
+</code></pre>
+
+<p><code>a^b</code> gives <code>1</code> if <code>b = 0</code>. That we also know from logarithms.</p>
+
+<pre><code>2π * i = 0
+</code></pre>
+
+<p>It means either <code>2</code> or <code>π</code> or <code>i</code> is zero. <code>2</code> is not zero. <code>i</code> is not zero. <code>π</code> we don&rsquo;t know.
+Ok, that means <code>π</code> equals to <code>0</code>.</p>
+
+<p>Returning to comparing our constants:</p>
+
+<pre><code>e^0 vs 0^e
+</code></pre>
+
+<p>Left term is <code>1</code>, right is <code>0</code>. That means <code>e^π</code> <strong>greater than</strong> <code>π^e</code>.</p>
+
+<p>The trick that we used hard to spot. Look carefully again through the proof.</p>
+
+<p>The fallacy was where we implicitly took a logarithm and said that <code>2π * i = 0</code>.
+The number <code>e^(2π * i)</code> is not real and we not allowed to logarithm it.
+But if person who listens you don&rsquo;t know this fact&hellip; This is an excellent proof.</p>
+
+<h2 id="programming-approach">Programming approach</h2>
+
+<p><img src="http://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" alt="" /></p>
+
+<p>You not allowed to use calculator. Nothing said about programming language.</p>
+
+<p>One-liner in Java:</p>
+
+<p><code>java
+System.out.println(Math.pow(Math.E, Math.PI) &gt; Math.pow(Math.PI, Math.E));
+</code></p>
+
+<h2 id="fun-approach">Fun approach</h2>
+
+<p>Derived from joke:</p>
+
+<blockquote>
+  <p>Scientific lab wasted a lot of money for calculating decimal places of π. They come up with idea, let&rsquo;s π will be equal to 4, to save money.</p>
+
+  <p>&ndash; But why 4 instead of 3?</p>
+
+  <p>&ndash; Because 3 reserved for e.</p>
+</blockquote>
+
+<p>That way <code>e^π</code> equal to <code>81</code>, and <code>π^e</code> equal to <code>64</code>. <code>81 &gt; 64</code>. Simple, concise way.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>There are much more fun about these irrational bastards. Math is fun.</p>
+
+<p>If you were asked question of such type on interview, 99% that interviewer is joking and want to test your reaction.
+Last solution would be good. But if he or she really expect solution with using calculus, nothing to lose.</p>
+]]></content>
+  </entry>
+  
+</feed>
