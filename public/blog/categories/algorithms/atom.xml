@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithms | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-11-26T17:16:28+02:00</updated>
+  <updated>2014-03-28T18:53:44+02:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -19,10 +19,10 @@
     <updated>2013-06-07T01:08:00+03:00</updated>
     <id>http://mishadoff.github.io/blog/fast-factorial</id>
     <content type="html"><![CDATA[<p>Factorial function is simple enough. But there is still some fun about it.
-In <a href="/blog/stirlings-approximation/">Stirling&rsquo;s Approximation</a> article
-we&rsquo;ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
+In <a href="/blog/stirlings-approximation/">Stirling’s Approximation</a> article
+we’ve seen how to calculate good factorial approximation faster than <em>exact</em> value.
 By the way, there is an algorithm to calculate <em>exact</em> value of factorial faster
-than &ldquo;by definition&rdquo;.</p>
+than “by definition”.</p>
 
 <!-- more -->
 
@@ -41,7 +41,7 @@ approach to calculate factorial (<em>transformed to clojure</em>):</p>
 
 <p><em>Note:</em> Since clojure allows using <code>!</code> character in function name, it is good name for factorial.</p>
 
-<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>&hellip;</p>
+<p><code>(! 10)</code> works, <code>(! 20)</code> works, <code>(! 30)</code>…</p>
 
 <p><code>
 &gt; ArithmeticException integer overflow
@@ -63,7 +63,7 @@ If type can not hold the value without losing precision, it automatically extend
 In this case, <code>Long</code> becames <code>BigInteger</code> and all works fine.</p>
 
 <p><code>(! 30)</code> works, <code>(! 300)</code> works, <code>(! 3000)</code> works,
-<code>(! 30000)</code>&hellip;</p>
+<code>(! 30000)</code>…</p>
 
 <p><code>
 &gt; StackOverflowError
@@ -71,7 +71,7 @@ In this case, <code>Long</code> becames <code>BigInteger</code> and all works fi
 
 <p>Yet another overflow.</p>
 
-<p>Well, stack size is limited. We don&rsquo;t need to consume stackframes and
+<p>Well, stack size is limited. We don’t need to consume stackframes and
 will use <code>loop/recur</code> approach.</p>
 
 <p><code>clojure
@@ -88,7 +88,7 @@ It succesfully calculates factorial for 30000,
 and for any other value. Great!</p>
 
 <p>If we look at the factorial as a calculation process, not definition, it means
-&ldquo;product of all numbers between 1 and n&rdquo;. It is very concise for functional programming:</p>
+“product of all numbers between 1 and n”. It is very concise for functional programming:</p>
 
 <p><code>clojure
 (defn ! [n]
@@ -98,7 +98,7 @@ and for any other value. Great!</p>
 <p>Does not consume stack, no number overflow, but works
 ~2 times slower than <code>loop/recur</code> version.</p>
 
-<p>I don&rsquo;t know the reason, but it seems time wasted
+<p>I don’t know the reason, but it seems time wasted
 by <code>reduce</code> for creating intermediate results. So we choose
 previous <code>loop/recur</code> function as baseline factorial.</p>
 
@@ -106,7 +106,7 @@ previous <code>loop/recur</code> function as baseline factorial.</p>
 
 <p>Here is another way to calculate factorial.</p>
 
-<p>Let&rsquo;s consider example <code>12!</code>.</p>
+<p>Let’s consider example <code>12!</code>.</p>
 
 <p>Factorial is a product of numbers <code>12! = 1 * 2 * 3 * ... * 11 * 12</code>.
 Perform prime factorization of each number.
@@ -173,7 +173,7 @@ stackoverflow, but its not critical. It works well for large numbers.</p>
 You performing more calculations than just multiplying numbers.</p>
 </blockquote>
 
-<p>Let&rsquo;s see.</p>
+<p>Let’s see.</p>
 
 <p><code>clojure
 (do (println "== 10 ==")
@@ -252,8 +252,8 @@ how get rid of factorials.</p>
 ln(n!) = n \cdot ln(n) - n + 1
 </script>
 
-<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling&rsquo;s approximation</a>
-or just Stirling&rsquo;s formula.
+<p>It is <a href="http://en.wikipedia.org/wiki/Stirling%27s_approximation">Stirling’s approximation</a>
+or just Stirling’s formula.
 It allows to replace factorials with their approximation.
 If you not interested in math, skip to <a href="#usage">formula usage</a></p>
 
@@ -357,16 +357,16 @@ is very good property of algorithm. By the way, do not scare people with factori
 </ul>
 
 <p>If you try to calculate <code>ln(n!)</code> with most straightforward implementation
-without suitable datatype, you&rsquo;ll likely get the number overflow exception, in spite
+without suitable datatype, you’ll likely get the number overflow exception, in spite
 of result value is not very large. For example for <code>n=100</code> overall result is
-approximately <code>363</code> (<em>Stirling&rsquo;s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
+approximately <code>363</code> (<em>Stirling’s approximation gives 361</em>) where factorial value is $10^{154}$.</p>
 
 <ul>
   <li><strong>Speedup</strong></li>
 </ul>
 
 <p>As far as I know, calculating factorial is <code>O(n)</code> complexity algorithm,
-because we need <code>n</code> multiplications. Using Stirling&rsquo;s approximation we need to calculate $n^n$ term, that can
+because we need <code>n</code> multiplications. Using Stirling’s approximation we need to calculate $n^n$ term, that can
 be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wiki/Exponentiation_by_squaring">clever trick</a></p>
 
 <ul>
@@ -376,16 +376,16 @@ be calculated in <code>O(log n)</code> with <a href="http://en.wikipedia.org/wik
 <p>It can be surprising, but factorials defined not only for positive integers.
 So, for example <code>2.5!</code> is completely valid expression. <code>-6!</code> also. They can be calculated
 using <a href="http://en.wikipedia.org/wiki/Gamma_function">Gamma-functions</a> for real numbers. Unfortunately, they are
-pretty complicated, so people use Stirling&rsquo;s formula instead.</p>
+pretty complicated, so people use Stirling’s formula instead.</p>
 
 <ul>
   <li><strong>Partial applications</strong></li>
 </ul>
 
-<p>Almost everything that using factorials can use Stirling&rsquo;s approximation. Permutations,
-binomial coefficients, fractals, number theory and a huge amount of topics I&rsquo;m not aware of.</p>
+<p>Almost everything that using factorials can use Stirling’s approximation. Permutations,
+binomial coefficients, fractals, number theory and a huge amount of topics I’m not aware of.</p>
 
-<p><strong>P.S.</strong> Stirling&rsquo;s formula presented here is rough enough. More accurate formula is
+<p><strong>P.S.</strong> Stirling’s formula presented here is rough enough. More accurate formula is
 $n! = \sqrt{2\pi} n^{n + 0.5}e^{-n}$.
 Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirling.html">here</a>.</p>
 ]]></content>

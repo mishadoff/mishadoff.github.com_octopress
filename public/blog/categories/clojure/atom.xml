@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-11-26T17:16:28+02:00</updated>
+  <updated>2014-03-28T18:53:44+02:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,219 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Numberto: Expressions]]></title>
+    <link href="http://mishadoff.github.io/blog/numberto-expressions/"/>
+    <updated>2014-03-24T00:25:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/numberto-expressions</id>
+    <content type="html"><![CDATA[<p>Numberto has new features!</p>
+
+<!-- more -->
+
+<p>In <a href="/blog/announcing-numberto">previous post</a>
+I wrote about simple clojure library <a href="https://github.com/mishadoff/numberto">numberto</a> for experiments with numbers.</p>
+
+<p>New version of <em>numberto</em> has a bunch of new features.</p>
+
+<h3 id="expressions">Expressions</h3>
+
+<p>Expressions package provides two functions: <code>eval-infix</code> to evaluate infix expression
+and <code>infix-&gt;prefix</code> to build prefix lisp-style expression from mathematical notation.</p>
+
+<p>Let’s give it alias for simplicity</p>
+
+<p><code>clojure
+(def e eval-infix)
+</code></p>
+
+<p>Evaluate simple math expression</p>
+
+<p><code>clojure
+(e "1+2") =&gt; 3
+</code></p>
+
+<p>or more complex</p>
+
+<p><code>clojure
+(e "1+2*(3-4/2)") =&gt; 3
+</code></p>
+
+<p>handle priorities</p>
+
+<p><code>clojure
+(e "2+2*2") =&gt; 6
+</code></p>
+
+<p>and left/right associativity</p>
+
+<p><code>clojure
+(e "1024/2/2/2/2") =&gt; 64
+(e "2^3^4") =&gt; 2417851639229258349412352N
+</code></p>
+
+<p>Oh, what’s this? Long numbers? Sure, ratios and floats supported as well</p>
+
+<p><code>clojure
+(e "1/3") =&gt; 1/3
+(e "1.1/0.9") =&gt; 1.2222222222222223
+</code></p>
+
+<p>Unary operations</p>
+
+<p><code>clojure
+(e "(-1)^100") =&gt; 1
+</code></p>
+
+<p>functions and symbols</p>
+
+<p><code>clojure
+(e "sin(e) + sqrt(pi)") =&gt; 2.183235141408425
+</code></p>
+
+<p>vararg functions</p>
+
+<p><code>clojure
+(e "sum(1,2,3,sum())/max(1,2)") =&gt; 3
+</code></p>
+
+<p>You can also provide bindings for unknown functions and symbols</p>
+
+<p><code>clojure
+(e "factorial(n)/20"
+   {:bindings
+     {"factorial" #(reduce *' (range 1 (inc %)))
+      "n" 10}})
+=&gt; 181440
+</code></p>
+
+<p>Worth to mention that you can easily redefine existing
+or define your own new unary, binary operations, functions
+and symbols. Just add additional properties to <code>eval-infix</code></p>
+
+<p><code>clojure
+;; return current time in millis
+(e "now()" {:bindings {"now" #(.getTime (java.util.Date.))}}) =&gt; some long number
+;; override priorities
+(e "1+2*3" {:binary-ops {"+" {:function + :priority 100}}}) =&gt; 9
+</code></p>
+
+<p><code>infix-&gt;prefix</code> has exactly the same functionality, but it builds prefix expression instead.</p>
+
+<p><code>clojure
+(infix-&gt;prefix "(1+2)*3-(4/avg(3,5)-sum(1))")
+=&gt;
+"(- (* (+ 1 2) 3) (- (/ 4 (avg 3 5)) (sum 1)))"
+</code></p>
+
+<p>It can be useful if you googled some formula but bored to translate it manually to clojure.</p>
+
+<p>For example, take the <a href="http://en.wikipedia.org/wiki/Simpson%27s_rule">Simpson’s rule</a></p>
+
+<p><img src="http://upload.wikimedia.org/math/1/a/0/1a0fb4456375307fdde8ab85954d95be.png" alt="" /></p>
+
+<p><code>clojure
+(infix-&gt;prefix "(b-a)/6*(f(a)+4*f((a+b)/2)+f(b))")
+=&gt;
+"(* (/ (- b a) 6) (+ (+ (f a) (* 4 (f (/ (+ a b) 2)))) (f b)))"
+</code></p>
+
+<h4 id="implementation">Implementation</h4>
+
+<p>Would be good to try <a href="https://github.com/Engelberg/instaparse">instaparse</a> for such purpose,
+but I decided to use custom implementation using standard
+<a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm">Shunting-yard algorithm</a>.
+Just couple of hacks added to handle unaries and vararg functions.
+Code is awful. If you really want to dig in - run debug mode.</p>
+
+<p><code>clojure
+(binding [*DEBUG* true]
+  (e "1+2"))
+</code></p>
+
+<h4 id="limitations">Limitations</h4>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>No way to define non-prefix unary operation, like “10!” or “</td>
+          <td>10</td>
+          <td>”</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Can not handle simplified math form, like “2x^2 + 3^x + 5”.
+Multiplication sign should be declared explicitly</li>
+  <li>Not able to simplify ops in lisp-style expression. <code>(* (* 1 2) 3)</code> instead of <code>(* 1 2 3)</code></li>
+  <li>False positives handling. Some stupid expressions indicates about error <code>(e "1+")</code>, some not <code>(e "1+()1)</code>. I still working on this, but it is not critical.</li>
+</ul>
+
+<h3 id="solvers">Solvers</h3>
+
+<p>Here is the puzzle:</p>
+
+<blockquote>
+  <p>You have four numbers [3, 4, 5, 6].<br />
+You have four binary operations [+, -, *, /] and parentheses ()</p>
+
+  <p>How to insert operations between numbers to get number 42?</p>
+</blockquote>
+
+<p>Hah, that simple <code>3*4 + 5*6 = 42</code></p>
+
+<p>Ok, get <code>42</code>, but you forced to use one division <code>/</code>.</p>
+
+<p>Not so obvious?</p>
+
+<p><code>
+(solve-insert-ops-num [3 4 5 6] 42) =&gt;
+([42N "3+45-6"] [42N "3/4*56"] [42N "3*4+5*6"])
+</code></p>
+
+<p>If you use <code>solve-insert-ops</code> function it gives all possible values can be obtained by inserting operations between numbers.</p>
+
+<p><code>clojure
+(solve-insert-ops [3 4 5 6]) =&gt; ;; long list
+</code></p>
+
+<p>Default implementation uses 4 basic operations, no parens and no restrictions. Instead, you can override options</p>
+
+<p>to use parens, specify level</p>
+
+<p><code>clojure
+(solve-insert-ops-num [3 4 5 6] 42 {:parens 1}) =&gt;
+([42N "3+45-6"] [42N "(3+45)-6"] [42N "3+(45-6)"]
+ [42N "3/4*56"] [42N "(3/4)*56"] [42N "3/(4/56)"]
+ [42N "3*4+5*6"] [42N "(3*4)+5*6"] [42N "3*4+(5*6)"])
+</code></p>
+
+<p>limit some operations</p>
+
+<p><code>clojure
+(solve-insert-ops-num [3 4 5 6] 42 {:rules [[:max "*" 1]]}) =&gt;
+([42N "3+45-6"] [42N "3/4*56"])
+</code></p>
+
+<p><code>:max</code>, <code>:min</code>, <code>:max-in-a-row</code>, <code>:min-in-a-row</code> options are supported.</p>
+
+<p>Add new operations (supported by expressions package)</p>
+
+<p><code>clojure
+(solve-insert-ops-num [3 4 5 6] 80
+                      {:ops ["+" "-" "*" "/" "^"]
+                       :rules [[:max "^" 1]]}) =&gt;
+([80N "3^4+5-6"])
+</code></p>
+
+<p>Keep in mind, always limit time consuming operations (<em>like</em> <code>^</code>) as it builds all possible permutations and you can wait your answer forever.</p>
+
+<p>There are also couple of <em>new</em> interesting things, like
+getting digits of <code>pi</code>, <code>e</code>, <code>sqrt(n)</code>, ratio numbers up to desired level and other. <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">Check it out</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 022]]></title>
@@ -68,7 +281,7 @@ So, COLIN would obtain a score of 938 x 53 = 49714.</p>
   (reduce + (map #(- (int %) 64) string)))
 </code></p>
 
-<p>Convert each character to its positional number in alphabet. For example the character &ldquo;A&rdquo; (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means &ldquo;A&rdquo; is a first letter in alphabet and so on.</p>
+<p>Convert each character to its positional number in alphabet. For example the character “A” (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means “A” is a first letter in alphabet and so on.</p>
 
 <p>To track positions in list we use
 <a href="http://clojuredocs.org/clojure_core/clojure.core/map-indexed">map-indexed</a>
@@ -133,7 +346,7 @@ amicable pair and each of a and b are called amicable numbers.</p>
 The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
 </blockquote>
 
-<p>We can do it <em>bruteforcely</em>, but we won&rsquo;t.</p>
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
 
 <p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
 
@@ -261,7 +474,7 @@ Pretty print for long numbers</li>
 
 <!-- more -->
 
-<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
+<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today’s problem is a Brainfuck Interpreter.</p>
 
 <p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
 
@@ -276,7 +489,7 @@ Pretty print for long numbers</li>
   <li><code>]</code> finish loop</li>
 </ul>
 
-<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
+<p>That’s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
 
 <h3 id="tweet">Tweet</h3>
 
@@ -292,7 +505,7 @@ Pretty print for long numbers</li>
 
 <p>Exactly 2 tweets.</p>
 
-<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
+<h3 id="sugared-version">“Sugared” version</h3>
 
 <p>Translating to more readable code:</p>
 
@@ -320,7 +533,7 @@ Pretty print for long numbers</li>
         (swap! pc inc)))))
 </code></p>
 
-<p>So, what&rsquo;s happening there?</p>
+<p>So, what’s happening there?</p>
 
 <p>Function arguments are parameters of our tape and brainfuck program.</p>
 
@@ -349,7 +562,7 @@ string - program, written in brainfuck.</p>
 
 <h4 id="testing">Testing</h4>
 
-<p>Print &ldquo;Hello, world&rdquo;</p>
+<p>Print “Hello, world”</p>
 
 <p><code>clojure
 (parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
@@ -370,7 +583,7 @@ this version (<em>for the sake of small size!</em>)</p>
 
 <p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
 
-<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
+<p><strong>P.S.</strong> This version is not “fully-featured” brainfuck interpreter.</p>
 
 <ul>
   <li>It does not work for inifinite tape</li>
@@ -381,57 +594,6 @@ this version (<em>for the sake of small size!</em>)</p>
 </ul>
 
 <p>But, you are welcome to improve it!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 020]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-020/"/>
-    <updated>2013-07-21T13:39:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-020</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Find the sum of the digits in the number 100!</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=20">http://projecteuler.net/problem=20</a></p>
-
-<!-- more -->
-
-<p>First of all we need to calculate factorial.
-Without integer overflows, stack overflows and other caveats.</p>
-
-<p>Previous article <a href="/blog/fast-factorial/">Fast Factorial</a> has working solution
-that we might use.</p>
-
-<p><code>
-(defn ! [n]
-  (reduce *' (range 1 (inc n))))
-</code></p>
-
-<p>Now, calculate the sum of digits, the same function that we used in
-<a href="/blog/clojure-euler-problem-008/">Clojure Euler: Problem 008</a> and
-<a href="/blog/clojure-euler-problem-016/">Clojure Euler: Problem 016</a></p>
-
-<p><code>
-(defn sum-of-digits [n]
-  (reduce + (map #(- (int %) 48) (seq (str n)))))
-</code></p>
-
-<p>And the final line</p>
-
-<p><code>
-(sum-of-digits (! 100))
-</code></p>
-
-<p>Simple enough, huh?</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem020.clj">Code</a></p>
-
-<p><strong>P.S.</strong> The functions <code>sum-of-digits</code>, <code>count-digits</code> and similar used often
-and look very ugly, so I decided to create a separate set of functions (<em>library?</em>)
-which I can refer. It should be a set of common mathematic functions, including
-different sequences, sums, converters, interesting numbers. You might use it too.
-Welcome to <a href="https://github.com/mishadoff/numberto/">numberto</a>!</p>
 ]]></content>
   </entry>
   

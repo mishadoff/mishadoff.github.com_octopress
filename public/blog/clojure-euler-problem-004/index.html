@@ -134,7 +134,7 @@ MathJax.Hub.Config({
 <!-- more -->
 
 <p><a href="http://en.wikipedia.org/wiki/Palindrome">Palindrome</a> is very interesting thing.
-It&rsquo;s a sequence (of letters, numbers, words) that reads the same backwards. Examples: <em>MADAM</em>, <em>DID</em>, <em>2002</em>.
+It’s a sequence (of letters, numbers, words) that reads the same backwards. Examples: <em>MADAM</em>, <em>DID</em>, <em>2002</em>.
 There are even some fun to compose palindrome sentences, like <code>He Goddam Mad Dog, eh?</code></p>
 
 <p>Function to check if sequence is palindromic is very simple.
@@ -186,8 +186,8 @@ Overall complexity is also <code>O(n)</code>.</p>
 <p>We just generate all combinations of 3-digit numbers multiplication, filter palindromes, and find maximum. Done.</p>
 
 <p>This technique (<em>wow, is this technique?</em>) called <a href="http://en.wikipedia.org/wiki/Brute-force_search">brute-force</a>.
-It&rsquo;s very consumable, because test each possible combination.
-But it&rsquo;s common algorithm to such sort of problems.
+It’s very consumable, because test each possible combination.
+But it’s common algorithm to such sort of problems.
 There are lot of clever brute force optimization to reduce set of possible values, but it is still brute force.
 As you see, in the code above, we also used small optimization.
 We iterate first multiplicand <code>i</code> from <code>100</code> to <code>1000</code> to cover all 3-digits numbers, and <code>j</code> iterated not from <code>100</code> but from <code>i</code>.
@@ -196,16 +196,16 @@ Roughly, this reduces number of iterations by factor of 2.
 Obviously, there are other optimizations, but they are not so value and reduces readability
 (<em>If first number ends with 5 and second is even, then result ends with 0, and we skip this because in palindromic value 0 should be at the beginning</em>).</p>
 
-<p><strong>Congratulations!</strong> 4 problems solved. And we know &ldquo;so much&rdquo; about clojure.</p>
+<p><strong>Congratulations!</strong> 4 problems solved. And we know “so much” about clojure.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem004.clj">GitHub</a>.</p>
 
 <p><strong>P.S.</strong> We create two separate functions for palindromes: one test sequence for palindrome,
-second test number for palindrome and reuse first implementation. Some can say it&rsquo;s not good,
+second test number for palindrome and reuse first implementation. Some can say it’s not good,
 because we write functionality that we not needed (function <code>palindrome?</code>).
 Particularly, I agree. We could hide <code>palindrome?</code> implementation inside <code>palindrome-number?</code> or make it private.
-But we haven&rsquo;t did this and have function <code>palindrome?</code> that we can reuse in other problems. Also it shows important concept,
-how we can reuse existing implementations to get new functionality. And again: maybe there is (<em>I&rsquo;m sure there is</em>) another solution
+But we haven’t did this and have function <code>palindrome?</code> that we can reuse in other problems. Also it shows important concept,
+how we can reuse existing implementations to get new functionality. And again: maybe there is (<em>I’m sure there is</em>) another solution
 which is more clever than bruteforce. But this solution works only <code>0.2</code> sec. on my machine, so this is ok.</p>
 </div>
 
@@ -278,6 +278,10 @@ which is more clever than bruteforce. But this solution works only <code>0.2</co
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/programming-digest-4/">Programming Digest 4</a>
       </li>
     
@@ -291,10 +295,6 @@ which is more clever than bruteforce. But this solution works only <code>0.2</co
     
       <li class="post">
         <a href="/blog/announcing-numberto/">Announcing numberto</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
       </li>
     
   </ul>
@@ -339,7 +339,7 @@ which is more clever than bruteforce. But this solution works only <code>0.2</co
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - mishadoff -
+  Copyright &copy; 2014 - mishadoff -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

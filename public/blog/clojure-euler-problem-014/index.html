@@ -189,19 +189,19 @@ for all numbers in range <code>[1..1000000]</code>, find maximum and output its 
 <p>The time of caclulation is slightly greater than <strong>one minute</strong> on my machine,
 and I have no idea how to solve it another way.</p>
 
-<p>I am sure there is a better algorithm than mine. But I don&rsquo;t know it.
+<p>I am sure there is a better algorithm than mine. But I don’t know it.
 What I know is try to re-read problem definion if you are stuck. Especially that part:</p>
 
 <blockquote>
   <p>13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</p>
 </blockquote>
 
-<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,&hellip;</p>
+<p>So, for <code>13</code> the chain length is <code>10</code>, for <code>40</code> is <code>9</code>, for <code>20</code> is <code>8</code>,…</p>
 
 <p>Got it?</p>
 
 <p>Each time we calculate length we perform <em>repeated calculation</em>. If we know
-chain length of <code>13</code>, and whole its path to <code>1</code> we don&rsquo;t need to calculate length
+chain length of <code>13</code>, and whole its path to <code>1</code> we don’t need to calculate length
 for <code>40</code>, <code>20</code> and so on.</p>
 
 <p>So the optimization is <em>somehow to cache the results</em>. But at first we need to rewrite
@@ -224,10 +224,10 @@ almost exactly follows the problem definition. It is easy to understand.</p>
 <a href="http://en.wikipedia.org/wiki/Tail_call">tail-recursive</a> so we can
 have troubles. Do not think about it unless we actually have them.</p>
 
-<p>For the sake of fun let&rsquo;s run this function instead of previous to
+<p>For the sake of fun let’s run this function instead of previous to
 obtain the results.</p>
 
-<p><strong>20 seconds</strong>, it is great. I even don&rsquo;t think that
+<p><strong>20 seconds</strong>, it is great. I even don’t think that
 this simple recursive function gives such boost in performance.</p>
 
 <p>One little tweak in result function:</p>
@@ -242,14 +242,14 @@ this simple recursive function gives such boost in performance.</p>
 
 <p>And we have <strong>~12 seconds</strong>.</p>
 
-<p>Unexpected &ldquo;The End&rdquo;. Yeah, I love The Doors.</p>
+<p>Unexpected “The End”. Yeah, I love The Doors.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem014.clj">code-code</a></p>
 
 <p><strong>P.S.</strong> I really wanted to explain technique called
 <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> and
 simple clojure function <a href="http://clojuredocs.org/clojure_core/clojure.core/memoize">memoize</a>,
-but seems that caching result doesn&rsquo;t have much sense here because
+but seems that caching result doesn’t have much sense here because
 12 seconds is acceptable. We will have chance to introduce
 memoization later, where it will be more useful. By the way, I am <em>lazy</em>.</p>
 </div>
@@ -323,6 +323,10 @@ memoization later, where it will be more useful. By the way, I am <em>lazy</em>.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/programming-digest-4/">Programming Digest 4</a>
       </li>
     
@@ -336,10 +340,6 @@ memoization later, where it will be more useful. By the way, I am <em>lazy</em>.
     
       <li class="post">
         <a href="/blog/announcing-numberto/">Announcing numberto</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
       </li>
     
   </ul>
@@ -384,7 +384,7 @@ memoization later, where it will be more useful. By the way, I am <em>lazy</em>.
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - mishadoff -
+  Copyright &copy; 2014 - mishadoff -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

@@ -126,7 +126,7 @@ MathJax.Hub.Config({
 </blockquote>
 
 <blockquote>
-  <p>1, 2, 3, 5, 8, 13, 21, 34, 55, 89, &hellip;</p>
+  <p>1, 2, 3, 5, 8, 13, 21, 34, 55, 89, …</p>
 </blockquote>
 
 <blockquote>
@@ -156,11 +156,11 @@ MathJax.Hub.Config({
 </span><span class="line">    <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">fib</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">))</span> <span class="p">(</span><span class="nf">fib</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>It&rsquo;s probably not the best implementation of Fibonacci numbers, but it shows the idea.
+<p>It’s probably not the best implementation of Fibonacci numbers, but it shows the idea.
 We can check that it works correctly by calling <code>(map fib (range 10))</code> that produces sequence <code>(1 1 2 3 5 8 13 21 34 55)</code>.
 Problem appears when we try to calculate <code>40th</code> number. Calling that function on my machine takes ~20 seconds. Not good.</p>
 
-<p>The reason of such bad performance is repeated calculations. Let&rsquo;s see how expanded call <code>(fib 40)</code>.
+<p>The reason of such bad performance is repeated calculations. Let’s see how expanded call <code>(fib 40)</code>.
 It produces <code>(+ (fib 39) (fib 38))</code>, where <code>(fib 39)</code> expanded to <code>(+ (fib 38) (fib 37))</code> and <code>(fib 38)</code> to <code>(+ (fib 37) (fib 36))</code> etc.
 The growth with factor of 2. And with these two expansions we calculated 2 values that we calculated before, <code>37th</code> and <code>38th</code>.</p>
 
@@ -180,12 +180,12 @@ The growth with factor of 2. And with these two expansions we calculated 2 value
 </span><span class="line">   <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">]))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Let&rsquo;s see what&rsquo;s new clojure features we used:</p>
+<p>Let’s see what’s new clojure features we used:</p>
 
 <ol>
-  <li>We define function inside function. Why we did this? All is because we used &ldquo;helper&rdquo;-function for accumulate current Fibonacci sequence.
-It used only in function <code>fib-seq</code>, so we don&rsquo;t need to define it at the root level. It closed for using for everyone, except <code>fib-seq</code>.</li>
-  <li>Next thing we define anonymous function by keyword <code>fn</code>. Basically it&rsquo;s the right thing to define functions. <code>defn</code> just shortcut for <code>(def (fn [] ))</code>, and..</li>
+  <li>We define function inside function. Why we did this? All is because we used “helper”-function for accumulate current Fibonacci sequence.
+It used only in function <code>fib-seq</code>, so we don’t need to define it at the root level. It closed for using for everyone, except <code>fib-seq</code>.</li>
+  <li>Next thing we define anonymous function by keyword <code>fn</code>. Basically it’s the right thing to define functions. <code>defn</code> just shortcut for <code>(def (fn [] ))</code>, and..</li>
   <li>..we pass default (initialization) values for helper function <code>1 1 2 [1 1]</code>.</li>
   <li>I skip logic of helper function here. It is pretty straightforward, just notice two new clojure functions that we used.</li>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/cond">cond</a> - similar to switch-case structure in C-style languages.</li>
@@ -195,9 +195,9 @@ insert new value in different places. For our case we using vector, so we add th
 
 <p>Now we can call <code>(fib-seq 40)</code> and it calculates all 40 values very quickly. Nice.</p>
 
-<p>But let&rsquo;s return to problem description <em>&rdquo;&hellip; whose values do not exceed 4 million&hellip;&rdquo;</em>.
+<p>But let’s return to problem description <em>”… whose values do not exceed 4 million…”</em>.
 How do we know how many values we need to take that do not exceed 4 million? 50? 100? 112?
-This is drawback of our <code>fib-seq</code> function and we need to rewrite it&hellip;or take a look at clojure mechanism called lazy sequences.</p>
+This is drawback of our <code>fib-seq</code> function and we need to rewrite it…or take a look at clojure mechanism called lazy sequences.</p>
 
 <h3 id="lazy-sequences">Lazy sequences</h3>
 
@@ -213,7 +213,7 @@ There are way to define lazy sequences by using macro <code>lazy-seq</code>. But
 It takes function <code>f</code>, and initial value <code>a</code>, and produces lazy sequence <code>(a, f(a), f(f(a)),...)</code>.
 For example lazy sequence of natural numbers we can define as following: <code>(iterate inc 1)</code>. Then we can play with this sequence as we want.</p>
 
-<p><strong>WARNING:</strong> <em>Never call lazy sequence without limiting functions. It tries to evaluate all, and&hellip; You know, never call.</em></p>
+<p><strong>WARNING:</strong> <em>Never call lazy sequence without limiting functions. It tries to evaluate all, and… You know, never call.</em></p>
 
 <p>Now, we have a little understanding what lazy sequence is, and can implement Fibonacci lazy sequence.</p>
 
@@ -223,7 +223,7 @@ For example lazy sequence of natural numbers we can define as following: <code>(
 </span><span class="line">  <span class="p">(</span><span class="nb">map first </span><span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="k">fn </span><span class="p">[[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]]</span> <span class="p">[</span><span class="nv">b</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)])</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">])))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Ok, What&rsquo;s here:</p>
+<p>Ok, What’s here:</p>
 
 <ol>
   <li>Read from the end. We apply anonymous function to vector <code>[1 1]</code> and produce lazy sequence with <code>iterate</code>.</li>
@@ -232,7 +232,7 @@ Inner brackets indicate that we take one parameter to function as argument.
 This parameter is a sequence and we map to <code>a</code> and <code>b</code>, first and second elements in that sequence.
 For example for first call, <code>a</code> bound to <code>1</code>, <code>b</code> bound to <code>1</code>.</li>
   <li>Our iterate produces lazy sequence with following format <code>([1 1] [1 2] [2 3] [3 5] [5 8] ...)</code>.
-Our Fibonacci sequence is just first value of each pair, and we using&hellip;</li>
+Our Fibonacci sequence is just first value of each pair, and we using…</li>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/map">map</a> - takes function and applies it to each element of collection.
 This function also produces lazy sequence.</li>
   <li>To gather all in one we get lazy sequence that represent Fibonacci numbers <code>(1 1 2 3 5 8 ...)</code>.</li>
@@ -250,7 +250,7 @@ This function also produces lazy sequence.</li>
 
 <ol>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/take-while">take-while</a> - takes values from sequence (includes lazy sequences) while condition is true.</li>
-  <li><code>#(&lt; % 4000000)</code> - <code>#()</code> it&rsquo;s <a href="http://en.wikipedia.org/wiki/Tautology_%28rhetoric%29">shorter shortcut</a> for anonymous function.
+  <li><code>#(&lt; % 4000000)</code> - <code>#()</code> it’s <a href="http://en.wikipedia.org/wiki/Tautology_%28rhetoric%29">shorter shortcut</a> for anonymous function.
 In our case predicate return true if value lower than 4 millions. Exacly what we need.</li>
   <li><a href="http://clojuredocs.org/clojure_core/clojure.core/filter">filter</a> - return all values for which predicate return true.
 Instead of take-while it proceed all sequence till the end, and, obviously, do not accept lazy sequences.</li>
@@ -269,7 +269,7 @@ Note: this is common way to append function name with question mark to indicate 
 <code>clojure-contrib.lazy-seqs</code> library contains method <code>(fibs)</code> that also produces lazy Fibonacci sequence.
 And interestingly it implemented the same way as we did.
 There are two more lazy sequences: prime numbers and powers of 2.
-It&rsquo;s good practice to use existing functionality and not invent vehicle.</p>
+It’s good practice to use existing functionality and not invent vehicle.</p>
 
 <p>Have fun!</p>
 </div>
@@ -343,6 +343,10 @@ It&rsquo;s good practice to use existing functionality and not invent vehicle.</
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/programming-digest-4/">Programming Digest 4</a>
       </li>
     
@@ -356,10 +360,6 @@ It&rsquo;s good practice to use existing functionality and not invent vehicle.</
     
       <li class="post">
         <a href="/blog/announcing-numberto/">Announcing numberto</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
       </li>
     
   </ul>
@@ -404,7 +404,7 @@ It&rsquo;s good practice to use existing functionality and not invent vehicle.</
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - mishadoff -
+  Copyright &copy; 2014 - mishadoff -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

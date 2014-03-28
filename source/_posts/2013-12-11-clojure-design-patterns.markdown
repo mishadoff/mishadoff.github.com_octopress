@@ -7,9 +7,7 @@ categories: [clojure, programming, java, story]
 published: false
 ---
 
-Story about classic [Design Patterns](http://en.wikipedia.org/wiki/Design_Patterns)
-with attempts to implement them in Clojure.
-
+Quick overview of the classic [Design Patterns](http://en.wikipedia.org/wiki/Design_Patterns) in Clojure
 <!-- more -->
 
 **Disclaimer:** *Most patterns are easy to implement because
@@ -17,152 +15,81 @@ we use dynamic typing, functional programming and, of course,
 Clojure. Some of them look wrong and ugly. It's okay.
 All characters are fake, coincidences are accidental.*
 
----
-
-# Angel of Dev
-
----  
-
-*or how to write social network for cats in 23 weeks*
-
-![PICTURE: ANGEL OF DEV]()
-
 > Our programming language is fucked up.
 > That's why we need design patterns.
 > -- Anonymous
 
-## Intro
+### Intro
 
-**Pedro Veel** was modest Java Software Engineer in a
-Leading European IT Service Provider company
-called **Serpent Hill & R.E.E.**
-The latest project he was working on, bank trading platform for
-a large investment bank **Weats Inc.**, crashed due to
-float numbers rounding error in production. 
-Company has been bankrupted. 
-Obviously, whole development team has been fired.
+Two modest programmers **Pedro Veel** and **Eve Dopler**
+found a 23 software engineering problems and try to apply design patterns. Arguing and Coding.
 
-Pedro didn't regret too much about his job. He found 
-that rounding bug earlier, and tried to prove its importance,
-but QA lead decided that non-localized labels for Latin
-language were the highest priority.
+### Command
 
-In a month he found a new job: in a startup company,
-that got investments from business angel **Sven Tori**
-few days ago for developing *"social network for cats"*.
-They really tried to solve real-world problem,
-and Pedro felt great about it. Moreover, he was only one
-developer in the startup and could choose programming language.
-Long time he wanted to try clojure in production.
+Leading IT service provider **"Serpent Hill and R.E.E"** acquired new project for USA customer. First delivery is a register, login and logout functionality.
 
-Current team consists of four members:
-project manager **Rage Man**, team lead **Mate Dale**,
-beautiful receptionist **Terry P.** and our hero **Pedro**.
+*Pedro:* Oh, that's easy. You just need a Command interface...  
 
-## Season I. Behavioral
+``` java
+interface Command {
+  void execute();
+}
+```
 
-Development started.
+*Pedro:* Every action should implement it.  
 
-*Dale:* Pedro, we have to show investor our first demo on Friday.  
-*Pedro:* What needs to be done?  
-*Dale:* I suppose, registration, login and logout functionality.
-Let me verify with Rage Man, but start working now.  
-*Pedro:* Ok.  
+``` java
+public class LoginCommand implements Command {
 
-Pedro never started new project alone (plus *clojure!*) and didn't know how to begin.
-He googled the words *lein*, *ring*, *emacs* and started to code.
+    private String user;
+    private String password;
 
-Googling login/logout functionality gives him a comment on forum for necromancers:
-*"If you need dev help, summon Angel of Dev. Spell text is under the cut."*.
+    public LoginCommand(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
 
-*Pedro:* What a bullshit.  
+    @Override
+    public void execute() {
+        DB.login(user, password);
+    }
+}
+```
 
-Four days gone and Dale came to Pedro.
+``` java
+public class LogoutCommand implements Command {
 
-*Dale:* Hi, Pedro. Yesterday we were at the theater with Terry P, I think I like her.  
-*Pedro:* Great...  
-*Dale:* What about our Friday's delivery?  
-*Pedro:* Emm...  
+    private String user;
 
-Nothing was done. But Pedro has one day left.
+    public LogoutCommand(String user) {
+        this.user = user;
+    }
 
-*Pedro:* Will be in time.  
-*Dale:* Excellent! Did I tell you are a great developer?  
-*Pedro:* No.  
-*Dale:* You are a great developer!  
-*Pedro:* Thanks.  
+    @Override
+    public void execute() {
+        DB.logout(user);
+    }
+}
+```
 
-Dale left the room.
+*Pedro:* Pretty straightforward. Usage is also simple.  
 
-Pedro was frustrated. He opened browser history and found link to the 
-necromancers' forum. Looked at the empty room and yelled:
+``` java
+(new LoginCommand("Johnny", "qwerty")).execute();
+(new LogoutCommand("Johnny")).execute();
+```
 
-> Angel of Dev, while true I summon you!
-
-Blue screen of death appeared on the monitor.
-Some strange being climb out to the table.
-
-*Pedro:* Who are you?  
-*Vaine:* Hi, my name is Vaine. I'm an Angel of Dev.  
-*Pedro:* An angel?  
-*Vaine:* Not an angel, actually. I help developers. Do you need help?  
-*Pedro:* I need to implement a register/login/logout functionality.  
-*Vaine:* As easy as pie! Just use `Command` design pattern.  
-
-### Episode 1. Command
-
-The phrase "design pattern" woke another being.
-
-*Niccy:* What I hear? Design Patterns?  
-*Pedro:* Who are you?  
-*Niccy:* I am Niccy, Angel of Dev.  
-*Pedro:* Another Angel?  
-*Niccy:* Correctamundo.  
-*Vaine:* Don't listen to him. He always breaks someone's concentration.
-Listen, first of all, you must create interface `Command` to
-**encapsulate information needed to call a method at a later time**,
-like in `java.lang.Runnable`.  
-*Niccy:* Hahaha! Allow me to retort, Vaine, what information do you need to call a method?  
-*Vaine:* Object and method name  
-*Niccy:* Or just a *function* in FP world. And a way to apply it.  
-
-Niccy showed a piece of code to Pedro.
+*Eve:* 
 
 ``` clojure
 (defn execute-command [command]
   (command))
 ```
 
-*Niccy:* This is how abstract command pattern looks like in Clojure.
-`command` is a function and `(command)` is the function call.  
-*Pedro:* That simple.  
-*Vaine:* But it does not support parameters for command.  
-*Niccy:* Sure it does. Just wrap function with arguments to
-anonymous no-arg function.  
-
 ``` clojure
-(execute-command #(register "user" "password" "email"))
-(execute-command #(login "user" "password"))
-(execute-command #(logout "user"))
+(execute-command #(db/login "Johnny" "qwerty"))
+(execute-command #(db/logout "Johnny"))
 ```
-
-*Vaine:* No one understands this hash sign.  
-*Niccy:* Use varargs.  
-
-``` clojure
-(defn execute-command [command & args]
-  (apply command args))
-
-(execute-command register "user" "password" "email")
-(execute-command login "user" "password")
-(execute-command logout "user")
-```
-
-*Niccy:* With that approach you don't even need `execute-command` function.  
-*Vaine:* How to support history?  
-*Niccy:* Very easy. We setting up a list to save our commands.  
-*Vaine:* With concurrent modification?  
-*Niccy:* Of course.  
 
 ``` clojure
 (def history (atom [])) 
@@ -1578,7 +1505,51 @@ venture qa team. They select candidates based on their testing.
 
 ### Episode 10: Chain of responsibility
 
-Logging?
+*Rage Man:* Pedro, there are some problems occured during testing.
+*Pedro:* What problems?
+*Rage Man:* Something critical. I don't know the details, contact directly to their QA.
+*Rage Man sent skype contacts*
+
+;; TODO stupid qa names
+
+*Pedro:* Hi, QA1.
+*QA1:* We cannot login.
+*Pedro:* Did you registered?
+*QA1:* No, we  have already registered account, Rage Man gave us.
+*Pedro:* Could you give me this account, I'll try on my side.
+*QA1:* Not sure if it is allowed, let me check.
+*Pedro:* Come on. I trying to solve problem.
+*QA1:* We will ask Rage Man directly.
+*Pedro:* Oh...
+*Three hours gone*
+*QA1:* He allowed. Here is the credentials: username/password = rageman/123
+*Pedro:* Oh my god, I should add a password strength indicator... later.
+
+Pedro succesfully logged in. All works fine.
+
+*Pedro:* I succesfully logged in. All works fine.
+*Narrator:* Sorry, Pedro. But I am a Narrator, don't repeat my words.
+*Pedro:* Ok.
+*QA1:* What did you do?
+*Pedro:* Just entered username and password you gave.
+*QA1:* Interesting, but we can't to login.
+*Pedro:* I will take a look a logs.
+
+Suddenly Pedro remebered there are no logs.
+His "TODO add logging" is still a TODO.
+
+;; Thinking
+;; Dale comes, Terry Story
+;; Dale logging
+
+;; Vaine Niccy battle
+
+``` clojure
+(defn chain [[f & fs] & args]
+  (when f
+    (apply f args)
+    (recur fs args)))
+```
 
 ### Episode 11: Interpretator
 
@@ -1687,9 +1658,9 @@ Oh, sorry it must be mutable.
 With the lack of imagination all characters
 and names are anagrams of some words.
 
-**Pedro Veel** - Developer  
+**Pedro Veel** - Developer
+**Eve Dopler** - Developer
 **Serpent Hill & R.E.E.** - Enterprise Hell  
-**Weats Inc.** - Waste Inc.  
 **Sven Tori** - Investor  
 **Mate Dale** - Team Lead  
 **Rage Man** - Manager  

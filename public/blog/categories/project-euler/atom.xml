@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-11-26T17:16:28+02:00</updated>
+  <updated>2014-03-28T18:53:44+02:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -68,7 +68,7 @@ So, COLIN would obtain a score of 938 x 53 = 49714.</p>
   (reduce + (map #(- (int %) 64) string)))
 </code></p>
 
-<p>Convert each character to its positional number in alphabet. For example the character &ldquo;A&rdquo; (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means &ldquo;A&rdquo; is a first letter in alphabet and so on.</p>
+<p>Convert each character to its positional number in alphabet. For example the character “A” (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means “A” is a first letter in alphabet and so on.</p>
 
 <p>To track positions in list we use
 <a href="http://clojuredocs.org/clojure_core/clojure.core/map-indexed">map-indexed</a>
@@ -133,7 +133,7 @@ amicable pair and each of a and b are called amicable numbers.</p>
 The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
 </blockquote>
 
-<p>We can do it <em>bruteforcely</em>, but we won&rsquo;t.</p>
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
 
 <p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
 
@@ -417,7 +417,7 @@ sum <code>8 + 2 = 10</code>.</p>
 
 <p>Repeat the same action until we get one number, which will be solution.</p>
 
-<p>Let&rsquo;s transform this idea to clojure.</p>
+<p>Let’s transform this idea to clojure.</p>
 
 <p>First of all we need datastructure to represent triangle.
 List of lists would be good:</p>
@@ -453,7 +453,7 @@ But we need only one number.</p>
 (reduce step-max (reverse triangle))
 </code></p>
 
-<p>That&rsquo;s it.</p>
+<p>That’s it.</p>
 
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
 

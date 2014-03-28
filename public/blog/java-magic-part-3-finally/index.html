@@ -164,12 +164,12 @@ This is <em>abnormal</em>.</p>
 </span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Line 3&quot;</span><span class="o">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Sure, because it&rsquo;s linear flow. Nothing can break&hellip;<strong>BANG</strong>&hellip;<code>Electricity unavailable. Program stopped.</code></p>
+<p>Sure, because it’s linear flow. Nothing can break…<strong>BANG</strong>…<code>Electricity unavailable. Program stopped.</code></p>
 
-<p>What about this? It&rsquo;s also abnormal program execution, and we can&rsquo;t guarantee anything for 100%.
+<p>What about this? It’s also abnormal program execution, and we can’t guarantee anything for 100%.
 In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> button on your computer or whatever.</p>
 
-<p>That&rsquo;s why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
+<p>That’s why, we are talking about <em>normal</em> program execution. Only <em>normal</em>.</p>
 
 <blockquote>
   <p>I said yes? I meant no!</p>
@@ -195,7 +195,7 @@ In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> b
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Will be the line <em>&ldquo;Let me run&rdquo;</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
+<p>Will be the line <em>“Let me run”</em> printed? Maybe yes, if printing error to standard output appear. Almost always the answer is no.</p>
 
 <p>In that case, there are no difference between simple statement and finally block. None of them will be executed, throw this example away.</p>
 
@@ -203,14 +203,14 @@ In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> b
 
 <p>What about threads? We know that execution flow controlled by threads and they can be interrupted.</p>
 
-<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn&rsquo;t executed.</p>
+<p>Assume that we have thread that perform some work, and other thread kills first one right before finally block. Finally wasn’t executed.</p>
 
 <p>Assume that we have deadlock between two threads, right before finally line. The same thing.</p>
 
 <p>From the <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html">same tutorial</a></p>
 
 <blockquote>
-  <p>&hellip;if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p>
+  <p>…if the thread executing the try or catch code is interrupted or killed, the finally block may not execute even though the application as a whole continues.</p>
 </blockquote>
 
 <p>So, we can treat thread like a program, and make one effective rule:</p>
@@ -259,8 +259,8 @@ In fact, this is the same as <code>System.exit(1)</code> or <code>reset</code> b
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The result is <code>1</code> again. And it&rsquo;s a problem. We just lose the exception.
-Such issue known as <em>exception swallowing</em>. It is very dangerous, because client&rsquo;s code expect either exception or some value, but it always get only value.</p>
+<p>The result is <code>1</code> again. And it’s a problem. We just lose the exception.
+Such issue known as <em>exception swallowing</em>. It is very dangerous, because client’s code expect either exception or some value, but it always get only value.</p>
 
 <p>One more less imaginary example.</p>
 
@@ -281,7 +281,7 @@ Such issue known as <em>exception swallowing</em>. It is very dangerous, because
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The logic behind <code>finally</code> is to have some default value, and our <code>deposit</code> method throws the <code>DAOException</code> where client code is
-responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string &ldquo;OK&rdquo; will be returned.</p>
+responsible for its handling. Unfortunately, perhaps compiler forces you to handle this <code>DAOException</code> it never occurs. And string “OK” will be returned.</p>
 
 <p><strong>Rule 2</strong>. Never use <code>return</code> from <code>finally</code> block.</p>
 
@@ -360,6 +360,10 @@ Maybe these two simple rules give you a tiny light on coward <code>finally</code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/programming-digest-4/">Programming Digest 4</a>
       </li>
     
@@ -373,10 +377,6 @@ Maybe these two simple rules give you a tiny light on coward <code>finally</code
     
       <li class="post">
         <a href="/blog/announcing-numberto/">Announcing numberto</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
       </li>
     
   </ul>
@@ -421,7 +421,7 @@ Maybe these two simple rules give you a tiny light on coward <code>finally</code
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - mishadoff -
+  Copyright &copy; 2014 - mishadoff -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

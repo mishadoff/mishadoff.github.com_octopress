@@ -144,7 +144,7 @@ to sum all these numbers. <code>int</code>? <code>long</code>? <code>looooong</c
 
 <p>Technique to sum very long numbers called
 <a href="http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">Bignum arithmetic</a>.
-To solve that problem you just need to implement this technique&hellip; or use already implemented.</p>
+To solve that problem you just need to implement this technique… or use already implemented.</p>
 
 <p>Java (<em>yeah we talking about it</em>) support long arithmetics with
 <a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">BigInteger</a>.
@@ -154,14 +154,14 @@ And clojure does.</p>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>With that function you&rsquo;ll get the big number.
+<p>With that function you’ll get the big number.
 Just truncate first 10 digits and you are good.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">apply str </span><span class="p">(</span><span class="nb">take </span><span class="mi">10</span> <span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">map </span><span class="nv">bigint</span> <span class="nv">numbers</span><span class="p">)))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>(for [i &ldquo;<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>&rdquo;] i)</p>
+<p>(for [i “<a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem013.clj">GitHub</a>”] i)</p>
 
 <p><strong>P.S.</strong> Ideally, last line should be wrapped
 with <code>(read-string ...)</code> to produce number type. But we using
@@ -237,6 +237,10 @@ manual submission, so it is fair.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/programming-digest-4/">Programming Digest 4</a>
       </li>
     
@@ -250,10 +254,6 @@ manual submission, so it is fair.</p>
     
       <li class="post">
         <a href="/blog/announcing-numberto/">Announcing numberto</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/code-golf-brainfuck-interpreter/">Code Golf: Brainfuck Interpreter</a>
       </li>
     
   </ul>
@@ -298,7 +298,7 @@ manual submission, so it is fair.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - mishadoff -
+  Copyright &copy; 2014 - mishadoff -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

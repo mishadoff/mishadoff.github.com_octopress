@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-11-26T17:16:28+02:00</updated>
+  <updated>2014-03-28T18:53:44+02:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,219 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Numberto: Expressions]]></title>
+    <link href="http://mishadoff.github.io/blog/numberto-expressions/"/>
+    <updated>2014-03-24T00:25:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/numberto-expressions</id>
+    <content type="html"><![CDATA[<p>Numberto has new features!</p>
+
+<!-- more -->
+
+<p>In <a href="/blog/announcing-numberto">previous post</a>
+I wrote about simple clojure library <a href="https://github.com/mishadoff/numberto">numberto</a> for experiments with numbers.</p>
+
+<p>New version of <em>numberto</em> has a bunch of new features.</p>
+
+<h3 id="expressions">Expressions</h3>
+
+<p>Expressions package provides two functions: <code>eval-infix</code> to evaluate infix expression
+and <code>infix-&gt;prefix</code> to build prefix lisp-style expression from mathematical notation.</p>
+
+<p>Let’s give it alias for simplicity</p>
+
+<p><code>clojure
+(def e eval-infix)
+</code></p>
+
+<p>Evaluate simple math expression</p>
+
+<p><code>clojure
+(e "1+2") =&gt; 3
+</code></p>
+
+<p>or more complex</p>
+
+<p><code>clojure
+(e "1+2*(3-4/2)") =&gt; 3
+</code></p>
+
+<p>handle priorities</p>
+
+<p><code>clojure
+(e "2+2*2") =&gt; 6
+</code></p>
+
+<p>and left/right associativity</p>
+
+<p><code>clojure
+(e "1024/2/2/2/2") =&gt; 64
+(e "2^3^4") =&gt; 2417851639229258349412352N
+</code></p>
+
+<p>Oh, what’s this? Long numbers? Sure, ratios and floats supported as well</p>
+
+<p><code>clojure
+(e "1/3") =&gt; 1/3
+(e "1.1/0.9") =&gt; 1.2222222222222223
+</code></p>
+
+<p>Unary operations</p>
+
+<p><code>clojure
+(e "(-1)^100") =&gt; 1
+</code></p>
+
+<p>functions and symbols</p>
+
+<p><code>clojure
+(e "sin(e) + sqrt(pi)") =&gt; 2.183235141408425
+</code></p>
+
+<p>vararg functions</p>
+
+<p><code>clojure
+(e "sum(1,2,3,sum())/max(1,2)") =&gt; 3
+</code></p>
+
+<p>You can also provide bindings for unknown functions and symbols</p>
+
+<p><code>clojure
+(e "factorial(n)/20"
+   {:bindings
+     {"factorial" #(reduce *' (range 1 (inc %)))
+      "n" 10}})
+=&gt; 181440
+</code></p>
+
+<p>Worth to mention that you can easily redefine existing
+or define your own new unary, binary operations, functions
+and symbols. Just add additional properties to <code>eval-infix</code></p>
+
+<p><code>clojure
+;; return current time in millis
+(e "now()" {:bindings {"now" #(.getTime (java.util.Date.))}}) =&gt; some long number
+;; override priorities
+(e "1+2*3" {:binary-ops {"+" {:function + :priority 100}}}) =&gt; 9
+</code></p>
+
+<p><code>infix-&gt;prefix</code> has exactly the same functionality, but it builds prefix expression instead.</p>
+
+<p><code>clojure
+(infix-&gt;prefix "(1+2)*3-(4/avg(3,5)-sum(1))")
+=&gt;
+"(- (* (+ 1 2) 3) (- (/ 4 (avg 3 5)) (sum 1)))"
+</code></p>
+
+<p>It can be useful if you googled some formula but bored to translate it manually to clojure.</p>
+
+<p>For example, take the <a href="http://en.wikipedia.org/wiki/Simpson%27s_rule">Simpson’s rule</a></p>
+
+<p><img src="http://upload.wikimedia.org/math/1/a/0/1a0fb4456375307fdde8ab85954d95be.png" alt="" /></p>
+
+<p><code>clojure
+(infix-&gt;prefix "(b-a)/6*(f(a)+4*f((a+b)/2)+f(b))")
+=&gt;
+"(* (/ (- b a) 6) (+ (+ (f a) (* 4 (f (/ (+ a b) 2)))) (f b)))"
+</code></p>
+
+<h4 id="implementation">Implementation</h4>
+
+<p>Would be good to try <a href="https://github.com/Engelberg/instaparse">instaparse</a> for such purpose,
+but I decided to use custom implementation using standard
+<a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm">Shunting-yard algorithm</a>.
+Just couple of hacks added to handle unaries and vararg functions.
+Code is awful. If you really want to dig in - run debug mode.</p>
+
+<p><code>clojure
+(binding [*DEBUG* true]
+  (e "1+2"))
+</code></p>
+
+<h4 id="limitations">Limitations</h4>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>No way to define non-prefix unary operation, like “10!” or “</td>
+          <td>10</td>
+          <td>”</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Can not handle simplified math form, like “2x^2 + 3^x + 5”.
+Multiplication sign should be declared explicitly</li>
+  <li>Not able to simplify ops in lisp-style expression. <code>(* (* 1 2) 3)</code> instead of <code>(* 1 2 3)</code></li>
+  <li>False positives handling. Some stupid expressions indicates about error <code>(e "1+")</code>, some not <code>(e "1+()1)</code>. I still working on this, but it is not critical.</li>
+</ul>
+
+<h3 id="solvers">Solvers</h3>
+
+<p>Here is the puzzle:</p>
+
+<blockquote>
+  <p>You have four numbers [3, 4, 5, 6].<br />
+You have four binary operations [+, -, *, /] and parentheses ()</p>
+
+  <p>How to insert operations between numbers to get number 42?</p>
+</blockquote>
+
+<p>Hah, that simple <code>3*4 + 5*6 = 42</code></p>
+
+<p>Ok, get <code>42</code>, but you forced to use one division <code>/</code>.</p>
+
+<p>Not so obvious?</p>
+
+<p><code>
+(solve-insert-ops-num [3 4 5 6] 42) =&gt;
+([42N "3+45-6"] [42N "3/4*56"] [42N "3*4+5*6"])
+</code></p>
+
+<p>If you use <code>solve-insert-ops</code> function it gives all possible values can be obtained by inserting operations between numbers.</p>
+
+<p><code>clojure
+(solve-insert-ops [3 4 5 6]) =&gt; ;; long list
+</code></p>
+
+<p>Default implementation uses 4 basic operations, no parens and no restrictions. Instead, you can override options</p>
+
+<p>to use parens, specify level</p>
+
+<p><code>clojure
+(solve-insert-ops-num [3 4 5 6] 42 {:parens 1}) =&gt;
+([42N "3+45-6"] [42N "(3+45)-6"] [42N "3+(45-6)"]
+ [42N "3/4*56"] [42N "(3/4)*56"] [42N "3/(4/56)"]
+ [42N "3*4+5*6"] [42N "(3*4)+5*6"] [42N "3*4+(5*6)"])
+</code></p>
+
+<p>limit some operations</p>
+
+<p><code>clojure
+(solve-insert-ops-num [3 4 5 6] 42 {:rules [[:max "*" 1]]}) =&gt;
+([42N "3+45-6"] [42N "3/4*56"])
+</code></p>
+
+<p><code>:max</code>, <code>:min</code>, <code>:max-in-a-row</code>, <code>:min-in-a-row</code> options are supported.</p>
+
+<p>Add new operations (supported by expressions package)</p>
+
+<p><code>clojure
+(solve-insert-ops-num [3 4 5 6] 80
+                      {:ops ["+" "-" "*" "/" "^"]
+                       :rules [[:max "^" 1]]}) =&gt;
+([80N "3^4+5-6"])
+</code></p>
+
+<p>Keep in mind, always limit time consuming operations (<em>like</em> <code>^</code>) as it builds all possible permutations and you can wait your answer forever.</p>
+
+<p>There are also couple of <em>new</em> interesting things, like
+getting digits of <code>pi</code>, <code>e</code>, <code>sqrt(n)</code>, ratio numbers up to desired level and other. <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">Check it out</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 4]]></title>
@@ -24,7 +237,7 @@
 
 <h3 id="execution-in-the-kingdom-of-nounshttpsteve-yeggeblogspotcom200603execution-in-kingdom-of-nounshtml">1. <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">Execution in the Kingdom of Nouns</a></h3>
 
-<p>Another great Steve Yegge&rsquo;s post. Not a post, a tale about <em>Javaland</em>, a place where all verbs are owned by nouns. Accept it like an analogy between OOP and FP.</p>
+<p>Another great Steve Yegge’s post. Not a post, a tale about <em>Javaland</em>, a place where all verbs are owned by nouns. Accept it like an analogy between OOP and FP.</p>
 
 <blockquote>
   <p>Verbs in Javaland are responsible for all the work, but as they are held
@@ -36,8 +249,8 @@ it must be escorted at all times by a Noun.</p>
 <p>Of course <em>to be escorted</em> must be replaced by <strong>VerbEscorter</strong>.</p>
 
 <blockquote>
-  <p>The Verb &ldquo;execute&rdquo;, and its synonymous cousins &ldquo;run&rdquo;, &ldquo;start&rdquo;, &ldquo;go&rdquo;,
-&ldquo;justDoIt&rdquo;, &ldquo;makeItSo&rdquo;, and the like, can perform the work of any
+  <p>The Verb “execute”, and its synonymous cousins “run”, “start”, “go”,
+“justDoIt”, “makeItSo”, and the like, can perform the work of any
 other Verb by replacing it with an appropriate Executioner and a
 call to execute(). Need to wait? Waiter.execute().
 Brush your teeth? ToothBrusher(myTeeth).go().
@@ -47,7 +260,7 @@ No Verb is safe; all can be replaced by a Noun on the run.</p>
 
 <p>You are not forced to use functions everywhere, but use them where it is appropriate to simplify solution and avoid <a href="https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition">enterprise hell</a>. You know, not everything is an object. The same way not everything is a function. </p>
 
-<h3 id="a-mathematicians-lamenthttpwwwmaaorgexternalarchivedevlinlockhartslamentpdf">2. <a href="http://www.maa.org/external_archive/devlin/LockhartsLament.pdf">A Mathematician&rsquo;s Lament</a></h3>
+<h3 id="a-mathematicians-lamenthttpwwwmaaorgexternalarchivedevlinlockhartslamentpdf">2. <a href="http://www.maa.org/external_archive/devlin/LockhartsLament.pdf">A Mathematician’s Lament</a></h3>
 
 <p>Long paper by Paul Lockhart about problems in mathematical education.</p>
 
@@ -55,7 +268,7 @@ No Verb is safe; all can be replaced by a Noun on the run.</p>
   <p>Math class is stupid and boring. - Students.</p>
 </blockquote>
 
-<p>Author claims that mathematics is an art, instead of some practical thing. Of course, it can be applied in real world and it is, but it&rsquo;s not primary goal of math.</p>
+<p>Author claims that mathematics is an art, instead of some practical thing. Of course, it can be applied in real world and it is, but it’s not primary goal of math.</p>
 
 <blockquote>
   <p>A mathematician, like a painter or poet is a maker
@@ -70,7 +283,7 @@ it is because they are made wit <em>ideas</em>.</p>
 <p>Algorithms are not just devils you need to learn for CS course or to prepare for interview. You can <em>apply</em> them to solve real-world problems. This SO answer provides links and some explanations where specific algorithm is used in linux kernel, chromium browser and some utils.</p>
 
 <blockquote>
-  <p>&hellip;
+  <p>…
 Red-Black trees are used for scheduling, virtual memory management,
 to track file descriptors and directory entries, etc.</p>
 </blockquote>
@@ -81,14 +294,14 @@ to track file descriptors and directory entries, etc.</p>
 
 <blockquote>
   <p>fgrep implements the Aho-Corasick string matching algorithm.
-&hellip;</p>
+…</p>
 </blockquote>
 
 <p>Even Bubblesort has its <a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/media/common/saa7146/saa7146_hlp.c">application</a>!</p>
 
-<h3 id="rich-hickeys-greatest-hitshttpthechangelogcomrich-hickeys-greatest-hits">4. <a href="http://thechangelog.com/rich-hickeys-greatest-hits/">Rich Hickey&rsquo;s Greatest Hits</a></h3>
+<h3 id="rich-hickeys-greatest-hitshttpthechangelogcomrich-hickeys-greatest-hits">4. <a href="http://thechangelog.com/rich-hickeys-greatest-hits/">Rich Hickey’s Greatest Hits</a></h3>
 
-<p>I&rsquo;m huge Rich Hickey&rsquo;s fan. It&rsquo;s just a list of his most interesting presentations. Definitely, must see.</p>
+<p>I’m huge Rich Hickey’s fan. It’s just a list of his most interesting presentations. Definitely, must see.</p>
 
 <p><img src="http://farm4.staticflickr.com/3229/2613013337_bcc9c7857d.jpg" alt="" /></p>
 
@@ -111,13 +324,13 @@ to track file descriptors and directory entries, etc.</p>
 
 <p>Have you heard about STM?</p>
 
-<p>It&rsquo;s a good model for concurrency control, like database transactions, but on memory. Much simpler and less error-prone to use. This article explain STM basics with some implementation details. </p>
+<p>It’s a good model for concurrency control, like database transactions, but on memory. Much simpler and less error-prone to use. This article explain STM basics with some implementation details. </p>
 
 <p>For my attempt to implement STM refer <a href="http://www.slideshare.net/mishadoff/implementing-stm-in-java">presentation</a></p>
 
-<h3 id="a-software-developers-huide-to-httphttpodetocodecomarticles741aspx">7. <a href="http://odetocode.com/articles/741.aspx">A Software Developer&rsquo;s Huide to HTTP</a></h3>
+<h3 id="a-software-developers-huide-to-httphttpodetocodecomarticles741aspx">7. <a href="http://odetocode.com/articles/741.aspx">A Software Developer’s Huide to HTTP</a></h3>
 
-<p>Five Parts article of looking at HTTP from developer&rsquo;s perspective. Worth reading to dig into some details. </p>
+<p>Five Parts article of looking at HTTP from developer’s perspective. Worth reading to dig into some details. </p>
 
 <h3 id="ideas-for-computinghttpsgithubcomsamsquireideas">8. <a href="https://github.com/samsquire/ideas">100 Ideas for Computing</a></h3>
 
@@ -157,7 +370,7 @@ systems and share configurations between applications.</p>
 
 <p>Some ideas are <a href="https://github.com/samsquire/ideas#31-mounting-source-code">not so great</a>:</p>
 
-<p><em>Mounting source code</em> does not solve a problem at all, it&rsquo;s just adds a bit of sugar to project structure and adds more pain to build tools.</p>
+<p><em>Mounting source code</em> does not solve a problem at all, it’s just adds a bit of sugar to project structure and adds more pain to build tools.</p>
 
 <h3 id="top-10-lists-common-java-mistakeshttpjavadzonecomarticlestop-10-lists-common-java">9. <a href="http://java.dzone.com/articles/top-10-lists-common-java">Top 10 Lists Common Java Mistakes</a></h3>
 
@@ -246,7 +459,7 @@ So, COLIN would obtain a score of 938 x 53 = 49714.</p>
   (reduce + (map #(- (int %) 64) string)))
 </code></p>
 
-<p>Convert each character to its positional number in alphabet. For example the character &ldquo;A&rdquo; (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means &ldquo;A&rdquo; is a first letter in alphabet and so on.</p>
+<p>Convert each character to its positional number in alphabet. For example the character “A” (<em>capitalized</em>) has ascii value of <code>65</code>. If we substract <code>64</code> it becomes <code>1</code>, what means “A” is a first letter in alphabet and so on.</p>
 
 <p>To track positions in list we use
 <a href="http://clojuredocs.org/clojure_core/clojure.core/map-indexed">map-indexed</a>
@@ -311,7 +524,7 @@ amicable pair and each of a and b are called amicable numbers.</p>
 The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
 </blockquote>
 
-<p>We can do it <em>bruteforcely</em>, but we won&rsquo;t.</p>
+<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
 
 <p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
 
@@ -427,138 +640,6 @@ Pretty print for long numbers</li>
 <p>Check out <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">detailed intro</a></p>
 
 <p><strong>P.S.</strong> I still experimenting, so expect a lot of changes between versions until make something stable. Comments and advices are welcome!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
-    <link href="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/"/>
-    <updated>2013-08-09T17:44:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter</id>
-    <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
-
-<!-- more -->
-
-<p>Previous article <a href="/blog/code-golf-game-of-life/">Code Golf: Game of Life</a> raised some interest, and I decided to proceed. Today&rsquo;s problem is a Brainfuck Interpreter.</p>
-
-<p><a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a> is an esoteric programming language, famous because of its small command set. It is based on array of cells (Turing Tape) and pointer to this array. There are only 8 commands: </p>
-
-<ul>
-  <li><code>&gt;</code> move to the next cell</li>
-  <li><code>&lt;</code> move to the previous cell</li>
-  <li><code>+</code> increment value in the current cell</li>
-  <li><code>-</code> decrement value in the current cell</li>
-  <li><code>.</code> print char with ascii value of current cell</li>
-  <li><code>,</code> read ascii value for input char to the current cell</li>
-  <li><code>[</code> start loop until value of pointer is not zero </li>
-  <li><code>]</code> finish loop</li>
-</ul>
-
-<p>That&rsquo;s all. Brainfuck is <a href="http://en.wikipedia.org/wiki/Turing_completeness">Turing Complete</a> language, that means it capable to implement any program. If you crazy, of course.</p>
-
-<h3 id="tweet">Tweet</h3>
-
-<p>Final version took <code>280</code> characters in Clojure:</p>
-
-<p><code>clojure
-(fn[a p k c](let[h #(nth %1@%2)e #(h a p)s #(swap! %1%2 1)t
-#(aset a@p(%(e)1))l #(do(s k %)(case(h c k)\]()\[()(recur %)
-))](while(&gt;(count c)@k)(do(case(h c k)\&gt;(s p +)\&lt;(s p -)\+
-(t +)\-(t -)\.(print(char(e)))\,(aset a@p(.read *in*))\[(if
-(=(e)0)(l +))\](if(&gt;(e)0)(l -)))(s k +)))))
-</code></p>
-
-<p>Exactly 2 tweets.</p>
-
-<h3 id="sugared-version">&ldquo;Sugared&rdquo; version</h3>
-
-<p>Translating to more readable code:</p>
-
-<p><code>clojure
-(defn parse-internal [a pt pc cs]
-  (letfn [(act []
-            (case (nth cs @pc)
-              \&gt; (swap! pt inc)
-              \&lt; (swap! pt dec)
-              \+ (aset a @pt (inc (nth a @pt))) 
-              \- (aset a @pt (dec (nth a @pt)))
-              \. (print (char (nth a @pt)))
-              \, (aset a @pt (.read *in*))
-              \[ (if (zero? (nth a @pt)) (loop- inc))
-              \] (if-not (zero? (nth a @pt)) (loop- dec))))
-          (loop- [f]
-            (do (swap! pc f)
-                (case (nth cs @pc)
-                  \[ ()
-                  \] () 
-                  (recur f))))]
-    (while (not= (count cs) @pc)
-      (do
-        (act)
-        (swap! pc inc)))))
-</code></p>
-
-<p>So, what&rsquo;s happening there?</p>
-
-<p>Function arguments are parameters of our tape and brainfuck program.</p>
-
-<ul>
-  <li><code>a</code> is an array represents finite tape <code>e.g (int-array 100)</code></li>
-  <li><code>pt</code> is an atom - pointer to the tape</li>
-  <li><code>pc</code> is an atom - pointer to the command list</li>
-  <li><code>cs</code> command list</li>
-</ul>
-
-<p>Function <code>act</code> decides which action to perform depending on current command,
-<code>loop</code> allows us to move command pointer inside a loop,
-and main <code>while-do</code> loop executes commands until they exhausted. Simple enough.</p>
-
-<p>To make our interpreter more friendly we create function <code>parse</code> that accepts
-string - program, written in brainfuck.</p>
-
-<p><code>clojure
-(defn parse [s]
-  (let [a (int-array 100)  ;; Turing Tape
-        p (atom 0)         ;; Pointer to Tape
-        k (atom 0)         ;; Pointer to Command
-        c (vec (seq s))]   ;; Vector of Commands
-    (parse-internal a p k c)))
-</code></p>
-
-<h4 id="testing">Testing</h4>
-
-<p>Print &ldquo;Hello, world&rdquo;</p>
-
-<p><code>clojure
-(parse "++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]
-        &gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;
-        .+++.------.--------.&gt;+.&gt;.") =&gt;
-Hello World!
-</code></p>
-
-<p>Input 5 characters and reverse print them</p>
-
-<p><code>clojure
-(parse ",&gt;,&gt;,&gt;,&gt;,.&lt;.&lt;.&lt;.&lt;.") =&gt; &lt;wait input "hello"&gt;
-olleh
-</code></p>
-
-<p>More complex program need nested loops, which is not supported by
-this version (<em>for the sake of small size!</em>)</p>
-
-<p>History of implementation, nested loops and more available <a href="https://github.com/mishadoff/prog-experiment/blob/master/clojure/brainfuck.clj">here</a></p>
-
-<p><strong>P.S.</strong> This version is not &ldquo;fully-featured&rdquo; brainfuck interpreter.</p>
-
-<ul>
-  <li>It does not work for inifinite tape</li>
-  <li>Cell datatype is fixed and not assumed to be cyclic. For example, if cell type is unsigned byte <code>[0..255]</code>, then <code>255 + 1 != 0</code> and break interpreter</li>
-  <li>Only unsigned types supported</li>
-  <li>Nested loops are not allowed</li>
-  <li>No error handling</li>
-</ul>
-
-<p>But, you are welcome to improve it!</p>
 ]]></content>
   </entry>
   

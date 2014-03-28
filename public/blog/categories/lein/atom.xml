@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lein | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/lein/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2013-11-26T17:16:28+02:00</updated>
+  <updated>2014-03-28T18:53:44+02:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -25,16 +25,16 @@
 <h3 id="little-history">Little history</h3>
 
 <p>Long time I was using <a href="https://github.com/technomancy/swank-clojure">swank-clojure</a> as connector to my Clojure projects from Emacs <a href="http://common-lisp.net/project/slime/">SLIME</a>.
-But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it&rsquo;s my fault, this time I&rsquo;ve created configuration on GitHub</em>).
+But, suddenly, I lost all my emacs preferences and needed to configure it again (<em>yeah, it’s my fault, this time I’ve created configuration on GitHub</em>).
 So, when I entered to swank-clojure project page, I was a bit frustrated by the following message:
-<em>&ldquo;This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead&rdquo;</em>.
-Ok, let&rsquo;s see what nrepl is.</p>
+<em>“This project is no longer under active development. New users are strongly encouraged to try out</em> <a href="https://github.com/kingtim/nrepl.el">nrepl.el</a> <em>instead”</em>.
+Ok, let’s see what nrepl is.</p>
 
 <h3 id="why-emacs">Why emacs?</h3>
 
-<p>I don&rsquo;t know. I like lisp, and emacs created in (e)lisp.
+<p>I don’t know. I like lisp, and emacs created in (e)lisp.
 Strange hotkeys like <code>C-x C-s</code>. Huge functionality, that you can configure all days. Internal package manager. Plenty of modes.
-Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can&rsquo;t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
+Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can’t find any great reason that convince somebody to use emacs as IDE. But I like it.</p>
 
 <p>There is a good <a href="http://xkcd.com/378/">xkcd</a> comics about emacs.</p>
 
@@ -53,7 +53,7 @@ Mail client. Games. Whatever. Oh wait, I forgot text editor. I really, can&rsquo
 
 <h3 id="emacs">Emacs</h3>
 
-<p>First of all you need to install emacs, to get your future clojure coding environment. I&rsquo;m using ubuntu, so I just type:</p>
+<p>First of all you need to install emacs, to get your future clojure coding environment. I’m using ubuntu, so I just type:</p>
 
 <p><code>sudo apt-get install emacs</code></p>
 
@@ -86,7 +86,7 @@ To check if it works, type <code>M-x package-list-packages</code> and this show 
 <p><a href="http://leiningen.org/">Leiningen</a> is a build tool for clojure. It also controls dependency management, automation, tests, etc.
 Pretty like <a href="http://maven.apache.org/">maven</a> for Java.</p>
 
-<p>To install lein 2 (it&rsquo;s shorter name for Leiningen) do the following:</p>
+<p>To install lein 2 (it’s shorter name for Leiningen) do the following:</p>
 
 <ol>
   <li>Download <a href="https://raw.github.com/technomancy/leiningen/preview/bin/lein">lein script</a></li>
@@ -156,7 +156,7 @@ M-x package-install nrepl
 (hello)
 </code></p>
 
-<p>Probably, you&rsquo;ll get output:</p>
+<p>Probably, you’ll get output:</p>
 
 <pre><code>Hell, O'World!
 nil
@@ -166,7 +166,7 @@ nil
 
 <p><strong>Note:</strong> this configuration covers only basic clojure+emacs environment.
 There are plenty plugins to work with parenthesis, documentation, tests, auto-completion and lot more.
-I&rsquo;ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
+I’ll do my best to cover such plugins in the next sections. Also, emacs23 is an old version of emacs, verison 24
 is currently available.</p>
 ]]></content>
   </entry>
