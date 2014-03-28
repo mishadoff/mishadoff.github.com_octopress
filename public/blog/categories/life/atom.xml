@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: life | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.io/blog/categories/life/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.io/"/>
-  <updated>2014-03-28T19:49:04+02:00</updated>
-  <id>http://mishadoff.github.io/</id>
+  <link href="http://mishadoff.github.com/blog/categories/life/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2014-03-28T20:16:18+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Learn Perl]]></title>
-    <link href="http://mishadoff.github.io/blog/learn-perl/"/>
+    <link href="http://mishadoff.github.com/blog/learn-perl/"/>
     <updated>2012-11-12T20:38:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/learn-perl</id>
+    <id>http://mishadoff.github.com/blog/learn-perl</id>
     <content type="html"><![CDATA[<p><code>perl
 ($current_tasks, $perl) = ($perl, $current_tasks);
 </code></p>

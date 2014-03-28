@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: sml | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.io/blog/categories/sml/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.io/"/>
-  <updated>2014-03-28T19:49:04+02:00</updated>
-  <id>http://mishadoff.github.io/</id>
+  <link href="http://mishadoff.github.com/blog/categories/sml/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2014-03-28T20:16:18+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Standard ML]]></title>
-    <link href="http://mishadoff.github.io/blog/standard-ml/"/>
+    <link href="http://mishadoff.github.com/blog/standard-ml/"/>
     <updated>2013-02-16T13:33:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/standard-ml</id>
+    <id>http://mishadoff.github.com/blog/standard-ml</id>
     <content type="html"><![CDATA[<p>Last weekend I was hacking <a href="http://en.wikipedia.org/wiki/Standard_ML">Standard ML</a> a bit.</p>
 
 <!-- more -->

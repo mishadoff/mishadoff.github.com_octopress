@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: math | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.io/blog/categories/math/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.io/"/>
-  <updated>2014-03-28T19:49:04+02:00</updated>
-  <id>http://mishadoff.github.io/</id>
+  <link href="http://mishadoff.github.com/blog/categories/math/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.com/"/>
+  <updated>2014-03-28T20:16:18+02:00</updated>
+  <id>http://mishadoff.github.com/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Stirling's Approximation]]></title>
-    <link href="http://mishadoff.github.io/blog/stirlings-approximation/"/>
+    <link href="http://mishadoff.github.com/blog/stirlings-approximation/"/>
     <updated>2013-02-23T01:38:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/stirlings-approximation</id>
+    <id>http://mishadoff.github.com/blog/stirlings-approximation</id>
     <content type="html"><![CDATA[<p>Do you like factorials?</p>
 
 <p>Probably, you do. If no, whatever, read this post to know
@@ -172,9 +172,9 @@ Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirl
   
   <entry>
     <title type="html"><![CDATA[What is greater: e^pi or pi^e?]]></title>
-    <link href="http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/"/>
+    <link href="http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/"/>
     <updated>2012-11-06T16:00:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e</id>
+    <id>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e</id>
     <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don’t have it?</p>
 
 <!-- more -->
