@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: pics | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/pics/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/pics/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-03-29T02:44:40+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[DevOps reactions]]></title>
-    <link href="http://mishadoff.github.com/blog/devops-reactions/"/>
+    <link href="http://mishadoff.github.io/blog/devops-reactions/"/>
     <updated>2013-01-13T18:10:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/devops-reactions</id>
+    <id>http://mishadoff.github.io/blog/devops-reactions</id>
     <content type="html"><![CDATA[<p>Just found blog, that illustrates developer feelings with gif-pictures: <a href="http://devopsreactions.tumblr.com/">DevOps reactions</a></p>
 
 <p>It’s really cool idea.</p>

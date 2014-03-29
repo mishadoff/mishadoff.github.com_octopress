@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ide | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/ide/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/ide/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-03-29T02:44:40+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Eclipse Speedup]]></title>
-    <link href="http://mishadoff.github.com/blog/eclipse-speedup/"/>
+    <link href="http://mishadoff.github.io/blog/eclipse-speedup/"/>
     <updated>2012-12-23T18:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/eclipse-speedup</id>
+    <id>http://mishadoff.github.io/blog/eclipse-speedup</id>
     <content type="html"><![CDATA[<p>Have you been in situation where most of the time in eclipse you were waiting for
 some operation to be finished?</p>
 
@@ -222,9 +222,9 @@ to hotkeys and learn them. You will get a positive feedback after a week of usag
   
   <entry>
     <title type="html"><![CDATA[Clojure + Emacs + Leiningen + nREPL]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl/"/>
     <updated>2012-10-13T18:19:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl</id>
+    <id>http://mishadoff.github.io/blog/clojure-plus-emacs-plus-leiningen-plus-nrepl</id>
     <content type="html"><![CDATA[<p>This article provides step-by-step instruction how to configure Clojure environment.</p>
 
 <!-- more -->

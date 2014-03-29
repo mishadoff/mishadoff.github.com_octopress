@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-03-29T02:44:40+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Numberto: Expressions]]></title>
-    <link href="http://mishadoff.github.com/blog/numberto-expressions/"/>
-    <updated>2014-03-24T00:25:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/numberto-expressions</id>
+    <link href="http://mishadoff.github.io/blog/numberto-expressions/"/>
+    <updated>2014-03-29T00:25:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/numberto-expressions</id>
     <content type="html"><![CDATA[<p>Numberto has new features!</p>
 
 <!-- more -->
@@ -228,9 +228,9 @@ getting digits of <code>pi</code>, <code>e</code>, <code>sqrt(n)</code>, ratio n
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 4]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-4/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-4/"/>
     <updated>2013-11-25T22:50:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-4</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-4</id>
     <content type="html"><![CDATA[<p>How to live in the Kingdom of Nouns, why mathematicians cry, filling gaps in algorithms, portion of clojure, STM, HTTP and more.</p>
 
 <!-- more -->
@@ -406,9 +406,9 @@ systems and share configurations between applications.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 022]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-022/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-022/"/>
     <updated>2013-10-20T13:22:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-022</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-022</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Using <a href="http://projecteuler.net/project/names.txt">names.txt</a>
 a 46K text file containing over five-thousand first names,
@@ -501,9 +501,9 @@ As indices start from zero, do not forget increment!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-021/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-021/"/>
     <updated>2013-10-05T15:24:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-021</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-021</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Evaluate the sum of all the amicable numbers under 10000.</p>
 </blockquote>
@@ -573,9 +573,9 @@ We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code
   
   <entry>
     <title type="html"><![CDATA[Announcing numberto]]></title>
-    <link href="http://mishadoff.github.com/blog/announcing-numberto/"/>
+    <link href="http://mishadoff.github.io/blog/announcing-numberto/"/>
     <updated>2013-09-01T04:23:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/announcing-numberto</id>
+    <id>http://mishadoff.github.io/blog/announcing-numberto</id>
     <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
 
 <!-- more -->

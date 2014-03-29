@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: coursera | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/coursera/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/coursera/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-03-29T02:44:40+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Standard ML]]></title>
-    <link href="http://mishadoff.github.com/blog/standard-ml/"/>
+    <link href="http://mishadoff.github.io/blog/standard-ml/"/>
     <updated>2013-02-16T13:33:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/standard-ml</id>
+    <id>http://mishadoff.github.io/blog/standard-ml</id>
     <content type="html"><![CDATA[<p>Last weekend I was hacking <a href="http://en.wikipedia.org/wiki/Standard_ML">Standard ML</a> a bit.</p>
 
 <!-- more -->
@@ -223,9 +223,9 @@ few days for ML basics. It really improve your dev skills and maybe made your
   
   <entry>
     <title type="html"><![CDATA[Learn Perl]]></title>
-    <link href="http://mishadoff.github.com/blog/learn-perl/"/>
+    <link href="http://mishadoff.github.io/blog/learn-perl/"/>
     <updated>2012-11-12T20:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/learn-perl</id>
+    <id>http://mishadoff.github.io/blog/learn-perl</id>
     <content type="html"><![CDATA[<p><code>perl
 ($current_tasks, $perl) = ($perl, $current_tasks);
 </code></p>

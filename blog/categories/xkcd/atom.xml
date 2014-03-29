@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: xkcd | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/xkcd/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/xkcd/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-03-29T02:44:40+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ingress Tricks]]></title>
-    <link href="http://mishadoff.github.com/blog/ingress-tricks/"/>
+    <link href="http://mishadoff.github.io/blog/ingress-tricks/"/>
     <updated>2012-12-11T12:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/ingress-tricks</id>
+    <id>http://mishadoff.github.io/blog/ingress-tricks</id>
     <content type="html"><![CDATA[<p>Ingress - MMORPG with <a href="http://en.wikipedia.org/wiki/Augmented_reality">augmented reality</a> created by Google.
 This is very impressive game with capability to run over the city with your friends for capturing portals.</p>
 
@@ -142,9 +142,9 @@ Hope it will be released very soon and we will see more people near monuments.</
   
   <entry>
     <title type="html"><![CDATA[Learn Perl]]></title>
-    <link href="http://mishadoff.github.com/blog/learn-perl/"/>
+    <link href="http://mishadoff.github.io/blog/learn-perl/"/>
     <updated>2012-11-12T20:38:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/learn-perl</id>
+    <id>http://mishadoff.github.io/blog/learn-perl</id>
     <content type="html"><![CDATA[<p><code>perl
 ($current_tasks, $perl) = ($perl, $current_tasks);
 </code></p>
@@ -188,9 +188,9 @@ There is fresh, 4th edition, available.</p>
   
   <entry>
     <title type="html"><![CDATA[What is greater: e^pi or pi^e?]]></title>
-    <link href="http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e/"/>
+    <link href="http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e/"/>
     <updated>2012-11-06T16:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/what-is-greater-e-pi-or-pi-e</id>
+    <id>http://mishadoff.github.io/blog/what-is-greater-e-pi-or-pi-e</id>
     <content type="html"><![CDATA[<p>You can answer almost immediately using calculator, but what if you don’t have it?</p>
 
 <!-- more -->

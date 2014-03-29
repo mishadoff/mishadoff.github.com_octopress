@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: digest | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/digest/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/digest/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-03-29T02:44:40+02:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 4]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-4/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-4/"/>
     <updated>2013-11-25T22:50:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-4</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-4</id>
     <content type="html"><![CDATA[<p>How to live in the Kingdom of Nouns, why mathematicians cry, filling gaps in algorithms, portion of clojure, STM, HTTP and more.</p>
 
 <!-- more -->
@@ -193,9 +193,9 @@ systems and share configurations between applications.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 3]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-3/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-3/"/>
     <updated>2013-07-22T20:33:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-3</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-3</id>
     <content type="html"><![CDATA[<p>Why your software sucks and what is the “Secret Weapon”. Also,
 algorithm complexities refresher, functional programming, including
 Scala and Clojure, concurrency and lot of humor.</p>
@@ -337,9 +337,9 @@ Sarcastic and great presentation of weird Ruby and JavaScript behaviour.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 2]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-2/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-2/"/>
     <updated>2013-04-22T14:43:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-2</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-2</id>
     <content type="html"><![CDATA[<p>Why math is needed for developers, what is REST, how to become experienced
 developer…in 10 years, “coding it’s just writing” and some practice:
 Naive Bayes Classifier, functional programming and Java 8.</p>
@@ -520,9 +520,9 @@ first-class functions. Basic operations on numbers included. JavaScript.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 1]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-1/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-1/"/>
     <updated>2013-02-12T02:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-1</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-1</id>
     <content type="html"><![CDATA[<p>How to get job at Google, estimate complexity of your algorithm,
 what is <em>Structural Immutability</em>, why PHP is awful and Java is awesome, best programming jokes and lot more.</p>
 
@@ -669,9 +669,9 @@ crazy programming jokes. Stackoverflow community is amazing.</p>
   
   <entry>
     <title type="html"><![CDATA[Programming Digest Announcement]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-announcement/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-announcement/"/>
     <updated>2013-02-11T23:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-announcement</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-announcement</id>
     <content type="html"><![CDATA[<p>Recently, I come up with idea to share my favorite articles I found
 on the internet and give basic description for them.</p>
 
