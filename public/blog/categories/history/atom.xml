@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: history | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/history/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/history/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-05-10T18:12:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
-    <link href="http://mishadoff.github.com/blog/critical-software-bugs-part-1/"/>
+    <link href="http://mishadoff.github.io/blog/critical-software-bugs-part-1/"/>
     <updated>2013-01-20T18:48:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/critical-software-bugs-part-1</id>
+    <id>http://mishadoff.github.io/blog/critical-software-bugs-part-1</id>
     <content type="html"><![CDATA[<p>Little journey through the history of most critical software bugs
 with some code examples.</p>
 

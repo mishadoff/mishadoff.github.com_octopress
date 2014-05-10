@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Numberto: Expressions"
-date: 2014-03-24 00:25
+date: 2014-03-29 00:25
 comments: true
 categories: [clojure, programming]
 published: true

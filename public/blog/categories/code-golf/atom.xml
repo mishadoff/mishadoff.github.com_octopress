@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: code golf | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/code-golf/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/code-golf/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-05-10T18:12:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Brainfuck Interpreter]]></title>
-    <link href="http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter/"/>
+    <link href="http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter/"/>
     <updated>2013-08-09T17:44:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/code-golf-brainfuck-interpreter</id>
+    <id>http://mishadoff.github.io/blog/code-golf-brainfuck-interpreter</id>
     <content type="html"><![CDATA[<p>Brainfuck Interpreter in two tweets.</p>
 
 <!-- more -->
@@ -147,9 +147,9 @@ this version (<em>for the sake of small size!</em>)</p>
   
   <entry>
     <title type="html"><![CDATA[Code Golf: Game of Life]]></title>
-    <link href="http://mishadoff.github.com/blog/code-golf-game-of-life/"/>
+    <link href="http://mishadoff.github.io/blog/code-golf-game-of-life/"/>
     <updated>2013-03-07T17:59:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/code-golf-game-of-life</id>
+    <id>http://mishadoff.github.io/blog/code-golf-game-of-life</id>
     <content type="html"><![CDATA[<p>Conway’s Game of Life in a tweet.</p>
 
 <!-- more -->

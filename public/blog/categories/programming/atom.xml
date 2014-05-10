@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/programming/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-05-10T18:12:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -14,10 +14,130 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 023]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-023/"/>
+    <updated>2014-05-10T18:11:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-023</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of all the positive integers
+which cannot be written as the sum of two abundant numbers.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=23">http://projecteuler.net/problem=23</a></p>
+
+<!-- more -->
+
+<p>To define abundant number let’s revisit <code>sum-of-proper-divisors</code> from the <a href="/blog/clojure-euler-problem-021">Clojure Euler: Problem 021</a></p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [base (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (concat (map #(/ n %) base) base))))
+</code></p>
+
+<p>Using that function, <code>abundant?</code> predicate just follows definition.</p>
+
+<p><code>clojure
+(defn abundant? [n]
+  (&gt; (sum-of-proper-divisors n) n))
+</code></p>
+
+<p>If you look carefully at <code>sum-of-proper-divisors</code> it is buggy.</p>
+
+<p><code>clojure
+(sum-of-proper-divisors 25) =&gt; 1 ;; instead of 6
+</code></p>
+
+<p>Square numbers are not handled correctly.
+To fix that we add one more list to <code>concat</code>.</p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [divs (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (set (concat
+                      (let [isq (int (Math/sqrt n))]      ;; added
+                        (if (= n (* isq isq)) [isq] []))  ;; added
+                      divs
+                      (map #(/ n %) divs))))))
+</code></p>
+
+<p>Double check</p>
+
+<p><code>clojure
+(sum-of-proper-divisors 25) =&gt; 6
+</code></p>
+
+<p>Great! Next step is to find all integer numbers which can not be written as the sum of two abundant numbers.</p>
+
+<p>Precalculate all abundant numbers:</p>
+
+<p><code>clojure
+(def abundant (filter abundant? (range 12 28124)))
+</code></p>
+
+<p>Now we can build all numbers which can be written as
+two abundant numbers and find their sum.</p>
+
+<p><code>clojure
+(-&gt;&gt; (for [i abundant j abundant
+           :let [num (+ i j)]
+           :when (&lt; num 28124)]
+       num)
+     (distinct)
+     (reduce +)
+     (- (reduce + (range 1 28124))))
+</code></p>
+
+<p>This solution works ~44 sec, too much.</p>
+
+<p>More clever approach is to iterate from all integers upto 28124 and check if some number can be written as a sum of two abundant numbers.</p>
+
+<p>The trick is simple: we building sorted set of abundant numbers</p>
+
+<p><code>clojure
+(def abundant (into (sorted-set) (filter abundant? (range 12 28124))))
+</code></p>
+
+<p>For every integer number <code>n</code> we subtract one abundant number and check if <code>abundant</code> set contains result.
+There is a good function <a href="http://clojuredocs.org/clojure_core/clojure.core/some">some</a> that makes our life easier.</p>
+
+<p><code>clojure
+(defn abundant-sum? [n abundant]
+  (some #(abundant (- n %)) abundant))
+</code></p>
+
+<p>Finding the sum</p>
+
+<p><code>clojure
+(-&gt;&gt; (range 1 28124)
+     (remove #(abundant-sum? % abundant))
+     (reduce +))
+</code></p>
+
+<p>It works ~26 sec.</p>
+
+<p>Another optimization is to limit number of abundants in
+<code>abundant-sum</code> function.</p>
+
+<p><code>clojure
+(defn abundant-sum? [n abundant]
+  (some #(abundant (- n %))
+         (take-while #(&lt; % n) abundant)))
+</code></p>
+
+<p>Time reduced to ~14 sec. Pretty good.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem023.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Buggy version of <code>sum-of-proper-divisor</code> solved the previous problem correctly, but it was just a luck. Make sure you test your functions.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Numberto: Expressions]]></title>
-    <link href="http://mishadoff.github.com/blog/numberto-expressions/"/>
-    <updated>2014-03-24T00:25:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/numberto-expressions</id>
+    <link href="http://mishadoff.github.io/blog/numberto-expressions/"/>
+    <updated>2014-03-29T00:25:00+02:00</updated>
+    <id>http://mishadoff.github.io/blog/numberto-expressions</id>
     <content type="html"><![CDATA[<p>Numberto has new features!</p>
 
 <!-- more -->
@@ -228,9 +348,9 @@ getting digits of <code>pi</code>, <code>e</code>, <code>sqrt(n)</code>, ratio n
   
   <entry>
     <title type="html"><![CDATA[Programming Digest 4]]></title>
-    <link href="http://mishadoff.github.com/blog/programming-digest-4/"/>
+    <link href="http://mishadoff.github.io/blog/programming-digest-4/"/>
     <updated>2013-11-25T22:50:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/programming-digest-4</id>
+    <id>http://mishadoff.github.io/blog/programming-digest-4</id>
     <content type="html"><![CDATA[<p>How to live in the Kingdom of Nouns, why mathematicians cry, filling gaps in algorithms, portion of clojure, STM, HTTP and more.</p>
 
 <!-- more -->
@@ -406,9 +526,9 @@ systems and share configurations between applications.</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 022]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-022/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-022/"/>
     <updated>2013-10-20T13:22:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-022</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-022</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Using <a href="http://projecteuler.net/project/names.txt">names.txt</a>
 a 46K text file containing over five-thousand first names,
@@ -501,9 +621,9 @@ As indices start from zero, do not forget increment!</p>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
-    <link href="http://mishadoff.github.com/blog/clojure-euler-problem-021/"/>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-021/"/>
     <updated>2013-10-05T15:24:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/clojure-euler-problem-021</id>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-021</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Evaluate the sum of all the amicable numbers under 10000.</p>
 </blockquote>
@@ -568,78 +688,6 @@ We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code
 
 <p><strong>P.S.</strong> Take a look at the last snippet. <code>vec</code> is really important there.</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Announcing numberto]]></title>
-    <link href="http://mishadoff.github.com/blog/announcing-numberto/"/>
-    <updated>2013-09-01T04:23:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/announcing-numberto</id>
-    <content type="html"><![CDATA[<p>All you need to play with numbers!</p>
-
-<!-- more -->
-
-<p><a href="https://github.com/mishadoff/numberto">numberto</a>
-- simple clojure library with a bunch of functions operating on numbers.</p>
-
-<p>I created this project for two reasons:</p>
-
-<ol>
-  <li>Solving problems on <a href="http://projecteuler.net">Project Euler</a>, <a href="http://www.4clojure.com/">4Clojure</a> and just playground with numbers needed common functions. I just extracted them to separate util library.</li>
-  <li>Practice to develop clojure project with unit tests, continuos integration, documentation and publishing to clojars.</li>
-</ol>
-
-<h3 id="get-it">Get it</h3>
-
-<p>Current version is <code>0.0.2</code> available to download on
-<a href="https://clojars.org/numberto/versions/0.0.2">Clojars</a> or
-as lein dependency <code>[numberto "0.0.2"]</code></p>
-
-<h3 id="example-usage">Example usage</h3>
-
-<p><code>clojure
-(number-&gt;roman 19) =&gt; "XIX"
-(take 10 fibonacci) =&gt; (1 1 2 3 5 8 13 21 34 55)
-(shift-right 123456789 3) =&gt; 789123456
-(count-digits (! 100000)) =&gt; 456574
-(factorize 234) =&gt; [2 3 3 13]
-</code></p>
-
-<p>Can you read long numbers?</p>
-
-<p><code>clojure 
-(number-name 16532561257523723757234781264) =&gt;
-"sixteen octillion five hundred thirty two septillion five hundred sixty one sextillion
-two hundred fifty seven quintillion five hundred twenty three quadrillion seven hundred
-twenty three trillion seven hundred fifty seven billion two hundred thirty four million
-seven hundred eighty one thousand two hundred sixty four"
-</code></p>
-
-<h3 id="structure">Structure</h3>
-
-<p>Each logical set of functions moved to separate namespace. Here is the list of namespaces:</p>
-
-<ul>
-  <li><strong>Converters</strong>.
-number to digits, char to digit, roman to arabic</li>
-  <li><strong>Math</strong>.
-Often used functions, such as <code>count-digits</code>, <code>shuffle-num</code>, <code>reverse-num</code> and some from common math <code>abs</code>, <code>gcd</code>, <code>lcm</code></li>
-  <li><strong>Seqs</strong>.
-Various lazy sequences: <code>fibonacci</code>, <code>farey</code>, <code>palindromes</code>.</li>
-  <li><strong>Primes</strong>.
-Prime numbers lazy sequence, factorization and totient function</li>
-  <li><strong>Factorial</strong>.
-Standard and Improved version of factorial</li>
-  <li><strong>Generators</strong>.
-Generate random numbers</li>
-  <li><strong>Printers</strong>.
-Pretty print for long numbers</li>
-</ul>
-
-<p>Check out <a href="https://github.com/mishadoff/numberto/blob/master/doc/intro.md">detailed intro</a></p>
-
-<p><strong>P.S.</strong> I still experimenting, so expect a lot of changes between versions until make something stable. Comments and advices are welcome!</p>
 ]]></content>
   </entry>
   

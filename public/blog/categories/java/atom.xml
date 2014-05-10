@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: java | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/java/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-05-10T18:12:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[randomorg-0.1]]></title>
-    <link href="http://mishadoff.github.com/blog/randomorg-0-dot-1/"/>
+    <link href="http://mishadoff.github.io/blog/randomorg-0-dot-1/"/>
     <updated>2013-07-06T15:33:00+03:00</updated>
-    <id>http://mishadoff.github.com/blog/randomorg-0-dot-1</id>
+    <id>http://mishadoff.github.io/blog/randomorg-0-dot-1</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/mishadoff/randomorg">randomorg-0.1</a> released!</p>
 
 <!-- more -->
@@ -39,9 +39,9 @@ which allows to generate random numbers via atmospheric noise.</p>
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 4: sun.misc.Unsafe]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
+    <link href="http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/"/>
     <updated>2013-02-26T02:37:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
+    <id>http://mishadoff.github.io/blog/java-magic-part-4-sun-dot-misc-dot-unsafe</id>
     <content type="html"><![CDATA[<p>Java is a safe programming language and prevents programmer
 from doing a lot of stupid mistakes, most of which based on memory management.
 But, there is a way to do such <em>mistakes</em> intentionally, using <code>Unsafe</code> class.</p>
@@ -784,9 +784,9 @@ elsewhere.</p>
   
   <entry>
     <title type="html"><![CDATA[Critical Software Bugs: Part 1]]></title>
-    <link href="http://mishadoff.github.com/blog/critical-software-bugs-part-1/"/>
+    <link href="http://mishadoff.github.io/blog/critical-software-bugs-part-1/"/>
     <updated>2013-01-20T18:48:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/critical-software-bugs-part-1</id>
+    <id>http://mishadoff.github.io/blog/critical-software-bugs-part-1</id>
     <content type="html"><![CDATA[<p>Little journey through the history of most critical software bugs
 with some code examples.</p>
 
@@ -1219,9 +1219,9 @@ Unit conversion method can be defined either at the <code>enum ForceUnit</code> 
   
   <entry>
     <title type="html"><![CDATA[Eclipse Speedup]]></title>
-    <link href="http://mishadoff.github.com/blog/eclipse-speedup/"/>
+    <link href="http://mishadoff.github.io/blog/eclipse-speedup/"/>
     <updated>2012-12-23T18:00:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/eclipse-speedup</id>
+    <id>http://mishadoff.github.io/blog/eclipse-speedup</id>
     <content type="html"><![CDATA[<p>Have you been in situation where most of the time in eclipse you were waiting for
 some operation to be finished?</p>
 
@@ -1426,9 +1426,9 @@ to hotkeys and learn them. You will get a positive feedback after a week of usag
   
   <entry>
     <title type="html"><![CDATA[Java Magic. Part 3: Finally]]></title>
-    <link href="http://mishadoff.github.com/blog/java-magic-part-3-finally/"/>
+    <link href="http://mishadoff.github.io/blog/java-magic-part-3-finally/"/>
     <updated>2012-11-18T19:39:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/java-magic-part-3-finally</id>
+    <id>http://mishadoff.github.io/blog/java-magic-part-3-finally</id>
     <content type="html"><![CDATA[<p>Every experienced java programmer should know that <code>finally</code> block always executed. But is it true?</p>
 
 <!-- more -->

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: statistics | mishadoff thoughts]]></title>
-  <link href="http://mishadoff.github.com/blog/categories/statistics/atom.xml" rel="self"/>
-  <link href="http://mishadoff.github.com/"/>
-  <updated>2014-03-28T20:16:18+02:00</updated>
-  <id>http://mishadoff.github.com/</id>
+  <link href="http://mishadoff.github.io/blog/categories/statistics/atom.xml" rel="self"/>
+  <link href="http://mishadoff.github.io/"/>
+  <updated>2014-05-10T18:12:42+03:00</updated>
+  <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Data Analysis: Facebook Hacker Cup 2013]]></title>
-    <link href="http://mishadoff.github.com/blog/data-analysis-facebook-hacker-cup/"/>
+    <link href="http://mishadoff.github.io/blog/data-analysis-facebook-hacker-cup/"/>
     <updated>2013-02-01T12:42:00+02:00</updated>
-    <id>http://mishadoff.github.com/blog/data-analysis-facebook-hacker-cup</id>
+    <id>http://mishadoff.github.io/blog/data-analysis-facebook-hacker-cup</id>
     <content type="html"><![CDATA[<p>What programming language is most used?</p>
 
 <!-- more -->
