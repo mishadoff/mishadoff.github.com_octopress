@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project-euler | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/project-euler/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2014-03-29T02:44:40+02:00</updated>
+  <updated>2014-05-10T18:12:42+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 023]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-023/"/>
+    <updated>2014-05-10T18:11:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-023</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of all the positive integers
+which cannot be written as the sum of two abundant numbers.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=23">http://projecteuler.net/problem=23</a></p>
+
+<!-- more -->
+
+<p>To define abundant number let’s revisit <code>sum-of-proper-divisors</code> from the <a href="/blog/clojure-euler-problem-021">Clojure Euler: Problem 021</a></p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [base (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (concat (map #(/ n %) base) base))))
+</code></p>
+
+<p>Using that function, <code>abundant?</code> predicate just follows definition.</p>
+
+<p><code>clojure
+(defn abundant? [n]
+  (&gt; (sum-of-proper-divisors n) n))
+</code></p>
+
+<p>If you look carefully at <code>sum-of-proper-divisors</code> it is buggy.</p>
+
+<p><code>clojure
+(sum-of-proper-divisors 25) =&gt; 1 ;; instead of 6
+</code></p>
+
+<p>Square numbers are not handled correctly.
+To fix that we add one more list to <code>concat</code>.</p>
+
+<p><code>clojure
+(defn sum-of-proper-divisors [n]
+  (let [divs (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
+    (reduce + 1 (set (concat
+                      (let [isq (int (Math/sqrt n))]      ;; added
+                        (if (= n (* isq isq)) [isq] []))  ;; added
+                      divs
+                      (map #(/ n %) divs))))))
+</code></p>
+
+<p>Double check</p>
+
+<p><code>clojure
+(sum-of-proper-divisors 25) =&gt; 6
+</code></p>
+
+<p>Great! Next step is to find all integer numbers which can not be written as the sum of two abundant numbers.</p>
+
+<p>Precalculate all abundant numbers:</p>
+
+<p><code>clojure
+(def abundant (filter abundant? (range 12 28124)))
+</code></p>
+
+<p>Now we can build all numbers which can be written as
+two abundant numbers and find their sum.</p>
+
+<p><code>clojure
+(-&gt;&gt; (for [i abundant j abundant
+           :let [num (+ i j)]
+           :when (&lt; num 28124)]
+       num)
+     (distinct)
+     (reduce +)
+     (- (reduce + (range 1 28124))))
+</code></p>
+
+<p>This solution works ~44 sec, too much.</p>
+
+<p>More clever approach is to iterate from all integers upto 28124 and check if some number can be written as a sum of two abundant numbers.</p>
+
+<p>The trick is simple: we building sorted set of abundant numbers</p>
+
+<p><code>clojure
+(def abundant (into (sorted-set) (filter abundant? (range 12 28124))))
+</code></p>
+
+<p>For every integer number <code>n</code> we subtract one abundant number and check if <code>abundant</code> set contains result.
+There is a good function <a href="http://clojuredocs.org/clojure_core/clojure.core/some">some</a> that makes our life easier.</p>
+
+<p><code>clojure
+(defn abundant-sum? [n abundant]
+  (some #(abundant (- n %)) abundant))
+</code></p>
+
+<p>Finding the sum</p>
+
+<p><code>clojure
+(-&gt;&gt; (range 1 28124)
+     (remove #(abundant-sum? % abundant))
+     (reduce +))
+</code></p>
+
+<p>It works ~26 sec.</p>
+
+<p>Another optimization is to limit number of abundants in
+<code>abundant-sum</code> function.</p>
+
+<p><code>clojure
+(defn abundant-sum? [n abundant]
+  (some #(abundant (- n %))
+         (take-while #(&lt; % n) abundant)))
+</code></p>
+
+<p>Time reduced to ~14 sec. Pretty good.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem023.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Buggy version of <code>sum-of-proper-divisor</code> solved the previous problem correctly, but it was just a luck. Make sure you test your functions.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 022]]></title>
@@ -345,119 +465,6 @@ and count Sundays.</p>
 <p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem019.clj">Problem solved</a>!</p>
 
 <p><strong>P.S.</strong> Java interoperability is ugly but still useful. </p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 018]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-018/"/>
-    <updated>2013-05-17T00:26:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-018</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
-</blockquote>
-
-<p><code>
-       3
-      7 4
-     2 4 6
-    8 5 9 3
-</code></p>
-
-<blockquote>
-  <p>That is, 3 + 7 + 4 + 9 = 23.</p>
-
-  <p>Find the maximum total from top to bottom of the triangle below:</p>
-
-  <p>[Check out big triangle in original link]</p>
-
-  <p>NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route.
-However, Problem 67, is the same challenge with a triangle containing one-hundred rows;
-it cannot be solved by brute force, and requires a clever method! ;o)</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=18">http://projecteuler.net/problem=18</a></p>
-
-<!-- more -->
-
-<p>As note says we can try every route and it will be just good.
-Instead of that, we can behave much better with clever method.</p>
-
-<p>(Some time ago, I gave basic explanation on my approach in <a href="http://stackoverflow.com/questions/8002252/euler-project-18-approach">StackOverflow question</a>)</p>
-
-<p>We have example triangle:</p>
-
-<p><code>
-       3
-      7 4
-     2 4 6
-    8 5 9 3
-</code></p>
-
-<p>Instead of testing each route from top to the bottom, we moving from bottom
-to the top and always select the best choice. As we want to find the max sum, we perform addition im place.</p>
-
-<p>Assuming we on the 3rd line (2 4 6).</p>
-
-<p><strong>From 2</strong> we can go either 8 or 5, 8 is better (maximize your sum), then you calculate first
-sum <code>8 + 2 = 10</code>.</p>
-
-<p><strong>From 4</strong> we can go either 5 or 9, 9 is better, <code>4 + 9 = 13</code>.</p>
-
-<p><strong>From 6</strong> we can go either 9 or 3, 9 is better, <code>9 + 6 = 15</code>.</p>
-
-<p>Now, we removing last row, because we processed all routes and selected best ones, and replacing
-3rd row with calculated sums. Current triangle looks like:</p>
-
-<p><code>
-        3
-      7  4
-    10 13 15
-</code></p>
-
-<p>Repeat the same action until we get one number, which will be solution.</p>
-
-<p>Let’s transform this idea to clojure.</p>
-
-<p>First of all we need datastructure to represent triangle.
-List of lists would be good:</p>
-
-<p><code>clojure
-(def triangle '((3) (7 4) (2 4 6) (8 5 9 3)))
-</code></p>
-
-<p>Now we want to know, what direction generates the best sum.</p>
-
-<p><code>clojure
-(defn max-row [lst]
-  (map #(reduce max %) (partition 2 1 lst)))
-</code></p>
-
-<p>It breaks list to pairs, and select max from each pair.
-For example, <code>[8 5 9 3]</code> we split to <code>[[8 5] [5 9] [9 3]]</code>
-and select max from each sublist <code>[8 9 9]</code>.</p>
-
-<p>Just add this list to previous one</p>
-
-<p><code>clojure
-(defn step-max [lst1 lst2]
-  (map + (max-row lst1) lst2))
-</code></p>
-
-<p>One iteration of <code>step-max</code> creates smaller triangle with sums on the bottom row.
-But we need only one number.</p>
-
-<p>Correct, <code>reduce</code> is ideal!</p>
-
-<p><code>clojure
-(reduce step-max (reverse triangle))
-</code></p>
-
-<p>That’s it.</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem018.clj">code</a></p>
-
-<p><strong>P.S.</strong> Problem 067 can be solved with the same code.</p>
 ]]></content>
   </entry>
   

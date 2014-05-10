@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2014-03-29T02:44:40+02:00</updated>
+  <updated>2014-05-10T18:12:42+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,146 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Euler: Problem 023]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-023/"/>
+    <updated>2014-05-10T18:11:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-euler-problem-023</id>
+    <content type="html"><![CDATA[<blockquote>
+  <p>Find the sum of all the positive integers
+which cannot be written as the sum of two abundant numbers.</p>
+</blockquote>
+
+<p>Permalink: <a href="http://projecteuler.net/problem=23">http://projecteuler.net/problem=23</a></p>
+
+<!-- more -->
+
+<p>To define abundant number let’s revisit <code>sum-of-proper-divisors</code> from the <a href="http://mishadoff.github.io/blog/clojure-euler-problem-021">Clojure Euler: Problem 021</a></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of-proper-divisors</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">base</span> <span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">)))]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">reduce + </span><span class="mi">1</span> <span class="p">(</span><span class="nb">concat </span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">base</span><span class="p">)</span> <span class="nv">base</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using that function, <code>abundant?</code> predicate just follows definition.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">abundant?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nf">sum-of-proper-divisors</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">n</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you look carefully at <code>sum-of-proper-divisors</code> it is buggy.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">sum-of-proper-divisors</span> <span class="mi">25</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="mi">1</span> <span class="c1">;; instead of 6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Square numbers are not handled correctly.
+To fix that we add one more list to <code>concat</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">sum-of-proper-divisors</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">divs</span> <span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">)))]</span>
+</span><span class="line">    <span class="p">(</span><span class="nb">reduce + </span><span class="mi">1</span> <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nf">concat</span>
+</span><span class="line">                      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">isq</span> <span class="p">(</span><span class="nb">int </span><span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">))]</span>      <span class="c1">;; added</span>
+</span><span class="line">                        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="p">(</span><span class="nb">* </span><span class="nv">isq</span> <span class="nv">isq</span><span class="p">))</span> <span class="p">[</span><span class="nv">isq</span><span class="p">]</span> <span class="p">[]))</span>  <span class="c1">;; added</span>
+</span><span class="line">                      <span class="nv">divs</span>
+</span><span class="line">                      <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">divs</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Double check</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">sum-of-proper-divisors</span> <span class="mi">25</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="mi">6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Great! Next step is to find all integer numbers which can not be written as the sum of two abundant numbers.</p>
+
+<p>Precalculate all abundant numbers:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">abundant</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">abundant?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">12</span> <span class="mi">28124</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now we can build all numbers which can be written as
+two abundant numbers and find their sum.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">i</span> <span class="nv">abundant</span> <span class="nv">j</span> <span class="nv">abundant</span>
+</span><span class="line">           <span class="ss">:let</span> <span class="p">[</span><span class="nv">num</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">i</span> <span class="nv">j</span><span class="p">)]</span>
+</span><span class="line">           <span class="ss">:when</span> <span class="p">(</span><span class="nb">&lt; </span><span class="nv">num</span> <span class="mi">28124</span><span class="p">)]</span>
+</span><span class="line">       <span class="nv">num</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nf">distinct</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">reduce + </span><span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">28124</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This solution works ~44 sec, too much.</p>
+
+<p>More clever approach is to iterate from all integers upto 28124 and check if some number can be written as a sum of two abundant numbers.</p>
+
+<p>The trick is simple: we building sorted set of abundant numbers</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">abundant</span> <span class="p">(</span><span class="nb">into </span><span class="p">(</span><span class="nf">sorted-set</span><span class="p">)</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">abundant?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">12</span> <span class="mi">28124</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For every integer number <code>n</code> we subtract one abundant number and check if <code>abundant</code> set contains result.
+There is a good function <a href="http://clojuredocs.org/clojure_core/clojure.core/some">some</a> that makes our life easier.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">abundant-sum?</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">abundant</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">some </span><span class="o">#</span><span class="p">(</span><span class="nf">abundant</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="nv">%</span><span class="p">))</span> <span class="nv">abundant</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Finding the sum</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">28124</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">remove </span><span class="o">#</span><span class="p">(</span><span class="nf">abundant-sum?</span> <span class="nv">%</span> <span class="nv">abundant</span><span class="p">))</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It works ~26 sec.</p>
+
+<p>Another optimization is to limit number of abundants in
+<code>abundant-sum</code> function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">abundant-sum?</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">abundant</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">some </span><span class="o">#</span><span class="p">(</span><span class="nf">abundant</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="nv">%</span><span class="p">))</span>
+</span><span class="line">         <span class="p">(</span><span class="nb">take-while </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">%</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">abundant</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Time reduced to ~14 sec. Pretty good.</p>
+
+<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem023.clj">Code</a></p>
+
+<p><strong>P.S.</strong> Buggy version of <code>sum-of-proper-divisor</code> solved the previous problem correctly, but it was just a luck. Make sure you test your functions.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Numberto: Expressions]]></title>
@@ -3318,37 +3458,6 @@ binomial coefficients, fractals, number theory and a huge amount of topics I’m
 <p><strong>P.S.</strong> Stirling’s formula presented here is rough enough. More accurate formula is
 $n! = \sqrt{2\pi} n^{n + 0.5}e^{-n}$.
 Check its proof <a href="http://www.sosmath.com/calculus/sequence/stirling/stirling.html">here</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Heisenberg Principle]]></title>
-    <link href="http://mishadoff.github.io/blog/heisenberg-principle/"/>
-    <updated>2013-02-21T00:24:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/heisenberg-principle</id>
-    <content type="html"><![CDATA[<p>It is so obvious, so I decided to write about it.</p>
-
-<!-- more -->
-
-<p><img src="http://i.imgur.com/pxxRKNR.jpg" alt="" /></p>
-
-<p><a href="http://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg principle</a>
-came from quantum mechanics and means that you can’t know exactly
-both coordinates and speed of particle. If you improve accuracy of detecting
-position, you lose accuracy in detecting speed and vice versa. <em>Uncertain</em> stuff.</p>
-
-<p>In human-readable form it sounds like</p>
-
-<blockquote>
-  <p>Either one or the other</p>
-</blockquote>
-
-<p>The same in every field, even in software engineering.
-If you implementing something or fixing bugs and your boss
-yelling: “you must work <a href="http://www.youtube.com/watch?v=gAjR4_CbPpQ">better and faster</a>”
-tell him <em>either one or the other</em>.</p>
-
-<p><strong>P.S.</strong> Actually, you can say “go fuck yourself”, but it won’t be polite.</p>
 ]]></content>
   </entry>
   
