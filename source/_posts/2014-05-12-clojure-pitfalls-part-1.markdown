@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Clojure Pitfalls: Part 1"
-date: 2014-05-12 13:59
+date: 2014-05-22 01:48
 comments: true
 categories: [programming, clojure]
 published: true
