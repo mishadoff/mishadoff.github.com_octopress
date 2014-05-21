@@ -1,0 +1,832 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clojure Pitfalls: Part 1 - mishadoff thoughts</title>
+  <meta name="author" content="mishadoff">
+
+  
+  <meta name="description" content="Clojure is a great language, and as every language,
+it has some unobvious and strange things, which seem confusing. Some of such things are gathered &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mishadoff.github.io/blog/clojure-pitfalls-part-1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="mishadoff thoughts" type="application/atom+xml">
+  <!-- MathHax for LaTeX support -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36243054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">mishadoff thoughts</a></h1>
+  
+    <h2>random thoughts about programming, math and life</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mishadoff.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clojure Pitfalls: Part 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-12T13:59:00+03:00" pubdate data-updated="true">May 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Clojure is a great language, and as every language,
+it has some unobvious and strange things, which seem confusing.</p>
+
+<p>Some of such things are gathered here.
+Most of them encountered by stupidity, docs misunderstanding,
+clojure specifics and procrastination.</p>
+
+<!-- more -->
+
+<h3 id="anybody-home">1. Anybody home?</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">contains? </span><span class="p">[</span><span class="mi">10</span> <span class="mi">20</span> <span class="mi">30</span><span class="p">]</span> <span class="mi">20</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="nv">false</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Surprised?</p>
+
+<p>The issue here is <code>contains?</code> function
+checks if <em>key</em> (not a value!) is present in collection.
+For vector - key is index, and obviously there is no 20th element.</p>
+
+<p>If you need to check if <em>value</em> is present in collection,
+use <code>some</code> predicate:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">some </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="nv">%</span> <span class="mi">20</span><span class="p">)</span> <span class="p">[</span><span class="mi">10</span> <span class="mi">20</span> <span class="mi">30</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="nv">true</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Keep in mind this function works in linear time.
+If you need to call it often, build a set and use
+it as a function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">numbers</span> <span class="p">(</span><span class="nb">set </span><span class="p">[</span><span class="mi">10</span> <span class="mi">20</span> <span class="mi">30</span><span class="p">]))</span>
+</span><span class="line"><span class="p">(</span><span class="nf">numbers</span> <span class="mi">20</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="mi">20</span> <span class="c1">;; treated as true</span>
+</span><span class="line"><span class="p">(</span><span class="nf">numbers</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="nv">nil</span> <span class="c1">;; treated as false</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note: if set contains <code>nil</code> or <code>false</code>, it won’t work.
+More discussion <a href="http://stackoverflow.com/questions/3249334/test-whether-a-list-contains-a-specific-value-in-clojure">here</a>.</p>
+
+<h3 id="breaking-the-law">2. Breaking the Law</h3>
+
+<p>You need stack. In clojure you can treat <code>list</code> like a stack.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="c1">;; take stack head</span>
+</span><span class="line"><span class="p">(</span><span class="nb">peek </span><span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="mi">1</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">;; pop stack</span>
+</span><span class="line"><span class="p">(</span><span class="nb">pop </span><span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">;; push item into stack</span>
+</span><span class="line"><span class="p">(</span><span class="nb">cons </span><span class="mi">0</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Everything is fine. But if you call <code>pop</code> after <code>cons</code>…</p>
+
+<blockquote>
+  <p>ClassCastException clojure.lang.Cons cannot be cast to clojure.lang.IPersistentStack</p>
+</blockquote>
+
+<p>The problem is <code>cons</code> is type destructive operation.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">type</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>            <span class="nv">=&gt;</span> <span class="nv">clojure.lang.PersistentList</span>
+</span><span class="line"><span class="p">(</span><span class="nf">type</span> <span class="p">(</span><span class="nb">cons </span><span class="mi">0</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)))</span>   <span class="nv">=&gt;</span> <span class="nv">clojure.lang.Cons</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And clearly, there is no <code>pop</code> defined for <code>Cons</code> type.</p>
+
+<p>To preserve collection type, use <code>conj</code> function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">type</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>            <span class="nv">=&gt;</span> <span class="nv">clojure.lang.PersistentList</span>
+</span><span class="line"><span class="p">(</span><span class="nf">type</span> <span class="p">(</span><span class="nb">conj </span><span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span> <span class="mi">0</span><span class="p">))</span>   <span class="nv">=&gt;</span> <span class="nv">clojure.lang.PersistentList</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="apples-or-oranges-part-i">3. Apples or Oranges? Part I</h3>
+
+<p>What’s the difference between
+<code>(last [1 2 3])</code> and <code>(last '(1 2 3))</code>?</p>
+
+<p>Functionally there is no difference, both snippets return <code>3</code></p>
+
+<p>Moreover, from performance view there is no difference as well.
+Both snippets work in linear time. Linear. O(n). Even for vector.</p>
+
+<p>What’s the difference between
+<code>(count [1 2 3])</code> and <code>(count '(1 2 3))</code>?</p>
+
+<p>Much better here, <code>count</code> works in constant time for vector
+and linear for list. So, if you really need fast <code>last</code> for vector,
+use <code>count</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="c1">;; 10M size vector</span>
+</span><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">v</span> <span class="p">(</span><span class="nf">vec</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span><span class="nv">e7</span><span class="p">)))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">last </span><span class="nv">v</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="mi">9999999</span>
+</span><span class="line"><span class="c1">;; &quot;Elapsed time: 1704.172859 msecs&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">get </span><span class="nv">v</span> <span class="p">(</span><span class="nb">dec </span><span class="p">(</span><span class="nb">count </span><span class="nv">v</span><span class="p">))))</span> <span class="nv">=&gt;</span> <span class="mi">9999999</span>
+</span><span class="line"><span class="c1">;; &quot;Elapsed time: 0.087302 msecs&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><em>Huge difference</em>.</p>
+
+<p>Do not use vector specific functions
+to list. Also, consider using <code>mapv</code>
+instead of <code>map</code> when processing vectors.</p>
+
+<h3 id="apples-or-oranges-part-ii">4. Apples or Oranges? Part II</h3>
+
+<p>Everybody knows <code>reduce</code> and <code>apply</code> functions.
+Sometimes using choosing between them does not make any difference.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="c1">;; 100K numbers</span>
+</span><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">N</span> <span class="p">(</span><span class="nf">repeatedly</span> <span class="mi">1</span><span class="nv">e6</span> <span class="o">#</span><span class="p">(</span><span class="nb">rand-int </span><span class="mi">100</span><span class="p">)))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">reduce + </span><span class="nv">N</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="mi">49503683</span>
+</span><span class="line"><span class="c1">;; &quot;Elapsed time: 311.496332 msecs&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">apply + </span><span class="nv">N</span><span class="p">))</span> <span class="nv">=&gt;</span> <span class="mi">49503683</span>
+</span><span class="line"><span class="c1">;; &quot;Elapsed time: 339.624222 msecs&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Sometimes it does.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="c1">;; 10K strings</span>
+</span><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">S</span> <span class="p">(</span><span class="nf">repeatedly</span> <span class="mi">1</span><span class="nv">e5</span> <span class="p">(</span><span class="k">fn </span><span class="p">[]</span> <span class="s">&quot;1&quot;</span><span class="p">)))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">count</span><span class="p">(</span><span class="nb">apply str </span><span class="nv">S</span><span class="p">)))</span> <span class="nv">=&gt;</span> <span class="mi">100000</span>
+</span><span class="line"><span class="c1">;; &quot;Elapsed time: 35.027218 msecs&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">count</span><span class="p">(</span><span class="nb">reduce str </span><span class="nv">S</span><span class="p">)))</span> <span class="nv">=&gt;</span> <span class="mi">100000</span>
+</span><span class="line"><span class="c1">;; &quot;Elapsed time: 24249.845948 msecs&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="refactor">5. Refactor</h3>
+
+<p>Conditionals are horses of programming language.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">status</span> <span class="mi">500</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nb">= </span><span class="nv">status</span> <span class="mi">403</span><span class="p">)</span>    <span class="s">&quot;login.html&quot;</span>
+</span><span class="line">      <span class="p">(</span><span class="nb">= </span><span class="nv">status</span> <span class="mi">404</span><span class="p">)</span>    <span class="s">&quot;not_found.html&quot;</span>
+</span><span class="line">      <span class="p">(</span><span class="nb">= </span><span class="nv">status</span> <span class="mi">500</span><span class="p">)</span>    <span class="s">&quot;server_fault.html&quot;</span>
+</span><span class="line">      <span class="p">(</span><span class="nb">= </span><span class="nv">status</span> <span class="mi">200</span><span class="p">)</span>    <span class="s">&quot;index.html&quot;</span>
+</span><span class="line">      <span class="ss">:else</span>             <span class="s">&quot;something_wrong.html&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Pretty straightforward, but a piece <code>(= status %)</code> look ugly.
+Let’s refactor it a bit and avoid repetition with <code>condp</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">status</span> <span class="mi">500</span><span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="nf">condp</span> <span class="nb">= </span><span class="nv">status</span>
+</span><span class="line">       <span class="mi">403</span>    <span class="s">&quot;login.html&quot;</span>
+</span><span class="line">       <span class="mi">404</span>    <span class="s">&quot;not_found.html&quot;</span>
+</span><span class="line">       <span class="mi">500</span>    <span class="s">&quot;server_fault.html&quot;</span>
+</span><span class="line">       <span class="mi">200</span>    <span class="s">&quot;index.html&quot;</span>
+</span><span class="line">       <span class="ss">:else</span>  <span class="s">&quot;something_wrong.html&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Much better. Except we broke previous functionality.
+If pass invalid status (let’s say 201) we get an exception:</p>
+
+<blockquote>
+  <p>IllegalArgumentException No matching clause: 201</p>
+</blockquote>
+
+<p>And that’s right: sugared keyword <code>:else</code> in <code>cond</code> behaves like regular clause in <code>condp</code>
+To make working solution, just remove <code>:else</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">condp</span> <span class="nb">= </span><span class="nv">status</span>
+</span><span class="line">       <span class="mi">403</span>    <span class="s">&quot;login.html&quot;</span>
+</span><span class="line">       <span class="mi">404</span>    <span class="s">&quot;not_found.html&quot;</span>
+</span><span class="line">       <span class="mi">500</span>    <span class="s">&quot;server_fault.html&quot;</span>
+</span><span class="line">       <span class="mi">200</span>    <span class="s">&quot;index.html&quot;</span>
+</span><span class="line">       <span class="s">&quot;something_wrong.html&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="dont-trust-your-eyes">6. Don’t trust your eyes</h3>
+
+<p>Get this portable, pure, thread-safe, well-documented,
+so beatiful and very awesome function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">add</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span>
+</span><span class="line">  <span class="s">&quot;Performs addition operation.</span>
+</span><span class="line"><span class="s">   More about addition here: http://en.wikipedia.org/wiki/Addition&quot;</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>What’s wrong here? Is it really <em>well-documented</em>? </p>
+
+<p>If you have sources, then yes, you see all documentation.
+But if you are library user you have no idea what function <code>add</code> might do. </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">doc </span><span class="nv">add</span><span class="p">)</span>
+</span><span class="line"><span class="c1">; -------------------------</span>
+</span><span class="line"><span class="c1">; user/add</span>
+</span><span class="line"><span class="c1">; ([a b])</span>
+</span><span class="line"><span class="c1">;   nil</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Misplaced docstring. Transpose it with arglist.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">add</span>
+</span><span class="line">  <span class="s">&quot;Performs addition operation.</span>
+</span><span class="line"><span class="s">  More about addition here: http://en.wikipedia.org/wiki/Addition&quot;</span>
+</span><span class="line">  <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">doc </span><span class="nv">add</span><span class="p">)</span>
+</span><span class="line"><span class="c1">; -------------------------</span>
+</span><span class="line"><span class="c1">; user/add</span>
+</span><span class="line"><span class="c1">; ([a b])</span>
+</span><span class="line"><span class="c1">;   Performs addition operation.</span>
+</span><span class="line"><span class="c1">;   More about addition here: http://en.wikipedia.org/wiki/Addition</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note: clojure lint tool <a href="https://github.com/jonase/eastwood">eastwood</a>
+is able to find this mistake.</p>
+
+<h3 id="it-depends">7. It depends</h3>
+
+<p>There is less known, but useful feature <em>dynamic binding</em></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="o">^</span><span class="ss">:dynamic</span> <span class="nv">*DEBUG*</span> <span class="nv">false</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If your code depends on <code>*DEBUG*</code> binding,
+its behaviour can be modified without changing
+function definition</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn </span><span class="nv">square</span> <span class="p">[</span><span class="nv">a</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">when </span><span class="nv">*DEBUG*</span> <span class="p">(</span><span class="nb">println </span><span class="s">&quot;call square&quot;</span><span class="p">))</span>
+</span><span class="line">  <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="nv">a</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nf">square</span> <span class="mi">10</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="mi">100</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*DEBUG*</span> <span class="nv">true</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nf">square</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class="line"><span class="c1">;; call square</span>
+</span><span class="line"><span class="nv">=&gt;</span> <span class="mi">100</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you have another value, that depends on dynamic binding, it is not dynamic.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="o">^</span><span class="ss">:dynamic</span> <span class="nv">*DEBUG_PREFIX*</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="nv">*DEBUG*</span> <span class="s">&quot;DEBUG=TRUE&quot;</span> <span class="s">&quot;DEBUG=FALSE&quot;</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*DEBUG*</span> <span class="nv">true</span><span class="p">]</span>
+</span><span class="line">  <span class="nv">*DEBUG_PREFIX*</span><span class="p">)</span>
+</span><span class="line"><span class="nv">=&gt;</span> <span class="s">&quot;DEBUG=FALSE&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>To fix that make it as a no-arg function. It will obtain
+dynamic binding right after the call.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="kd">defn- </span><span class="nv">debug-prefix</span> <span class="p">[]</span>
+</span><span class="line">  <span class="p">(</span><span class="k">if </span><span class="nv">*DEBUG*</span> <span class="s">&quot;DEBUG=TRUE&quot;</span> <span class="s">&quot;DEBUG=FALSE&quot;</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*DEBUG*</span> <span class="nv">true</span><span class="p">]</span>
+</span><span class="line">  <span class="p">(</span><span class="nf">debug-prefix</span><span class="p">))</span>
+</span><span class="line"><span class="nv">=&gt;</span> <span class="s">&quot;DEBUG=TRUE&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="map-access-denied">8. MAP: Access Denied</h3>
+
+<p>There are three ways to access map value</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">m</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Quentin Tarantino&quot;</span><span class="p">})</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">;; 1. By keyword</span>
+</span><span class="line"><span class="p">(</span><span class="ss">:name</span> <span class="nv">m</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="s">&quot;Quentin Tarantino&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">;; 2. By map as a function</span>
+</span><span class="line"><span class="p">(</span><span class="nf">m</span> <span class="ss">:name</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="s">&quot;Quentin Tarantino&quot;</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">;; 3. Using get</span>
+</span><span class="line"><span class="p">(</span><span class="nb">get </span><span class="nv">m</span> <span class="ss">:name</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="s">&quot;Quentin Tarantino&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>What version to use is a matter of style,
+because they are almost always interchangeble,
+but keep in mind some caveats.</p>
+
+<p>First approach is bad, when your keys are strings
+or whatever-not-a-function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">m</span> <span class="p">{</span><span class="s">&quot;name&quot;</span> <span class="s">&quot;Quentin Tarantino&quot;</span><span class="p">})</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="s">&quot;name&quot;</span> <span class="nv">m</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="nv">ClassCastException</span> <span class="nv">java.lang.String</span> <span class="nv">cannot</span> <span class="nv">be</span> <span class="nb">cast </span><span class="nv">to</span> <span class="nv">clojure.lang.IFn</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Second one is able to handle that, but instead it can throw NPE, when map is nil</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="k">def </span><span class="nv">m</span> <span class="nv">nil</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="p">(</span><span class="nf">m</span> <span class="ss">:name</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="nv">NullPointerException</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using <code>get</code> we avoid these pros, and access become more obvious.</p>
+
+<p>I prefer first version when using keyword explicitly, otherwise access via <code>get</code></p>
+
+<h3 id="thread-hack">9. Thread Hack</h3>
+
+<p>Thread macro is a convenient way to implement sequential processing.</p>
+
+<p>Thread First <code>-&gt;</code> inserts previous result
+as a <em>first</em> argument for the next expression.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">http/get</span> <span class="nv">URL</span><span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">validate-status</span><span class="p">)</span>
+</span><span class="line">    <span class="ss">:body</span>
+</span><span class="line">    <span class="ss">:data</span>
+</span><span class="line">    <span class="p">(</span><span class="nf">first</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Thread Last <code>-&gt;&gt;</code> does the same,
+but insert previous result as a <em>last</em> argument </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">range </span><span class="mi">100</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">map </span><span class="nv">square</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">filter </span><span class="nv">even?</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you need to insert previous result into specific position,
+wrap next expression to one-arg anonymous functions.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nf">http/get</span> <span class="nv">URL</span><span class="p">)</span>
+</span><span class="line">     <span class="p">(</span><span class="o">#</span><span class="p">(</span><span class="nf">validate-status</span> <span class="nv">%</span> <span class="ss">:throw-exception</span><span class="p">))</span>
+</span><span class="line">     <span class="ss">:body</span>
+</span><span class="line">     <span class="ss">:data</span>
+</span><span class="line">     <span class="p">(</span><span class="o">#</span><span class="p">(</span><span class="nb">conj </span><span class="nv">%</span> <span class="p">[</span><span class="ss">:guard</span><span class="p">])))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="just-words">10. Just Words</h3>
+
+<p>This one is not related to clojure, but interesting. Consider problem:</p>
+
+<blockquote>
+  <p>Find all words in a string</p>
+</blockquote>
+
+<p>Pretty obvious, huh?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\w+&quot;</span> <span class="s">&quot;Hello, world!&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="p">(</span><span class="s">&quot;Hello&quot;</span> <span class="s">&quot;world&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We don’t want numbers and underscore appear inside word</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\w+&quot;</span> <span class="s">&quot;Hello, w_orld 1984!&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="p">(</span><span class="s">&quot;Hello&quot;</span> <span class="s">&quot;w_orld&quot;</span> <span class="s">&quot;1984&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Okay, use just letters:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;[a-zA-Z]+&quot;</span> <span class="s">&quot;Hello, w_orld 1984!&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="p">(</span><span class="s">&quot;Hello&quot;</span> <span class="s">&quot;w&quot;</span> <span class="s">&quot;orld&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>No, we don’t want broken words. Use <code>\b</code> word boundary regex.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\b[a-zA-Z]+\b&quot;</span> <span class="s">&quot;Hello, w_orld 1984!&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Solved?</p>
+
+<p>Not for ukrainian</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\b[a-zA-Z]+\b&quot;</span> <span class="s">&quot;Привіт, світ 1984!&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="nv">nil</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And for every language which contains non-ascii letters in alphabet.
+Use unicode letter regexp <code>\p{L}</code> instead.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="clojure"><span class="line"><span class="p">(</span><span class="nb">re-seq </span><span class="o">#</span><span class="s">&quot;\b\p{L}+\b&quot;</span> <span class="s">&quot;Привіт, світ 1984!&quot;</span><span class="p">)</span> <span class="nv">=&gt;</span>
+</span><span class="line"><span class="p">(</span><span class="s">&quot;Привіт&quot;</span> <span class="s">&quot;світ&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mishadoff</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-12T13:59:00+03:00" pubdate data-updated="true">May 12<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mishadoff.github.io/blog/clojure-pitfalls-part-1/" data-via="mishadoff" data-counturl="http://mishadoff.github.io/blog/clojure-pitfalls-part-1/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/clojure-euler-problem-023/" title="Previous Post: Clojure Euler: Problem 023">&laquo; Clojure Euler: Problem 023</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/clojure-pitfalls-part-1/">Clojure Pitfalls: Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-023/">Clojure Euler: Problem 023</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/numberto-expressions/">Numberto: Expressions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/programming-digest-4/">Programming Digest 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/clojure-euler-problem-022/">Clojure Euler: Problem 022</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Pages</h1>
+  <ul id="pages_static">
+      <li><a href="/pages/quotes">Quotes</a></li>
+      <li><a href="/pages/clojure-links">Clojure Links</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Links</h1>
+  <ul id="links_static">
+      <li><a href="http://moviedev.tumblr.com/">Moviedev</a></li>
+  </ul>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <a class="twitter-timeline"  
+     href="https://twitter.com/mishadoff"
+     height="250"
+     data-widget-id="359415428398845952"
+     data-tweet-limit="5">Tweets by @mishadoff</a>
+  <script>
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - mishadoff -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'mits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://mishadoff.github.io/blog/clojure-pitfalls-part-1/';
+        var disqus_url = 'http://mishadoff.github.io/blog/clojure-pitfalls-part-1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

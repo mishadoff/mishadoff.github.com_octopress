@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2014-05-10T18:12:42+03:00</updated>
+  <updated>2014-05-22T01:17:26+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,423 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Pitfalls: Part 1]]></title>
+    <link href="http://mishadoff.github.io/blog/clojure-pitfalls-part-1/"/>
+    <updated>2014-05-12T13:59:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/clojure-pitfalls-part-1</id>
+    <content type="html"><![CDATA[<p>Clojure is a great language, and as every language,
+it has some unobvious and strange things, which seem confusing.</p>
+
+<p>Some of such things are gathered here.
+Most of them encountered by stupidity, docs misunderstanding,
+clojure specifics and procrastination.</p>
+
+<!-- more -->
+
+<h3 id="anybody-home">1. Anybody home?</h3>
+
+<p><code>clojure
+(contains? [10 20 30] 20) =&gt; false
+</code></p>
+
+<p>Surprised?</p>
+
+<p>The issue here is <code>contains?</code> function
+checks if <em>key</em> (not a value!) is present in collection.
+For vector - key is index, and obviously there is no 20th element.</p>
+
+<p>If you need to check if <em>value</em> is present in collection,
+use <code>some</code> predicate:</p>
+
+<p><code>clojure
+(some #(= % 20) [10 20 30]) =&gt; true
+</code></p>
+
+<p>Keep in mind this function works in linear time.
+If you need to call it often, build a set and use
+it as a function.</p>
+
+<p><code>clojure
+(def numbers (set [10 20 30]))
+(numbers 20) =&gt; 20 ;; treated as true
+(numbers 1) =&gt; nil ;; treated as false
+</code></p>
+
+<p>Note: if set contains <code>nil</code> or <code>false</code>, it won’t work.
+More discussion <a href="http://stackoverflow.com/questions/3249334/test-whether-a-list-contains-a-specific-value-in-clojure">here</a>.</p>
+
+<h3 id="breaking-the-law">2. Breaking the Law</h3>
+
+<p>You need stack. In clojure you can treat <code>list</code> like a stack.</p>
+
+<p>``` clojure
+;; take stack head
+(peek ‘(1 2 3)) =&gt; 1</p>
+
+<p>;; pop stack
+(pop ‘(1 2 3)) =&gt; (2 3)</p>
+
+<p>;; push item into stack
+(cons 0 ‘(1 2 3)) =&gt; (0 1 2 3)
+```</p>
+
+<p>Everything is fine. But if you call <code>pop</code> after <code>cons</code>…</p>
+
+<blockquote>
+  <p>ClassCastException clojure.lang.Cons cannot be cast to clojure.lang.IPersistentStack</p>
+</blockquote>
+
+<p>The problem is <code>cons</code> is type destructive operation.</p>
+
+<p><code>clojure
+(type '(1 2 3))            =&gt; clojure.lang.PersistentList
+(type (cons 0 '(1 2 3)))   =&gt; clojure.lang.Cons
+</code></p>
+
+<p>And clearly, there is no <code>pop</code> defined for <code>Cons</code> type.</p>
+
+<p>To preserve collection type, use <code>conj</code> function.</p>
+
+<p><code>clojure
+(type '(1 2 3))            =&gt; clojure.lang.PersistentList
+(type (conj '(1 2 3) 0))   =&gt; clojure.lang.PersistentList
+</code></p>
+
+<h3 id="apples-or-oranges-part-i">3. Apples or Oranges? Part I</h3>
+
+<p>What’s the difference between
+<code>(last [1 2 3])</code> and <code>(last '(1 2 3))</code>?</p>
+
+<p>Functionally there is no difference, both snippets return <code>3</code></p>
+
+<p>Moreover, from performance view there is no difference as well.
+Both snippets work in linear time. Linear. O(n). Even for vector.</p>
+
+<p>What’s the difference between
+<code>(count [1 2 3])</code> and <code>(count '(1 2 3))</code>?</p>
+
+<p>Much better here, <code>count</code> works in constant time for vector
+and linear for list. So, if you really need fast <code>last</code> for vector,
+use <code>count</code>.</p>
+
+<p>``` clojure
+;; 10M size vector
+(def v (vec (range 1e7)))</p>
+
+<p>(time (last v)) =&gt; 9999999
+;; “Elapsed time: 1704.172859 msecs”</p>
+
+<p>(time (get v (dec (count v)))) =&gt; 9999999
+;; “Elapsed time: 0.087302 msecs”
+```</p>
+
+<p><em>Huge difference</em>.</p>
+
+<p>Do not use vector specific functions
+to list. Also, consider using <code>mapv</code>
+instead of <code>map</code> when processing vectors.</p>
+
+<h3 id="apples-or-oranges-part-ii">4. Apples or Oranges? Part II</h3>
+
+<p>Everybody knows <code>reduce</code> and <code>apply</code> functions.
+Sometimes using choosing between them does not make any difference.</p>
+
+<p>``` clojure
+;; 100K numbers
+(def N (repeatedly 1e6 #(rand-int 100)))</p>
+
+<p>(time (reduce + N)) =&gt; 49503683
+;; “Elapsed time: 311.496332 msecs”</p>
+
+<p>(time (apply + N)) =&gt; 49503683
+;; “Elapsed time: 339.624222 msecs”
+```</p>
+
+<p>Sometimes it does.</p>
+
+<p>``` clojure
+;; 10K strings
+(def S (repeatedly 1e5 (fn [] “1”)))</p>
+
+<p>(time (count(apply str S))) =&gt; 100000
+;; “Elapsed time: 35.027218 msecs”</p>
+
+<p>(time (count(reduce str S))) =&gt; 100000
+;; “Elapsed time: 24249.845948 msecs”
+```</p>
+
+<h3 id="refactor">5. Refactor</h3>
+
+<p>Conditionals are horses of programming language.</p>
+
+<p><code>clojure
+(def status 500)
+(cond (= status 403)    "login.html"
+      (= status 404)    "not_found.html"
+      (= status 500)    "server_fault.html"
+      (= status 200)    "index.html"
+      :else             "something_wrong.html")
+</code></p>
+
+<p>Pretty straightforward, but a piece <code>(= status %)</code> look ugly.
+Let’s refactor it a bit and avoid repetition with <code>condp</code></p>
+
+<p><code>clojure
+(def status 500)
+(condp = status
+       403    "login.html"
+       404    "not_found.html"
+       500    "server_fault.html"
+       200    "index.html"
+       :else  "something_wrong.html")
+</code></p>
+
+<p>Much better. Except we broke previous functionality.
+If pass invalid status (let’s say 201) we get an exception:</p>
+
+<blockquote>
+  <p>IllegalArgumentException No matching clause: 201</p>
+</blockquote>
+
+<p>And that’s right: sugared keyword <code>:else</code> in <code>cond</code> behaves like regular clause in <code>condp</code>
+To make working solution, just remove <code>:else</code>.</p>
+
+<p><code>clojure
+(condp = status
+       403    "login.html"
+       404    "not_found.html"
+       500    "server_fault.html"
+       200    "index.html"
+       "something_wrong.html")
+</code></p>
+
+<h3 id="dont-trust-your-eyes">6. Don’t trust your eyes</h3>
+
+<p>Get this portable, pure, thread-safe, well-documented,
+so beatiful and very awesome function:</p>
+
+<p><code>clojure
+(defn add [a b]
+  "Performs addition operation.
+   More about addition here: http://en.wikipedia.org/wiki/Addition"
+  (+ a b))
+</code></p>
+
+<p>What’s wrong here? Is it really <em>well-documented</em>? </p>
+
+<p>If you have sources, then yes, you see all documentation.
+But if you are library user you have no idea what function <code>add</code> might do. </p>
+
+<p><code>clojure
+(doc add)
+; -------------------------
+; user/add
+; ([a b])
+;   nil
+</code></p>
+
+<p>Misplaced docstring. Transpose it with arglist.</p>
+
+<p>``` clojure
+(defn add 
+  “Performs addition operation.
+  More about addition here: http://en.wikipedia.org/wiki/Addition”
+  [a b]
+  (+ a b))</p>
+
+<p>(doc add)
+; ————————-
+; user/add
+; ([a b])
+;   Performs addition operation.
+;   More about addition here: http://en.wikipedia.org/wiki/Addition
+```</p>
+
+<p>Note: clojure lint tool <a href="https://github.com/jonase/eastwood">eastwood</a>
+is able to find this mistake.</p>
+
+<h3 id="it-depends">7. It depends</h3>
+
+<p>There is less known, but useful feature <em>dynamic binding</em></p>
+
+<p><code>clojure
+(def ^:dynamic *DEBUG* false)
+</code></p>
+
+<p>If your code depends on <code>*DEBUG*</code> binding,
+its behaviour can be modified without changing
+function definition</p>
+
+<p>``` clojure
+(defn square [a]
+  (when <em>DEBUG</em> (println “call square”))
+  (* a a))</p>
+
+<p>(square 10) =&gt; 100</p>
+
+<p>(binding [<em>DEBUG</em> true]
+  (square 10))
+;; call square
+=&gt; 100
+```</p>
+
+<p>If you have another value, that depends on dynamic binding, it is not dynamic.</p>
+
+<p>``` clojure
+(def ^:dynamic <em>DEBUG_PREFIX</em>
+  (if <em>DEBUG</em> “DEBUG=TRUE” “DEBUG=FALSE”))</p>
+
+<p>(binding [<em>DEBUG</em> true]
+  <em>DEBUG_PREFIX</em>)
+=&gt; “DEBUG=FALSE”
+```</p>
+
+<p>To fix that make it as a no-arg function. It will obtain
+dynamic binding right after the call.</p>
+
+<p>``` clojure
+(defn- debug-prefix []
+  (if <em>DEBUG</em> “DEBUG=TRUE” “DEBUG=FALSE”))</p>
+
+<p>(binding [<em>DEBUG</em> true]
+  (debug-prefix))
+=&gt; “DEBUG=TRUE”
+```</p>
+
+<h3 id="map-access-denied">8. MAP: Access Denied</h3>
+
+<p>There are three ways to access map value</p>
+
+<p>``` clojure
+(def m {:name “Quentin Tarantino”})</p>
+
+<p>;; 1. By keyword
+(:name m) =&gt; “Quentin Tarantino”</p>
+
+<p>;; 2. By map as a function
+(m :name) =&gt; “Quentin Tarantino”</p>
+
+<p>;; 3. Using get
+(get m :name) =&gt; “Quentin Tarantino”
+```</p>
+
+<p>What version to use is a matter of style,
+because they are almost always interchangeble,
+but keep in mind some caveats.</p>
+
+<p>First approach is bad, when your keys are strings
+or whatever-not-a-function.</p>
+
+<p>``` clojure
+(def m {“name” “Quentin Tarantino”})</p>
+
+<p>(“name” m) =&gt; ClassCastException java.lang.String cannot be cast to clojure.lang.IFn
+```</p>
+
+<p>Second one is able to handle that, but instead it can throw NPE, when map is nil</p>
+
+<p>``` clojure
+(def m nil)</p>
+
+<p>(m :name) =&gt; NullPointerException
+```</p>
+
+<p>Using <code>get</code> we avoid these pros, and access become more obvious.</p>
+
+<p>I prefer first version when using keyword explicitly, otherwise access via <code>get</code></p>
+
+<h3 id="thread-hack">9. Thread Hack</h3>
+
+<p>Thread macro is a convenient way to implement sequential processing.</p>
+
+<p>Thread First <code>-&gt;</code> inserts previous result
+as a <em>first</em> argument for the next expression.</p>
+
+<p><code>clojure
+(-&gt; (http/get URL)
+    (validate-status)
+    :body
+    :data
+    (first))
+</code></p>
+
+<p>Thread Last <code>-&gt;&gt;</code> does the same,
+but insert previous result as a <em>last</em> argument </p>
+
+<p><code>clojure
+(-&gt;&gt; (range 100)
+     (map square)
+     (filter even?)
+     (reduce +))
+</code></p>
+
+<p>If you need to insert previous result into specific position,
+wrap next expression to one-arg anonymous functions.</p>
+
+<p><code>clojure
+(-&gt;&gt; (http/get URL)
+     (#(validate-status % :throw-exception))
+     :body
+     :data
+     (#(conj % [:guard])))
+</code></p>
+
+<h3 id="just-words">10. Just Words</h3>
+
+<p>This one is not related to clojure, but interesting. Consider problem:</p>
+
+<blockquote>
+  <p>Find all words in a string</p>
+</blockquote>
+
+<p>Pretty obvious, huh?</p>
+
+<p><code>clojure
+(re-seq #"\w+" "Hello, world!") =&gt;
+("Hello" "world")
+</code></p>
+
+<p>We don’t want numbers and underscore appear inside word</p>
+
+<p><code>clojure
+(re-seq #"\w+" "Hello, w_orld 1984!") =&gt;
+("Hello" "w_orld" "1984")
+</code></p>
+
+<p>Okay, use just letters:</p>
+
+<p><code>clojure
+(re-seq #"[a-zA-Z]+" "Hello, w_orld 1984!") =&gt;
+("Hello" "w" "orld")
+</code></p>
+
+<p>No, we don’t want broken words. Use <code>\b</code> word boundary regex.</p>
+
+<p><code>clojure
+(re-seq #"\b[a-zA-Z]+\b" "Hello, w_orld 1984!") =&gt;
+("Hello")
+</code></p>
+
+<p>Solved?</p>
+
+<p>Not for ukrainian</p>
+
+<p><code>clojure
+(re-seq #"\b[a-zA-Z]+\b" "Привіт, світ 1984!") =&gt;
+nil
+</code></p>
+
+<p>And for every language which contains non-ascii letters in alphabet.
+Use unicode letter regexp <code>\p{L}</code> instead.</p>
+
+<p><code>clojure
+(re-seq #"\b\p{L}+\b" "Привіт, світ 1984!") =&gt;
+("Привіт" "світ")
+</code> </p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Euler: Problem 023]]></title>
@@ -616,78 +1033,6 @@ As indices start from zero, do not forget increment!</p>
 </code></p>
 
 <p>Way more readable, huh?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Clojure Euler: Problem 021]]></title>
-    <link href="http://mishadoff.github.io/blog/clojure-euler-problem-021/"/>
-    <updated>2013-10-05T15:24:00+03:00</updated>
-    <id>http://mishadoff.github.io/blog/clojure-euler-problem-021</id>
-    <content type="html"><![CDATA[<blockquote>
-  <p>Evaluate the sum of all the amicable numbers under 10000.</p>
-</blockquote>
-
-<p>Permalink: <a href="http://projecteuler.net/problem=21">http://projecteuler.net/problem=21</a></p>
-
-<!-- more -->
-
-<blockquote>
-  <p>Let d(n) be defined as the sum of proper divisors of n
-(numbers less than n which divide evenly into n).</p>
-
-  <p>If d(a) = b and d(b) = a, where a != b, then a and b are an
-amicable pair and each of a and b are called amicable numbers.</p>
-
-  <p>For example, the proper divisors of 220 are
-1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284.
-The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.</p>
-</blockquote>
-
-<p>We can do it <em>bruteforcely</em>, but we won’t.</p>
-
-<p>Let start with the function <code>d</code>. We call it <code>sum-of-proper-divisors</code></p>
-
-<p><code>clojure
-(defn sum-of-proper-divisors [n]
-  (let [base (filter #(zero? (mod n %)) (range 2 (Math/sqrt n)))]
-    (reduce + 1 (concat (map #(/ n %) base) base))))
-</code></p>
-
-<p>Bad approach to find all divisors: to iterate on all numbers from 1 to <code>n</code>
-and check if it is divisor or not.
-Instead, we iterate from 1 to <code>sqrt(n)</code>, find one divisor and
-calculate another symmetric divisor.</p>
-
-<p>For example, take number <code>10</code>.
-We iterating from <code>2</code> to <code>(sqrt 10)</code>. Number <code>2</code> is divisor, so we divide <code>(/ 10 2)</code>, get <code>5</code> which is also divisor. And so on.</p>
-
-<p>This is predicate checks where two numbers amicable or not:</p>
-
-<p><code>clojure
-(defn amicable? [a b]
-  (and (not (= a b))
-       (= a (sum-of-proper-divisors b))
-       (= b (sum-of-proper-divisors a))))
-</code></p>
-
-<p>Obvious enough, just consider that we skip case where <code>(= a b)</code>.</p>
-
-<p>The last part is to use our functions to obtain result.</p>
-
-<p><code>clojure
-(reduce +
-  (let [sums (vec (map sum-of-proper-divisors (range 1 10000)))]
-    (for [i (range 1 10000)]
-      (if (amicable? i (nth sums (dec i))) i 0))))
-</code></p>
-
-<p>Just generate all sums, and check if another number <code>i</code> produce the amicable pair. Done!</p>
-
-<p><a href="https://github.com/mishadoff/project-euler/blob/master/src/project_euler/problem021.clj">Code</a></p>
-
-<p><strong>P.S.</strong> Take a look at the last snippet. <code>vec</code> is really important there.</p>
-
 ]]></content>
   </entry>
   
