@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2014-05-22T01:17:26+03:00</updated>
+  <updated>2014-05-22T01:49:18+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Clojure Pitfalls: Part 1]]></title>
     <link href="http://mishadoff.github.io/blog/clojure-pitfalls-part-1/"/>
-    <updated>2014-05-12T13:59:00+03:00</updated>
+    <updated>2014-05-22T01:48:00+03:00</updated>
     <id>http://mishadoff.github.io/blog/clojure-pitfalls-part-1</id>
     <content type="html"><![CDATA[<p>Clojure is a great language, and as every language,
 it has some unobvious and strange things, which seem confusing.</p>
