@@ -26,8 +26,8 @@ All characters are fake, coincidences are accidental.*
 - [Intro](#intro)
 - [Episode 1. Command](#command)
 - [Episode 2. Strategy](#strategy)
-
 - [Episode 3. State](#state)
+
 - [Episode 4. Visitor](#visitor)
 - [Episode 5. Template Method](#template_method)
 - [Episode 6. Iterator](#template_method)
@@ -244,7 +244,7 @@ Collections.sort(users, new ReverseSubsComparator());
 *Eve:* Let's clarify them.  
 
 - *If user has subscription show him all news in a feed*
-- *Otherwise, show him top 10 news*
+- *Otherwise, show him recent 10 news*
 - *If he pays money, they are added to his account balance*
 - *If user doesn't have subscription and there is enough money
 to buy subscription, change his state to...*
@@ -268,7 +268,7 @@ public enum UserState {
 }
 ```
 
-*Pedro* User logic is following  
+*Pedro:* User logic is following  
 
 ``` java
 public class User {
@@ -292,7 +292,7 @@ public class User {
 }
 ```
 
-*Pedro:* Lets call it  
+*Pedro:* Lets call it
 
 ``` java
 User user = new User(); // create default user
@@ -305,7 +305,7 @@ user.newsFeed(); // show him all news
 
 *Eve:* You just hide value that affects  
 behaviour inside `User` object. We could use strategy to pass it directly `user.newsFeed(subscriptionType)`.  
-*Pedro:* Maybe, State is very close to the Strategy.  
+*Pedro:* Agreed, State is very close to the Strategy.  
 They even have the same UML diagrams. but we encapsulate balance and bind it to user.
 *Eve:* I think it achieves the same goal using another mechanism,
 from clojure perspective it can be implemented
@@ -327,10 +327,10 @@ the same way as strategy pattern. **It is just a first-class function**.
   (take 10 (db/news-feed)))
 ```
 
-*Eve:* And `pay` function it's just plain a function change state of object. We don't like state too much in clojure, but if you wish.  
+*Eve:* And `pay` function it's just a plain function, which changes state of object. We don't like state too much in clojure, but if you wish.  
 
 ``` clojure
-(def user (atom {:name "Jimmy"
+(def user (atom {:name "Jackie Brown"
                  :balance 0
                  :user-state :no-subscription}))
 				 
@@ -351,7 +351,7 @@ the same way as strategy pattern. **It is just a first-class function**.
 ```
 
 *Pedro:* Is dispatching by multimethods better than dispatching by enum?  
-*Eve:* No this particlular case, but in general yes.  
+*Eve:* No, in this particlular case, but in general yes.  
 *Pedro:* Explain, please  
 *Eve:* Do you know what *multiple dispatch* is?  
 *Pedro:* Not sure.  
