@@ -31,6 +31,7 @@ All characters are fake, coincidences are accidental.*
 - [Episode 4. Visitor](#visitor)
 - [Episode 5. Template Method](#template_method)
 - [Episode 6. Iterator](#template_method)
+
 - [Episode 7. Memento](#memento)
 
 - [Cast](#cast)
@@ -353,169 +354,145 @@ the same way as strategy pattern. **It is just a first-class function**.
 *Pedro:* Is dispatching by multimethods better than dispatching by enum?  
 *Eve:* No, in this particlular case, but in general yes.  
 *Pedro:* Explain, please  
-*Eve:* Do you know what *multiple dispatch* is?  
+*Eve:* Do you know what *double dispatch* is?  
 *Pedro:* Not sure.  
 *Eve:* Well, it is topic for `Visitor` pattern.
 
 ### <a id="visitor"/>Episode 4. Visitor
 
-*Pedro:* I really can't understand what is Visitor pattern for.  
-*Vaine:* Yeah, it is probably the most complicated pattern.  
-*Pedro:* Wiki says it is a **way of separating an algorithm
-from an object structure on which it operates**.  
-*Vaine:* Kind of. I'll give you an example.
-Assume you have a different shapes: rectangle, triangle, circle, etc.  
-*Pedro:* Yes.  
-*Vaine:* How would you implement them.  
-*Pedro:* I can create an abstract `Shape` class and all
-other shapes will extend it.  
-*Vaine:* Why would you do that?  
-*Pedro:* It's because parent `Shape` could contain some method
-common for all shape types, but differs in implementation.  
-*Vaine:* Like what?  
-*Pedro:* Like square function.  
-*Vaine:* Great. It's easy to add new type to hierarchy.
-Now, assume you want to render a shape.  
-*Pedro:* I will add `render` method to `Shape` class.  
-*Vaine:* And implement shape-specific rendering in all shapes?  
-*Pedro:* ..Yes..  
-*Vaine:* Ok, now you got another bunch of methods. You need to
-modify all your one million (*how much?*) shapes.  
-*Pedro:* Compiler is fast.  
-*Vaine (laughing):* Hahaha! It is not the way professional
-programmers think. This problem is called **expression problem**.  
-*Pedro:* I've never heard about it before.  
-*Vaine:* In OOP languages easy to add new types,
-but hard to add new operations on them.
-Visitor pattern solves this problem.  
-*Pedro:* And what about FP languages?  
-*Vaine:* Hush!  
-*Pedro:* ...  
-*Vaine (whisper):* I don't want a Niccy to hear us.
-FP languages have reverse problem.
-Easy to add new operations and hard to add new types.  
-*Pedro:* And what pattern to use in that case?  
-*Vaine:* Really, I don't know. FP is something strange for me.  
-*Niccy appeared with colander on the head*  
-*Niccy:* Nothing strange. It is clear problem that can be 
-solved by **double dispatch**.  
-*Vaine:* Not all languages support double dispatch.  
-*Niccy (laughing):* That's what I say every time.  
-*Pedro:* I am aware of *single dispatch*, but...  
-*Niccy:* If you have a call `object.method(argument)`, you see
-**runtime polymorphism** in action. Actual `method` will be selected
-depending on the type of `object`.  
-*Pedro:* It's obvious.  
-*Niccy:* It's obvious fail. Runtime can't use 
-information of `argument` type to select an appropriate method.  
-*Vaine:* Sure runtime is aware about `argument` type.  
-*Niccy:* You didn't get. Just look at the code:  
+> **Natanius S. Selbys** suggested to implement functionality
+> allows users export their messages, activities and achievements
+> in different formats.
+
+*Eve:* So, how do you plan to do it?  
+*Pedro:* We have one hierarchy for item types
+(Message, Activity) and another
+for file formats (PDF, XML)  
 
 ``` java
-class Food { }
-class FastFood extends Food { }
+abstract class Format { }
+class PDF extends Format { }
+class XML extends Format { }
 
-class Coder {
-	void eat(Food food) { 
-		System.out.println("Programmer eats Food");
-	}
-	void eat(FastFood food) {
-		System.out.println("Programmer eats FastFood");
-	}
+public abstract class Item {
+  void export(Format f) {
+    throw new UnknownFormatException(f);
+  }
+  abstract void export(PDF pdf);
+  abstract void export(XML xml);
 }
 
-public static void main(String[] args) {
-	Food     f1 = new Food();
-	FastFood f2 = new FastFood();
-	Food     f3 = new FastFood();
-	
-	Coder c = new Coder();
-	c.eat(f1); // Coder eats Food
-	c.eat(f2); // Coder eats FastFood
-	c.eat(f3); // Coder eats Food
+class Message extends Item {
+  @Override
+  void export(PDF f) {
+    PDFExporter.export(this);
+  }
+
+  @Override
+  void export(XML xml) {
+	XMLExporter.export(this);
+  }
+}
+
+class Activity extends Item {
+  @Override
+  void export(PDF pdf) {
+    PDFExporter.export(this);
+  }
+
+  @Override
+  void export(XML xml) {
+	XMLExporter.export(this);
+  }
 }
 ```
 
-*Vaine:* Hmm... Why would you need to dispatch on `argument` type?  
-*Niccy:* You don't need to.  
-*Vaine:* Hey, really, explain.  
-*Niccy:* Who was talking about *expression problem*?
-*Vaine:* ...
-*Pedro:* Seems we can solve this problem by using argument
-as an object and pass object as an argument in addition to first call.  
-*Niccy:* This is exactly a hack Visitor uses.  
-*Vaine:* Is there any better alternative?  
-*Niccy:* Multimethods.  
-*Both Vaine and Pedro:* Multi *what*?  
-*Niccy:* Multi *youaremorons* and adhoc hierarchies.  
-*Vaine:* Proofcode!  
-*Niccy:* Ha! Easy:  
+*Pedro:* That's all.  
+*Eve:* Nice, but how do you dispatch on argument type?  
+*Pedro:* What the problem?  
+*Eve:* Consider this snippet  
 
-``` clojure
-(derive ::fastfood ::food)
-
-(defmulti eat (fn [a b] [a b]))
-
-(defmethod eat [::coder ::food] [x y]
-  (println "Coder eats Food"))
-  
-(defmethod eat [::coder ::fastfood] [x y]
-  (println "Coder eats FastFood"))
-
-(eat ::coder ::food)     => Coder eats Food
-(eat ::coder ::fastfood) => Coder eats FastFood
-
-;; if [::coder ::fastfood] is missing
-;; then [::coder ::food] is used for dispatch
+``` java
+Item i = new Activity();
+Format f = new PDF();
+i.export(f);
 ```
 
-Ten minutes staring to the code in silent room.
+*Pedro:* Nothing suspicious here.  
+*Eve:* Actually, if you run this code you get `UnknownFormatException`  
+*Pedro:* Wait...Really?  
+*Eve:* In java you can use only *single dispatch*. That means if you call `i.export(f)`
+you dispatches on the actual type of `i`, not `f`.  
+*Pedro:* I'm surprised. So, there is no dispatch on argument type?  
+*Eve:* That's what visitor hack for. After you got a dispatch on `i` type, you
+additionally call `f.someMethod(i)` and dispatched on `f` type.  
+*Pedro:* How that looks in code?  
+*Eve:* You separately define export operations for all types as a `Visitor`  
 
-*Pedro:* I'm frustrated.  
-*Vaine:* **Quadrocolumn**! That's the face of FP monster, I'm done with that.  
-*Vaine is leaving*  
-*Niccy:* Hahaha! What the hard part?  
-*Pedro:* What is *quadrocolumn*?  
-*Niccy:* Namespace qualified keywords. Read about it.  
-*Pedro:* Emm...   
-*Niccy:* You want to ask how is it better? I'll tell you.
-`derive` can be used to create adhoc hierarchies, even using multiple inheritance,
-`parents/ancestors/descendants` methods are used to retrieve hierarchy structure,
-hardly achievable in OOP and `prefer-method` can be used if there is any ambiguity.  
-*Pedro:* ...  
-*Niccy:* I'm sure you'll understand.  
+``` java
+public interface Visitor {
+  void visit(Activity a);
+  void visit(Message m);
+}
 
-Pedro was experimenting with multimethods,
-adhoc hierarchies and practicing multiple dispatch
-until he was enlightened.
+public class PDFVisitor implements Visitor {
+  @Override
+  public void visit(Activity a) {
+    PDFExporter.export(a);
+  }
 
-*Pedro:* As easy as pie!
+  @Override
+  public void visit(Message m) {
+    PDFExporter.export(m);
+  }
+}
+```
+
+*Eve:* Your items change signature to accept different visitors.  
+
+``` java
+public abstract class Item {
+  abstract void accept(Visitor v);
+}
+
+class Message extends Item {
+  @Override
+  void accept(Visitor v) {
+    v.visit(this);
+  }
+}
+
+class Activity extends Item {
+  @Override
+  void accept(Visitor v) {
+    v.visit(this);
+  }
+}
+```
+
+*Eve:* To use it you may call  
+
+``` java
+Item i = new Message();
+Visitor v = new PDFVisitor(); 
+i.accept(v);
+```
+
+*Eve:* And everything works fine.
+Moreover, you can add new operations for
+activities and messages
+by just defining new visitors and
+without changing their code.  
+*Pedro:* That's really useful. But implementation is tough,
+it is the same for clojure?  
+*Eve:* Not really, clojure supports it natively via multimethods  
+*Pedro:* Multi *what*?  
 
 ``` clojure
-(def user {:name "William"
-           :state :subscription
-		   :registration ::base
-		   :bonus 0
-		   :ref-num 12})
-
-(derive ::referral ::base)
-
 
 ```
 
-**Demo**
-
-...
-*Sven Tori:* I'm very impressed, guys. 
-You've implemented bonus points functionality 
-in such limited period. It's awesome!
-*Rage Man:* Thanks!
-*Karmen:* We plan to build a store-system for users. They can
-buy some virtual items for their bonus points.
-*Sven Tori:* I see here a huge place for monetisation.
-*Karmen:* Exactly. By the way, we have several feature requests from users.
-*Dale (interrupting):* Because of feedback system we integrated.
-
+*Pedro:* Definitely, much easier.
 
 ### <a id="template_method"/>Episode 5. Template Method
 
@@ -1428,15 +1405,8 @@ and names are just anagrams.
 **Sven Tori** - Investor  
 **Karmen Git** - Marketing  
 **Kent Podiololis** - I don't like loops
+**Natanius S. Selbys** - Business Analyst
 
 **Mech Dominore Fight Saga** - Heroes of Might and Magic  
 
-
-- 1. Django Unchained
-- Pulp Fiction
-- Kill Bill
-- Reservoir Dogs
-- Four Rooms
-- Jackie Brown
-- Death proof
-- Inglourious Bastards
+Code examples are Tarantino's characters.
