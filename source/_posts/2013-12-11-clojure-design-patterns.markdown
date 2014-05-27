@@ -16,17 +16,32 @@ we use dynamic typing, functional programming and, of course,
 Clojure. Some of them look wrong and ugly. It's okay.
 All characters are fake, coincidences are accidental.*
 
-> Our programming language is fucked up.
+> Our programming language is fucked up.  
 > That's why we need design patterns.
+>
 > -- Anonymous
 
-### Intro
+### Index
+
+- [Intro](#intro)
+- [Episode 1. Command](#command)
+- [Episode 2. Strategy](#strategy)
+
+- [Episode 3. State](#state)
+- [Episode 4. Visitor](#visitor)
+- [Episode 5. Template Method](#template_method)
+- [Episode 6. Iterator](#template_method)
+- [Episode 7. Memento](#memento)
+
+- [Cast](#cast)
+
+### <a id="intro"/>Intro
 
 Two modest programmers **Pedro Veel** and **Eve Dopler**
-solving 23 software engineering problems and
+solving software engineering problems and
 applying design patterns.
 
-### Episode 1. Command
+### <a id="command"/>Episode 1. Command
 
 > Leading IT service provider **"Serpent Hill & R.E.E"**
 > acquired new project for USA customer.
@@ -79,23 +94,27 @@ public class LogoutCommand implements Command {
 *Pedro:* Usage is simple as well.
 
 ``` java
-(new LoginCommand("Johnny", "qwerty")).execute();
-(new LogoutCommand("Johnny")).execute();
+(new LoginCommand("django", "unCh@1ned")).execute();
+(new LogoutCommand("django")).execute();
 ```
 
 *Pedro:* What do you think, Eve?  
-*Eve:* Long enough. Look at this  
+*Eve:* Why are you using redundant wrapping and just don't call `DB.login`?  
+*Pedro:* It's important to wrap here, because now we can preserve `Command` objects.  
+*Eve:* For what purpose?  
+*Pedro:* Delayed call, logging, history tracking, caching, plenty of usages.  
+*Eve:* Ok, how about that?  
 
 ``` clojure
 (defn execute [command]
   (command))
 
-(execute #(db/login "Johnny" "qwerty"))
-(execute #(db/logout "Johnny"))
+(execute #(db/login "django" "unCh@1ned"))
+(execute #(db/logout "django"))
 ```
 
-*Pedro:* What the hell this hash sign?
-*Eve:* Just a shortcut for javaish  
+*Pedro:* What the hell this hash sign?  
+*Eve:* A shortcut for javaish  
 
 ``` java
 new SomeInterfaceWithOneMethod() {
@@ -106,35 +125,38 @@ new SomeInterfaceWithOneMethod() {
 };
 ```
 
-*Pedro:* Hmm...  
+*Pedro:* Just like `Command` interface...  
 *Eve:* Or if you want - no-hash solution.  
 
 ``` clojure
 (defn execute [command & args]
   (apply command args))
 
-(execute db/login "Johnny" "qwerty")
+(execute db/login "django" "unCh@1ned")
 ```
 
-IMPROVE
+*Pedro:* And how do you save function for delayed call in that case?  
+*Eve:* Answer yourself. What do you need to call a function?  
+*Pedro:* Its name...  
+*Eve:* And?  
+*Pedro:* ...arguments.  
+*Eve:* Bingo. All you do is saving a pair (*function-name*, *arguments*) and call it whenever you want using
+`(apply function-name arguments)`  
+*Pedro:* Hmm... Looks simple.  
+*Eve:* Definitely, **Command is just a function.**  
 
-*Pedro:* Why you just don't call `(db/login "Johnny" "qwerty")`?  
-*Eve:* Bingo!  
-*Pedro:* What do you mean?  
-*Eve:* **Command is just a function.**
+### <a id="strategy"/>Episode 2. Strategy
 
-### Episode 2. Strategy
-
-> **Sven Tori** pays a lot of money and
-> want to see a page with list of users.
+> **Sven Tori** pays a lot of money
+> to see a page with list of users.
 > But users must be sorted by name and
 > users with subscription must appear *before*
 > all other users.
 > Obviously, because they pay.
-> And obviously reverse sorting should keep subscripted users on top.
+> Reverse sorting should keep subscripted users on top.
 
 *Pedro:* Ha, just call `Collections.sort(users, comparator)`
-with custom comparator. `comparator` is a strategy.   
+with custom comparator.
 *Eve:* How would you implement it?  
 *Pedro:* You need to take `Comparator` interface
 and provide implementation for `compare(Object o1, Object o2)` method.
@@ -204,13 +226,15 @@ Collections.sort(users, new ReverseSubsComparator());
 
 *Pedro:* Oh my gut! Monstrous oneliners.  
 *Eve:* Functions, you know.  
-*Pedro:* Whatever, it's very hard to understand what's happening there.  
+*Pedro:* Whatever, it's very hard to understand what's happening there.
+
 *Eve explains juxt, complement and sort-by*  
 *10 minutes later*  
-*Pedro:* Very doubtful approach to pass strategy.  
-*Eve:* **Strategy is just a function accepts another function.**  
 
-### Episode 3. State
+*Pedro:* Very doubtful approach to pass strategy.  
+*Eve:* I don't care, **Strategy is just a function passed to another function.**  
+
+### <a id="state"/>Episode 3. State
 
 > Sales person **Karmen Git**
 > investigated the market and decided
@@ -331,315 +355,9 @@ the same way as strategy pattern. **It is just a first-class function**.
 *Pedro:* Explain, please  
 *Eve:* Do you know what *multiple dispatch* is?  
 *Pedro:* Not sure.  
-*Eve:* Well, then we need to discuss `Visitor` pattern.
+*Eve:* Well, it is topic for `Visitor` pattern.
 
-### Episode 4. Visitor
-
-
-
-### Episode 4. Template Method
-
-Pedro started thinking:  
-*Assume we have an algorithm to move character in some RPG world.
-All characters have a lot in common: they searching for valuable items in chests,
-if they found better artifact, replace their artifact, if they encountered an enemy,
-attack or flee, depending on enemy strength, if they found a questgiver, accept quest...*
-
-*But behavior between specific classes can vary depending on skills.
-For example, most characters ignore closed chest, but thief can lockpick it,
-most characters accept melee combat, but hunters and wizards try to keep distance...*
-
-Phone rang.
-
-*Pedro:* Hello?  
-*Niccy:* It's Niccy.  
-*Pedro:* What happened?  
-*Niccy:* I was implementing modified factorial algorithm and forgot
-to add exit condition. Waiting for stack overflow.  
-*Pedro:* Hope it will be soon.  
-*Niccy:* Definitely, few hours left. That idiot Vaine is thinking I can't help.  
-*Pedro:* Did you hear our talk?  
-*Niccy:* Of course, I am an angel.  
-*Pedro:* Even in "Recursion World"?  
-*Niccy:* Everywhere.
-
-*Niccy sent the file tm.clj*  
-
-``` clojure
-(defn move-to [loc]
-  (cond
-    (chest? loc) (let [chest (:chest loc)]
-                   (if (open? chest) 
-                     (take-from chest)
-                     (do-nothing)))
-    (artifact? loc) (let [art (:art loc)]
-                     (if (better :art (my))
-                       (replace :art)))
-    (enemy? loc) (attack :melee (:enemy loc))
-    (quest? loc) (accept quest)))
-```
-
-Pedro quickly inspected the code. 
-
-*Pedro:* But how we can override some actions based on class?  
-*Niccy:* What actions? What class?  
-*Pedro:* For example, thief class can lockpick the chests
-or hunter class has a ranged attack.  
-*Niccy:* Wait a second.  
-
-*Niccy sent the file tm2.clj*
-
-``` clojure
-(defn move-to [loc & {keys [lock-chest att-type :or
-                           {:lock-chest do-nothing :att-type :melee}]}]
-  (cond
-    (chest? loc) (let [chest (:chest loc)]
-                   (if (open? chest) 
-                     (take-from chest)
-                     (lock-chest)))
-    (artifact? loc) (let [art (:art loc)]
-                     (if (better :art (my))
-                       (replace :art)))
-    (enemy? loc) (attack att-type (:enemy loc))
-    (quest? loc) (accept quest)))
-
-(move-to loc) ;; Warrior
-(move-to loc :lock-chest lockpick) ;; Thief
-(move-to loc :att-type :ranged) ;; Hunter
-```
-
-*Niccy:* You see? We just pass functions.  
-*Pedro:* Unbelievable.  
-
-Pedro used the same approach to implement *catbots*.
-By the way, he added a fancy js library to visualize bots' moving.
-
-**Demo**
-
-*Pedro (shows the moving bots):* This bot disables users. This one is for... emmm?  
-*Karmen:* Notifying users on friends' birthdays.  
-*Pedro:* Right.  
-*Sven Tori:* Who controls all these bots?  
-*Dale:* Nobody. They are bots and that's the trick.  
-*Sven Tori:* Does it mean we don't need to hire a person to control them?  
-*Rage Man:* Exactly, they are fully automatic.  
-*Sven Tori:* Awesome!  
-
-### Episode 5. Iterator
-
-*Dale:* Hi, Pedro.  
-*Pedro:* Hi.
-*Dale:* Can you believe, Terry invited me to her Birthday.
-What can you suggest to present her?
-*Pedro:* A cup.
-*Dale:* A cup is банально
-*Pedro:* A cup with a cat image.
-*Dale:* That seems much better. Thanks.
-*Pedro:* No problem.
-*Dale:* By the way, I've inspected the code you using for iterating over catbots and users.
-It seems kinda... unprofessional.  
-*Pedro:* What do you mean?  
-*Dale:* There is `for` in one place, `loop/recur` in another.  
-*Pedro:* They are pretty similar.  
-*Dale:* Exactly! We need to abstract iteration.  
-*Pedro:* Why?  
-*Dale:* To be professional.  
-*Pedro:* Ohh..kay.  
-*Dale:* There is `Iterator` pattern, take a look.  
-*Pedro:* Sure. Thanks.  
-*Dale:* Thanks to you, for the cup idea.  
-
-Pedro started reading about iterator pattern and can't
-understand its purpose. ;; TODO more
-
-*Pedro:* Vaine, Niccy are you there?  
-*Vaine:* Yes.  
-*Niccy:* Ass.  
-*Pedro:* Could you explain me what purpose of the iterator pattern?  
-*Vaine:* Of course, it's easy.  
-*Niccy:* I'm listening!  
-*Vaine:* **Iterator enables a programmer to traverse a container**  
-*Pedro:* Is it like `java.util.Iterator`?  
-*Vaine:* Yes.  
-*Pedro:* But nobody use it.  
-*Vaine:* Everybody use it implicitly in `for-each` loop.  
-*Niccy:* Vaine, sorry, I'm lost. What does it mean *"to traverse a container"*?  
-*Vaine:* Formally, the container should provide two methods for you:  
-`next()` to return next element and `hasNext()` to return true if container has more elements.  
-*Niccy:* Ok. Do you know what linked list is?  
-*Vaine:* Singly linked list?  
-*Niccy:* Singly linked list.  
-*Vaine:* Sure. It is a container consists of nodes. 
-Each node has a data value and reference to the next node.  
-*Pedro:* And `null` value if there is no next node?  
-*Niccy:* Correct. Now tell me how traversing such list is differs
-from traversing via iterator?  
-*Vaine:* Emmm...  
-
-Vaine wrote two traversing snippets:
-
-* Traversing using iterator
-
-``` java
-Iterator i;
-while (i.hasNext()) {
-  i.next();
-}
-```
-
-* Traversing using linked list
-
-``` java
-Node next = root;
-while (next != null) {
-  next = next.next;
-}
-```
-
-*Vaine:* They are pretty similar...  
-*Pedro:* I think so. What is analogue of `Iterator` in clojure?  
-*Niccy:* `seq` function.  
-*Vaine:* Why not list?  
-*Niccy:* Why not? Guess what returns applying `seq` to a container?  
-*Pedro:* A list?  
-*Niccy:* Ingeniously.
-
-``` clojure
-(seq [1 2 3])       => (1 2 3)
-(seq (list 4 5 6))  => (4 5 6)
-(seq #{7 8 9})      => (7 8 9)
-(seq (int-array 3)) => (0 0 0)
-(seq "abc")         => (\a \b \c)
-```
-
-*Vaine:* Ok, I agree. But they just called java iterator with another name.  
-*Niccy:* Actually, it's java called list an *"iterator"*.  
-*Vaine:* ...  
-*Niccy:* And, in fact, `seq` is much better than iterator.  
-*Vaine:* Why?  
-*Niccy:* It is immutable and persistent.
-That means you won't have concurrency problems
-with `seq` at all.  
-*Vaine:* Makes sense, but this function works only on
-clojure data structures, what if I want implement custom one?  
-*Niccy:* You do. Using `deftype` you can create new classes the same way as in java.
-To make `seq` work on new class, just implement `seq` function
-from `clojure.lang.Seqable` interface.  
-
-``` clojure
-(deftype ReverseArray [vec]
-  clojure.lang.Seqable
-  (seq [self] 
-    (seq (reverse vec))))
-
-(def ra (ReverseArray. [1 2 3]))
-(seq ra)   =>  (3 2 1)
-```
-
-*Vaine:* Ha! It's just like implementing an `Iterator`.  
-*Niccy:* I suppose it is a plus.  
-*Vaine:* Ok, you win the battle, but didn't win a war.  
-*Niccy:* War consists of battles. If I win every battle...  
-*Vaine:* Stupid!  
-*Vaine disappeared*  
-*Pedro:* Niccy and how `seq` is applied to...  
-*Niccy:* `(doc seq)`  
-*Niccy disappeared*  
-
-;; Pedro wrote something
-;; Dale come and said everything is good
-
-### Episode 6. Visitor
-
-Bot idea was very attractive from Sven's perspective.
-*"More bots!"*, he said.
-
-...  
-*Rage Man:* Guys, what we planned for this week?  
-*Karmen:* I investigated the market. We can expand our services  
-by introducing referral program.  
-*Rage Man:* Explain please.  
-*Karmen:* Existing users can invite other users for some benefits.  
-*Rage Man:* What benefits?  
-*Karmen:* Temporary subscription or cat-style avatar.
-I still experimenting with this.  
-*Dale:* And if invited users will invite other users we'll grow exponentially.  
-*Pedro:* 6 steps and we dominate!  
-*Rage Man:* Ok, what about bots?  
-*Dale:* What bots?  
-*Rage Man:* Sven just said *"more bots"*.  
-*Karmen:* We'll think about it.  
-
-There was no problem to implement referral system. Pedro handled it very easily.
-Just added database column `referrer` for user table to indicate by whom this user was invited.
-Magical `NULL` was used to indicate users with no-referral registration.
-
-*Incoming call from karmelove81*
-*Karmen:* Hi, Pedro.
-*Pedro:* Hello, Karm.
-*Karmen:* We decided to implement *"PayBot"*
-*Pedro:* Pay?
-*Karmen:* Yes, it will give some bonus points to each 
-user based on some conditions. I sent you an email with rules.
-*Pedro:* But... We don't have bonus points in user account.
-*Karmen:* Really? Let me confirm.
-*karmelove81 disconnected*
-
-Pedro received email from Karmen and clicked 
-to open attachment `business_rules.jpg`
-
-*Incoming call from karmelove81*
-*Karmen:* Hi, Pedro. I confirmed. We really don't have bonus points yet.
-*Pedro:* As I said.
-*Karmen:* That means we must implement them.
-*Pedro:* It's not planned delivery.
-*Karmen:* I'll confirm with Rage Man, but start working.
-*karmelove81 disconnected*
-
-*Pedro:* Asylum.
-
-Pedro added another column `bonus_points` to user table. Done.
-He went to drink some coffee, but some strange feeling was as
-he forgot something.
-
-*Pedro:* Attachment!
-
-Attachment `business_rules.jpg` was just a photo
-of terribly-written text on the piece of paper.
-
-* If user is no-referral registered, with subscription +100 points.
-* If user is no-referral registered, enabled +50 points.
-* If user is no-referral registered, disabled +10 point.
-* If user is referral registered, with subscription +50 points.
-* If user is referral registered, enabled +10 point.
-* If user is referral registered, disabled 0 point.
-* Also, for each user add points per invited user
-  * 5 for no-referral
-  * 3 for referral
-  
-*Pedro:* She's, probably, never heard of cross product.
-
-Pedro started to implement the rules directly via if/else conditions.
-Very soon he was lost in his own code.
-
-*Dale:* How thigs are going?  
-*Pedro:* Not so good, thinking about this PayBot.  
-*Dale:* What's the problem?  
-*Pedro:* There are a lot conditions to check during visiting user in iteration.
-I just don't want if/else mess.  
-*Dale:* If bot should visit user, it's definitely candidate for *visitor pattern*.  
-*Pedro (trying to joke):* V for Visitor.  
-*Dale (laughing):* Ahaha! I can use this joke to laugh with Terry. How do you think, will she understand?  
-*Pedro:* Doubt. Just open the dictionary and find another word starting with "V".  
-*Dale:* Good idea!  
-
-Pedro was trying to guess what horny word Dale 
-will choose to impress Terry.
-
-*Pedro:* Stop talking! I need to concentrate on the problem.  
-
-Search query *"visitor pattern"* didn't clear his mind.
-Every source was explaining something completely different.
+### <a id="visitor"/>Episode 4. Visitor
 
 *Pedro:* I really can't understand what is Visitor pattern for.  
 *Vaine:* Yeah, it is probably the most complicated pattern.  
@@ -797,6 +515,153 @@ buy some virtual items for their bonus points.
 *Sven Tori:* I see here a huge place for monetisation.
 *Karmen:* Exactly. By the way, we have several feature requests from users.
 *Dale (interrupting):* Because of feedback system we integrated.
+
+
+### <a id="template_method"/>Episode 5. Template Method
+
+Pedro started thinking:  
+*Assume we have an algorithm to move character in some RPG world.
+All characters have a lot in common: they searching for valuable items in chests,
+if they found better artifact, replace their artifact, if they encountered an enemy,
+attack or flee, depending on enemy strength, if they found a questgiver, accept quest...*
+
+*But behavior between specific classes can vary depending on skills.
+For example, most characters ignore closed chest, but thief can lockpick it,
+most characters accept melee combat, but hunters and wizards try to keep distance...*
+
+Phone rang.
+
+*Pedro:* Hello?  
+*Niccy:* It's Niccy.  
+*Pedro:* What happened?  
+*Niccy:* I was implementing modified factorial algorithm and forgot
+to add exit condition. Waiting for stack overflow.  
+*Pedro:* Hope it will be soon.  
+*Niccy:* Definitely, few hours left. That idiot Vaine is thinking I can't help.  
+*Pedro:* Did you hear our talk?  
+*Niccy:* Of course, I am an angel.  
+*Pedro:* Even in "Recursion World"?  
+*Niccy:* Everywhere.
+
+*Niccy sent the file tm.clj*  
+
+``` clojure
+(defn move-to [loc]
+  (cond
+    (chest? loc) (let [chest (:chest loc)]
+                   (if (open? chest) 
+                     (take-from chest)
+                     (do-nothing)))
+    (artifact? loc) (let [art (:art loc)]
+                     (if (better :art (my))
+                       (replace :art)))
+    (enemy? loc) (attack :melee (:enemy loc))
+    (quest? loc) (accept quest)))
+```
+
+Pedro quickly inspected the code. 
+
+*Pedro:* But how we can override some actions based on class?  
+*Niccy:* What actions? What class?  
+*Pedro:* For example, thief class can lockpick the chests
+or hunter class has a ranged attack.  
+*Niccy:* Wait a second.  
+
+*Niccy sent the file tm2.clj*
+
+``` clojure
+(defn move-to [loc & {keys [lock-chest att-type :or
+                           {:lock-chest do-nothing :att-type :melee}]}]
+  (cond
+    (chest? loc) (let [chest (:chest loc)]
+                   (if (open? chest) 
+                     (take-from chest)
+                     (lock-chest)))
+    (artifact? loc) (let [art (:art loc)]
+                     (if (better :art (my))
+                       (replace :art)))
+    (enemy? loc) (attack att-type (:enemy loc))
+    (quest? loc) (accept quest)))
+
+(move-to loc) ;; Warrior
+(move-to loc :lock-chest lockpick) ;; Thief
+(move-to loc :att-type :ranged) ;; Hunter
+```
+
+*Niccy:* You see? We just pass functions.  
+*Pedro:* Unbelievable.  
+
+Pedro used the same approach to implement *catbots*.
+By the way, he added a fancy js library to visualize bots' moving.
+
+**Demo**
+
+*Pedro (shows the moving bots):* This bot disables users. This one is for... emmm?  
+*Karmen:* Notifying users on friends' birthdays.  
+*Pedro:* Right.  
+*Sven Tori:* Who controls all these bots?  
+*Dale:* Nobody. They are bots and that's the trick.  
+*Sven Tori:* Does it mean we don't need to hire a person to control them?  
+*Rage Man:* Exactly, they are fully automatic.  
+*Sven Tori:* Awesome!  
+
+### <a id="iterator"/>Episode 6. Iterator
+
+> Technical consultant **Kent Podiololis**
+> complains for usage C-style loops.
+>
+> "Are we in 1980 or what?"
+
+*Pedro:* We definitely should use pattern `java.util.Iterator`  
+*Eve:* Don't be fool, nobody's using `Iterator`  
+*Pedro:* Everybody use it implicitly in `for-each` loop. It's a good way to traverse a container.  
+*Eve:* What does it mean *"to traverse a container"*?  
+*Pedro:* Formally, the container should provide two methods for you:  
+`next()` to return next element and `hasNext()` to return true if container has more elements.  
+*Eve:* Ok. Do you know what linked list is?  
+*Pedro:* Singly linked list?  
+*Eve:* Singly linked list.  
+*Pedro:* Sure. It is a container consists of nodes. 
+Each node has a data value and reference to the next node.
+And `null` value if there is no next node.  
+*Eve:* Correct. Now tell me how traversing such list is differ
+from traversing via iterator?  
+*Pedro:* Emmm...  
+
+Pedro wrote two traversing snippets:
+
+* Traversing using iterator
+
+``` java
+Iterator i;
+while (i.hasNext()) {
+  i.next();
+}
+```
+
+* Traversing using linked list
+
+``` java
+Node next = root;
+while (next != null) {
+  next = next.next;
+}
+```
+
+*Pedro:* They are pretty similar...What is analogue of `Iterator` in clojure?  
+*Eve:* `seq` function.  
+
+
+``` clojure
+(seq [1 2 3])       => (1 2 3)
+(seq (list 4 5 6))  => (4 5 6)
+(seq #{7 8 9})      => (7 8 9)
+(seq (int-array 3)) => (0 0 0)
+(seq "abc")         => (\a \b \c)
+```
+
+*Pedro:* It returns a list...  
+*Eve:* **Iterator is just a list**  
 
 ### Episode 7: Memento
 
@@ -1550,9 +1415,9 @@ Oh, sorry it must be mutable.
 
 
 
-### Cast
+### "<a id="cast"/>"Cast
 
-*Should be read in style of "in the galaxy far away..."*
+> A long time ago in a galaxy far, far away...
 
 With the lack of imagination all characters
 and names are just anagrams.
@@ -1562,6 +1427,16 @@ and names are just anagrams.
 **Serpent Hill & R.E.E.** - Enterprise Hell  
 **Sven Tori** - Investor  
 **Karmen Git** - Marketing  
+**Kent Podiololis** - I don't like loops
 
 **Mech Dominore Fight Saga** - Heroes of Might and Magic  
-**JCharts** - chart.js
+
+
+- 1. Django Unchained
+- Pulp Fiction
+- Kill Bill
+- Reservoir Dogs
+- Four Rooms
+- Jackie Brown
+- Death proof
+- Inglourious Bastards
