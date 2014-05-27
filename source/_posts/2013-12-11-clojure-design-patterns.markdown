@@ -1,13 +1,14 @@
 ---
 layout: post
 title: "Clojure Design Patterns"
-date: 2013-12-11 00:09
+date: 2014-05-26 00:09
 comments: true
-categories: [clojure, programming, java, story]
+categories: [clojure, programming, java, story, patterns]
 published: false
 ---
 
-Quick overview of the classic [Design Patterns](http://en.wikipedia.org/wiki/Design_Patterns) in Clojure
+*Quick* overview of the classic [Design Patterns](http://en.wikipedia.org/wiki/Design_Patterns) in Clojure
+
 <!-- more -->
 
 **Disclaimer:** *Most patterns are easy to implement because
@@ -22,11 +23,14 @@ All characters are fake, coincidences are accidental.*
 ### Intro
 
 Two modest programmers **Pedro Veel** and **Eve Dopler**
-found a 23 software engineering problems and try to apply design patterns. Arguing and Coding.
+solving 23 software engineering problems and
+applying design patterns.
 
-### Command
+### Episode 1. Command
 
-Leading IT service provider **"Serpent Hill and R.E.E"** acquired new project for USA customer. First delivery is a register, login and logout functionality.
+> Leading IT service provider **"Serpent Hill & R.E.E"**
+> acquired new project for USA customer.
+> First delivery is a register, login and logout functionality.
 
 *Pedro:* Oh, that's easy. You just need a Command interface...  
 
@@ -36,411 +40,304 @@ interface Command {
 }
 ```
 
-*Pedro:* Every action should implement it.  
+*Pedro:* Every action should implement it and define `execute` behaviour.
 
 ``` java
 public class LoginCommand implements Command {
 
-    private String user;
-    private String password;
+  private String user;
+  private String password;
 
-    public LoginCommand(String user, String password) {
-        this.user = user;
-        this.password = password;
-    }
+  public LoginCommand(String user, String password) {
+    this.user = user;
+    this.password = password;
+  }
 
-    @Override
-    public void execute() {
-        DB.login(user, password);
-    }
+  @Override
+  public void execute() {
+    DB.login(user, password);
+  }
 }
 ```
 
 ``` java
 public class LogoutCommand implements Command {
 
-    private String user;
+  private String user;
 
-    public LogoutCommand(String user) {
-        this.user = user;
-    }
+  public LogoutCommand(String user) {
+    this.user = user;
+  }
 
-    @Override
-    public void execute() {
-        DB.logout(user);
-    }
+  @Override
+  public void execute() {
+    DB.logout(user);
+  }
 }
 ```
 
-*Pedro:* Pretty straightforward. Usage is also simple.  
+*Pedro:* Usage is simple as well.
 
 ``` java
 (new LoginCommand("Johnny", "qwerty")).execute();
 (new LogoutCommand("Johnny")).execute();
 ```
 
-*Eve:* 
+*Pedro:* What do you think, Eve?  
+*Eve:* Long enough. Look at this  
 
 ``` clojure
-(defn execute-command [command]
+(defn execute [command]
   (command))
+
+(execute #(db/login "Johnny" "qwerty"))
+(execute #(db/logout "Johnny"))
 ```
 
-``` clojure
-(execute-command #(db/login "Johnny" "qwerty"))
-(execute-command #(db/logout "Johnny"))
+*Pedro:* What the hell this hash sign?
+*Eve:* Just a shortcut for javaish  
+
+``` java
+new SomeInterfaceWithOneMethod() {
+  @Override
+  public void execute() {
+    // do
+  }
+};
 ```
 
-``` clojure
-(def history (atom [])) 
+*Pedro:* Hmm...  
+*Eve:* Or if you want - no-hash solution.  
 
-(defn execute-command [command & args]
-  (swap! history conj [command args])
+``` clojure
+(defn execute [command & args]
   (apply command args))
+
+(execute db/login "Johnny" "qwerty")
 ```
 
-*Pedro:* Sorry, `history` variable is?  
-*Niccy:* A vector. Every call to `execute-command` modifies `history` and
-you can inspect it later. For example to report login activites.  
-*Pedro:* That means...  
-*Niccy:* `Command` is just a function.  
+IMPROVE
 
-After two hours, registration, login and logout functionality was implemented
-and Pedro was glad as never. The rest of the day he spent browsing the
-web for funny cat image for the front page.
-
-**Demo**
-
-*Sven Tori:* What have you done in a week?  
-*Rage Man:* We continue working on business plan for cats...and
-implemented important part of our system.  
-*Dale:* Correct, It's working registration, login and logout for the user.
-Now you can enter your name, password and see a page with the cat.  
-*Sven Tori:* Awesome! Let's checkout progress in a week. Bye all!  
-*Rage Man:* Sure, bye!  
-*Dale:* Bye!  
-*Pedro:* Bye!  
-*Sven Tori disconnected*.  
-*Rage Man:* It was great.  
-*Pedro:* It was a `Command` pattern, you know...  
-*Rage Man:* Yeah, it was used exactly what is needed for. I had been programming before... // Grammar
-Next week we are going to implement list of users. Seems reasonable?  
-*Pedro:* Sure.  
-*Dale:* Ok. Have a nice weekend.  
+*Pedro:* Why you just don't call `(db/login "Johnny" "qwerty")`?  
+*Eve:* Bingo!  
+*Pedro:* What do you mean?  
+*Eve:* **Command is just a function.**
 
 ### Episode 2. Strategy
 
-Pedro implemented admin page and table with the list of users in one day.
+> **Sven Tori** pays a lot of money and
+> want to see a page with list of users.
+> But users must be sorted by name and
+> users with subscription must appear *before*
+> all other users.
+> Obviously, because they pay.
+> And obviously reverse sorting should keep subscripted users on top.
 
-*Dale:* Hi, Pedro! How are you?  
-*Pedro:* Fine.  
-*Dale:* How do you think, what flowers Terry likes?  
-*Pedro:* No idea.  
-*Dale:* Ok, then, let's check what you have. Admin page, fine. List of users, fine. Emm, wait.  
-*Pedro:* What's the problem?  
-*Dale:* Users with subscription must come *before* other users.  
-*Pedro:* There was no such requirement.  
-*Dale:* But it's obvious, agreed?  
-*Pedro:* Well... Yes, I'll do it.  
-*Dale:* Great, good luck!  
-
-Obviously sorting by name should work in reverse order too.
-Pedro needs something that allows to
-**select an algorithm's behavior at runtime**.
-
-*Vaine:* It's candidate for `Strategy` pattern.  
-*Pedro:* Yes, it seems.  
-*Vaine:* Exactly it is, just like `Collections.sort(list, comparator)`  
-*Pedro:* But there is no "subscription" comparator.  
-*Vaine:* Write it yourself by *encapsulating needed behavior in custom comparator object*  
-*Niccy:* Boom!  
-*Vaine:* Again you!  
-*Niccy:* Everytime I hear *encapsulate behaviour in an object* I come in.  
-*Vaine:* Do not try to say I'm wrong.  
-*Niccy:* You are wrong. All these *encapsulate blah blah blah* is just function.  
-*Vaine:* You've already said the `Command` is just a function, now you're saying
-`Strategy` is a function. Do they the same?  
-*Niccy:* Kind of. `Strategy` just function accepts another function.  
-*Pedro:* Enough arguing! I need to work.  
-*Vaine:* Just get away, Niccy.  
-*Niccy:* Hope it helps, losers!  
-
-Nicky throw a piece with code on the table.
-Pedro put it into a pocket.
-
-*Vaine:* Listen to me. For this particular problem `sort` is an **algorithm**,
-list is **data** to be sorted, and **comparator** is runtime behaviour.  
-*Pedro:* Got it.  
-*Vaine:* You need to follow `Comparator` interface
+*Pedro:* Ha, just call `Collections.sort(users, comparator)`
+with custom comparator. `comparator` is a strategy.   
+*Eve:* How would you implement it?  
+*Pedro:* You need to take `Comparator` interface
 and provide implementation for `compare(Object o1, Object o2)` method.
-Also you need another implementation `ReverseComparator`  
-*Pedro:* Lot of classes...  
-*Vaine:* It is flexibility, and after that you...  
-*Pedro:* Got it. Got it.  
-*Vaine:* Good luck!  
+Also you need another implementation for `ReverseComparator`  
+*Eve:* Stop talking, show me the code!  
 
-Pedro thought what Vaine was talking about.
-All these Comparator classes seem redundant.
-He took a Niccy's piece of paper from his pocket.
-There were few lines of clojure.
+``` java
+class SubsComparator implements Comparator<User> {
 
-``` clojure
-(def users [{:name "felicia"     :subs true}
-            {:name "faina"       :subs false}
-            {:name "fernando"    :subs true}
-            {:name "father Duke" :subs true}])
+  @Override
+  public int compare(User u1, User u2) {
+    if (u1.isSubscription() == u2.isSubscription()) {
+      return u1.getName().compareTo(u2.getName());
+    } else if (u1.isSubscription()) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+}
 
-;; forward sort
-(sort-by (juxt (complement :subs) :name) users)
-;; reverse sort
-(sort-by (juxt :subs :name) #(compare %2 %1) users)
+class ReverseSubsComparator implements Comparator<User> {
+
+  @Override
+  public int compare(User u1, User u2) {
+    if (u1.isSubscription() == u2.isSubscription()) {
+      return u2.getName().compareTo(u1.getName());
+    } else if (u1.isSubscription()) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+}
+
+// forward sort
+Collections.sort(users, new SubsComparator());
+
+// reverse sort
+Collections.sort(users, new ReverseSubsComparator());
 ```
 
-In a next 10 minutes (*8 of them was spent to understand clojure one-liners*),
-sorting functionality was done.
+*Pedro:* Could you do the same?  
+*Eve:* Yeah, something like that  
 
-**Demo**
+``` clojure
+(sort (comparator 
+       (fn [u1 u2]
+         (cond
+          (= (:subscription u1)
+             (:subscription u2)) (neg? (compare (:name u1)
+                                                (:name u2)))
+             (:subscription u1) true
+             :else false))) users)
+```
 
-...  
-*Dale:* Users with subscription appears on the top of the list.  
-*Sven Tori:* Sure, because they pay us.  
-*Dale:* And if we click on reverse sort it will be sorted in reverse order.  
-*Sven Tori:* Awesome, they still on top.  
-*Rage Man:* Guys did a good work.  
-*Sven Tori:* Yes, keep it up. Good Luck!  
-*Rage Man:* Bye!  
-*Dale:* Bye!  
-*Pedro:* Bye!  
+*Pedro:* Pretty similar.  
+*Eve:* But we can do it better  
+
+``` clojure
+;; forward sort
+(sort-by (juxt (complement :subscription) :name) users)
+
+;; reverse sort
+(sort-by (juxt :subscription :name) #(compare %2 %1) users)
+```
+
+*Pedro:* Oh my gut! Monstrous oneliners.  
+*Eve:* Functions, you know.  
+*Pedro:* Whatever, it's very hard to understand what's happening there.  
+*Eve explains juxt, complement and sort-by*  
+*10 minutes later*  
+*Pedro:* Very doubtful approach to pass strategy.  
+*Eve:* **Strategy is just a function accepts another function.**  
 
 ### Episode 3. State
 
-Monday, all-hands meeting.
+> Sales person **Karmen Git**
+> investigated the market and decided
+> to give different type of users different functionality.
 
-*Rage Man:* We guys did a good job last week. Sven Tori allowed us to hire
-marketing person. Meet **Karmen Git**, our first sales person.  
-*Karmen:* Hello, all. I am Karmen and I am a sales person.  
-*All:* Hi, Karmen!  
-*Rage Man:* Karmen will investigate the market and keep us profitable. Questions?  
-*Pedro:* What our plan for next week delivery?  
-*Rage Man:* Currently, we have enough functionality to attract users, you can relax for now.  
-*Pedro:* But...  
-*Karmen:* You can change the cat picture on the front page, I think user needs something new.  
-*Rage Man:* Excellent, Karmen. Dale, will you control that?  
-*Dale:* Sure.  
-*Rage Man:* Then, everybody's come back to work. Let's do the greatest cat service ever.  
+*Pedro:* Smooth requirements.  
+*Eve:* Let's clarify them.  
 
-Whole day Pedro was reading about usage of `Strategy` pattern. Maybe he miss something?
+- *If user has subscription show him all news in a feed*
+- *Otherwise, show him top 10 news*
+- *If he pays money, they are added to his account balance*
+- *If user doesn't have subscription and there is enough money
+to buy subscription, change his state to...*
 
-*Dale:* Pedro, I've sent you new picture of cat for the front page. Did you check?  
-*Pedro:* One moment... Wait, what is this?  
-*Dale:* Oh God, this is my torso I wanted to send to Terry. That means I sent a cat photo to her. Shit.  
-*Pedro:* Happens.  
+*Pedro:* State! Awesome pattern. First we make a user state enum  
 
-Pedro slept very bad. He had a nightmare about naked Dale with cat's head.
-Disgusting.
+``` java
+public enum UserState {
+  SUBSCRIPTION(Integer.MAX_VALUE),
+  NO_SUBSCRIPTION(10);
 
-*Karmen:* Pedro, I've investigated some users staring too much at the cat picture.
-We need admin functionality to disable such users.  
-*Pedro:* But, how we detect who exactly staring too much?  
-*Karmen:* Unfortunately, I am not a technical guy. Talk to Dale.  
+  private int newsLimit;
 
-*Pedro:* Have you heard what Karmen wants?  
-*Dale:* Yes, "must have" feature.  
-*Pedro:* Do you think it's possible to implement?  
-*Dale:* Just add functionality for admin to disable users.  
-*Pedro:* And how...  
-*Dale:* How, it's a Karmen's problem.  
+  UserState(int newsLimit) {
+    this.newsLimit = newsLimit;
+  }
 
-Pedro thought about implementation.  
-*Label near username must be clickable. If we click on label
-user state should be changed. User can have four different states:
-enabled, disabled, user with subscription and user that staring too much.
-The following rules should be applied on click:
-if user staring too much or enabled, we disable him; 
-if user disabled we enable him; 
-if user with subscription, do nothing.
-Pretty straightforward. We need to make this extensible, because
-I'm sure new business rules will be added later.
-From code perspective we need to support some
-state for...*
+  public int getNewsLimit() {
+    return newsLimit;
+  }
+}
+```
 
-*Vaine:* `State`? Awesome pattern.  
-*Pedro:* Do you hear my thoughts?  
-*Vaine:* Yes I do.  
-*Pedro:* Strange.  
-*Vaine:* You definitely must use `State` pattern. It pattern helps you
-**encapsulate varying behavior for the same function based on an object's state**  
-*Niccy:* Hiao!  
-*Vaine:* What are you need?  
-*Niccy:* *"State. You're doing it wrong"*, know who said that?  
-*Vaine:* Doesn't matter.  
-*Niccy:* Really. State is very close to the Strategy.
-They even have the same UML diagrams.  
-*Vaine:* Don't start your song.  
-*Niccy:* I've already started. It achieves the same goal using another mechanism,
-instead of passing behavior to the method, we support some internal
-state for the object, which affects method behaviour.
-And from clojure perspective it can be implemented
-the same way as strategy pattern. It is just a first-class function.  
-*Vaine:* But successive calls can change object's state.  
-*Niccy:* Right, but it has nothing to do with `Strategy` it is just implementation detail.  
-*Vaine:* What about "another mechanism"?  
-*Niccy:* Multimethods.  
+*Pedro* User logic is following  
+
+``` java
+public class User {
+  private int money = 0;
+  private UserState state = UserState.NO_SUBSCRIPTION;
+  private final static int SUBSCRIPTION_COST = 30;
+
+  public List<News> newsFeed() {
+    return DB.getNews(state.getNewsLimit());
+  }
+
+  public void pay(int money) {
+    this.money += money;
+    if (state == UserState.NO_SUBSCRIPTION
+	    && this.money >= SUBSCRIPTION_COST) {
+      // buy subscription
+      state = UserState.SUBSCRIPTION;
+      this.money -= SUBSCRIPTION_COST;
+    }
+  }
+}
+```
+
+*Pedro:* Lets call it  
+
+``` java
+User user = new User(); // create default user
+user.newsFeed(); // show him top 10 news
+user.pay(10); // balance changed, not enough for subs
+user.newsFeed(); // still top 10
+user.pay(25); // balance enough to apply subscription
+user.newsFeed(); // show him all news
+```
+
+*Eve:* You just hide value that affects  
+behaviour inside `User` object. We could use strategy to pass it directly `user.newsFeed(subscriptionType)`.  
+*Pedro:* Maybe, State is very close to the Strategy.  
+They even have the same UML diagrams. but we encapsulate balance and bind it to user.
+*Eve:* I think it achieves the same goal using another mechanism,
+from clojure perspective it can be implemented
+the same way as strategy pattern. **It is just a first-class function**.  
+*Pedro:* But successive calls can change object's state.  
+*Eve:* Correct, but it has nothing to do with `Strategy` it is just implementation detail.  
+*Pedro:* What about "another mechanism"?  
+*Eve:* Multimethods.  
 *Pedro:* Multi *what*?  
-*Vaine:* Methods, but I confused, I thought methods are in OOP.  
-*Niccy:* Functions, whatever. I don't care about names.  
-
-```
-(def mr-white   (atom {:name "Mr. White"   :state :enabled}))
-(def mr-pink    (atom {:name "Mr. Pink"    :state :staring}))
-(def mr-blonde  (atom {:name "Mr. Blonde"  :state :subscription}))
-
-(defmulti switch :state)
-
-(defmethod switch :enabled [user]
-  (println (:name user) "is disabled.")
-  (assoc user :state :disabled))
-
-(defmethod switch :disabled [user]
-  (println (:name user) "is enabled.")
-  (assoc user :state :enabled))
-
-(defmethod switch :staring [user]
-  (println (:name user) "is staring. Disable.")
-  (assoc user :state :disabled))
-
-(defmethod switch :subscription [user]
-  (println (:name user) "has subscription.")
-  user)
-
-;; Usage
-(swap! mr-white  switch)
-(swap! mr-pink   switch)
-(swap! mr-blonde switch)
-```
-
-Ton of completely new code for Pedro.
-He googled keywords: *clojure multimethods*, *single dispatch*, *multimethods vs switch statement*.
-Few hours of reading and he got "Aha!".
-*If new state appears in requirements, we just add another defmethod, awesome!*
-He used the same code Niccy gave to him, except one added line.
+*Eve:* Look at this  
 
 ``` clojure
-;; TODO replace println with logging
+(defmulti news-feed :user-state)
+
+(defmethod news-feed :subscription [user]
+  (db/news-feed))
+
+(defmethod news-feed :no-subscription [user]
+  (take 10 (db/news-feed)))
 ```
 
-*Dale:* We don't have demo this week.  
-*Pedro:* Great!  
-*Dale:* Yes, but we plan a huge delivery next week.
-By the way, enable/disable feature works great.
-What did you use to implement it?  
-*Pedro:* Multimethods.  
-*Dale:* Multi *what*?  
-*Pedro:* Methods.  
-*Dale:* Ohh, got it. Methods are great. I told you are a great developer?  
-*Pedro:* Yes.  
-*Dale:* Remember that. Bye!  
-*Pedro:* Have a nice weekend!  
+*Eve:* And `pay` function it's just plain a function change state of object. We don't like state too much in clojure, but if you wish.  
+
+``` clojure
+(def user (atom {:name "Jimmy"
+                 :balance 0
+                 :user-state :no-subscription}))
+				 
+(def ^:const SUBSCRIPTION_COST 30)
+
+(defn pay [user amount]
+  (swap! user update-in [:balance] + amount)
+  (when (and (>= (:balance @user) SUBSCRIPTION_COST)
+             (= :no-subscription (:user-state @user)))
+    (swap! user assoc :user-state :subscription)
+    (swap! user update-in [:balance] - SUBSCRIPTION_COST)))
+
+(news-feed @user) ;; top 10
+(pay user 10)
+(news-feed @user) ;; top 10
+(pay user 25)
+(news-feed @user) ;; all news
+```
+
+*Pedro:* Is dispatching by multimethods better than dispatching by enum?  
+*Eve:* No this particlular case, but in general yes.  
+*Pedro:* Explain, please  
+*Eve:* Do you know what *multiple dispatch* is?  
+*Pedro:* Not sure.  
+*Eve:* Well, then we need to discuss `Visitor` pattern.
+
+### Episode 4. Visitor
+
+
 
 ### Episode 4. Template Method
-
-*Rage Man:* Disabling users which don't want to pay
-for subscription is a big step to success. But we have just one unsolved problem. Karmen?  
-*Karmen:* Yeah. We have no idea how to detect such users.  
-*Pedro (whispered):* You don't say.  
-*Rage Man:* Let's propose some solutions and select the best one.
-Does everybody familliar with brainstorming?  
-*All:* Yes.  
-*Rage Man:* Whatever, just to clarify.  
-We generating ideas. No criticism, no slowpoking. Let's do it quick.
-Ideas may be crazy, does not matter. Then we select the best one. Clear?  
-*All:* Yes.  
-*Rage Man:* Starting now!  
-*Silence*  
-*Pedro (coughing):* Khm, khm.  
-*Silence*  
-*Karmen (sneezing):* Aaaptsch.  
-*Silence*  
-*Dale (snuffling):* Thhhhhs.  
-*Silence*  
-*Karmen:* User could select checkbox on registration "I will never pay subscription"  
-*Pedro:* Are they morons or what?  
-*Rage Man:* Remember, no criticism. Writing down first idea.  
-*Dale:* If user is staring at the cat more than 10 seconds,
-show him an alert "Are you staring? (YES/NO)"  
-*Rage Man:* Great, second idea.  
-*After few hours*  
-*Karmen:* For unsubscribed users we can show a picture with dog instead of cat
-and if they complain, disable.  
-*Rage Man:* Idea #123.  
-*Dale:* Or it can be a bot, automatically inspecting all users and detect suspects.  
-*Rage Man:* Idea #124. Enough. Take a lunch guys, and we will conduct another meeting in an hour.  
-
-At the end of working day, whole team was voting and arguing about solution.
-Democratic forces agreed on the bot idea, because it is
-*"automatic solution do not bother customers"* (Rage Man),
-*"entertain users and can be a marketable decision"* (Karmen),
-*"challenging and very technical solution"* (Dale),
-*"I don't know"* (Pedro).
-
-*Rage Man:* So, currently the best idea is a bot.  
-*Karmen:* Agreed.  
-*Dale:* Moreover, we can implement different types of bots.
-All of them will behave similarly, but on some conditions specific actions will be taken.  
-*Rage Man:* Explain, please.  
-*Dale:* We will implement one bot for inspecting users, another for disabling users,
-yet another for saying *"Thanks!"* to users with subscription, etc.  
-*Rage Man:* Seems reasonable.  
-*Pedro:* Why don't we just implement one bot doing all things?  
-*Dale:* It's a principle of single responsibility.  
-*Pedro:* But single resp...  
-*Karmen (interrupting):* We can also have a bot notifying users on their friends' birthdays.  
-*Dale:* And call all of them *CatBots*.  
-*Rage Man:* Ingenious. Do you see how powerful is brainstorming technique? Get back to work, guys.  
-
-The next day Pedro was thinking how to approach the bot.
-He visited a lot of gamedev forums and had no success.
-
-*Pedro:* I have no idea how to implement that.  
-*Dale:* It is simple. Few years ago I was playing MMORPG **Mech Dominore Fight Saga**.  
-*Pedro:* Great! I was playing it too.  
-*Dale:* Yes, the best game, in my opinion. But, there were a lot of routine tasks:
-killing monsters, gathering resources, daily quests, etc.
-Lot of things transformed game into a pain.  
-*Pedro:* That's why I stopped playing.  
-*Dale:* I did better, I implemented a bot doing all these thing automatically.  
-*Pedro:* Impossible!  
-*Dale:* I thought this the first time, but nothing impossible, you know.
-Moreover, the default bot was easily customizable for different classes:
-warriors, hunters, wizards.  
-*Pedro:* What technique did you use?  
-*Dale:* Don't remember exactly. It was some pattern called *"Pattern Fucntion"* or *"Pattern Method"*?  
-*Pedro:* *Template Method*?  
-*Dale:* Maybe. Really I don't remember. Google it.  
-*Pedro:* Sure, thanks Dale.  
-*Dale:* Break a leg. By the way, did you remember the cat picture I sent to Terry?  
-*Pedro:* Yes.  
-*Dale:* She liked it very much.
-And responded with another cat image, take a look.  
-*Pedro:* Funny. But if she sent you her torso it will be better ;; grammar
-*Dale:* Pervert!   (все попереду)
-
-It was the first time Dale helped. Pedro entered query in search field. Click.
-Whoa! The first match.
-
-*Pedro:* *"Template Method*, **It lets redefine certain steps of an algorithm
-without changing the algorithm's structure**". Seems useful for implementing
-their stupid catbot scenarios.  
-*Vaine:* You just found the ideal solution for your problem.  
-*Pedro:* Yes, but how to start?  
-*Vaine:* I would reccomend you to inspect `java.util.AbstractList` and its abstract methods,
-then write solution for Dale's bot and finally move to catbot.  
-*Pedro:* Thanks, Vaine.  
-*Vaine:* By the way, Niccy is not going to distract us today.
-He ended up in infinite recursion with his *Functional Programming* tricks.  
-*Pedro:* Did he die?  
-*Vaine:* No, just stucked in "Recursion World".  
-*Both laughing*  
 
 Pedro started thinking:  
 *Assume we have an algorithm to move character in some RPG world.
@@ -1653,20 +1550,18 @@ Oh, sorry it must be mutable.
 
 
 
-### Roles
+### Cast
+
+*Should be read in style of "in the galaxy far away..."*
 
 With the lack of imagination all characters
-and names are anagrams of some words.
+and names are just anagrams.
 
-**Pedro Veel** - Developer
-**Eve Dopler** - Developer
+**Pedro Veel** - Developer  
+**Eve Dopler** - Developer  
 **Serpent Hill & R.E.E.** - Enterprise Hell  
 **Sven Tori** - Investor  
-**Mate Dale** - Team Lead  
-**Rage Man** - Manager  
-**Terry P** - Pretty  
-**Vaine** - Naive  
-**Niccy** - Cynic  
 **Karmen Git** - Marketing  
+
 **Mech Dominore Fight Saga** - Heroes of Might and Magic  
 **JCharts** - chart.js
