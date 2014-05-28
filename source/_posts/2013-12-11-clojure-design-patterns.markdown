@@ -27,8 +27,8 @@ All characters are fake, coincidences are accidental.*
 - [Episode 1. Command](#command)
 - [Episode 2. Strategy](#strategy)
 - [Episode 3. State](#state)
-
 - [Episode 4. Visitor](#visitor)
+
 - [Episode 5. Template Method](#template_method)
 - [Episode 6. Iterator](#template_method)
 
@@ -157,7 +157,7 @@ new SomeInterfaceWithOneMethod() {
 > Reverse sorting should keep subscripted users on top.
 
 *Pedro:* Ha, just call `Collections.sort(users, comparator)`
-with custom comparator.
+with custom comparator.  
 *Eve:* How would you implement it?  
 *Pedro:* You need to take `Comparator` interface
 and provide implementation for `compare(Object o1, Object o2)` method.
@@ -246,7 +246,7 @@ Collections.sort(users, new ReverseSubsComparator());
 
 - *If user has subscription show him all news in a feed*
 - *Otherwise, show him recent 10 news*
-- *If he pays money, they are added to his account balance*
+- *If he pays money, add them to his account balance*
 - *If user doesn't have subscription and there is enough money
 to buy subscription, change his state to...*
 
@@ -390,7 +390,7 @@ class Message extends Item {
 
   @Override
   void export(XML xml) {
-	XMLExporter.export(this);
+    XMLExporter.export(this);
   }
 }
 
@@ -402,7 +402,7 @@ class Activity extends Item {
 
   @Override
   void export(XML xml) {
-	XMLExporter.export(this);
+    XMLExporter.export(this);
   }
 }
 ```
@@ -487,110 +487,103 @@ without changing their code.
 it is the same for clojure?  
 *Eve:* Not really, clojure supports it natively via multimethods  
 *Pedro:* Multi *what*?  
+*Eve:* Just follow the code...
+First we define dispatcher *function*
 
 ``` clojure
+(defmulti export
+  (fn [item format] [(:type item) format]))
+```
+
+*Eve:* It accepts `item` and `format` to be exported. Examples:
+
+``` clojure
+;; Message
+{:type :message :content "Say what again!"}
+;; Activity
+{:type :activity :content "Quoting Ezekiel 25:17"}
+;; Formats
+:pdf, :xml
+```
+
+*Eve:* And now you just provide a functions
+for different combinatations, and dispatcher decide which one to call.
+
+``` clojure
+(defmethod export [:activity :pdf] [item format]
+  (exporter/activity->pdf item))
+
+(defmethod export [:activity :xml] [item format]
+  (exporter/activity->xml item))
+
+(defmethod export [:message :pdf] [item format]
+  (exporter/message->pdf item))
+
+(defmethod export [:message :xml] [item format]
+  (exporter/message->xml item))
+```
+
+*Pedro:* What if unknown format passed?  
+*Eve:* We could specify default dipatcher function.  
+
+``` clojure
+(defmethod export :default [item format]
+  (throw (IllegalArgumentException. "not supported")))
 
 ```
 
-*Pedro:* Definitely, much easier.
+*Pedro:* Ok, but there is no hierarchy for `:pdf` and `:xml`.
+They are just keywords?  
+*Eve:* Correct, simple problem - simple solution.
+If you need advanced features, you could use *adhoc hierarchies*
+or dispatch by `class`.  
+
+``` clojure
+(derive ::pdf ::format)
+(derive ::xml ::format)
+```
+
+*Pedro:* Quadrocolons?!  
+*Eve:* Assume they are just keywords.  
+*Pedro:* Ok.  
+*Eve:* Then you add functions for every dispatch type
+`::pdf`, `::xml` and `::format`  
+
+``` clojure
+(defmethod export [:activity ::pdf])
+(defmethod export [:activity ::xml])
+(defmethod export [:activity ::format])
+```
+
+*Eve:* If some new format (i.e. csv) appears in the system  
+
+``` clojure
+(derive ::csv ::format)
+```
+
+*Eve:* It will be dispatched to `::format` function,
+until you add a separate `::csv` function.  
+*Pedro:* Seems good.  
+*Eve:* Definitely, much easier.  
+*Pedro:* So, basically, **if a language support multiple dispatch,
+you don't need Visitor pattern**?  
+*Eve:* Exactly.  
 
 ### <a id="template_method"/>Episode 5. Template Method
 
-Pedro started thinking:  
-*Assume we have an algorithm to move character in some RPG world.
-All characters have a lot in common: they searching for valuable items in chests,
-if they found better artifact, replace their artifact, if they encountered an enemy,
-attack or flee, depending on enemy strength, if they found a questgiver, accept quest...*
+> MMORPG **Mech Dominore Fight Saga** requested a game bot
+> for their VIP users. Not fair.
 
-*But behavior between specific classes can vary depending on skills.
-For example, most characters ignore closed chest, but thief can lockpick it,
-most characters accept melee combat, but hunters and wizards try to keep distance...*
-
-Phone rang.
-
-*Pedro:* Hello?  
-*Niccy:* It's Niccy.  
-*Pedro:* What happened?  
-*Niccy:* I was implementing modified factorial algorithm and forgot
-to add exit condition. Waiting for stack overflow.  
-*Pedro:* Hope it will be soon.  
-*Niccy:* Definitely, few hours left. That idiot Vaine is thinking I can't help.  
-*Pedro:* Did you hear our talk?  
-*Niccy:* Of course, I am an angel.  
-*Pedro:* Even in "Recursion World"?  
-*Niccy:* Everywhere.
-
-*Niccy sent the file tm.clj*  
-
-``` clojure
-(defn move-to [loc]
-  (cond
-    (chest? loc) (let [chest (:chest loc)]
-                   (if (open? chest) 
-                     (take-from chest)
-                     (do-nothing)))
-    (artifact? loc) (let [art (:art loc)]
-                     (if (better :art (my))
-                       (replace :art)))
-    (enemy? loc) (attack :melee (:enemy loc))
-    (quest? loc) (accept quest)))
-```
-
-Pedro quickly inspected the code. 
-
-*Pedro:* But how we can override some actions based on class?  
-*Niccy:* What actions? What class?  
-*Pedro:* For example, thief class can lockpick the chests
-or hunter class has a ranged attack.  
-*Niccy:* Wait a second.  
-
-*Niccy sent the file tm2.clj*
-
-``` clojure
-(defn move-to [loc & {keys [lock-chest att-type :or
-                           {:lock-chest do-nothing :att-type :melee}]}]
-  (cond
-    (chest? loc) (let [chest (:chest loc)]
-                   (if (open? chest) 
-                     (take-from chest)
-                     (lock-chest)))
-    (artifact? loc) (let [art (:art loc)]
-                     (if (better :art (my))
-                       (replace :art)))
-    (enemy? loc) (attack att-type (:enemy loc))
-    (quest? loc) (accept quest)))
-
-(move-to loc) ;; Warrior
-(move-to loc :lock-chest lockpick) ;; Thief
-(move-to loc :att-type :ranged) ;; Hunter
-```
-
-*Niccy:* You see? We just pass functions.  
-*Pedro:* Unbelievable.  
-
-Pedro used the same approach to implement *catbots*.
-By the way, he added a fancy js library to visualize bots' moving.
-
-**Demo**
-
-*Pedro (shows the moving bots):* This bot disables users. This one is for... emmm?  
-*Karmen:* Notifying users on friends' birthdays.  
-*Pedro:* Right.  
-*Sven Tori:* Who controls all these bots?  
-*Dale:* Nobody. They are bots and that's the trick.  
-*Sven Tori:* Does it mean we don't need to hire a person to control them?  
-*Rage Man:* Exactly, they are fully automatic.  
-*Sven Tori:* Awesome!  
 
 ### <a id="iterator"/>Episode 6. Iterator
 
 > Technical consultant **Kent Podiololis**
-> complains for usage C-style loops.
+> complains for C-style loops usage.
 >
 > "Are we in 1980 or what?"
 
-*Pedro:* We definitely should use pattern `java.util.Iterator`  
-*Eve:* Don't be fool, nobody's using `Iterator`  
+*Pedro:* We definitely should use pattern Iterator from java.
+*Eve:* Don't be fool, nobody's using `java.util.Iterator`  
 *Pedro:* Everybody use it implicitly in `for-each` loop. It's a good way to traverse a container.  
 *Eve:* What does it mean *"to traverse a container"*?  
 *Pedro:* Formally, the container should provide two methods for you:  
@@ -639,6 +632,8 @@ while (next != null) {
 
 *Pedro:* It returns a list...  
 *Eve:* **Iterator is just a list**  
+
+;; CUSTOM DATASTRUCTURE
 
 ### Episode 7: Memento
 
@@ -1404,9 +1399,8 @@ and names are just anagrams.
 **Serpent Hill & R.E.E.** - Enterprise Hell  
 **Sven Tori** - Investor  
 **Karmen Git** - Marketing  
-**Kent Podiololis** - I don't like loops
 **Natanius S. Selbys** - Business Analyst
-
 **Mech Dominore Fight Saga** - Heroes of Might and Magic  
+**Kent Podiololis** - I don't like loops
 
 Code examples are Tarantino's characters.
