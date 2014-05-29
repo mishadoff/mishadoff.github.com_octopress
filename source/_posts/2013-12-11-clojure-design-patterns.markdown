@@ -24,15 +24,15 @@ All characters are fake, coincidences are accidental.*
 ### Index
 
 - [Intro](#intro)
-- [Episode 1. Command](#command)
-- [Episode 2. Strategy](#strategy)
-- [Episode 3. State](#state)
-- [Episode 4. Visitor](#visitor)
+- [Episode  1. Command](#command)
+- [Episode  2. Strategy](#strategy)
+- [Episode  3. State](#state)
+- [Episode  4. Visitor](#visitor)
+- [Episode  5. Template Method](#template_method)
+- [Episode  6. Iterator](#template_method)
+- [Episode  7. Memento](#memento)
 
-- [Episode 5. Template Method](#template_method)
-- [Episode 6. Iterator](#template_method)
-
-- [Episode 7. Memento](#memento)
+- [Episode  8. Prototype](#prototype)
 
 - [Cast](#cast)
 
@@ -574,6 +574,203 @@ you don't need Visitor pattern**?
 > MMORPG **Mech Dominore Fight Saga** requested a game bot
 > for their VIP users. Not fair.
 
+*Pedro:* First, we must decide what actions 
+should be automated with bot.  
+*Eve:* Have you ever played RPG?  
+*Pedro:* Forntunately, no  
+*Eve:* Oh my... Let's go, I'll show you...  
+
+*2 weeks later*
+
+*Pedro:* ...fantastic, I found epic sword, which has +100 attack.  
+*Eve:* Unbelievable. But now, it's time for bot.  
+*Pedro:* Easy-peasy. We could select following events  
+
+- Battle
+- Quest
+- Opening Chest
+
+*Pedro:* Characters behave differently in
+different events, for example mages cast spells in battle,
+but rogues prefer silent melee combat, locked chests are skipped
+by most characters, but rogues can unlock them, etc.  
+*Eve:* Looks like ideal candidate for `Template Method`?  
+*Pedro:* Yes. We define abstract algorithm, and then specify
+differences in subclasses.  
+
+``` java
+public abstract class Character {
+  void moveTo(Location loc) {
+    if (loc.isQuestAvailable()) {
+      Journal.addQuest(loc.getQuest());
+    } else if (loc.containsChest()) {
+      handleChest(loc.getChest());
+    } else if (loc.hasEnemies()) {
+      attack(loc.getEnemies());
+    }
+    moveTo(loc.getNextLocation());
+  }
+
+  private void handleChest(Chest chest) {
+    if (!chest.isLocked()) {
+      chest.open();
+    } else {
+      handleLockedChest(chest);
+    }
+  }
+
+  abstract void handleLockedChest(Chest chest);
+  abstract void attack(List<Enemy> enemies);
+}
+```
+
+*Pedro:* We've separated to `Character` class everything common to all characters.
+Now we can create subclasses, that define how character should behave in specific situation.
+In out case: *handling locked chests* and *attacking enemies*.  
+*Eve:* Let's start with a Mage class.  
+*Pedro:* Mage? Okay.
+He can't open locked chest, so implementation is just *do nothing*.
+And if he is attacking enemies, if there are more than 10 enemies,
+freeze them, and cast teleport to run away. If there are 10 enemies or less
+cast fireball on each of them.  
+
+``` java
+public class MageCharacter extends Character {
+  @Override
+  void handleLockedChest(Chest chest) {
+    // do nothing
+  }
+
+  @Override
+  void attack(List<Enemy> enemies) {
+    if (enemies.size() > 10) {
+      castSpell("Freeze Nova");
+      castSpell("Teleport");
+    } else {
+      for (Enemy e : enemies) {
+        castSpell("Fireball", e);
+      }
+    }
+  }
+}
+```
+
+*Eve:* Excellent, what about Rogue class?  
+*Pedro:* Easy as well, rogues can unlock chests and
+prefer silent combat, handle enemies one by one.  
+
+``` java
+public class RogueCharacter extends Character {
+  @Override
+  void handleLockedChest(Chest chest) {
+    chest.unlock();
+  }
+
+  @Override
+  void attack(List<Enemy> enemies) {
+    for (Enemy e : enemies) {
+      invisibility();
+	  attack("backstab", e);
+    }
+  }
+}
+```
+
+*Eve:* Excellent. But how this approach is differrent from Strategy?  
+*Pedro:* What?  
+*Eve:* I mean, you redefined behaviour by using subclasses,
+but in Strategy pattern you did the same:
+redefined behaviour by using functions.  
+*Pedro:* Well, another approach.  
+*Eve:* State was handled with another approach as well.  
+*Pedro:* What are you trying to say?  
+*Eve:* You are solving the same kind of problem,
+but change the approach to it.  
+*Pedro:* How do yo solve this problem using strategy in clojure?  
+*Eve:* Just pass a set of specific functions for each character. For example, your abstract move may look like:  
+
+``` clojure
+(defn move-to [character location]
+  (cond
+   (quest? location)
+   (journal/add-quest (:quest location))
+
+   (chest? location)
+   (handle-chest (:chest location))
+
+   (enemies? location)
+   (attack (:enemies location)))
+  (move-to character (:next-location location)))
+```
+
+*Eve:* To add character-specific implementation
+of methods `handle-chest` and `attack`, implement them
+and pass as an argument.  
+
+``` clojure
+;; Mage-specific actions
+(defn mage-handle-chest [chest])
+
+(defn mage-attack [enemies]
+  (if (> (count enemies) 10)
+    (do (cast-spell "Freeze Nova")
+        (cast-spell "Teleport"))
+    ;; otherwise
+    (doseq [e enemies]
+      (cast-spell "Fireball" e))))
+
+;; Signature of move-to will change to
+
+(defn move-to [character location
+               & {:keys [handle-chest attack]
+                  :or {handle-chest (fn [chest])
+                       attack (fn [enemies]
+                                (run-away))}}]
+;; previous implementation
+)
+```
+
+*Pedro:* OMG, what's happening there?  
+*Eve:* We changed signature of `move-to` to accept
+`handle-chest` and `attack` functions.  
+
+``` clojure
+(move-to character location
+  :handle-chest mage-handle-chest
+  :attack       mage-attack)
+```
+
+*Eve:* Keep in mind that if these functions are not provided
+we use default behavior: do nothing for `handle-chest` and
+run away from enemies in `attack`  
+*Pedro:* Fine, but is this better than approach by subclassing? Seems that we have a lot of redundant information in
+`move-to` call.  
+*Eve:* It's fixable, just define this call once, and give it
+alias  
+
+``` clojure
+(defn mage-move [character location]
+  (move-to character location
+    :handle-chest mage-handle-chest
+    :attack       mage-attack))
+```
+
+*Eve:* Or use multimethods, it's even better.  
+
+``` clojure
+(defmulti move 
+  (fn [character location] (:class character)))
+
+(defmethod move :mage [character location]
+  (move-to character location
+    :handle-chest mage-handle-chest
+    :attack       mage-attack))
+```
+
+*Pedro:* I understand. But why do you think pass as argument is better than subclassing?  
+*Eve:* You can change behaviour dynamically. Assume your mage
+has no mana, so instead of trying to cast fireballs, he can just teleport and run away, you just provide new function.  
+*Pedro:* Makes sense. **Functions everywhere**  
 
 ### <a id="iterator"/>Episode 6. Iterator
 
@@ -582,7 +779,7 @@ you don't need Visitor pattern**?
 >
 > "Are we in 1980 or what?"
 
-*Pedro:* We definitely should use pattern Iterator from java.
+*Pedro:* We definitely should use pattern Iterator from java.  
 *Eve:* Don't be fool, nobody's using `java.util.Iterator`  
 *Pedro:* Everybody use it implicitly in `for-each` loop. It's a good way to traverse a container.  
 *Eve:* What does it mean *"to traverse a container"*?  
@@ -631,175 +828,159 @@ while (next != null) {
 ```
 
 *Pedro:* It returns a list...  
-*Eve:* **Iterator is just a list**  
+*Eve:* Because **Iterator is just a list**  
+*Pedro:* But is it possible to make `seq` works on custom datastructures?  
+*Eve:* Implement `clojure.lang.Seqable` interface  
 
-;; CUSTOM DATASTRUCTURE
+``` clojure
+(deftype RedGreenBlackTree [& elems]
+  clojure.lang.Seqable
+  (seq [self]
+	;; traverse element in needed order
+	))
+```
+
+*Pedro:* Fine then.
 
 ### Episode 7: Memento
 
-*Rage Man (in panic):* Pedro, what's going on?
-*Pedro:* What's up?
-*Rage Man:* There is a user in the system with bonus points over one million.
-*Pedro:* I..I... don't know.
-*Rage Man:* Nothing works.
-*Pedro:* Everything works, it's just some bug.
-*Rage Man:* It's not *"just bug"*, it's our money.
-*Pedro:* I understand, I'll investigate.
-*Rage Man:* We need fix for that as soon as possible.
+> User **Chad Bogue** lost the message he was writing
+> for a two days. Implement save button for him.
 
-Pedro wasn't good in security bu he used as much prevention mechanism as. 
-;; more
+*Pedro:* I don't believe there are people who
+can type in textbox for a two days. Two. Days.  
+*Eve:* Let's *save* him.  
+*Pedro:* I *googled* this problem. Most popular approach
+to implement save button is Memento pattern.
+You need *originator*, *caretaker* and *memento* objects.  
+*Eve:* What's that?  
+*Pedro:* *Originator* is just an object or state that we want to preserve.
+(text inside a textbox), *caretaker* is responsible to save state (save button)
+and *memento* is just an object to encapsulate state.  
 
-*Pedro:* Impossible. There is only one place which 
-modifies user bonus points - it is a PayBot.
-*Pedro:* There is no problems with PayBot controling. 
-It still not managed by admin, fully server code and running by timer.
+``` java
+public class TextBox {
+  // state for memento
+  private String text = "";
 
-Pedro took a look at the referers code.
+  // state not handled by memento
+  private int width = 100;
+  private Color textColor = Color.BLACK;
 
-*Pedro:* Oh, shi~
+  public void type(String s) {
+    text += s;
+  }
 
-Pedro incremented `ref-num` variable right after user sent invite.
-Some user sent invites to million of fake accounts. They didn't register.
+  public Memento save() {
+    return new Memento(text);
+  }
 
-*Dale:* Hi, Pedro. Did you hear about user with 1M+ bonus points?
-*Pedro:* Yes, I've found the problem and aalready fixed it.
-*Dale:* It is great! What was the root cause?
-*Pedro:* It's my fault.
-*Dale:* Everybody make mistakes. Don't embarass yourself. Really, what was the prbolem?
-*Pedro:* I was incrementing referal-registered users after user sent invites. 
-Not when invite was approved.  
-*Dale:* Understand. Everybody make mistakes. 
-However, you are good developer.
-*Pedro:* Thanks...
+  public void restore(Memento m) {
+    this.text = m.getText();
+  }
 
-**Unplanned meeting**
-
-*Rage Man:* User with ONE MILLION BONUS POINTS!!!
-*Dale:* Keep calm, everybody make mistakes.
-*Pedro:* As I said it is already fixed.
-*Rage Man:* Fixed what?
-*Pedro:* The problem with bonus points. It was caused by invalid...
-*Rage Man:* I don't care about technical things.
-The user with ONE MILLION BONUS POINTS still in the system!
-*Dale:* Oh my god! We forgot to nullify his points.
-*Rage Man:* That's the problem! And there is probably other users
-with fake points, how to detect them?
-*Dale:* ...
-*Pedro:* ...
-*Rage Man:* I want solution tomorrow.
-
-Meeting has ended. blah blah
-
-*Pedro:* We are fucked up.
-*Dale:* Remember the joke *"V for Visitor"*?
-*Pedro:* Yes.
-*Dale:* Actually, now is *"V for Vaseline"*.
-*Both laughing*
-*Pedro:* Кстати, did you tell Terry joke about Visitor?
-*Dale:* No.
-*Pedro:* And what did you tell her?
-*Dale:* Does not matter.
-*Pedro:* Hey, I'm really interesed.
-*Dale:* *"V for Vagina"*
-*Pedro:* What a pervert!
-*Karmen:* Sorry, guys, for interruping.
-I think I've gound a solution.
-*Dale:* We are listening.
-*Karmen:* What about periodically save user bonus points. 
-*Pedro:* Like shapshot?
-*Karmen:* What screenshot?
-*Pedro:* Nevermind.
-*Karmen:* And compare it's last state with current, if there is big deviation
-we will investigate the issue.
-*Dale:* And will be able to revert it's points!
-*Karmen:* This also will prevent some issues in future.
-*Dale:* Karm, you are genious! Pedro, do you see some issues with that.
-*Pedro:* No.
-*Dale:* Great! Will be done tomorrow.
-*Karmen:* Thanks, guys.
-*Dale and Pedro:* Thanks, Karm!
-
-Pedro started working. He thought some of previous patterns 
-could support this functionality. State? Command?
-
-*Vaine:* Memento.
-*Pedro:* Www...what?
-*Vaine:* Memento pattern.
-*Pedro:* Oh, i thought you mean movie.
-*Niccy:* Good movie. Definitely better than the pattern.
-*Vaine:* Niccy, could you don't interrupt me.
-*Niccy (sarcastic):* Sure. I mean it is the world greatest pattern ever.
-*Vaine:* Ok. So the Memento **provides the ability to restore an object to its previous state**
-*Pedro:* Got it.
-*Niccy:* Got it.
-*Vaine:* To implement it you need three objects: *originator*, *caretaker*
-and a *memento*
-*Niccy (whisper):* Or two functions: `save` and `restore`
-*Vaine:* *The originator is...*
-*Pedro and Niccy talking during Vaine's monologue*
-*Pedro:* How two functions handle this?
-*Niccy:* One is saving state, another is restoring.
-*Vaine:* *...the internal state of an object...*
-*Pedro:* Where is state?
-*Niccy:* Atom is good.
-*Vaine:* *...The caretaker is going...*
-*Pedro:* So, you mean if I have some user, I can just save needed values to an atom?
-*Niccy:* Exactly.
-*Vaine:* *...able to restore previous state...*
-
-``` clojure
-(def user (atom {:name "Memento" :points 10 :state :disabled :referer nil}))
-(def memento (atom {}))
-
-(defn save []
-  (swap! memento @user))
-
-(defn restore []
-  (swap! user @memento))
+  @Override
+  public String toString() {
+    return "[" + text + "]";
+  }
+}
 ```
 
-*Pedro:* And if there are lot of users?
-*Niccy:* `map`
-*Vaine:* *...a memento object...*
-*Pedro:* An atom per user?
-*Niccy:* If you want to perform `restore` per user, then yes.
-*Vaine:* *...to the originator...*
-*Pedro:* Understand. Now it is very easy to implement what they want.
-*Niccy:* Take care.
-*Vaine:* *...caretaker.* Did you understand?
-*Pedro:* Sure.
-*Vaine:* Where is Niccy?
-*Pedro:* He is gone. Probably was bored by your mono... uhh.. talk.
-*Vaine:* Haha, loser! Goodbye, Pedro.
-*Pedro:* Bye, Vaine. And.. thanks for explanation.
-*Vaine:* No problem.
+*Pedro:* Memento is just immutable object  
 
-Pedro was thinking 
+``` java
+public final class Memento {
+  private final String text;
 
-*Pedro:* Why these *"two functions"* were called *pattern*?
-*Pedro:* Did I miss something?
-*Pedro:* Anyway, all works as expected.
+  public Memento(String text) {
+    this.text = text;
+  }
 
-The rest of the day Pedro included js library for charts to
-visualize bonus points deviation betwen states.
+  public String getText() {
+    return text;
+  }
+}
+```
 
-**Demo**
+*Pedro:* And caretaker is a demo  
 
-*Sven Tori:* I heard some user had one million bonus points?
-*Rage Man (lie):* It is hacker. He broke our system and increased his points.
-*Sven Tori:* It is very bad, we don't want such situations in future.
-*Rage Man:* Ah.. Sure. We implemented a system allows us to monitor intruders.
-*Dale shows the system*
-*Sven Tori:* What a..an AWESOME charts! Very exciting work.
-*Rage Man:* We are just professionals.
-*Sven Tori:* I know. Good work guys, as always. Bye!
-*Sven Tori disconnected.*
+``` java
+// open browser, init empty textbox
+TextBox textbox = new TextBox();
 
-The rest of the meeting Rage Man was explaining to the team,
-why he was lying to Sven. End of the week.
+// type something into it
+textbox.type("Dear, Madonna\n");
+textbox.type("Let me tell you what ");
 
-### Episode 8: Mediator
+// press button save
+Memento checkpoint1 = textbox.save();
+
+// type again
+textbox.type("song 'Like A Virgin' is about. ");
+textbox.type("It's all about a girl...");
+
+// suddenly browser crashed, restart it, reinit textbox
+textbox = new TextBox();
+
+// but it's empty! All work is gone!
+// not really, you rollback to last checkpoint
+textbox.restore(checkpoint1);
+```
+
+*Pedro:* Just a note if you want a multiple checkpoints, save memento's to the list.  
+*Eve:* Looks as a bunch of nouns, but actually it's all about two functions `save` and `restore`.  
+
+``` clojure
+(def textbox (atom {}))
+
+(defn init-textbox [] 
+ (reset! textbox {:text ""
+                  :color :BLACK
+                  :width 100}))
+
+(def memento (atom nil))
+
+(defn type-text [text]
+  (swap! textbox
+    (fn [m]
+      (update-in m [:text] (fn [s] (str s text))))))
+
+(defn save []
+  (reset! memento (:text @textbox)))
+
+(defn restore []
+  (swap! textbox assoc :text @memento))
+```
+
+*Eve:* And demo as well.
+
+``` clojure
+(init-textbox)
+(type-text "'Like A Virgin' ")
+(type-text "it's not about this sensitive girl ")
+(save)
+(type-text "who meets nice fella")
+;; crash
+(init-textbox)
+(restore)
+```
+
+*Pedro:* It's pretty the same code.  
+*Eve:* Yes, but you must care about memento immutability  
+*Pedro:* What does it mean?  
+*Eve:* You are lucky, that you got `String` object in this example,
+`String` is immutable. But if you have something, that
+may change its internal state, you need to perform deep copy of this object for memento.  
+*Pedro:* Oh, right. It's just a recursive `clone()` calls to
+obtain prototype.  
+*Eve:* We will talk about Prototype in a minute, but just
+remember that `Memento` is not about *caretaker* and *originator*, it is about **save and restore**.  
+
+### <a id="prototype"/>Episode 8: Prototype
+
+
+
+### Episode 9: Mediator
 
 *Dale:* Hi, Pedro. How are you?
 *Pedro:* Fine. And you?
@@ -1294,13 +1475,6 @@ need to decode B-encode format
 
 ## TODO
 
----
-
-## Season II. Creational
-
-Seed Investments, Startup summit
-
-
 ### Episode 12: Prototype
 
 "type of objects to create is determined by a prototypical instance,
@@ -1387,7 +1561,7 @@ Oh, sorry it must be mutable.
 
 
 
-### "<a id="cast"/>"Cast
+### <a id="cast"/>Cast
 
 > A long time ago in a galaxy far, far away...
 
@@ -1399,8 +1573,7 @@ and names are just anagrams.
 **Serpent Hill & R.E.E.** - Enterprise Hell  
 **Sven Tori** - Investor  
 **Karmen Git** - Marketing  
-**Natanius S. Selbys** - Business Analyst
+**Natanius S. Selbys** - Business Analyst  
 **Mech Dominore Fight Saga** - Heroes of Might and Magic  
-**Kent Podiololis** - I don't like loops
-
-Code examples are Tarantino's characters.
+**Kent Podiololis** - I don't like loops  
+**Chad Bogue** - Douchebag  
