@@ -32,8 +32,25 @@ All characters are fake, coincidences are accidental.*
 - [Episode  6. Iterator](#template_method)
 - [Episode  7. Memento](#memento)
 - [Episode  8. Prototype](#prototype)
-
 - [Episode  9. Mediator](#mediator)
+
+- [Episode 10. Observer](#observer)
+
+- Chain of responsibility
+- Interpreter
+
+- Abstract Factory
+- Factory Method
+- Builder
+- Singleton
+
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
 
 - [Cast](#cast)
 
@@ -1082,388 +1099,124 @@ time consuming operation.
 *Eve:* No, it is not. Go to Google and search for *persistent data structures* and *structural sharing*  
 *Pedro:* Thanks a lot.  
 
-### Episode 9: Mediator
+### <a id="mediator"/>Episode 9: Mediator
 
-*Dale:* Hi, Pedro. How are you?
-*Pedro:* Fine. And you?
-*Dale:* Me and Terry were at the CAS.
-*Pedro:* CAS? Compare and Swap?
-*Dale:* Contemporary Art Show.
-*Pedro:* Ou. And what?
-*Dale:* Strange Art. Tomato soup preserve floating in the piano.
-*Pedro:* WTF?
-*Dale:* I said, it's strange. But Terry liked.
-*Pedro:* Be careful, it can be a sign.
-*Dale:* She is a very creative person, instead of us...
-*Pedro:* We are just slaves.
-*Dale:* *"We are just professional"*
-*Both laughing*
-*Dale:* Pedro, everyone are really excited about your visualisations.
-*Pedro:* I'm glad. Everything was done in library.
-*Dale:* What library?
-*Pedro:* `JCharts`
-*Dale:* Ok, I will take a look.
+> Recently performed external code review
+> shows a lot of issues with current codebase.
+> **Veerco Wierde** emphasizes tight coupling 
+> in chat application.
 
-Few minutes passed.
-
-*Dale:* Pedro!
-*Pedro:* Huh?
-*Dale:* JCharts is forbidden for commercial usage.
-*Pedro:* What you mean forbidden?  
-*Dale:* We should pay for it.
-*Pedro:* What's the problem? We've got investor, he has money and likes charts.
-*Dale:* I mean, everybody loves charts unless they are paid.
-*Pedro:* Ok, I will remove that library.
-*Dale:* No, stop. Are there any similar libraries?
-*Pedro:* Maybe, need investigation.
-*Dale:* Here is the deal: refactor the code to abstract its usage.
-*Pedro:* I didn't understand.
-*Dale:* We should have some unified API for charts.
-Like `PieChart(int[] volumes, String[] labels)`
-*Pedro:* Why we need that?
-*Dale:* It helps to avoid high coupling. We can easily change the charts vendor,
-implement the connection, but code for charts usage will remain the same.
-*Pedro:* Got it.
-*Dale:* And I will try to reach agreement about `JCharts` usage.
-If Sven gives money, we are good. If not, we just change charts vendor.
-*Pedro:* Seems reasonable.
-
-Another refactor task. Unified API and vendors. Pretty much like
-JPA and Hibernate. Hibernate. Hi, bear night. Pedro grimaced. It reminded him
-his job few years ago.
-
-Daydreaming about monster trying to eat little girl toby
-*Reference to reservoir dogs
-
-*Vaine:* Don't sleep!
-*Pedro:* Wh..Wha..What happened? Where is Toby?
-*Vaine:* There is no Toby. You just dreamt.
-*Pedro:* Oh, thanks god...
-*Vaine:* You must work.
-*Pedro:* I know, I just... Stop! How did you know about dream?
-*Vaine:* I am an Angel.
-*Pedro:* I am a bit bored of this magic things.
-*Vaine:* Don't you want help? Then I'm leaving.
-*Pedro:* Wait, sss..sorry. I still under nightmare effect.
-*Vaine:* I know.
-*Pedro:* ...
-*Vaine:* Just kidding. Let's solve your refactor problem.
-*Pedro:* Ok.
-*Vaine:* You need low coupling on the one side
-and components interactions on the other.
-*Pedro:* Just coupling, no interactions.
-*Vaine:* Are you sure? If you have different views
-for the same set of widgets, can be they somehow connected?
-*Pedro:* Maybe.
-*Vaine:* It is interaction.
-*Pedro:* Ok. Low coupling and interactions.
-*Vaine:* Let me think.
-*Niccy:* ...And the first place goes to the Mediator!
-*Vaine:* Oh, Niccy, thanks. Definitely Mediator.
-It **defines an object that encapsulates how a set of objects interact**
-*Pedro:* It is structural?
-*Vaine:* No. Interaction behaviour may change at a runtime. 
-*Niccy:* Example, please.
-*Vaine:* No problem. Pedro, what do you like?
-*Pedro:* Like what?
-*Vaine:* Like whatever.
-*Pedro:* I don't know...Cars?
-*Vaine:* Cars? Excellent. Car is a mediator.
-*Niccy:* Expected.
-*Vaine:* Car consists of several parts: wheels, engine, doors,
-bumper, lights, accumulator, steering, etc.
-Every part assumed to function independently of other.
-*Pedro:* Correct.
-*Vaine:* But its impossible. If steering rotates, wheels are also rotate.
-If engine is broken, the car is not moving.
-*Pedro:* Then steering should have references to wheels and if...
-*Vaine:* No. The whole mediator pattern idea is to make steering don't know
-anything about wheels.
-*Pedro:* Interesting. How do achieve this in code?
+*Eve:* What is tight coupling?  
+*Pedro:* It's the problem when objects
+know too much about each other.  
+*Eve:* Could you be more specific?  
+*Pedro:* Look at the current chat implementation  
 
 ``` java
-class Car {
-  Wheel[] wheels;
-  Engine engine;
-  Steering steering;
+public class User {
+  private String name;
+  List<User> users = new ArrayList<User>();
 
-  // rotate steering
-  void rotate(int angle) {
-    steering.rotate(angle);
-	// move front wheels
-	wheel[0].rotate(angle);
-	wheel[1].rotate(angle);
+  public User(String name) {
+    this.name = name;
   }
-}
-```
 
-*Vaine:* Code is pretty obvious.
-*Pedro:* Great! We are just controlling `Car` object?
-*Vaine:* Yes.
-*Niccy:* It is not mediator. You are just hiding Car parts functionality
-behind Car.
-*Vaine:* Um... Ok. Take this method.
+  public void addUser(User u) {
+    users.add(u);
+  }
 
-``` java
-double gasoline;
-double gasConsumptionPerMeter;
-
-// move car forward by meters
-void move(double meters) {
-  double consumption = gasConsumptionPerMeter * meters;
-  if (!engine.isBroken() && (consumption < gasoline)) {
-    for (Wheel w : wheels) {
-      w.move(meters);
+  void sendMessage(String message) {
+    String text = String.format("%s: %s\n", name, message);
+    for (User u : users) {
+      u.receive(text);
     }
-	gasoline -= consumption;
+  }
+
+  private void receive(String message) {
+    // process message
   }
 }
 ```
 
-*Vaine:* It depends on engine and gasoline volume.
-*Niccy:* Much better. But I don't understand where is the pattern?
-*Vaine:* Open your eyes.
-*Niccy:* No, really. It's the code everyone can write without 
-reference to "pattern" word.
-*Vaine:* Write.
+*Pedro:* The problem here is the user knows
+everything about other users. It is very hard to use and maintain such code.
+When new user connects to the chat, you must add a reference to him via `addUser`
+for every existing user.
+*Eve:* So, we just move one piece of responsibility to another class?
+*Pedro:* Yes, kind of. We create *mega-aware* class, called mediator, that binds
+all parts together. Obviously, each part knows only about mediator.
 
-``` clojure
-;; gasoline is an atom
-(defn move-car [meters]
-  (let [consumption (* gasConsumptionPerMeter meters)]
-    (if (and (broken? engine) (< consumption @gasoline))
-	  (map move-wheel w))
-	(swap! gasoline - consumption)))
+``` java
+public class User {
+  String name;
+  private Mediator m;
+
+  public User(String name, Mediator m) {
+    this.name = name;
+    this.m = m;
+  }
+
+  public void sendMessage(String text) {
+    m.sendMessage(this, text);
+  }
+
+  public void receive(String text) {
+    // process message
+  }
+}
+
+public class Mediator {
+
+  List<User> users = new ArrayList<User>();
+
+  public void addUser(User u) {
+    users.add(u);
+  }
+
+  public void sendMessage(User u, String text) {
+    for (User user : users) {
+      u.receive(text);
+    }
+  }
+}
 ```
 
-*Vaine:* Exact copy.
-*Niccy:* Yes. Just usual code. Where is pattern?
-*Vaine:* Pattern is...
-*Niccy:* I explain. Imagine IT company.
-Customer says to Product owner "I want feature to be done".
-Product owner estimates a budget and resources for the feature
-and checks if company has available resource.
-He opens request for resources in some internal resource system.
-Someone has approved request. He doesn't know who. He doesn't care who.
-Next step. Product owner has resources and opens feature request.
-Project Manager sees feature request, "Oh, it means we have resources".
-He splits feature to smaller tasks and put all tasks to some internal
-tasks system. Developer gets notification "New tasks available".
-He take this task, do it. And resolves. QA sees the list of resolved tasks
-and verifies each one. As soon as all feature subtasks resolved and verified.
-Project Manager resolves feature request. Product owner sees resolved request
-and email to customer "Done.". That's how things works.
-*Pedro:* Actually this is not true. We have a lot of meetings where we interact.
-*Niccy:* Meetings corrupt Mediators.
-*Everybody is laughing*
-*Pedro:* But I finally understand what is mediator.
-*Vaine:* Glad to be useful.
-*Niccy:* Ness.
-*Both disappeared*
-*Pedro:* Wait! How can I apply this pattern to my problem?..
-
-*Incoming call from cheapanddale*
-*Dale:* Pedro?
-*Pedro:* Yes.
-*Dale:* I asked about using `JCharts`. 
-I have two items of news. Good and bad.
-*Pedro:* Good?
-*Dale:* We allowed to use `JCharts`. And no additional work required.
-*Pedro:* It's fantastic. What is bad?
-*Dale:* We are buying subscription only for one months so we need another
-library and additional work is required.
-*Pedro:* ...
-*Dale:* But, I'm sure you'll handle it. Bye.
-*cheapanddale disconnected*
-*Pedro:* At least I won't die of boredom.
-
-Pedro started inspecting the old charts-related code to detect
-candidates for Mediator. This one is definitely for refactoring.
-
-**Before**
+*Eve:* That was easy.
+*Pedro:* Profit may be underestimated, but
+if you have hundreds of mutually connected components
+(UI for example) mediator is really a savior.
+*Eve:* Agreed.
+*Pedro:* Now the clojure turn.
+*Eve:* Ok...let's look...your mediator is responsible
+for *saving users* and *sending messages*
 
 ``` clojure
-(defn pie-chart [data header-panel refresh-panel
-                      notification-panel content-panel]
-  (set-text header-panel "Pie Chart")
-  (set-font header-panel :H1 :bold)
-  (set-color header-panel Color/BLACK)
-  (set-text refresh-panel (date-format "YYYY-MM-dd HH:mm" (Date.)))
-  (set-color refresh-panel Color/BLACK)
-  (set-content content-panel (render-chart :pie data))
-  (set-color notification-panel Color/GREEN)
-  (set-font notification-panel :H3 :italic :bold)
-  (set-text notification-panel "Chart is completed"))
+(def mediator
+  (atom {:users []
+         :send (fn [users text]
+			     (map #(receive % text) users))}))
 
-(defn bar-chart [data header-panel refresh-panel
-                      notification-panel content-panel]
-  (set-text header-panel "Bar Chart")
-  (set-font header-panel :H1 :bold)
-  (set-color header-panel Color/BLACK)
-  (set-text refresh-panel (date-format "YYYY-MM-dd HH:mm" (Date.)))
-  (set-color refresh-panel Color/BLACK)
-  (set-content content-panel (render-chart :bar data))
-  (set-color notification-panel Color/GREEN)
-  (set-font notification-panel :H3 :italic :bold)
-  (set-text notification-panel "Chart is completed"))
+(defn add-user [u]
+	(swap! mediator 
+	  (fn [m]
+	    (update-in m [:users] conj u))))
+
+(defn send-message [u text]
+	(let [send-fn (:send @mediator)
+	      users (:users @mediator)]
+	  (send-fn users (format "%s: %s\n" (:name u) text))))
+
+(add-user {:name "Mister White"})
+(add-user {:name "Mister Pink"})
+(send-message {:name "Joe"} "Toby?")
 ```
 
-**After**
+*Pedro:* Good enough.
 
-``` clojure
-(defn pie-chart [data layout-manager]
-  (set-header layout-manager "Pie Chart")
-  (refresh-date layout-manager)
-  (set-content (render-chart :pie data))
-  (set-notification layout-manager "Chart is completed"))
+### <a id="observer"/>Episode 10: Observer
 
-(defn bar-chart [data layout-manager]
-  (set-header layout-manager "Bar Chart")
-  (refresh-date layout-manager)
-  (set-content (render-chart :bar data))
-  (set-notification layout-manager "Chart is completed"))
-
-(defn set-header [layout-manager text]
-  (let [header-panel (:header layout-manager)]
-    (set-text header-panel text)
-    (set-font header-panel :H1 :bold)
-    (set-color header-panel Color/BLACK)))
-
-(defn refresh-date [layout-manager]
-  (let [refresh-panel (:refresh layout-manager)]
-    (set-text refresh-panel (date-format "YYYY-MM-dd HH:mm" (Date.)))
-    (set-color refresh-panel Color/BLACK)))
-
-(defn set-content [layout-manager]
-  (set-content (:content layout-manager) (render-chart :bar data)))
-
-(defn set-notification [layout-manager]
-  (let [notification-panel (:notification layout-manager)]
-    (set-color notification-panel Color/GREEN)
-    (set-font notification-panel :H3 :italic :bold)
-    (set-text notification-panel "Chart is completed")))
-```
-
-Two large functions was splitted to 6 small functions.
-It was not only extracting duplicating code to functions.
-Dependency was removed. Instead of passing all panels to chart rendering method, we just passing mediator `layout-manager`, which is responsible for specific rendering. Another good part is Pedro achieved what Dale asked. Chart callers depends only on layout-manager, common API. But common API implementation depends on `JCharts` which is will be replaced soon... 
-
-### Episode 9: Observer
-
-*Karmen:* Hi all. Good news: number of users with subscription is growing.
-*Rage Man:* Excellent!
-*Karmen:* Yes. We need somehow to show respect to our clients.
-*Pedro:* New cat image on the front page?
-*Karmen:* No, the old one is great.
-*Pedro:* Cat style avatars?
-*Rage Man:* Pedro, did you read requirements for future release?
-*Pedro:* No, where is it?
-*Rage Man:* I've sent a link to all.
-*Pedro:* Didn't get it.
-*Rage Man:* Interesting...
-*Karmen:* I'll explain. Cat style avatars will be paid feature.
-*Pedro:* Oh... I remember.
-*Karmen:* Great. Any ideas about respect to clients?
-*Dale:* What if we just said thanks to him?
-*Karmen:* Just thanks? I'll think about it.
-*Rage Man:* Yeah, not just thanks. We'll send them an email with thanks.
-*Karmen:* Email is good. I will do a stub.
-*Rage Man:* Super. Get to work.
-
-*"Easy"*, thought Pedro and just called send-email function after user
-got a subscription.
-
-``` clojure
-(defn subscript [user]
-  (swap! user assoc :state :subscription)
-  (send-email (:adress user) "Thanks!" message-body))
-```
-
-Few days he was not disturbed by anyone. Until Dale came.
-
-*Dale:* What do we have?
-*Pedro:* Everything is done.
-*Dale (looking):* Did you spend three days on that?!
-*Pedro:* Emm...I also refactored some old code.
-*Dale:* Nice then. Commit it and I will test it on my machine.
-*Pedro:* Done.
-*Dale:* Have you seen Terry today?
-*Pedro:* Nope.
-*Dale:* Hmm, he was missing day before and don't answer the phone.
-*Pedro:* He is angry on you. What did you tell her?
-*Dale:* Nothing offensive.
-*Pedro:* Think about it.
-*Dale:* Nothing, really?
-*Pedro:* Think one more time.
-*Dale:* I said, nothing!
-*Pedro:* Thik really hard!
-*Dale:* Shut up! I said I told her nothing offensive.
-Maybe he was offended by the fact that man get bigger salay then woman, but..
-*Pedro:* Did you tell her that?
-*Dale:* Yes, but it is a fact. Science, bitch.
-*Pedro:* Then you are a moron. It is definitely a reason. Go to her home.
-*Dale:* I'll handle it.
-
-Pedro was working on something.
-
-*Karmen:* Hi, Pedro.
-*Pedro:* Hi, Karm.
-*Karmen:* How things are going?
-*Pedro:* Fine, the one piece left, message body.
-*Karmen:* It is already done. I sent you an email.
-
-*Thanks for subscription!*
-
-*Now you have following advantages over standard user*
-
-blah blah blah
-
-*Thanks again! Even if you haven't bought it.*
-
-*Pedro:* What does it mean, "haven't bought it?"
-
-*Dale:* Pedro! Why did you add send email only to subscript method?
-*Pedro:* Because it is the only place where subscription process is happened.
-*Dale:* What if there another methods to add subscription thta we don't handle.
-*Pedro:* Then we add send-email to another method.
-*Dale:* It is not the case. If we forget, one user can't receive
-a thanks notification.
-*Pedro:* He won't die after all.
-*Dale:* Won't. But if he guess (and he is definitely guess) that another
-user receive a thanks message it can break our reputation.
-*Pedro:* What a child.
-*Dale:* Another problem then we might decide to add another functionality after subscription.
-*Pedro:* We will add.
-*Dale:* And we should make sure we can change the functionality at a runtime.
-*Pedro:* Uh...Ok.
-
-;; Something
-
-
-*Vaine:* Hi. What a problem?
-*Pedro:* Haven't you heard?
-*Vaine:* No, I was helping some PHP developer to switch to Java.
-*Pedro:* Important business. But, I need somehow to track changing field.
-*Vaine:* Easy enough. Just make sure there is only one mutator on such field and
-call needed method there.
-*Pedro:* I might want to call a bunch of methods.
-*Vaine:* Call.
-*Pedro:* And switch what to call dynamically.
-*Vaine:* I understand. Let me think... Observer. Devinitely observer.
-*Niccy:* *Nope server*
-*Vaine:* Hi Niccy, do you think observer is suitable?
-*Niccy:* Maybe.
-*Vaine:* I think it is. Because observable **maintains a list of its dependents,
-called observers, and notifies them automatically of any state changes**.
-*Niccy:* *Unbelievable*, you have a list, and then you call method for each element.
-*Vaine:* Not that simple.
-*Niccy:* Why not?
-*Vaine:* You need to register observers in that list.
-*Niccy:* `add`?
-*Vaine:* And you need to unregister observers.
-*Niccy:* `remove`?
-*Vaine:* Kind of. 
-*Niccy:* Is it observer?
+>  
+>
 
 ``` clojure
 (def observers (atom #{}))
@@ -1623,3 +1376,4 @@ and names are just anagrams.
 **Kent Podiololis** - I don't like loops  
 **Chad Bogue** - Douchebag  
 **Dex Ringeus** - UX Designer
+**Veerco Wierde** - Code Review
