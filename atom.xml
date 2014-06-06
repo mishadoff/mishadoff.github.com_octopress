@@ -4,7 +4,7 @@
   <title><![CDATA[mishadoff thoughts]]></title>
   <link href="http://mishadoff.github.io/atom.xml" rel="self"/>
   <link href="http://mishadoff.github.io/"/>
-  <updated>2014-05-22T01:49:18+03:00</updated>
+  <updated>2014-06-06T14:58:10+03:00</updated>
   <id>http://mishadoff.github.io/</id>
   <author>
     <name><![CDATA[mishadoff]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Digest 5]]></title>
+    <link href="http://mishadoff.github.io/blog/programming-digest-5/"/>
+    <updated>2014-06-06T13:31:00+03:00</updated>
+    <id>http://mishadoff.github.io/blog/programming-digest-5</id>
+    <content type="html"><![CDATA[<p>Programming Sucks.</p>
+
+<!-- more -->
+
+<h3 id="programming-suckshttpstilldrinkingorgprogramming-sucks">1. <a href="http://stilldrinking.org/programming-sucks">Programming Sucks</a></h3>
+
+<blockquote>
+  <p>…many of the programs you depend on are written by dicks and idiots</p>
+</blockquote>
+
+<p>Funny ranting about crazy programming life.</p>
+
+<blockquote>
+  <p>Every programmer occasionally, when nobody’s home, turns off the lights, pours a glass of scotch, puts on some light German electronica, and opens up a file on their computer…This file is Good Code.</p>
+</blockquote>
+
+<h3 id="functional-programming-for-the-rest-of-ushttpwwwdefmacroorgramblingsfphtml">2. <a href="http://www.defmacro.org/ramblings/fp.html">Functional Programming For The Rest Of Us</a></h3>
+
+<p>There are two types of people in functional programming world:
+those who use monads and those who don’t know they use monads.</p>
+
+<p>This is a good overview that helps to convince your colleague to use fp without monads, applicative functors and other theoretical shit.</p>
+
+<h3 id="game-programming-patternshttpgameprogrammingpatternscom">3. <a href="http://gameprogrammingpatterns.com/">Game Programming Patterns</a></h3>
+
+<p>A set of patterns and techniques applicable to game development. Probably some of them you’ve already used. Unfortunately, examples in C++. </p>
+
+<h3 id="a-hackers-guide-to-githttpwildlyinaccuratecoma-hackers-guide-to-git">4. <a href="http://wildlyinaccurate.com/a-hackers-guide-to-git">A Hacker’s Guide to Git</a></h3>
+
+<p>Pour some light on git internals. Seems like almost everything in git is just a hashcode.</p>
+
+<h3 id="is-tdd-deadhttpmartinfowlercomarticlesis-tdd-dead">5. <a href="http://martinfowler.com/articles/is-tdd-dead/">Is TDD Dead?</a></h3>
+
+<p>Hangouts with Martin Fowler, Kent Beck and David Heinemeier Hansson about TDD. Do not test everything.</p>
+
+<h3 id="character-encodingshttpbloggatunkacom20140425character-encodings-for-modern-programmers">6. <a href="http://blog.gatunka.com/2014/04/25/character-encodings-for-modern-programmers/">Character Encodings</a></h3>
+
+<p>A history and caveats of encodings. Windows sucks.</p>
+
+<h3 id="principles-of-high-performance-programshttpbloglibtorrentorg201212principles-of-high-performance-programs">7. <a href="http://blog.libtorrent.org/2012/12/principles-of-high-performance-programs/">Principles Of High Performance Programs</a></h3>
+
+<p>Generic useful rules you may consider when building high-performance applications. Memory latency, context switch, granularity and other things explained.</p>
+
+<h3 id="software-talks-for-the-ageshttppchristensencomblogarticlessoftware-talks-for-the-ages">8. <a href="http://pchristensen.com/blog/articles/software-talks-for-the-ages/">Software Talks for the Ages</a></h3>
+
+<p>Meta one. Good set of programming talks.
+<a href="http://vimeo.com/25958308">50 in 50</a> is a pure gold.</p>
+
+<h3 id="how-the-cpu-workshttpswwwyoutubecomwatchvcnnttxabua">9. <a href="https://www.youtube.com/watch?v=cNN_tTXABUA">How the CPU works</a></h3>
+
+<p>This is quite interesting.</p>
+
+<h3 id="httpcodegolfstackexchangecomquestions28786write-a-program-that-makes-2-2-5">10. <a href="http://codegolf.stackexchange.com/questions/28786/write-a-program-that-makes-2-2-5">2 + 2 = 5</a></h3>
+
+<p>Stackoverflow discussion with examples how to write a program that makes <code>2+2=5</code>.</p>
+
+<blockquote>
+  <p>That. Is. Evil.</p>
+</blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Clojure Pitfalls: Part 1]]></title>
@@ -3802,37 +3869,6 @@ elsewhere.</p>
 <h3 id="conclusion">Conclusion</h3>
 
 <p>Although, <code>Unsafe</code> has a bunch of useful applications, never use it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Elephant-Oriented Programming]]></title>
-    <link href="http://mishadoff.github.io/blog/elephant-oriented-programming/"/>
-    <updated>2013-02-26T00:58:00+02:00</updated>
-    <id>http://mishadoff.github.io/blog/elephant-oriented-programming</id>
-    <content type="html"><![CDATA[<p>Have you heard about Elephant-Oriented Programming?</p>
-
-<!-- more -->
-
-<h4 id="read-very-clever-bookhttplearnyouahaskellcom-with-an-elephant-on-cover">1. Read <a href="http://learnyouahaskell.com/">very clever book</a> with an <em>elephant</em> on cover.</h4>
-
-<p><img src="http://i.imgur.com/ndEJc05.png" height="300px" width="240px" /></p>
-
-<h4 id="i-bet-you-didnt-understand-anything-so-choose-easy-programming-languagehttpphpnet-with-an-elephant">2. I bet you didn’t understand anything, so choose <a href="http://php.net/">easy programming language</a> with an <em>elephant</em>.</h4>
-
-<p><img src="http://i.imgur.com/NzWiT2N.jpg" alt="" /></p>
-
-<h4 id="what-is-ide-we-already-have-elephant-text-editorhttpsevernotecom">3. What is IDE? We already have <em>elephant</em> <a href="https://evernote.com/">text editor</a>.</h4>
-
-<p><img src="http://i.imgur.com/7JcFlTu.jpg" alt="" /></p>
-
-<h4 id="for-real-life-programming-tasks-we-need-storage-postgresqlhttpwwwpostgresqlorg-database-is-good-because-of-elephant">4. For real life programming tasks we need storage. <a href="http://www.postgresql.org/">PostgreSQL</a> database is good. Because of <em>elephant</em>.</h4>
-
-<p><img src="http://i.imgur.com/A4FWqXy.png" alt="" /></p>
-
-<h4 id="and-finally-fancy-word-big-datahttphadoopapacheorg-did-you-say-big-elephants-are-big">5. And finally, fancy word <a href="http://hadoop.apache.org/">Big Data</a>. Did you say “big”? <em>Elephants</em> are big.</h4>
-
-<p><img src="http://hadoop.apache.org/images/hadoop-logo.jpg" alt="" /></p>
 ]]></content>
   </entry>
   
