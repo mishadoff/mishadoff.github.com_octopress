@@ -22,6 +22,11 @@ footer: true
 > -- [Alan Perlis](http://en.wikipedia.org/wiki/Alan_Perlis)
 <br />
 
+> There are two ways to write error-free programs; only the third one work
+>
+> -- [Alan Perlis](http://en.wikipedia.org/wiki/Alan_Perlis)
+<br />
+
 > Lisp isn't a language, it's a building material.
 >
 > -- [Alan Kay](http://en.wikipedia.org/wiki/Alan_Kay)
@@ -32,6 +37,12 @@ footer: true
 > but just done by brute force and thousands of slaves.
 >
 > -- [Alan Kay](http://en.wikipedia.org/wiki/Alan_Kay)
+<br />
+
+> The most effective debugging tool is still careful thought,
+> coupled with judiciously placed print statements.
+>
+> -- [Brian Kernighan](http://en.wikipedia.org/wiki/Brian_Kernighan)
 <br />
 
 > Testing shows the presence, not the absence of bugs.
@@ -66,6 +77,11 @@ footer: true
 > -- [Martin Fowler](http://martinfowler.com/)
 <br />
 
+> The essence of XML is this: the problem it solves is not hard,
+> and it does not solve the problem well.
+>
+> -- [Phil Wadler](http://en.wikipedia.org/wiki/Philip_Wadler)
+
 > Code never lies, comments sometimes do.
 >
 > -- [Ron Jeffries](http://en.wikipedia.org/wiki/Ron_Jeffries)
@@ -76,8 +92,23 @@ footer: true
 > -- [Ralph Johnson](http://en.wikipedia.org/wiki/Ralph_Johnson_%28computer_scientist%29)
 <br />
 
-> ...one of the main causes of the fall of the Roman Empire was that, lacking zero,
-> they had no way to indicate successful termination of their C programs.
+> One of the main causes of the fall of the Roman Empire was that,
+> lacking zero, they had no way to indicate successful termination of 
+> their C programs.
 >
 > -- Robert Firth
 <br />
+
+> Fifty years of programming language research and we end up with C++?
+>
+> -- [Richard A. O'Keefe](http://en.wikipedia.org/wiki/Richard_O%27Keefe)
+<br />
+
+> Theory is when you know something, but it doesn't work.
+> Practice is when something works, but you don't know why it works.
+> Programmers combine theory and practice: Nothing works and they don't know why. 
+>
+> -- Unknown
+<br />
+
+
