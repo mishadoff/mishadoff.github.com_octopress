@@ -1215,37 +1215,138 @@ for *saving users* and *sending messages*
 
 ### <a id="observer"/>Episode 10: Observer
 
->  
->
+> Independent security commision
+> detected hacker **Dartee Hebl** has over a billion
+> dollars balance on his account .
+> Track big transactions to the accounts.
 
-``` clojure
-(def observers (atom #{}))
+*Pedro:* Are we *Holms*es?
+*Eve:* No, but there is a lack of logging in the system,
+need to find a way to track all changes to balance.
+*Pedro:* We could add observers. Every time we modify
+balance, if change is *big enough*, notify about this and track the reason. We need `Observer` interface
 
-(defn register [observer]
-  (swap! observers conj observer))
-
-(defn unregister [observer]
-  (swap! observers disj observer))
-
-(defn subscript [user]
-  (swap! user assoc :state :subscription)
-  (map apply @observers))
+``` java
+public interface Observer {
+  void notify(User u);
+}
 ```
 
-*Vaine:* Pretty similar, what is `observer` here?
-*Niccy:* Function.
-*Vaine:* But it is a class in Java.
-*Niccy:* In most cases it is a class with one function.
-*Vaine:* Well...Yes.
-*Pedro:* Thanks, seems exactly what I need.
-*Vaine:* Your pleasure.
-*Pedro:* One question here. What if someone adds another
-function with access to user and modifies state field.
-*Niccy:* Cut his fingers off.
-*Vaine:* No harm. You just need to agreed about contracts, 
-encapsulation and style. Because it is unsolvable problem.
-*Niccy:* Nothing is unsolvable...
-*Vaine:* Well, proof then.
+*Pedro:* And two specific observers
+
+``` java
+class MailObserver implements Observer {
+  @Override
+  public void notify(User user) {
+    MailService.sendToFBI(user);
+  }
+}
+
+class BlockObserver implements Observer {
+  @Override
+  public void notify(User u) {
+    DB.blockUser(u);
+  }
+}
+```
+
+*Pedro:* `Tracker` class would be responsible
+for managing observers.
+
+``` java
+public class Tracker {
+  private Set<Observer> observers = new HashSet<Observer>();
+
+  public void add(Observer o) {
+    observers.add(o);
+  }
+
+  public void update(User u) {
+    for (Observer o : observers) {
+      o.notify(u);
+    }
+  }
+}
+```
+
+*Pedro:* And the last part: init tracker with the user and
+modify its `addMoney` method. If transcation amount is greaterthan `100$`, notify FBI and block this user.
+
+``` java
+public class User {
+  String name;
+  double balance;
+  Tracker tracker;
+
+  public User() {
+    initTracker();
+  }
+
+  private void initTracker() {
+    tracker = new Tracker();
+    tracker.add(new MailObserver());
+    tracker.add(new BlockObserver());
+  }
+
+
+  public void addMoney(double amount) {
+    balance += amount;
+    if (amount > 100) {
+      tracker.update(this);
+    }
+  }
+}
+```
+
+*Eve:* Why are you created two separate observers?
+You could use it in a one.
+
+``` java
+class MailAndBlock implements Observer {
+  @Override
+  public void notify(User u) {
+    MailService.sendToFBI(u);
+    DB.blockUser(u);
+  }
+}
+```
+
+*Pedro:* Single responsibility principle.
+*Eve:* Oh, yeah.
+*Pedro:* And you can compose observer functionality
+dynamically.
+*Eve:* I see your point.
+
+``` clojure
+;; Tracker
+
+(def observers (atom #{}))
+
+(defn add [observer]
+  (swap! observers conj observer))
+
+(defn notify [user]
+  (map #(apply % user) @observers))
+
+;; Fill Observers
+
+(add (fn [u] (mail-service/send-to-fbi u)))
+(add (fn [u] (db/block-user u)))
+
+;; User
+
+(defn addMoney [user amount]
+  (swap! user
+    (fn [m]
+      (update-in m [:balance] + amount)))
+  ;; tracking
+  (if (> amount 100) (notify)))
+```
+
+*Pedro:* It's a pretty the same way?
+*Eve:* Yeah, but there is a better one, using watches.
+
+;; TODO watchers
 
 ``` clojure
 (def user (atom {}))
@@ -1253,75 +1354,7 @@ encapsulation and style. Because it is unsolvable problem.
 (add-watch user :state)...
 ```
 
-;; TODO
-
-**Demo**
-
-*Sven Tori:* Sending emails says about our level.
-*Rage Man:* Actually after subscription we can do a lot of things.
-*Sven Tori:* For example?
-*Rage Man:* We modifying subscription statistics, sending emails to me and Karm,...
-*Sven Tori:* It is good. I have a proposal. We can participate in Venture Summit.
-It is fame for you, reputation and you know.
-*Rage Man:* Looks good to me. Anyone retort?
-*Silence*
-*Rage Man:* Then fine.
-*Sven Tori:* Yes, the one problem you should expose your functionality for
-venture qa team. They select candidates based on their testing.
-*Rage Man:* Fair enough.
-*Sven Tori:* When you could provide a working beta for usage?
-*Rage Man:* It is already usable!
-*Sven Tori:* Good then. Here's a contacts, register please.
-
-### Episode 10: Chain of responsibility
-
-*Rage Man:* Pedro, there are some problems occured during testing.
-*Pedro:* What problems?
-*Rage Man:* Something critical. I don't know the details, contact directly to their QA.
-*Rage Man sent skype contacts*
-
-;; TODO stupid qa names
-
-*Pedro:* Hi, QA1.
-*QA1:* We cannot login.
-*Pedro:* Did you registered?
-*QA1:* No, we  have already registered account, Rage Man gave us.
-*Pedro:* Could you give me this account, I'll try on my side.
-*QA1:* Not sure if it is allowed, let me check.
-*Pedro:* Come on. I trying to solve problem.
-*QA1:* We will ask Rage Man directly.
-*Pedro:* Oh...
-*Three hours gone*
-*QA1:* He allowed. Here is the credentials: username/password = rageman/123
-*Pedro:* Oh my god, I should add a password strength indicator... later.
-
-Pedro succesfully logged in. All works fine.
-
-*Pedro:* I succesfully logged in. All works fine.
-*Narrator:* Sorry, Pedro. But I am a Narrator, don't repeat my words.
-*Pedro:* Ok.
-*QA1:* What did you do?
-*Pedro:* Just entered username and password you gave.
-*QA1:* Interesting, but we can't to login.
-*Pedro:* I will take a look a logs.
-
-Suddenly Pedro remebered there are no logs.
-His "TODO add logging" is still a TODO.
-
-;; Thinking
-;; Dale comes, Terry Story
-;; Dale logging
-
-;; Vaine Niccy battle
-
-``` clojure
-(defn chain [[f & fs] & args]
-  (when f
-    (apply f args)
-    (recur fs args)))
-```
-
-### Episode 11: Interpretator
+### Episode 11: Interpreter
 
 // bencode?
 Our users opened torrent tracker with our cat videos
@@ -1377,3 +1410,4 @@ and names are just anagrams.
 **Chad Bogue** - Douchebag  
 **Dex Ringeus** - UX Designer
 **Veerco Wierde** - Code Review
+**Dartee Hebl** - Heartbleed
