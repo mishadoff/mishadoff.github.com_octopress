@@ -229,6 +229,10 @@
         <lastmod>2014-06-06T14:57:01+03:00</lastmod>
     </url>
     <url>
+        <loc>http://mishadoff.github.io/blog/effective-java/</loc>
+        <lastmod>2014-08-07T19:56:04+03:00</lastmod>
+    </url>
+    <url>
         <loc>http://mishadoff.github.io/pages/quotes/</loc>
         <lastmod>2014-06-02T12:55:21+03:00</lastmod>
     </url>
@@ -246,10 +250,10 @@
     </url>
     <url>
         <loc>http://mishadoff.github.io/blog/archives/</loc>
-        <lastmod>2014-06-06T14:57:01+03:00</lastmod>
+        <lastmod>2014-08-07T19:56:04+03:00</lastmod>
     </url>
     <url>
         <loc>http://mishadoff.github.io/</loc>
-        <lastmod>2014-06-06T14:57:01+03:00</lastmod>
+        <lastmod>2014-08-07T19:56:04+03:00</lastmod>
     </url>
 </urlset>
