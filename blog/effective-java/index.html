@@ -136,7 +136,7 @@ by Joshua Bloch. The book contains 78 <em>independent</em> items, discussing var
 <ul>
   <li>Static factory methods have more informative names than constructors</li>
   <li>Same parameters list could be applied</li>
-  <li>Not required to create new objects, could return cached instance</li>
+  <li>Not required creating new objects, could return cached instance</li>
   <li>Static factory methods could return object subtype</li>
   <li>Reduced verbosity for generics due to type inference</li>
   <li>Classes without public/private constructor can’t be subclassed, but it is good, because it enforces to “favor composition over inheritance”</li>
@@ -147,7 +147,7 @@ by Joshua Bloch. The book contains 78 <em>independent</em> items, discussing var
 
 <ul>
   <li><strong>Telescope Constructor</strong> causes verbosity</li>
-  <li><strong>JavaBeans</strong> may cause inconsistent state, no possibbility to make a class immutable</li>
+  <li><strong>JavaBeans</strong> may cause inconsistent state, no possibility to make a class immutable</li>
   <li><strong>Builder Pattern</strong> is flexible and right way to handle optional parameters</li>
 </ul>
 
@@ -236,7 +236,7 @@ Use <code>@Override</code> annotation to be safe.</li>
   <li>The worst possible legal hash function <code>return 42</code></li>
   <li>Bad hashcode could degrade performance in hash-based collections</li>
   <li>Hashcode could be cached for immutable classes</li>
-  <li>Do not try to develop your own <code>state-of-the-art</code> hash function unless you are a matematician</li>
+  <li>Do not try to develop your own <code>state-of-the-art</code> hash function unless you are a mathematician</li>
 </ul>
 
 <h3 id="item-10-always-override-tostring">Item 10: Always override toString</h3>
@@ -326,7 +326,7 @@ Use <code>@Override</code> annotation to be safe.</li>
   <li>Good API documentation <em>for inheritance</em> should describe what a given method does and how it does it.</li>
   <li>The only way to test a class designed for inheritance is to write subclasses</li>
   <li>Constructors must not invoke overridable methods</li>
-  <li>If supperclass implements <code>Cloneable</code> or <code>Serializable</code> neither <code>clone</code> nor <code>readObject</code> may invoke an overridable method, directly or indirectly</li>
+  <li>If superclass implements <code>Cloneable</code> or <code>Serializable</code> neither <code>clone</code> nor <code>readObject</code> may invoke an overridable method, directly or indirectly</li>
   <li>Prohibit subclassing in classes that are not designed and documented to be safely subclassed</li>
   <li>Prohibit subclassing by making class final</li>
 </ul>
@@ -338,7 +338,7 @@ Use <code>@Override</code> annotation to be safe.</li>
   <li>Interfaces are ideal for defining mixins</li>
   <li>Interfaces allow the construction of nonhierarchical type frameworks</li>
   <li>Interfaces enable safe, powerful functionality enhancements via wrapper classes</li>
-  <li>Abstract classes are useful for sceletal implementation</li>
+  <li>Abstract classes are useful for skeletal implementation</li>
   <li>You could safely add a method to abstract class with default implementation (<em>the same applies to interfaces since Java 8 release, with help of default methods</em>)</li>
   <li>Once an interface is released and widely implemented, it is almost impossible to change</li>
 </ul>
@@ -430,7 +430,7 @@ Use <code>@Override</code> annotation to be safe.</li>
 
 <ul>
   <li>Generic type parameter list, which declares the type parameter, goes between the method’s modifiers and its return type (<code>public static &lt;T&gt; void method()</code>)</li>
-  <li>Generic methods could infere type of arguments</li>
+  <li>Generic methods could infer type of arguments</li>
 </ul>
 
 <h3 id="item-28-use-bounded-wildcards-to-increase-api-flexibility">Item 28: Use bounded wildcards to increase API flexibility</h3>
@@ -443,7 +443,7 @@ Use <code>@Override</code> annotation to be safe.</li>
   <li>Consumer: <code>get(List&lt;? super Number&gt;)</code></li>
   <li><code>Comparable</code> and <code>Comparator</code> are consumers</li>
   <li>Do not use wildcard types as return types, it would force use wildcards in the client code</li>
-  <li>Use explicit types if compiler can’t infere them <code>Union&lt;Number&gt;.union()</code></li>
+  <li>Use explicit types if compiler can’t infer them <code>Union&lt;Number&gt;.union()</code></li>
   <li>if a type parameter appears only once in a method declaration, replace it with a wildcard</li>
 </ul>
 
@@ -526,7 +526,7 @@ with bitwise operations efficiently (<code>apply(STYLE_ITALIC | STYLE_BOLD)</cod
 
 <ul>
   <li>There is no much useful use cases to extend enum functionality</li>
-  <li><code>enum</code> could inplement interfaces, therefore allow extensibility</li>
+  <li><code>enum</code> could implement interfaces, therefore allow extensibility</li>
   <li>While you cannot write an extensible enum type, you can emulate it by writing an interface to go with a basic enum type that implements the interface</li>
 </ul>
 
@@ -795,7 +795,7 @@ with bitwise operations efficiently (<code>apply(STYLE_ITALIC | STYLE_BOLD)</cod
 <h3 id="item-57-use-exceptions-only-for-exceptional-conditions">Item 57: Use exceptions only for exceptional conditions</h3>
 
 <ul>
-  <li>Exceptions slower than mormal checks</li>
+  <li>Exceptions slower than normal checks</li>
   <li>Placing code inside a try-catch block inhibits certain optimizations that modern JVM implementations might otherwise perform</li>
   <li>A well-designed API must not force its clients to use exceptions for ordinary control flow</li>
 </ul>
@@ -855,7 +855,7 @@ with bitwise operations efficiently (<code>apply(STYLE_ITALIC | STYLE_BOLD)</cod
 
 <ul>
   <li>Always document checked exceptions with javadoc <code>@throws</code> tag</li>
-  <li>Do not document multiple excetions by their common superclass (<code>@throws Exception</code> is bad)</li>
+  <li>Do not document multiple exceptions by their common superclass (<code>@throws Exception</code> is bad)</li>
   <li>Document <em>expected</em> unchecked exceptions with javadoc <code>@throws</code> tag</li>
   <li>Do not include unchecked exceptions in method <code>throws</code> declaration</li>
   <li>If an exception is thrown by many methods in a class for the same reason, it is acceptable to document the exception in the class’s documentation comment</li>
@@ -1037,7 +1037,7 @@ with bitwise operations efficiently (<code>apply(STYLE_ITALIC | STYLE_BOLD)</cod
   <li>Serialization proxy is a private static inner class implements Serializable and reflects serializable data for original object</li>
   <li>Add <code>writeReplace</code> method to proxy class. Serialization system emits a proxy instance instead of an instance of the enclosing class.</li>
   <li>Add <code>readObject</code> method to proxy class. Attacker wouldn’t be able to violate class invariants.</li>
-  <li>Add <code>readResolve</code> method to proxy class that returns logically equialent instance of the enclosing class.</li>
+  <li>Add <code>readResolve</code> method to proxy class that returns logically equivalent instance of the enclosing class.</li>
   <li>The serialization proxy pattern has some limitations:
     <ul>
       <li>It is not compatible with classes that are extendable by their clients</li>
